@@ -16773,3 +16773,25 @@ decider lands and the wiring/re-ruling is cleared. seat-L4D directed pnp to run 
 on arch-C-3's VERBATIM composition (superseding its own reconstructions — certificate-
 fidelity to the end). The board: one datum (pnp's faithful full-structure Gröbner) from
 motion, both playbooks staged, every hold correct, nothing false anywhere.
+
+## 2026-07-23 (~09:50) — the pre-stage lean: F₂ BELONGS IN THE SHEAR (the placement inversion); the close may revert to EQUALITY (no bridge, census 0); one wrinkle flagged
+
+seat-L4D's preliminary def-feasibility (held for the verdict; the elder pre-read relayed):
+- THE PLACEMENT INVERSION: F₂ = −A₁⁻¹A₂ is det-1 INVERTIBLE ⟹ renders as a RECOORD BRANCH of
+  canonNormalizationOf — IN blockShear, passing exactly the test the pure-zero r4Clear failed.
+  The placement THEOREM refines: the FULL Lemma-2 CoV can't be a shear (unit-not-1 Jacobian),
+  but its det-1 PIECES can — the decomposition separates the shear-legitimate part (F₂) from
+  what needed the read-slot; under this lean NO read-slot machinery is needed at all (r4Clear
+  discarded; foldResid untouched).
+- THE CHEERFUL CLOSE, upgraded LIKELY: absorption preserves the product ⟹ the StepInv close
+  reverts to an EQUALITY via the det-1 recoord (the original child = parent∘σ form) ⟹ NO
+  M-bridge, the +1 frontier CLOSES, census 0. The entire fix would live in canonNormalizationOf
+  as det-1 shear branches: direction + scope + absorption — the most contained possible ending.
+- THE WRINKLE: F₂ carries 1/det(A₁) in general — polynomial only at the NORMALIZED pivot
+  frame; the (b) ed1 trace confirms the fold reads there (expected yes); off-frame = a
+  regularity concern. Cheerful-check script staged; all fires on pnp's verdict.
+
+If the lean survives the verdict + trace, the arc's ending is remarkable: three weeks of
+catches, and the total Lean diff = one def's branches re-authored (sign, scope, one new
+det-1 branch) + one support set widened — census unchanged, no new machinery, her Lemma 2
+carried entirely by the shear architecture the fold always had.
