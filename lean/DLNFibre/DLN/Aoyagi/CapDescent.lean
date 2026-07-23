@@ -479,6 +479,29 @@ theorem ignoresCoords_union {D : ℕ} {c : (Fin D → ℝ) → ℝ} {A B : Finse
   · exact hA w hw m h t
   · exact hB w hw m h t
 
+/-- **`IgnoresCoords` composes with a `T`-preserving pre-map** (on `univ`): if `g` ignores `T` and `σ` maps
+`T`-agreeing points to `T`-agreeing points, then `g ∘ σ` ignores `T`. The step reduction rides this with
+`g = sourceClearedResid` of the parent and `σ = (stepMap) ∘ couplingClear` of the child. -/
+theorem ignoresCoords_comp {D : ℕ} {g : (Fin D → ℝ) → ℝ} {σ : (Fin D → ℝ) → (Fin D → ℝ)}
+    {T : Finset (Fin D)} (hg : IgnoresCoords g T Set.univ)
+    (hσ : ∀ u v : Fin D → ℝ, (∀ s, s ∉ T → u s = v s) → ∀ s, s ∉ T → σ u s = σ v s) :
+    IgnoresCoords (fun u ↦ g (σ u)) T Set.univ := by
+  rw [ignoresCoords_univ_iff_agree]
+  intro u v hag
+  exact (ignoresCoords_univ_iff_agree g T).mp hg _ _ (hσ u v hag)
+
+/-- **`couplingClear` preserves agreement off any set** — coordinate-wise (`(couplingClear p u) k` reads
+only `u k`), so it sends `T`-agreeing points to `T`-agreeing points, for every `T`. -/
+theorem couplingClear_agree_of_agree (d : Fin (N + 1) → ℕ) (p : TreePath d) (T : Finset (Fin (flatDim d)))
+    {u v : Fin (flatDim d) → ℝ} (hag : ∀ s, s ∉ T → u s = v s) :
+    ∀ s, s ∉ T → couplingClear d p u s = couplingClear d p v s := by
+  intro s hs
+  show (if s ∈ couplingCoords d p then (0 : ℝ) else u s)
+      = (if s ∈ couplingCoords d p then 0 else v s)
+  by_cases hsc : s ∈ couplingCoords d p
+  · rw [if_pos hsc, if_pos hsc]
+  · rw [if_neg hsc, if_neg hsc, hag s hs]
+
 /-! ### `escapedBelow` state-transition set-equalities + the `couplingClear` fixed-point (the step's
 foundation — the pnp certificate's `telescoping_check` (V2), rendered as Finset facts). -/
 
@@ -558,6 +581,28 @@ def CanonicalPivots (d : Fin (N + 1) → ℕ) : TreePath d → Prop
          | StepCase.case2 => cornerToFlat d p.conState.layer p.conState.cleared = some pivot
          | _ => True)
 
+/-- **A fresh-clear (case2/case12) child fires strictly below the rollover threshold** — `cleared <
+widthMinUpto d (layer+1)`. At/above the threshold the oracle emits a ROLLOVER (its only child), so a
+case2/case12 child forces the strict inequality. Used to place the `escapedBelow` transition in the
+`clear_notlast` (`c+1 < wmu`) vs `clear_last` (`c+1 = wmu`) case, never the vacuous `wmu ≤ c` one. -/
+theorem conOracle_case2or12_cleared_lt {N : ℕ} {d : Fin (N + 1) → ℕ} (s : ConState N)
+    (sc : StepChild d s) (hsc : sc ∈ (conOracle d s).stepChildren)
+    (hc : sc.ecase = StepCase.case2 ∨ sc.ecase = StepCase.case12) :
+    s.cleared < widthMinUpto d (s.layer + 1) := by
+  by_contra hcon
+  push_neg at hcon
+  have h1 : ¬ N ≤ s.layer := by
+    intro hter
+    have horacle : conOracle d s = oracleTerminal d s := by unfold conOracle; rw [dif_pos hter]
+    rw [horacle] at hsc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+  have horacle : conOracle d s = rolloverDecision d s (le_of_lt (not_le.mp h1)) hcon := by
+    unfold conOracle; rw [dif_neg h1, dif_pos hcon]
+  rw [horacle] at hsc
+  simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hsc
+  subst hsc
+  rcases hc with h | h <;> simp at h
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
@@ -600,7 +645,48 @@ theorem sourceClearedResid_ignoresEscapedBelow (d : Fin (N + 1) → ℕ) (hpos :
   | step p' c pv cse ns φ ih =>
     -- map: B-CAPF-kill-escapedBelow-step ⟨the certified telescoping step; V3 at the last clear⟩
     intro hbr hcanonStep i
-    sorry
+    obtain ⟨hrec, ⟨sc, hsc, hecase, hchild, hcenter, hpivpin⟩, hwcRaw, hvpin⟩ := hbr
+    obtain ⟨hcanonP, hcanonPiv⟩ := hcanonStep
+    have htrans := conOracle_child_transition p'.conState sc hsc
+    -- The goal's `escapedBelow` is at the child state `ns` (`(step …).conState = ns` by `rfl`).
+    show IgnoresCoords (sourceClearedResid d (TreePath.step p' c pv cse ns φ) i)
+      (escapedBelow d ns.layer ns.cleared) Set.univ
+    by_cases hnt : N ≤ ns.layer
+    · -- TERMINAL child: `foldResid = fun _ ↦ 1`, so the source-cleared residual is the constant `1`.
+      have hconst : sourceClearedResid d (TreePath.step p' c pv cse ns φ) i = fun _ ↦ (1 : ℝ) := by
+        funext u
+        show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i
+            (couplingClear d _ u) = _
+        rw [foldResid, dif_pos hnt]; rfl
+      rw [hconst]; intro w _ m _ _; rfl
+    · -- NON-TERMINAL: the reduction lemma over `escapedBelow(parent)` + the per-arm `escapedBelow` transition.
+      have hredEB : IgnoresCoords (sourceClearedResid d (TreePath.step p' c pv cse ns φ) i)
+          (escapedBelow d p'.conState.layer p'.conState.cleared) Set.univ := by
+        sorry
+      rcases htrans with ⟨hcaseR, hthr, hLR, hCR⟩ | ⟨hcase2, hL2, hC2⟩ | ⟨hcase11, hL11, hC11⟩
+      · -- ROLLOVER: `escapedBelow(S+1, 0) = escapedBelow(S, c)` (`c ≥ wmu(S+1)` — the layer exhausts).
+        have hnsL : ns.layer = p'.conState.layer + 1 := hchild ▸ hLR
+        have hnsC : ns.cleared = 0 := hchild ▸ hCR
+        rw [hnsL, hnsC, escapedBelow_rollover_eq d hpos p'.conState.layer p'.conState.cleared hthr]
+        exact hredEB
+      · -- CASE2/CASE12 (fresh clear): `escapedBelow(S, c+1)` — LAST clear GROWS by `escapedCol(S+1)`.
+        have hnsL : ns.layer = p'.conState.layer := hchild ▸ hL2
+        have hnsC : ns.cleared = p'.conState.cleared + 1 := hchild ▸ hC2
+        by_cases hlast : p'.conState.cleared + 1 = widthMinUpto d (p'.conState.layer + 1)
+        · -- LAST clear (GROWTH): the layer-(S+1) escaped columns ENTER — the V3 multi-layer descent.
+          rw [hnsL, hnsC, escapedBelow_clear_last d p'.conState.layer p'.conState.cleared hlast]
+          refine ignoresCoords_union hredEB ?_
+          sorry
+        · -- NON-LAST clear: `escapedBelow` unchanged (`c+1 < wmu(S+1)`, from the case2/12 threshold bound).
+          have hclt : p'.conState.cleared < widthMinUpto d (p'.conState.layer + 1) :=
+            conOracle_case2or12_cleared_lt p'.conState sc hsc hcase2
+          rw [hnsL, hnsC,
+            escapedBelow_clear_notlast d p'.conState.layer p'.conState.cleared (by omega)]
+          exact hredEB
+      · -- CASE11 (merge): state unchanged, `escapedBelow` unchanged.
+        have hnsL : ns.layer = p'.conState.layer := hchild ▸ hL11
+        have hnsC : ns.cleared = p'.conState.cleared := hchild ▸ hC11
+        rw [hnsL, hnsC]; exact hredEB
 
 /-- **THE KILL ⟨CRUX — route (a) whole-path coupling factorization⟩ — the source-cleared residual ignores
 the escaped out-of-cap columns.** At a fresh node (`cleared = 0`, layer `S`) the layer-`S` columns beyond
