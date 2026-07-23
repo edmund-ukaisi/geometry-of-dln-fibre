@@ -18262,3 +18262,17 @@ diagonal corner so a=b=cleared, i.e. the strictly-below-diagonal entries of each
 CAPR's Finset-of-flat-coords def is exactly right and now cites the fixing lines. The (A)-primary
 object is fully pinned on the object side; only L4D's encoding confirm remains before CAPR's
 SPECIFY finalizes.
+
+## 2026-07-24 (~17:15) — THE ENCODING PINNED: (A)-primary confirmed (L4D) + pnp's exact set — the
+two consults closed CONSISTENTLY; one load-bearing SPECIFY addition (the pivot-crux analog)
+
+L4D's def-owner ruling: (A)-primary confirmed with the bedrock rationale (def unambiguous;
+per-step structure DERIVED not baked; no canonical (B)-insertion dodges the commutation proof);
+the frame confirmed, the exact index set deferred to pnp — whose script:line answer (already in
+hand) IS that set; they agree ({(L,r,b): r>a} per ancestor pivot (L,a,b); = {(L,r,cleared):
+r>cleared} since case2/12 pivots are diagonal corners). THE LOAD-BEARING ADDITION: the append's
+new consumed shape = the sourceClearedResid analog of foldResid_stepMap_eq_pivot_mul, reducing to
+couplingClear-vs-stepMap/quot COMMUTATION + the cert's Deg1 — the commutation lemmas named as the
+render's real new content. CAPR finalizes the SPECIFY; elder delta-read next. Every def-level
+question on the capstone is now closed BEFORE a line of the SPECIFY freezes — the full
+consult loop (seat→controller→def-owner+elaborator→seat) ran in under two hours.
