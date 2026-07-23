@@ -1,0 +1,5 @@
+- **CLAIM 1 — INVALID as stated.** The missed case is δ = 1. Even with `center = ∅` and `shear = id`, the δ = 1 branch gives `Φ(u)[pivot] = 1`, not `u[pivot]`. Thus rollover implies `child_resid = parent_resid` only if δ = 0. The support calculation itself is correct: for a valid rollover with `J ≥ 1`, parent support is `layerCoords(S+1)`, while child support is `blockCoords(S+1)`, strictly smaller in the stated wide case.
+
+- **CLAIM 2 — VALID.** For `resid_parent(w) = w[pivot]`, the δ = 1 substitution gives `resid_child(u) = 1`. Every sum `Σ c_i(u)u_i` vanishes at `u = 0`, so it cannot equal the constant `1`. Hence the stated parent property alone does not entail the child conclusion.
+
+Independently: **YES**, a block-supported residual may genuinely depend on an out-of-cap coordinate because coefficients may depend on every coordinate; for example `u_i u_q = c_i(u)u_i` with in-cap `i`, out-of-cap `q`, and `c_i(u)=u_q`. However, a bare out-of-cap coordinate `u_q` is not block-supported, since it need not vanish when all block coordinates vanish.
