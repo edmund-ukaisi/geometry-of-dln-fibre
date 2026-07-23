@@ -497,3 +497,28 @@ reuse node (against the product-preservation criterion, NOT entry-cleanliness); 
 corner `u₀₁₁ + γβ` (not the classical Schur) is read against the `e₂`/ledger bookkeeping. The deflation
 (Reading B, field dissolved, boost-readiness direct) STANDS regardless — def-confirmed; only the block
 MECHANISM is open, and its criterion (product-preservation) is now ruled.
+
+**(i) THE FROZEN RENDER SPEC — block-axis verdict + spec-consistency, RULED.** seat-L4D's block verdict:
+the block STAYS NON-DIAGONAL under R3 (R3 acts on `A_{S+1}`; branch (i) writes only the interior, guard
+excludes the pivot cross ⟹ `β,γ` uncleared in `A_S`), so R4 (the un-stood-down generator transform,
+`Q₁·A_S·Q₂ = diag(1,e₂)`, worked.tex:619-629, contained + G1-clean) IS needed. The two-sign-flip of (h)
+is SUPERSEDED — it cleaned the ed1 PRODUCT (coeff-0), but `foldResid` is the BLOCK-slot, not the product
+(def-fact (2): `foldB` is a SCALAR dominant monomial applied uniformly, the per-row `diag(b₁..b_M)` lives
+in the EXTERNAL `ConState.divExp`/`M_{s,k}` ledger, `foldResid` = the clean block). Cleaning the product
+is cleaning the WRONG object. So the ONE coherent frozen spec:
+- `canonNormalizationOf`: **REPLACE branch-(i)** (the interior Schur cross-term) **with R4** — the full
+  generator transform `Q₁·A_S·Q₂` on the RAW `A_S`, diagonalising the block to `diag(1,e₂)`. (R4 SUBSUMES
+  branch-(i); STACKING R4 on the already-Schur'd block DOUBLE-COUNTS — `[1][1] = u₀₁₁ − 2u₀₀₁u₀₁₀`.)
+- `canonNormalizationOf`: **FLIP branch-(ii)** — the recoord direction `A_{S+1}·Q₁` (`−γ`, council Q1).
+- `foldResid` at the case11 node = the clean block `D_J` (`diag(1,e₂)`), the block-slot object;
+  `boostReady_case11` consumes THIS (the clean block), NOT either ed1-product form — `Deg1SupportedOn
+  ed.center` holds directly (`e₂` is a clean-block coordinate ∈ center). The product `P[0][1] =
+  b·u₁₀₀ + e₂·u₁₀₁` is the b-scaled PRODUCT, not `foldResid`.
+- `foldB` = scalar dominant; per-row b's = external ledger; DEF EDIT 2 = clean-block `Deg1SupportedSlot`
+  (no field, no row-scaling conjunct).
+RULED that `foldResid` = the block-slot (not the product), so `boostReady` consumes the clean block — the
+spec-consistency question resolved. CONFIRMATION: pnp #50 (object-labeled reuse-node forms — `foldResid`
+is the clean block at the ACTUAL reuse node, both wide witnesses) + #49 (Gröbner: `⟨R3+R4⟩ = ⟨faithful⟩`,
+the product-preservation (h)-criterion — NB the test is on the R3+R4 def, not R3-alone). RE-OPEN: the
+reuse-node `foldResid` not the clean block, OR `⟨R3+R4⟩ ≠ ⟨faithful⟩`. This is the frozen render spec for
+DEF-EDIT-3; seat-L4D reconciles the render against it.
