@@ -155,16 +155,41 @@ constructive target for the re-shape.
   (pivot-divisible remainder) supplies a route to re-derive it for the cleared object. **Kill-condition
   (team-lead's (iii)) is TRIGGERED.**
 
-**INFERENCE (not slot-ideal fact):** `sourceClearedResid = raw|_{u₀₁₀=0}` genuinely DROPS the raw fold's
-dependence on `u₀₁₀`, and `raw` does depend on it. No det-1 CoV of the full space can bridge a function
-to one with strictly fewer essential coordinates, so the cleared↔raw relation is inherently a RESTRICTION,
-not a CoV — the det-1 render-fix is dead for a dimension reason (not only the chart-degeneration of
-team-lead's map (iii)). RLCT-neutrality, IF it holds, must therefore be a GAUGE / cover-membership
-argument on `u₀₁₀` (whether the loss's RLCT is invariant under fixing this coordinate) — NOT an ideal
-equality. That is exactly the elder's §7.5 (paper-first: is the intermediate clear Lemma-1-internal / a
-CHART/COVER structure / a misread). The exact-algebra verdict here: the ideal-equality and
-pivot-divisible-decomposition bridges are both closed; the bridge must be the gauge/cover one or the
-object/statement re-shape must go further.
+## THE STRAIGHTENING ψ — raw↔cleared IS a det-1 CoV; RLCT PRESERVED (decorrelated-Codex-found, VERIFIED)
+`verify/capstone_straightening_psi.py` (exit 0); `codex/capstone-bridge-iii-answer.md`. This CORRECTS
+an over-claim I made above (struck): I inferred "no det-1 CoV can bridge raw and cleared (dimension)".
+That is FALSE. There is an explicit det-1 polynomial automorphism (Codex-found, re-derived exactly here):
+
+    ψ:  b₀ ↦ b₀ − 2x·b₁,   d₀ ↦ d₀ − 2x·d₁,   z ↦ z + 2x·y   (others fixed)
+        x=u₀₁₀, y=u₀₀₁, z=u₀₁₁=e₂, b₀=u₁₀₀, b₁=u₁₀₁, d₀=u₁₁₀, d₁=u₁₁₁
+
+with **`F∘ψ = C` (all slots), `det Dψ = 1`**, and a nonvanishing flat vector field `V = ∂ₓ − 2b₁∂_{b₀} −
+2d₁∂_{d₀} + 2y∂_z` with `V(F_j)=0 ∀j, V(x)=1`. So raw `foldResid` has a genuine FLAT direction; ψ
+straightens it to the source-cleared object.
+
+**CONSEQUENCE (the positive resolution):** F and C are related by a VOLUME-PRESERVING automorphism, so
+`RLCT(∑F²) = RLCT(∑C²) = RLCT(∑F²|_{x=0})` (verified: `∑F² = (∑C²)∘ψ⁻¹`). **Fixing the coupling coord is
+RLCT-preserving — Option 1 (re-state on `sourceClearedResid`) IS RLCT-SOUND; the learning coefficient is
+NOT at risk.** The `(ii)` ideal-*equality* stays FALSE, but that was the wrong test: the true bridge is
+ideal-*EQUIVALENCE* `ψ*⟨F⟩ = ⟨C⟩` via a det-1 map, which HOLDS.
+
+**THE STRUCTURAL CAVEAT (what the re-wire must handle):** ψ CONJUGATES the center —
+`I=(z,b₀,d₀) ↦ ψ(I) = (z+2xy, b₀−2xb₁, d₀−2xd₁)`. So ψ repairs the split on a MOVED pivot/center, NOT the
+original `z`-edge (any automorphism preserving `I` would force `F_j∈I` from `C_j∈I`, contradicting
+non-membership). This is exactly the elder's §7.5 CHART/COVER (B2 chart-faithfulness) structure: the
+chart relating the raw fold to the cleared object is det-1 (faithful) and moves the center — the append
+transports to the conjugated edge, not the original. Codex's RLCT caveat: with an ordinary smooth
+positive measure the det-1 ψ suffices; if a resolution chart carries an independent vanishing monomial
+Jacobian weight, one must additionally check the fibre-marginal after ψ has the same singular order
+(det-1 alone does not preserve an independently-specified vanishing weight) — a check for the
+formaliser/elder on the accumulated chart measure.
+
+**Open generalization:** ψ is verified on (2,2,2,2) (single coupling `u₀₁₀`). Wider/deeper witnesses have
+MORE coupling coords ((3,3,3,2): {(0,1,0),(0,2,0),(0,2,1)}); the full straightening is the composition of
+per-coupling det-1 flat-field flows (each an accumulated unipotent `Q₁` row-clear, product-preserving).
+Establishing that composite ψ_gen (F∘ψ_gen = C, det 1) in general IS the B2 chart-faithfulness lemma —
+the concrete target for §7.5. Matrix-level, each `Q₁` is unipotent/product-preserving, so I expect ψ_gen
+to exist generally; the explicit multi-coupling form is the next verification.
 
 ## Kill-condition for THIS obstruction
 If a real canonical case11 branch is exhibited on which `Deg1SupportedOn (foldResid p) ed.center`
