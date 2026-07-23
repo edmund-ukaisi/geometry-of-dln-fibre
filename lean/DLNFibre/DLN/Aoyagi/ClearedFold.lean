@@ -132,6 +132,17 @@ OWNERSHIP FLAG (SPECIFY): `couplingCoords`/`accumulatedPivots` are CAPR's primit
 `pivot ∉ couplingCoords` disjointness + the case12/case2 commutation are mine to prove or CAPR-provided is
 a SPECIFY question (see the message). -/
 
+/-- **couplingCoords stability under a case11 extension** (controller SPECIFY note; the transports lean
+on it) — a case11 step adds no `belowPivotCol` (it is a MERGE into an existing exceptional, not a fresh
+clear), so `couplingCoords d (p.extend ed) = couplingCoords d p`. Hence at case11 the child clear map
+equals the parent's, which is what makes the case11 step-map commutation clean. SPECIFY-trivial (the
+`couplingCoords` step arm's case11 match is `∅`, and `S ∪ ∅ = S`). -/
+theorem couplingCoords_case11_stable (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
+    (hc11 : ed.case = StepCase.case11) :
+    couplingCoords d (p.extend ed) = couplingCoords d p := by
+  -- map: B-globalmove-couplingCoords-case11-stable  ⟨SPECIFY-trivial: case11 arm of couplingCoords = ∅⟩
+  sorry
+
 /-- **The couplingClear/step-map commutation** — `stepMap d ed ∘ couplingClear d (p.extend ed) =
 couplingClear d p ∘ stepMap d ed`. Frame §6 (S2). -/
 theorem couplingClear_stepMap_comm (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p) :
