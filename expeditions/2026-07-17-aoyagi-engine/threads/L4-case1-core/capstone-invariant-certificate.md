@@ -126,6 +126,18 @@ where `b_i = ∏_{t̃_{s,k} < i} u_{s,k}` (worked.tex:562-577; `b_0=1`, `b_i = (
 is the accumulated exceptional monomial, and the `clean D_J entry` is a single support coordinate (the
 `v_j/1` degree-1 regime). This carries the per-layer degree ≤ 1 grade (`PerLayerDeg1From`).
 
+**`supportAt` version + the width-INCREASING (cap-bite) axis (`capstone_coverage_wide.py`, exit 0).** Since
+`hδ ⟹ cleared = 0`, `supportAt(p) = blockCoords d S` — the running-min-CAPPED col axis (`col < widthMinUpto d S`,
+`MonumentAtlas:617` J=0 branch, the current elder-ruled def). On a WIDE layer (`d_{S} > widthMinUpto d S`) the
+cap excludes the raw-remnant columns `col ≥ widthMinUpto`. VERIFIED on the width-increasing witnesses
+`(2,3,2,2)`, `(2,3,3,2)`, `(2,4,2,2)` (all with a case11 node): the RAW fold DOES read the cap-escaped
+columns (cap too tight for the RAW object), but the SOURCE-CLEAR REMOVES that dependence — those columns
+enter only through the ancestor input coupling — so `sourceClearedResid`'s support lies WITHIN the capped
+`blockCoords`, and `INV`, the single-`e₂` read-off, and the `Q₁`-lift all HOLD. So the capped `supportAt`
+at J=0 is FAITHFUL for `sourceClearedResid` (a bonus: the source-clear resolves the J=0 cap-escape too).
+[Distinct from the DESCENDED (J≥1) support, which is `layerCoords d (S+1)` (raw, uncapped) per the
+consolidated ruling — a separate branch not exercised by the case11 read-off.]
+
 ### (i) ROOT base case  (`MonumentAtlas:476`)
 `sourceClearedResid d .root = coreGen d (canonFlatten d)` (the ancestor-clear is empty at root).
 `coreGen d e k u = (mult d (e u))[decode k]` = the entries of `∏A = A_{N-1}···A_0`
@@ -231,3 +243,23 @@ ed.center` on the ORIGINAL center (Option 2′). L4D owns the exact append re-po
 - **§6 KILLED-BY-e** — if the split held for a generic scrambler `e`, the canonFlatten-specificity (and
   the whole route-β-is-dead ruling) would be wrong. (Checked: scrambler BREAKS it,
   `capstone_split_chartframe.py`.)
+
+---
+
+## 9. Architecture note (§12.2) — the cleared-object route is UNIFORM (all cases, all widths)
+
+The cleared-object route is ruled for ALL cases (§12.2), not case11-only: `supportAt` UNCHANGED, and
+case12/case2 δ=1 boostReady ALSO reads `sourceClearedResid` (verified center-Deg1 directly — the cleared
+object confined to `blockCoords ⊆ ed.center`, `capstone_12_2_checks.py` check 3; and the born-unit sibling
+§5). The uniform shape is deliberate: `sourceClearedResid ∈ ⟨ed.center⟩` EVERYWHERE, so no width hypothesis
+is threaded through the statements.
+
+**Mechanism refinement (the honest sharpening for the record).** Whether a case12/case2's RAW residual
+exceeds `⟨ed.center⟩` is a WIDTH phenomenon, NOT a reuse-vs-fresh one: on a WIDE layer
+(`d_S > widthMinUpto d S`) the ancestor coupling reaches the wide layer's cap-escaped remnant columns
+(outside the capped center) EVEN THOUGH case12/case2 clears a FRESH current pivot; on non-wide layers the
+raw residual is already `⊆ ed.center` (`capstone_case2_extent.py`: `case2(1,0)` escapes on wide (2,3,2,2)/
+(2,3,2,2,2), does NOT on non-wide (2,2,3,2)). This width-conditionality is DOCUMENTATION only — the uniform
+cleared-object architecture makes the statements width-agnostic; the raw route is not "saved" where it
+happens to work. (case11 escapes for two reasons — the small reused-corner center AND the wide-layer cap;
+case12/2 escapes for one — the cap, on wide layers only. Both fixed by the same `ancestor-column-clear`.)
