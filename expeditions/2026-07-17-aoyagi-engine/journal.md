@@ -18538,3 +18538,18 @@ continuous coefficients)? ∃q-holds → a case11-specific append route, no glob
 the global re-architecture is forced and the elder rules it. L4D holds (no breakage added —
 the discipline held); CAPR's induction unaffected under both verdicts. The elder gets the fork
 WITH the verdict. Same machinery, 18th time: algebra first, rule second, render third.
+
+## 2026-07-24 (~23:15) — the 18th event's full state: L4D's owned route-vs-content correction;
+the check sharpened to report STRUCTURE; all lanes correctly postured
+
+L4D owned the correction (BLOCKER 2 was route-scoped — the blow-up can inject the pivot factor
+into the WHOLE product, so continuous q' may exist where per-slot divisibility fails; BLOCKER 1
+stands as a typing fact: the shared append splits per-case in every world). Its def-owner flag
+sharpens pnp's check: in the ∃q-holds world, pin the MECHANISM — (a) product-divisibility alone
+(Deg1-free: the wall's conclusion would feed ONLY the descended-slot conjunct — a cleaner split
+than designed) vs (b) a C-Deg1 per-node bridge. pnp's answer = the single input to the remaining
+integration design; L4D renders the per-case split to whichever route. MEANWHILE: LL's hold
+approved (its :145 arm = the exact crux lemma's consumer; outcome-mapped, one edit either way);
+CAPR grinds the induction with the INV pinned against certificate §4 (its crux CONFIRMS the
+cert's b-ledger design; ambiguity → pnp clarification, not free design; L4D's bounded INV-shape
+consult routed). Everything on C is fork-immune; everything on F waits on one Gröbner check.
