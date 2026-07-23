@@ -21469,3 +21469,32 @@ discharges (fan-completeness ex buildTree, shear-containment ex canonNormalizati
 **Status.** L7: engine (M1) green; sheared fold (M2, 2a) rendering. KILL step: FP+machinery green,
 (1)-(3) solo + (4) with pnp-cap carrier. Wall (a) both sides. Board clean. Awaiting: seat-descent
 hredEB green, seat-L7cover sheared-fold green.
+
+## 2026-07-24 (~03:35 UTC) — seat-descent checkpoint 2: ALL hard non-growth algebra GREEN (KILLSTEP 9c136124b, ~600 new lines); (A)+(B) mechanical remaining → CONTINUE; (C) growth-V3 gated on pnp-cap carrier (COMMISSIONED)
+
+seat-descent banked checkpoint 2 (KILLSTEP 9c136124b, all green, pushed, CapDescent 1158 LoC, ~600
+new green lines; one live sorry = hredEB+growth). ALL the hard NEW algebra of the non-growth
+reduction is DONE: the FP shear-half (canonNormalizationOf_vanishes_on_couplings) + the completeness
+invariant couplingCoords_covers_cleared (the AT branch-(iii) crux, proven via "case11 keeps cleared")
++ the full machinery (~11 named lemmas). That's the research content of the non-growth arm complete.
+
+REMAINING (mechanical, fully-specified, no open math): (A) Sat [mirror Sfp: br(i)/(ii)/(iii) split +
+readEntry_congr]; (B) hredEB wiring [hfun2 + ignoresCoords_comp(IH)(AT) per δ] → finishes #97;
+(C) growth-V3 [coreGen ∏A layer-descent, ~150, needs pnp-cap's carrier] → #98. seat-descent PAUSED
+before Sat near its context limit (thrash-avoidance) + asked the resourcing call.
+
+RESOURCING RULED: CONTINUE for (A)+(B) — mechanical, fully-specified in seat-descent's own checkpoint,
+built on the machinery IT just proved (its context is the asset, thrash-risk low), and it's the
+SINGLE WRITER on KILLSTEP (a parallel fresh seat would conflict). Compact + finish (A)+(B) → #97.
+(C) is the reassess point (larger, more-independent, carrier-gated): after (A)+(B), continue if
+post-compaction budget is comfortable, else STOP cleanly (turnkey/pushed) + flag → I fresh-seat (C).
+COMMISSIONED pnp-cap for the growth-V3 CARRIER now (it was unstarted): the precise coreGen ∏A
+layer-descent lemma statement + ∏A-composition threading + accumulated-couplingCoords bookkeeping, so
+it's ready when (C) starts. seat-KILL's completeness-banked question moot (seat-descent proved it).
+
+Also this turn: OPERATOR status + DAG (/tmp/aoyagi-dag-2026-07-24.svg) + board cleanup delivered
+(board pruned to 14 live tasks). seat-L7cover M1 green + (2a) shear-interface ruled (prior entry).
+
+**Status.** KILL step: hard algebra done, (A)+(B) mechanical (continue → #97), (C) carrier-gated
+(pnp-cap commissioned). L7: engine (M1) green, sheared fold (M2/2a) rendering. Wall (a) both sides.
+Board clean. Awaiting: seat-descent #97 green, pnp-cap growth-V3 carrier, seat-L7cover sheared-fold.
