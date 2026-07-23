@@ -43,18 +43,48 @@ theorem MergeBoostSplit.deg1SupportedOn {nR : ℕ} (d : Fin (N + 1) → ℕ)
     (hex : ∀ k ∈ extra, k ∉ center)
     (h : MergeBoostSplit d resid e₂ part extra center V) :
     Deg1SupportedOn resid center V := by
-  -- map: B-wall-mergeboostsplit-assembly (algebraic; c-witness = α on part, ∑_{extra} β·u at e₂, 0 else)
-  -- ROUTE (structure verified; Finset-mechanics grind, next cycle): per `j`, obtain `α β … hrepr` from
-  -- `h j`; the Deg1SupportedOn witness is `c i u := if i = e₂ then ∑_{k∈extra} β k u·u k else
-  -- if i ∈ part then α i u else 0`. (1) CONTINUITY: e₂-branch = `continuousOn_finset_sum` of
-  -- `(hβc k).mul (continuous_apply k).continuousOn`; part = `hαc i`; else `continuousOn_const`.
-  -- (2) SUM: `rw [hrepr, ← Finset.insert_erase he₂, Finset.sum_insert (not_mem_erase …)]`; the erase-sum
-  -- collapses to `∑_{part} α·u` (part ⊆ center.erase e₂ via hep+hpart; off-part terms `zero_mul`, i≠e₂ on
-  -- the erase); then `mul_comm (u e₂)` + `add_comm` matches hrepr. (3) IGNORESCOORDS center: e₂-branch —
-  -- `hβi k` (β ignores center) AND `u k` unchanged since `hex k hk : k ∉ center ⟹ k ≠ m` (use
-  -- `Function.update_of_ne`); part = `hαi i`; else const. `hex` (extra ∩ center = ∅) is Codex's
-  -- necessary disjointness — a `literal e₂-factor is not enough` guard (e₂·(e₂+u_i) would fail IgnoresCoords).
-  sorry
+  -- c-witness: `α i` on the partial block, `∑_{extra} β·u` at the reused pivot `e₂`, `0` elsewhere.
+  classical
+  intro j
+  obtain ⟨α, β, hαc, hβc, hαi, hβi, hrepr⟩ := h j
+  refine ⟨fun i u ↦ if i = e₂ then (∑ k ∈ extra, β k u * u k) else if i ∈ part then α i u else 0,
+    ?_, ?_, ?_⟩
+  · -- CONTINUITY
+    intro i
+    by_cases hie : i = e₂
+    · simp only [if_pos hie]
+      exact continuousOn_finset_sum _ (fun k _ ↦ (hβc k).mul ((continuous_apply k).continuousOn))
+    · simp only [if_neg hie]
+      by_cases hip : i ∈ part
+      · simp only [if_pos hip]; exact hαc i
+      · simp only [if_neg hip]; exact continuousOn_const
+  · -- SUM over the center
+    intro u hu
+    have hsub : part ⊆ center.erase e₂ :=
+      fun i hi ↦ Finset.mem_erase.mpr ⟨fun h ↦ hep (h ▸ hi), hpart hi⟩
+    have herase : (∑ i ∈ center.erase e₂,
+        (if i = e₂ then (∑ k ∈ extra, β k u * u k) else if i ∈ part then α i u else 0) * u i)
+        = ∑ i ∈ part, α i u * u i := by
+      rw [← Finset.sum_subset hsub (fun i hi hni ↦ by
+        rw [if_neg (Finset.mem_erase.mp hi).1, if_neg hni, zero_mul])]
+      refine Finset.sum_congr rfl (fun i hi ↦ ?_)
+      have hine : i ≠ e₂ := fun h ↦ hep (h ▸ hi)
+      rw [if_neg hine, if_pos hi]
+    rw [hrepr u hu, ← Finset.insert_erase he₂,
+      Finset.sum_insert (Finset.notMem_erase e₂ center)]
+    dsimp only
+    rw [if_pos rfl, herase]
+    ring
+  · -- IGNORESCOORDS center
+    intro i w hw m hm t
+    by_cases hie : i = e₂
+    · simp only [if_pos hie]
+      refine Finset.sum_congr rfl (fun k hk ↦ ?_)
+      have hkm : k ≠ m := fun h ↦ (hex k hk) (h.symm ▸ hm)
+      rw [hβi k w hw m hm t, Function.update_of_ne hkm t w]
+    · by_cases hip : i ∈ part
+      · simp only [if_neg hie, if_pos hip]; exact hαi i w hw m hm t
+      · simp only [if_neg hie, if_neg hip]
 
 /-- **The content lemma** (LIVE frontier, the capstone) — the actual `foldResid` at `e = n d`
 (canonFlatten), a real case-1(1) merge branch, satisfies `MergeBoostSplit` with `e₂ = canonPivotOf`,
