@@ -303,6 +303,125 @@ theorem realBranch_appendResidDescent_fresh_layerCoords (d : Fin (N + 1) → ℕ
         fun x hx ↦ absurd hx (Finset.notMem_empty x),
         fun u _ ↦ by rw [Finset.sum_empty, add_zero]⟩
 
+/-! ### Guard-independent core (seat-CX): the `couplingClear`-composition algebra
+
+`sourceClearedResid d p j = foldResid d (canonFlatten d) p j ∘ couplingClear d p`, and `couplingClear d p`
+is the coordinate-ZEROING map `u k ↦ if k ∈ couplingCoords d p then 0 else u k`. The four lemmas below are
+the general algebra of composing an `AffineOn`/`HomogeneousDeg1On`/decomposable function with a
+coordinate-zeroing map, plus the `X ⊇ Y` upgrade under an `X∖Y`-ignoring hypothesis. Everything in the
+capped statement EXCEPT the escaped-column KILL rides these; they are statement-independent (no reference to
+`sourceClearedResid_capped`). -/
+
+/-- **`couplingClear` is continuous** — each output coordinate is `0` (constant) on a coupling, else the
+input coordinate (`continuous_apply`). -/
+theorem continuous_couplingClear (d : Fin (N + 1) → ℕ) (p : TreePath d) :
+    Continuous (couplingClear d p) := by
+  apply continuous_pi; intro k
+  show Continuous (fun u : Fin (flatDim d) → ℝ ↦ if k ∈ couplingCoords d p then (0 : ℝ) else u k)
+  by_cases hk : k ∈ couplingCoords d p
+  · simp only [if_pos hk]; exact continuous_const
+  · simp only [if_neg hk]; exact continuous_apply k
+
+/-- **Composing with a coordinate-zeroing map preserves `AffineOn`** (on `univ`). Zeroing the `Z`-coords
+before `F` keeps the degree-≤1 grade on `X`: the `X ∩ Z` terms drop (their coord becomes `0`), and the
+coefficients precompose with the zeroing (still `X`-ignoring, as the zeroing sends `X`-agreeing points to
+`X`-agreeing points). The `couplingClear` composition rides this with `Z = couplingCoords d p`. -/
+theorem affineOn_comp_coordZero {D : ℕ} (F : (Fin D → ℝ) → ℝ) (X Z : Finset (Fin D))
+    (hF : AffineOn F X Set.univ) :
+    AffineOn (fun u ↦ F (fun k ↦ if k ∈ Z then 0 else u k)) X Set.univ := by
+  classical
+  obtain ⟨a, b, ha, hb, hrepr⟩ := hF
+  have hagree : ∀ u v : Fin D → ℝ, (∀ s, s ∉ X → u s = v s) →
+      ∀ s, s ∉ X → (if s ∈ Z then (0 : ℝ) else u s) = (if s ∈ Z then 0 else v s) := by
+    intro u v hag s hs; split
+    · rfl
+    · exact hag s hs
+  refine ⟨fun u ↦ a (fun k ↦ if k ∈ Z then 0 else u k),
+    fun x u ↦ if x ∈ Z then 0 else b x (fun k ↦ if k ∈ Z then 0 else u k), ?_, ?_, ?_⟩
+  · rw [ignoresCoords_univ_iff_agree]
+    exact fun u v hag ↦ (ignoresCoords_univ_iff_agree a X).mp ha _ _ (hagree u v hag)
+  · intro x hx
+    rw [ignoresCoords_univ_iff_agree]
+    intro u v hag
+    by_cases hxZ : x ∈ Z
+    · simp only [if_pos hxZ]
+    · simp only [if_neg hxZ]
+      exact (ignoresCoords_univ_iff_agree (b x) X).mp (hb x hx) _ _ (hagree u v hag)
+  · intro u _
+    show F (fun k ↦ if k ∈ Z then 0 else u k)
+        = a (fun k ↦ if k ∈ Z then 0 else u k)
+          + ∑ x ∈ X, (if x ∈ Z then 0 else b x (fun k ↦ if k ∈ Z then 0 else u k)) * u x
+    rw [hrepr _ (Set.mem_univ _)]
+    congr 1
+    refine Finset.sum_congr rfl (fun x hx ↦ ?_)
+    by_cases hxZ : x ∈ Z
+    · simp only [if_pos hxZ, mul_zero, zero_mul]
+    · simp only [if_neg hxZ]
+
+/-- **Composing with a coordinate-zeroing map preserves `HomogeneousDeg1On`** (on `univ`). The `AffineOn`
+grade is `affineOn_comp_coordZero`; the vanishing clause transports because zeroing the `Z`-coords keeps
+every `X`-coord `0` when it started `0`. -/
+theorem homogeneousDeg1On_comp_coordZero {D : ℕ} (F : (Fin D → ℝ) → ℝ) (X Z : Finset (Fin D))
+    (hF : HomogeneousDeg1On F X Set.univ) :
+    HomogeneousDeg1On (fun u ↦ F (fun k ↦ if k ∈ Z then 0 else u k)) X Set.univ := by
+  refine ⟨affineOn_comp_coordZero F X Z hF.1, ?_⟩
+  intro u _ hu
+  exact hF.2 _ (Set.mem_univ _) (fun x hx ↦ by
+    by_cases hxZ : x ∈ Z
+    · simp only [if_pos hxZ]
+    · simp only [if_neg hxZ]; exact hu x hx)
+
+/-- **`AffineOn` is antitone in the block** (on `univ`): affine on `X` ⟹ affine on any `Y ⊆ X`. The `X∖Y`
+linear terms fold into the constant part (each `b_x · u_x` for `x ∈ X∖Y` ignores `Y`, since `u_x` does and
+`b_x` ignores `X ⊇ Y`). -/
+theorem affineOn_of_subset {D : ℕ} (F : (Fin D → ℝ) → ℝ) {X Y : Finset (Fin D)} (hYX : Y ⊆ X)
+    (hF : AffineOn F X Set.univ) : AffineOn F Y Set.univ := by
+  classical
+  obtain ⟨a, b, ha, hb, hrepr⟩ := hF
+  have hoffY : ∀ u v : Fin D → ℝ, (∀ s, s ∉ Y → u s = v s) → ∀ s, s ∉ X → u s = v s :=
+    fun u v hag s hs ↦ hag s (fun h ↦ hs (hYX h))
+  refine ⟨fun u ↦ a u + ∑ x ∈ X \ Y, b x u * u x, fun y u ↦ b y u, ?_, ?_, ?_⟩
+  · rw [ignoresCoords_univ_iff_agree]
+    intro u v hag
+    have hav : a u = a v := (ignoresCoords_univ_iff_agree a X).mp ha _ _ (hoffY u v hag)
+    have hsum : ∑ x ∈ X \ Y, b x u * u x = ∑ x ∈ X \ Y, b x v * v x := by
+      refine Finset.sum_congr rfl (fun x hx ↦ ?_)
+      have hxX : x ∈ X := (Finset.mem_sdiff.mp hx).1
+      have hxY : x ∉ Y := (Finset.mem_sdiff.mp hx).2
+      rw [(ignoresCoords_univ_iff_agree (b x) X).mp (hb x hxX) _ _ (hoffY u v hag), hag x hxY]
+    rw [hav, hsum]
+  · intro y hy
+    rw [ignoresCoords_univ_iff_agree]
+    exact fun u v hag ↦ (ignoresCoords_univ_iff_agree (b y) X).mp (hb y (hYX hy)) _ _ (hoffY u v hag)
+  · intro u _
+    rw [hrepr u (Set.mem_univ _), add_assoc]
+    congr 1
+    rw [← Finset.sum_sdiff hYX, add_comm]
+
+/-- **The block-restriction upgrade** (on `univ`): `HomogeneousDeg1On X` + `IgnoresCoords (X∖Y)` ⟹
+`HomogeneousDeg1On Y` (for `Y ⊆ X`). The `AffineOn Y` grade is antitonicity; the `Y`-vanishing comes from
+the `X∖Y`-ignoring (zero the `X∖Y` coords freely) plus the `X`-vanishing. This is the KILL's consumer: with
+`X = layerCoords`, `Y = blockCoords`, `X∖Y =` the escaped columns, it caps the decomposition to the block. -/
+theorem homogeneousDeg1On_of_subset_ignores {D : ℕ} (G : (Fin D → ℝ) → ℝ) {X Y : Finset (Fin D)}
+    (hYX : Y ⊆ X) (hhom : HomogeneousDeg1On G X Set.univ)
+    (hign : IgnoresCoords G (X \ Y) Set.univ) :
+    HomogeneousDeg1On G Y Set.univ := by
+  classical
+  refine ⟨affineOn_of_subset G hYX hhom.1, ?_⟩
+  intro u _ hu
+  -- zero the X∖Y coords: agrees with u off X∖Y, and G ignores X∖Y, so G u = G u0
+  set u0 : Fin D → ℝ := fun k ↦ if k ∈ X \ Y then 0 else u k with hu0
+  have hGu : G u = G u0 :=
+    (ignoresCoords_univ_iff_agree G (X \ Y)).mp hign u u0
+      (fun s hs ↦ by simp only [hu0, if_neg hs])
+  rw [hGu]
+  refine hhom.2 u0 (Set.mem_univ _) (fun x hx ↦ ?_)
+  by_cases hxY : x ∈ Y
+  · have : x ∉ X \ Y := fun h ↦ (Finset.mem_sdiff.mp h).2 hxY
+    simp only [hu0, if_neg this]; exact hu x hxY
+  · have : x ∈ X \ Y := Finset.mem_sdiff.mpr ⟨hx, hxY⟩
+    simp only [hu0, if_pos this]
+
 /-- **The capped-homogeneity induction ⟨THE CRUX; route (a) path induction⟩** — the source-cleared residual
 is `Deg1SupportedSlot` over the geometric support `supportAt` at EVERY real-branch node. Base (root):
 `supportAt(root) = blockCoords 0 = layerCoords 0` (`blockCoords_zero_eq_layerCoords` — layer 0 has NO escape,
