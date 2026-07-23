@@ -21702,3 +21702,32 @@ FanTree + atlas-chart bridge + σ-bridge + leaf boxes ≥ f^[depth] 1. qshear_co
 **Status.** L7: repaired engine + PROVEN quadratic-depth-2 witness (52db6e438) under final re-review;
 wire pending the pass. KILL: seat-killfin rendering (1)→(2)→(3) (consulting seat-descent). Wall (a)
 both sides. Awaiting: rev-L7cover PASS/FAIL on 52db6e438, seat-killfin #97 green, battery bg-confirm.
+
+## 2026-07-24 (~06:45 UTC) — rev-L7cover RE-REVIEW = PASS: the L7 cover engine is DONE (free-f genuine fix, TRIANGULATED); 3 wire caveats = my obligations (uniform-C routed to pnp-cap as the key de-risk)
+
+rev-L7cover PASSED the (A) repair — the free-f box-inflation is a GENUINE fix, not a punt.
+TRIANGULATED three ways: (i) seat-L7cover's covers_qtree (52db6e438: qshear v₂↦v₂−v₀v₁, depth-2
+|S|=2, closes under f=r+r², axiom-clean); (ii) rev's OWN independent depth-2 witness — it built +
+compiled blockShear φ = Codex's EXACT old counterexample σ(x,y)=(x,y+x²) at both levels + proved
+Covers (r↦r+r²) t 1 axiom-clean (shear_clause: preimage v=u−φ(u), ‖v‖≤r+r², triangular right-inverse);
+(iii) Codex (xhigh, hypothesis-withheld) converged — free-f escapes the old K≥1+K^ℓ trap because the
+ratio f(r)/r=1+C·r is now allowed to grow with r; f^[m](1)=1,2,6,42 finite at every depth. name=content
+PASS (docstrings fixed); hygiene PASS (build exit 0, all 6 results axiom-clean, cordon). The L7
+ABSTRACT COVER ENGINE IS DONE. The review discipline worked end-to-end: constant-K bug caught → repair
+→ re-verified against the exact counterexample + Codex.
+
+THREE WIRE-TIME CAVEATS = MY controller obligations (rev correctly deferred them):
+1. UNIFORM C (the one that could bite) — feasibility needs |canonNormalizationOf-quadratic(u)| ≤ C·‖u‖²
+   with a UNIFORM C across all edges/pivots/depths. rev's inference: C = max #-monomials-per-modified-coord
+   (≤ flatDim); but if a coord accumulates UNBOUNDEDLY many cross-products, a uniform scalar C fails.
+   ROUTED to pnp-cap (decorrelated Schur-structure read) — de-risking BEFORE I commit the wire. Uniform-C
+   exists → L7 detail-at-scale; unbounded → a refined per-coord f (harder).
+2. LEAF BOXES f^[depth]1 super-exponential (1,2,6,42,…) — I size the atlas dom ≥ that + confirm coverage.
+3. Instantiate f=r+C·r² with that C (trivial once (1) holds).
+seat-L7cover banks rev's ~55-line blockShear-φ witness as a regression test (its covers_one_node is only
+f=id); rests as unit-consult.
+
+**Status.** L7 cover: engine DONE (passed, triangulated); wire = mine, gated on the uniform-C de-risk
+(pnp-cap) + the #73 bridges (buildTree→FanTree + atlas-chart + σ + leaf-box sizing + discharge). KILL:
+seat-killfin rendering (1)→(2)→(3). Wall (a) both sides. Awaiting: pnp-cap uniform-C, seat-killfin #97,
+battery bg-confirm.
