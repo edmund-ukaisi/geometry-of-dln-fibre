@@ -18141,3 +18141,20 @@ themselves — pnp's own framing; strong prior it lifts); re-open trigger define
 untouched" PRESERVED LITERALLY, the elder's "superseded" phrasing withdrawn (its 3rd owned
 correction of the arc). Contract consolidated to pnp: full ψ_gen + the lift certificate → the
 positive certificate → the fresh render seat. All other seats resting in place.
+
+## 2026-07-24 (~14:20) — ψ_gen: the honest split (single-coupling VERIFIED; multi-coupling rides
+the cover via the DIRECT E_J argument — re-open DISARMED); certificate drafting ordered
+
+pnp 19868e890: ψ_gen det-1 verified for single-coupling nodes (archetype + deep single-reuse);
+multi-coupling (interacting couplings — the deep layer-2 pair and the wide triple) admits no
+per-coupling flat field to degree 3 and a joint map may not exist — BUT not load-bearing: B2 at
+the multi-coupling crux holds by the DIRECT argument (both couplings = below-pivot entries of
+ancestor-cleared columns; extra block vanishes on clearing; the chart residual is genuine;
+nothing uncovered). RULED: no joint-ψ_gen attempt (the cover carries multi-coupling; my earlier
+FULL-ψ_gen order was premised on ψ-as-THE-bridge, superseded by §7.7/7.8's cover-frame); B1
+cover-completeness to be verified explicitly at (2,2,2,2,2) (the (B)≠(D) rule — the fan asset
+was built on (2,2,2)); the lift/measure-caveat SCOPING stated airtight (ψ-nodes: the lift;
+cover-nodes: no weighted transport exists by construction); notation fixed in the certificate
+(∏C the product vs C = sourceClearedResid — the overload would bite the render). Elder asked for
+a one-paragraph confirm (its re-engage trigger); then: B1 + the certificate draft → the fresh
+render seat.
