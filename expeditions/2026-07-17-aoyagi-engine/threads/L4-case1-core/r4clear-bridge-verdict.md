@@ -52,6 +52,19 @@ failure is EXPECTED only under a D_J-only StepInv with separate E_J/foldB tracki
 statement is decisive [plausible-unverified]; (4) pure cross-zeroing is unsound if StepInv is all-entries
 (needs `Q₂⁻¹`), sound only under a verified D_J-only invariant [logical necessity].
 
+## AUTHORITATIVE run on arch-C-3's VERBATIM formulas (`verify/r4clear_bridge_authoritative.py`, exit 0)
+The render report's branch-(ii) (`−γ`, SCOPED `i ≥ cleared`, excl. pivot-col `a`) matches my
+`r3r4_recoord_scope.py` shear per the diff (team-lead). On these EXACT formulas, all three witnesses:
+- **uncleared ∈ ⟨cleared⟩: col-1 (D_J) PASSES, col-0 (E_J) FAILS.** Verdict on the exact object: **SURVIVES.**
+- **foldB out CLOSED (analytically + numerically):** the real foldB is a SCALAR ledger factor (seat-L4D
+  def-read). In the polynomial domain `ℚ[u]`, `b·x ∈ ⟨b·gᵢ⟩ ⟺ x ∈ ⟨gᵢ⟩` for `b ≠ 0` (nonzerodivisor) — so
+  the b-weighting is membership-NEUTRAL. Verified: `b·uncl ∈ ⟨b·cleared⟩` matches the unweighted membership
+  on every witness (generic scalar `b`). The real accumulated ledger CANNOT rescue the E_J failure.
+- **δ=1 out CLOSED:** the E_J col-0 entry = the pure deeper product `A₂A₁ col0`, NOT divisible by the pivot
+  coord `u₀₀₀` — so the δ=1 `u_pivot`-divisibility form also fails.
+So all three OUTS seat-L4D/team-lead named (branch-(ii) both signs; real foldB; δ=1) are closed: **SURVIVES**
+on the verbatim render, modulo only the structural D_J-only fork below.
+
 ## Bottom line for the merge gate
 - **If StepInv is all-entries:** pure-zero r4Clear is UNSOUND (E_J fails, survives branch-(ii)) ⟹ §7 fires
   ⟹ adopt the elder's F₂ absorption (full faithful `Q₁·A₀·Q₂`, `+γ` recoord + `Q₂⁻¹` input) ⟹ bridge PROVABLE.
