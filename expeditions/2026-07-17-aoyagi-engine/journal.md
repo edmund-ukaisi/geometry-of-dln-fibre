@@ -18720,3 +18720,17 @@ quality (the arch-C-4 pattern). seat-GM spawns off origin/expedition/aoyagi-engi
 The elder's faithfulness note folded in: the def-fidelity anchor = pnp's cross-check of the exact
 def vs the natural precompose, a NAMED gate at post-SPECIFY def-stabilization. Frame banked at
 threads/L4-case1-core/global-move-render-frame.md (restate verbatim + deltas + gates + substrate).
+
+## 2026-07-23 (later) — pnp all-nodes upgrade + THE ORDERING CONSTRAINT (816f5de19, controller re-ran exit 0)
+
+pnp completed #74's soundness at EVERY node type (case2 δ=1/δ=0, rollover, case11 δ=1; all three
+witnesses) with both consumer shapes exhibited on the explicit precompose construction —
+clearedFoldB_C = foldB∘couplingClear is a clean MONOMIAL ∏(δ=1 pivots) at every node (shape-1 by
+construction). Controller re-ran the committed script from the exact blob (calibration
+discipline): exit 0, S1/S2 TRUE everywhere. NEW BINDING CONSTRAINT: interleaved
+clear-BEFORE-blow-up ≠ precompose at EVERY node — the faithful cleared fold is the PRECOMPOSE
+form. Aoyagi's literal per-step order is blow-up-THEN-clear; whether HER order equals the
+precompose = the one remaining paper-fidelity check, commissioned to pnp now (it decides both
+GM's per-step-recursion freedom AND the concrete reading of §8's "her carried object IS the
+cleared representative"). Frame §6 banked; seat-GM flagged: SPECIFY on the precompose form only
+until pnp returns.

@@ -95,3 +95,26 @@ generalized to the whole cleared trio). Run it at def-stabilization: post-SPECIF
   the integration merge (#73/#74).
 - L4D = def-owner consult (append hard-wiring, cleared-trio composition, FoldStepInvAt-on-C
   shape) — route questions through the controller.
+
+## §6 pnp's all-nodes upgrade + THE ORDERING CONSTRAINT (2026-07-23, commit 816f5de19; controller re-ran: exit 0)
+
+Soundness upgraded from case11-only to **every node type** (case2 δ=1, case2 δ=0, rollover,
+case11 δ=1) on all three witnesses ((2,2,2,2), (2,3,2,2) wide, (3,3,2,2) double-boost), with both
+of L4D's consumer shapes exhibited verbatim on the explicit construction:
+
+- `clearedFoldG_C = foldG ∘ couplingClear`, `clearedFoldB_C = foldB ∘ couplingClear`,
+  `clearedFoldResid = sourceClearedResid`.
+- **clearedFoldB_C is a clean MONOMIAL** = ∏(δ=1 pivots) at every node — the pivot factor lives
+  in the B-side *by construction* (shape-1 satisfied where the raw foldB failed).
+- (S1) cleared StepInv (`clearedFoldB_C | coreGen∘clearedFoldG_C` AND membership in
+  `⟨B_C·C_j⟩`): TRUE at every node. (S2) the child↔parent commutation (child C = parent C ∘ the
+  δ=1 strict-transform quot): TRUE — the append's `q' = q∘stepMap` closes on C exactly as on F.
+
+**THE ORDERING CONSTRAINT (binding on SPECIFY).** The per-step INTERLEAVED clear-BEFORE-blow-up
+does **not** equal the precompose — false at *every* node (the script prints the comparison
+per-node; an interleaved attempt even corrupts clearedFoldB into a non-monomial). So the faithful
+cleared fold is the **precompose form** (global source-clear on the input, THEN the blow-up
+path). seat-GM's def must be the precompose — or, if a per-step recursion form is wanted for the
+Lean wiring, it must follow Aoyagi's literal order (blow-up THEN clear), and whether *that* order
+equals the precompose is a pending pnp check (commissioned 2026-07-23). Until that check returns,
+SPECIFY on the precompose form only.
