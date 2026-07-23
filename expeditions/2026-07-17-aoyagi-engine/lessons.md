@@ -291,3 +291,26 @@ commit amendments BEFORE briefs quote the artifact), which governs the propagati
 one governs the assertion's provenance. The ruling's CONCLUSIONS survived (F-value/combination
 was independently right); only the stated mechanism was backwards — caught before any statement
 locked, by the compounding holds.
+
+## Ruling-churn propagation — the two-halves lesson meeting at the FROZEN SPEC (elder + controller, 2026-07-23)
+
+The §8 adjudication was fast and multi-datum: four elder self-corrections (the field, the
+frame, the criterion, the block mechanism), EACH forced by data arriving in sequence (the R3
+discovery, the def-facts, worked.tex:445, Lemma 2, the block verdict) — not avoidable error.
+What WAS avoidable: the interim states carried premature "FINALIZED" labels, which made them
+look mergeable and outpaced the long-turn seats — arch-C rendered a full, high-quality
+implementation of the RETRACTED field because its launch brief anchored while five re-scope
+messages sat processed-but-not-adopted in its queue.
+
+THE COMPOSED RULE, two halves meeting at the frozen spec:
+- ELDER-SIDE: in a fast multi-data-point adjudication, hold "FINALIZED" until ALL gating data
+  is in; deliver interim rulings as explicitly PROVISIONAL with the pending data NAMED; the
+  FROZEN SPEC (one numbered section, e.g. §8(i)) is the only artifact seats act on.
+- SEAT-SIDE (controller-enforced): seats render ONLY against the frozen spec — never interim
+  messages, never the launch brief — and every re-scope of a long-turn seat is gated on an
+  ACK-AND-RESTATE (the seat re-derives the scope in its own words before continuing; message
+  delivery is not scope adoption; the anchor wins unless broken by re-derivation).
+Both halves are the same antidote: ruling-churn must terminate at ONE named contract before
+any seat spends a turn on it. Related: artifact-first/brief-second (propagation timing) and
+def-facts-with-def-checks (assertion provenance) — the three together cover authoring,
+propagating, and consuming a fast-moving ruling.
