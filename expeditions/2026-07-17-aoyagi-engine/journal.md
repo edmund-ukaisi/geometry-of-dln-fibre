@@ -17848,3 +17848,21 @@ HONORS — session tally: the pinned spine (7 sites, axiom-free), the assembly c
 hardened statement, the wall proven modulo one named lemma, the turn-key swap, the def-exact
 brief, and a correctly-called tripwire. Remaining open mathematics: the content capstone (pnp
 certificate in flight → fresh formaliser), the cap frontier, the L5 fold body.
+
+## 2026-07-24 (~07:50) — L4D's SOUNDNESS FLAG on the capstone's frame: raw-split vs chart-only;
+formalized as pnp's adjudication with a KILL-CONDITION before any render
+
+L4D's full def-exact addendum (Q1-Q4: e₂ = the reused divisor's IMMUTABLE BIRTH corner, not the
+current diagonal; Φ_p = coreGen ∘ per-edge arg transforms with edgeShearRaw = id at case11/rollover
+and blockShear at the split edges; supportAt at cleared=0 = the FULL block; center = e₂ ∪ the
+runLen-capped row-partial block) ends with THE CONFOUND: the birth edge's blockShear inside Φ_p
+writes the Schur exceptional into the e₂ slot — a naive trace says the extra block factors through
+the CHART value, contradicting the raw-u(e₂) MergeBoostSplit AND the wall's raw Deg1SupportedOn.
+Reconciled ONLY IF the F₂ recoord makes the net block multilinear-clean in RAW coords (the design
+claim; the Gröbner batteries). EVIDENCE TENSION named honestly: the prior verification scripts
+were chart-frame-named; pnp's first witness showed raw non-divisibility (recoord-application
+status = the crux). ADJUDICATION SET (pnp, before certificate-writing): Φ_p def-exact, witnesses
+incl. the double-boost reuse case; verdict RAW-SPLIT-TRUE (→ certificate) vs CHART-ONLY (→ STOP,
+escalate, statement re-shape — render-around forbidden). Canonical sound either way meanwhile
+(the questionable statement is a tracked sorry; the wall's proof is conditional). This is the
+15th statement-class question of the expedition — caught, again, BEFORE a render.
