@@ -824,3 +824,29 @@ unimodular shears, census 0 — a NON-vacuous green, discharges the ideal identi
    block-elimination, where the corner's "input" is the network input. The `S≥1` guard is not a special
    case; it is where "input side" crosses from internal factor to source. (The HOME-question — property vs
    splice — is already RULED property-home above; the controller's re-flag crossed that ruling.)
+
+---
+
+## §10 — Delta-read verdict on the render (elder-standing, 2026-07-23 ~16:40; banked by controller)
+
+Read at the def on REBAKE2 @ 1a113e4db (not the report). **GREEN — §9-conformant; 8/9 + DEF-EDIT-1
+SURVIVED; item 9 = non-blocking docstring follow-on.**
+
+- SURVIVED at the def: (1) +γ paired in-shear (leading `−` removed, Q₁⁻¹); (2) branch-(iii) Q₂⁻¹
+  input compensator, S≥1 via the `+1 = s.layer` ℕ-guard; (3) i≥cleared scope kept on (ii) + the
+  two-axis docstring line; (4) census 0 — the diff touches NO foldResid/foldG/stepMap/StepInv body,
+  the q'=q∘stepMap witness unchanged; (5) recursion shears-only — r4Clear appears 3× (its def + 2
+  docstring mentions), ZERO call sites in the fold; (6) boostReady posture intact (Case1Wire
+  untouched); (7) retracted field ABSENT; (8) corner clause (guard-vacuity + the end-factor
+  narrative); (+) DEF-EDIT-1 supportAt widen exactly as ruled.
+- ITEM 9 AMEND (non-blocking): the "absorbed ONCE via Lemma 1" lines (~:919-920, :962) gain one
+  sentence — *"her once-global Lemma-1 absorption is realized PER-CHART in the fold's cover (each
+  chart's GL_{d₀}, resolution-normal, baseChange-covered)."* Dispatched to arch-C-4 (frozen
+  sentence, docstring-only, diff must be zero-code-token).
+- PER-CHART-GAUGE RULING (arch-C-4's flag): per-chart is faithful AND bounded — "absorbed once" is
+  faithful to HER (worked.tex:437, the single global regular-part absorption at the WLOG reduction);
+  the fold's cover realizes it per-chart (the fan's corner pivots differ per branch); Q₂ per-branch,
+  each chart its own GL_{d₀}, baseChange covers a chart-local CoV. NOT a re-open.
+- MERGE POSTURE: elder green banked (gate 1/3). Remaining: pnp all-rows battery + L4D 11-item
+  slot-confirm. The wall (#38, boostReady_case11 via the r4Clear/e₂-decomposition device) is next
+  post-merge.

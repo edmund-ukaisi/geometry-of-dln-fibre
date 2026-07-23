@@ -17253,3 +17253,12 @@ review gate); then merge → #52 L3T3 rebase → #38 THE WALL.
 (Process nit, self-caught: a heredoc inside an `&&` chain unguards everything after `EOF` — the
 first attempt ran `git add` from the seat's worktree cwd; it failed harmlessly on pathspec, nothing
 staged/contaminated. Rule: `cd` + guard as separate statements BEFORE any heredoc block.)
+
+## 2026-07-23 (~16:45) — ELDER DELTA-READ: GREEN (gate 1/3); item-9 docstring follow-on dispatched
+
+Elder read the def at 1a113e4db item-by-item: 8/9 + DEF-EDIT-1 SURVIVED (verdict banked as §10 of
+design-round-2-ruling.md). Item 9 = non-blocking one-sentence docstring amend (per-chart realization
+of her once-global absorption) — dispatched to arch-C-4 with the elder's frozen sentence (two sites,
+docstring-only, zero-code-token diff required; I commit/push on its report). The per-chart-gauge
+flag RULED: faithful + bounded, not a re-open. Merge now waits on pnp (all-rows battery) + L4D
+(slot-confirm) only.
