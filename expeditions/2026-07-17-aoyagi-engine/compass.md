@@ -107,6 +107,26 @@ Skeleton anchor: `FoldStepInvAt`/`supportAt`/`Deg1SupportedSlot` (MonumentAtlas:
 `realBranch_boostReady_case11` (Case1Wire:386) becomes PROVABLE. WIDE-witness battery `(2,3,2,2)` — NOT
 `(3,3,4)` (not wide on the recoord/col axis).
 
+**F7. The destination = the OBJECTS + `via_engine` as their cite-free corollary; hbox/path-(A) is
+aoyagi-FULL's programme, NOT this expedition's (SETTLED by charter §0/§1 + the summit landmark; the
+literal-name-clean-three requirement is the OPERATOR's residual, #94).** The navigator's gate-audit found
+TWO distinct Lean theorems conflated: **(B)** `aoyagi_learning_coefficient_via_engine` (LearningCoefficient:323)
+— THIS expedition's geometric A/B/C/D route, its ONLY sorry `exists_coreResolution` = the cap/KILL/transport/
+wall frontiers (= the §1 objects), cite genuinely dodged (cordon CITED-unused); **(A)** the literally-named
+`aoyagi_learning_coefficient` (Skeleton:1680) — a DIFFERENT object closing via the #108/RouteMSJMint re-point
++ **hbox** (DecoratedDescent, the `(□)` box-finiteness mountain) + L=1 fold-in. WHY (B) is charter-faithful:
+§0 steers by the OBJECTS (the headline is "a corollary and a test, NOT the objective"); §1 says hbox "is its
+analytic shadow, **never a separate goal** — it falls out of A+B (or is decided false)." (B)'s frontiers ARE
+the objects, so closing them = discharging §1 = this expedition's "done"; (A)'s hbox route is precisely the
+analytic-shadow-as-separate-goal the charter forbids as headline-steering drift (§0), so it belongs on
+AOYAGI-FULL's board, NOT here. OPERATOR-RESIDUAL (#94, definition-of-done): whether "done" additionally
+requires the LITERAL NAME to be the clean-three theorem — resolvable by a CLEAN (hbox-free) re-point of the
+literal name through `via_engine`'s geometry (cheap aoyagi-engine bookkeeping, satisfies both the summit
+landmark's literal-name node AND objects-first) if one exists; if the only literal-name re-point bundles hbox
+(#108/RouteMSJMint), then literal-name-clean-three is aoyagi-full's and this expedition's done = `via_engine`
++ the objects. Elder recommendation to the operator: done = `via_engine` frontiers-land + a clean hbox-free
+literal-name re-point if available; hbox/DecoratedDescent NOT required and stays aoyagi-full.
+
 ## Paper-fidelity ledger (documented Aoyagi typos; the mechanism stands)
 - **Def-3 broken** (verified typo) — use the geometric `½·min_t Mval(t)`. Witness `battery/g-def3-broken.py`.
 - **Lemma 1 direction**: worked.tex:156 prints `≥`; the correct/used direction is `≤` (`rlctAt_mono`) —

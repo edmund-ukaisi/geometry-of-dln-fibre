@@ -20466,3 +20466,29 @@ frontiers (seat-KILL, INV's transport arm, the wall, the cap) + #73 proceed unaf
 engine headline goes clean-three when they land regardless of the destination declaration. The
 calibration + navigator did exactly their job: caught the one thing a controller can miss (an
 identity conflation of the headline) BEFORE declaring the endgame done.
+
+## 2026-07-23 (~19:00 UTC) — #94 resolved by the elder's charter/compass reading (F7): via_engine
+= the charter-faithful DONE; hbox off-board; the operator-residual narrowed to a naming question
+(disambiguator = close-phase check). Controller headline-slip corrected at the root
+
+The elder's F7 (compass, committed): the charter SETTLES most of #94. (1) The OBJECTIVE is the
+objects A-E — charter §0 verbatim: the headline "is a corollary and a test, NOT the objective;
+steering by the headline is what produced the drift (twice)." (2) via_engine IS the charter-
+faithful corollary: its only sorry (exists_coreResolution) = the cap/KILL/transport/wall frontiers
+= exactly the §1 objects, so frontiers-land = objects-discharged = THIS expedition's DONE; cite
+dodged (cordon CITED-unused) = the compass's "the summit IS the kill." (3) hbox/path-(A) is NOT
+this expedition's — charter §1: "hbox is its analytic shadow, NEVER a separate goal"; the
+#108-bundled-with-hbox/DecoratedDescent (□ box-finiteness) route is AOYAGI-FULL's board, off this
+one. NARROW OPERATOR-RESIDUAL (genuinely wait-for-explicit-go, non-blocking, naming not math):
+whether "done" additionally requires the LITERAL-NAME Skeleton theorem clean-three; disambiguator
+= does a CLEAN hbox-free re-point through via_engine's geometry exist (YES → cheap aoyagi-engine
+bookkeeping; only-via-hbox → aoyagi-full's). Sequenced as a CLOSE-PHASE check — the re-point
+(clean or not) CANNOT be done until via_engine is clean-three (frontiers landed), so resolving it
+now is premature; it's a when-the-frontiers-land item. CONTROLLER SELF-CORRECTION (banked): my
+"two-theorem conflation" framing last tick was itself a mild headline-steering slip (treating the
+literal-name theorem as the target); the charter §0 objects-first frame — surfaced by the
+calibration → navigator → elder chain — is the correction. The chain worked: a quiet-pulse
+calibration caught the ambiguity, the navigator nailed the Lean facts, the elder ruled it against
+the charter. BOARD MODEL (corrected): via_engine's frontiers (seat-KILL + INV transport + wall +
+cap) + #73 = THE work, charter-faithful, unblocked, = DONE for the expedition; #108/hbox =
+aoyagi-full's, off-board; the literal-name naming = the operator's narrow residual, close-phase.
