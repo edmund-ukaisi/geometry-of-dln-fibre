@@ -17636,3 +17636,14 @@ adopt. LL unblocked to grind conjA δ=1 NOW (close plan: he → homogeneity twin
 vanishing kills the unit disjunct → decomp → divisibility; the case11 merge-block sub-subtlety
 flagged as the early-warning point). Merge order pinned: L4D's atomic spine unit first (touches
 MonumentAssembly), LL's lane second (no shared files).
+
+## 2026-07-24 (~01:50) — zombie arch-C re-woke and FAILED (API usage-policy misfire on stale
+context); stopped again
+
+The retired pre-restart "arch-C" seat (all arcs superseded by arch-C-4, merged) emitted a failed
+idle notification — its wake request hit an API usage-policy refusal, read as a stale-context
+misfire on a dormant transcript (our content = Lean formalisation of a published math paper;
+nothing policy-adjacent). TaskStopped (t4dplxh9u). Standing note: the zombie-wake hazard now has a
+FAILURE mode beyond stale double-work — a dead seat can burn its wake on an API error; keep
+stopping retired holders promptly. If a usage-policy refusal ever hits a LIVE seat, surface to the
+operator immediately rather than retrying.
