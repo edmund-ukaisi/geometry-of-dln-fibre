@@ -432,10 +432,36 @@ termination) is MOOT for the faithful route. (F5: Aoyagi is the touchstone — r
 removes the DEFECT leftover `u₀₁₀·u₁₀₁`. Both give the clean block. The object-labeled reuse-node forms
 confirm this reconciliation.
 
-**Status: FINALIZED, one confirmation battery outstanding (paper-first ordering).** The paper + council
-+ both instruments have RULED (Reading B, R3, field retracted, bounded). The object-labeled reuse-node
-forms (pnp, both wide witnesses, R3-flip: confirm the residual is the clean `D_J` at the ACTUAL reuse
-node) + seat-L4D's def-side direction cross-check are the CONFIRMATION, not the decision. If the
-reuse-node residual is NOT clean under R3, re-open — but all evidence converges. §1 SHAPE (widen) STANDS
-untouched; §2 FRAME/coords-of-record is MOOT (no factoring). DEF EDIT 2 = clean-residual `Deg1SupportedSlot`,
-b-chain in `foldB`. The gate LIFTS for the R3 + clean-shape re-bake conforming to (a)-(f).
+**(g) TWO DISTINCT AXES — correcting an over-claim in (a)/(e).** I conflated two properties, and
+"R3 is the whole fix / R4 stands down" was premature. They are separate:
+- **PRODUCT / BOOST-READINESS axis** (`foldResid` supported on the center): R3 (the recoord direction)
+  resolves it — Reading B, field retracted, boost-readiness direct. (a)-(f) STAND for this axis.
+- **BLOCK / MONOMIALISATION axis** (`D_J = [[1,β],[γ,e₂]]` → `diag(1,e₂)`, which the `M_{s,k}`
+  normal-crossings read-off needs): boost-readiness (support on center) is a DIFFERENT property from
+  block-diagonality (off-diagonal `β,γ = 0`); a residual can be boost-ready with a non-diagonal block.
+  R3 acts on the `A_{S+1}` side; the block's `γ` is on the `A_S` side, so R3 may leave the block
+  non-diagonal. WHETHER R3 alone diagonalises the block, or an ADDITIONAL generator transform is
+  needed, is the block-form-under-R3 question (seat-L4D producing).
+- **PAPER-FIRST FRAME:** Aoyagi DOES reach the block-diagonal `[[1,O],[O,D_{J+1}]]` each step
+  (worked.tex:619-629), and the FULLY diagonal terminal form is where `M_{s,k}` is read off
+  (worked.tex:574-575, 668-676) — via INVERTIBLE regular `Q,P` (row/column operations = Gaussian
+  elimination on the entry). That is a GENERATOR transform (unipotent, det-1, NOT rank-reducing) — my
+  F1 point again. seat-L4D's "clearing is rank-reducing (jacDet 0)" was about clearing a COORDINATE
+  (setting a variable to 0); clearing a matrix ENTRY via row/col ops is unipotent. So the block
+  diagonalisation IS achievable — **via R4 (the generator transform `Q·block·P`), which is therefore
+  NOT stood down**: it is the block-diagonalisation mechanism IF the block-form-under-R3 shows the block
+  stays non-diagonal. Both R3 and R4 are CONTAINED + G1-clean (established), so EITHER WAY (R3 alone, or
+  R3 + R4) is within the re-bake with NO escalation. pnp's R5 (carry the non-diag block) stays REJECTED
+  — the diagonal is reachable via R4, so there is no need to carry a block Aoyagi never carries.
+
+**Status: the BOOST-READINESS/FIELD axis is FINALIZED (Reading B, R3, field retracted, bounded); the
+BLOCK/MONOMIALISATION axis is PENDING the block-form-under-R3 data.** Confirmation battery (paper-first):
+(1) seat-L4D — the block form under R3 (does R3 diagonalise, or is R4 also needed?) + the worked.tex:445
+direction cross-check + the `foldB` def-fact; (2) pnp — the object-labeled reuse-node forms (both wide
+witnesses; clean-block vs b-scaled) + the Gröbner triple on the R3-flipped def. RE-OPEN trigger: the
+reuse-node residual not clean under R3 (product axis), OR the block not diagonalisable by R3+R4 within
+the fold (block axis). The RLCT VALUE stays safe throughout (invertibility + combinatorial `M_{s,k}`);
+the block axis is about the FORMAL normal-crossings read-off, not soundness — still bounded, no operator.
+§1 SHAPE (widen) STANDS untouched; §2 FRAME/coords-of-record MOOT. DEF EDIT 2 = clean-residual
+`Deg1SupportedSlot`, b-chain in `foldB`. The gate LIFTS for the product axis; the block axis's final
+mechanism (R3 alone vs R3+R4) I rule when the block-form data lands.
