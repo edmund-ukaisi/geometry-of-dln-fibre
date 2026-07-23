@@ -20873,3 +20873,43 @@ ruling, NOT complete — folded into #73). #88 confirmed accurate (CFF complete-
 PRODUCES the CapDescent lemmas) + seat-KILL (thread-reaches probe + #6/#73 close + consult) → these
 PRODUCE what GM ClearedFold's 5 held frontiers CONSUME at #73. INV/CAPR the other producers. #73 =
 the assembly where GM's 5 frontiers + all lanes land on the pinned canonical base. seat-CFF at rest.
+
+## 2026-07-23 (~22:05 UTC) — FROZEN the KILL invariant contract (controller-verified self-inductive); base corrected to b8fec5647; the naive-Z-not-self-inductive finding RESOLVED by the accumulated escapedBelow
+
+pnp-cap surfaced a real inductive-structure finding (from seat-KILL, independently confirmed
+6f5c1c222 exit 0): the NAIVE per-node Z ("ignore escapedBelow(p) via couplings(p) alone") is TRUE
+but NOT function-level self-inductive at the last clear — the parent is POISED at the child's
+clearing level (node5=(1,1)'s escaped(2)-coeff killed by couplings(node6), not couplings(node5)).
+pnp-cap correctly flagged: the carried-invariant SHAPE is the CONTROLLER's contract to freeze
+(ruling-terminates-at-one-contract), not a seat-to-seat design call — an active #92 ruling +
+pnp-transport owns Z.
+
+**Controller-verified + FROZEN (calibrated sensor — I read the baked def).** escapedBelow
+(CapDescent:446, b8fec5647) = `(range(S+1)).biUnion escapedCol ∪ (if widthMinUpto(S+1) ≤ c then
+escapedCol(S+1) else ∅)` — the ACCUMULATED all-layer form PLUS a conditional last-clear arm. That
+conditional arm IS the self-inductive answer to the poised finding: the accumulated escapedBelow
+does NOT over-claim at the parent (escaped(S+1) is NOT in escapedBelow until c reaches
+widthMinUpto(S+1) = the last clear), and it enters killZ precisely when the coupling that kills it
+appears. So the naive per-node Z fails, and the ACCUMULATED form seat-KILL baked is the
+self-inductive fix — matching pnp-transport's certified Z + the #92 multi-layer ruling. FROZEN
+CONTRACT (blessed to seat-descent + seat-KILL): the invariant is exactly the baked
+`sourceClearedResid_ignoresEscapedBelow` over `killZ p := couplingCoords p ∪ escapedBelow(S,c)` with
+the accumulated escapedBelow — grind the step of THIS statement, NO re-state, NO separate
+"poised" conjunct (the conditional arm already carries it).
+
+**Base correction.** seat-KILL updated the turn-key base to b8fec5647 (NOT dae6f3534, +1 = the
+CanonicalPivots verbatim-INV δ-agnostic fix for #73 dedup; rebuilt exit 0). The ONE sorry =
+CapDescent.lean:603 (the STEP case of the induction; hbr/hcanonStep/ih in place; foundation lemmas
+all green in-file). Corrected seat-descent's brief to b8fec5647 + :603.
+
+**Attribution (pnp-cap correction, banked):** pnp-TRANSPORT owns the Z-telescoping cert (#92/#93,
+a24616b18/a24616b18→a24616b18... = a24616... actually a24616b18? recorded a24616b18? the certificate
+is a24616... = pnp-transport's a24616...); pnp-cap did the V3 termwise mechanism only. My records
+already credit pnp-transport for Z; flagged the fix to seat-KILL. Q2 (SET vs function-level
+"telescopes cleanly"): pnp-cap's read confirmed — V2 was the SET escapedBelow monotone telescoping
+(structurally the :446 def), distinct from the function-level accumulated-couplings step
+seat-descent grinds; no commission needed unless a specific gap surfaces.
+
+**Status.** Invariant shape FROZEN + verified self-inductive; seat-descent on b8fec5647 with the
+frozen contract + :603 + the multi-layer-descent mechanism; seat-KILL on the probe; seat-CFF
+acknowledged HOLD (resting). The KILL step is a clean, frozen-contract render on a green foundation.
