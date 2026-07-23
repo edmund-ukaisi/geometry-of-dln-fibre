@@ -18842,3 +18842,23 @@ commits (statement-lock makes consuming the capstone statement stable across CAP
 decomposition; controller reconciles); a NON-mechanical summit re-point (statement-level redesign)
 is a STOP-and-surface, not a silent absorb. SPECIFY now underway (#77); next gates: pnp
 def-fidelity + elder delta + controller per-file go on the in-place edit list.
+
+## 2026-07-23 (later-8) — pnp docstring review clean (1 staleness nit routed to CAPR's lane);
+CAPR grind resumed with the P2 dissolution INDEPENDENTLY confirmed
+
+pnp reviewed the MergeBoostSplit REFUTED banner against its own findings: ACCURATE on all five
+points (raw-falsity mechanism, (B)≠(D) strictly-stronger, source-cleared truth, predicate/assembly
+survival, commit refs) — one stale status pointer ("#69 in flight"; #69 long ruled) routed to
+CAPR to refresh in passing in its lane version (not touched on canonical — avoids a merge conflict
+with the lane's reorganized banner). CAPR: full-grind-GO acked; the boost conjunct adopted in the
+elder-preferred (b) StepChild/canonPivotOf form (its call, as ruled); ROOT scoped honestly as a
+3-part proof (Fin-type cast + coreGen support-decomp via HomogeneousDeg1On a=0 extraction +
+oracle-reduction vacuity), NOT a quick brick; transports/read-off/battery scoped with the
+stacked-exceptional witness named. CALIBRATION: CAPR independently re-derived the P2 dissolution
+from the def (widthMinUpto d 0 = inf'{0} d = d 0 ⟹ blockCoords(0)=layerCoords(0)) — my def-level
+call now has two decorrelated confirmations (cap-frontier-findings.md:44 + CAPR's def-read); the
+elder's one-line confirm still pending but largely decorrelated. COORDINATION: CAPR pledged
+stability on the three GM-load-bearing primitives (couplingClear / sourceClearedResid /
+sourceClearedResid_stepMap_eq_pivot_mul), changes routed through the controller. Board: CAPR
+sawtooth-grinding; GM in SPECIFY; pnp resting until the GM def-fidelity cross-check; elder owes
+the P2 one-liner; LL folded into GM's unit.
