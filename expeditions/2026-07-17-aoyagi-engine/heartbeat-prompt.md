@@ -54,29 +54,28 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~14:35): **THE GLOBAL-MOVE RENDER PHASE (#74) + THE CAPSTONE
-  GRIND (#72), both in motion behind hard gates.** The 18th event fully resolved: raw StepInv
-  FAILS by necessity (master gate) / cleared HOLDS by construction (ee527be2c, all witnesses,
-  ALL node types 816f5de19) / §8 ruled the global move / #75 her-order ≠ precompose (0577aa9c7)
-  ⟹ PRECOMPOSE UNCONDITIONAL; fidelity BLESSED as RLCT-equivalence (Lemma-1-native; certificate
-  §10; ONE gate = cross-ref honesty wording). All controller-re-ran, exit 0. THE RENDER: seat-GM
-  (fresh, off CAPR lane @ 1388f6192, branch -GM, frame = global-move-render-frame.md §1-§7)
-  passed mini-restate 5/5; Q1 ruled consume-CAPR's-(iv); Q2 ruled (A+) = GM authors re-points
-  THROUGH summit+payoff, gates full-green + forced payoff axioms IN ITS WORKTREE; canonical
-  merge stays controller (#73). NOW: GM in SPECIFY (#77) → pnp def-fidelity cross-check + elder
-  delta + controller per-file go → proofs → exit. Pre-flagged to GM: the ATLAS-PROVENANCE layer
-  (GeoAtlasData/FoldProduced/FoldRealizes/leaf PrincipalInv) is in NEITHER §8 list — SPECIFY
-  must claim it (calibration entry 2026-07-23: the summit statement is INVARIANT-FREE; the
-  invariant chain is L5-fold-body scaffold; sourceClearedResid_root=coreGen rfl keeps
-  Resolution type-stable). CAPR: spine BAKED @ 1ebce70ce (capstone PROVEN by decomposition),
-  blessing complete (P1 canonPivotOf-anchored/(b)-form; P2 DISSOLVED at def level —
-  blockCoords(0)=layerCoords(0) BY TYPE, twice-decorrelated; P3 vacuous) — FULL leaf grind
-  (root 3-part/δ=1/δ=0/read-off/containment), sawtooth, statement-locked; pledged stability on
-  GM's 3 load-bearing primitives. pnp resting (next: GM def cross-check). Elder: owes P2
-  one-line confirm; next = GM SPECIFY delta (+ cross-ref wording check). L4D consult-on-call;
-  LL folded into GM's unit; navigator convened (phase-transition audit, report pending).
-  MERGE ORDER: GM SPECIFY gates → GM proofs → #73 (CAPR lane + GM branch + aggregator, one
-  controller merge) → cap render → L5 fold body → L7 → swaps → SUMMIT-RETIRE.
+- CURRENT WAIT-STATE (2026-07-23 ~15:30 UTC): **EVERYTHING SERIALIZES THROUGH #82 (pnp's
+  CLEAR-LOCATION adjudication — stored fan pivot (i) vs Aoyagi's diagonal cleared-column (ii)
+  in couplingCoords; coincide on canonical witnesses, diverge fan-free; elder EXPECTS diagonal
+  co-resolution, prior NOT relayed to pnp — decorrelated).** Catches 19-21 all landed+routed
+  this window (19: accumulatedPivots stored-vs-ledger-corner, INV, blessed redefine §9.2;
+  20: GM's 3 one-step laws FALSE at growth edges, O2 pointed re-check → removed, cleared-locus
+  route = elder-ruled FIDELITY WIN §9.1 = her block shrinkage; 21: hN at N=0, blessed).
+  SEATS: seat-GM delta-SPECIFY COMPLETE-COMPLETE @ be2225c1a (locus core + LastLayerInv_cleared
+  + no-twin simplification #83 + case2 twins; statements def-independent under #82) — HOLDS for
+  #82 + pnp locus-core verify (target = couplingClear_parent_fixes_stepMap_child) + elder folded
+  pass (trigger 2/3: needs #82 + locus verify). seat-INV (fresh, took CAPR's leaves via banked
+  handoff bbb3f924d): RENDER GO on the blessed redefine+hN batch → containment (UNBLOCKED — no
+  couplingCoords dep) → ROOT(c) → helper module (A′ ruling: SourceClearedHelpers.lean,
+  cycle-forced re-derivations statement-identical + dedup-debt docstrings) → ROOT(b); transports
+  HELD on #82 (+ coordinated transport-shape review w/ GM's locus template after). seat-CAPF
+  (cap render #80, unlocked by #78 TRANSPORTS): reading→SPECIFY; raw-side GO, KILL/(b)-twin held
+  on #82. pnp: ON #82 NOW, then GM locus-core verify. Elder: folded pass armed (2/3), then CAPF
+  SPECIFY delta; contested-#82 = its adjudication w/ pnp certificate. CAPR+L4D consult-on-call.
+  ON #82 VERDICT: pnp locus verify → elder folded pass → INV transport review → CAPF kill go →
+  GM grinds interior+lastLayer+case2 (#79). MERGE ORDER: GM proofs → #73 (CAPR/INV lane + GM
+  branch + CAPF lane + aggregator, one controller merge) → L5 fold body (provenance sub-unit
+  #81 at its SPECIFY) → L7 → swaps → SUMMIT-RETIRE. Catches 21/21 pre-render.
   NOTE: the session cwd was moved to the CAPR worktree by the harness — the
   transcript dir is now ...worktrees-aoyagi-engine-root/3a77f09d.../subagents (liveness polling there);
   ALWAYS cd to root explicitly in commands. (Old:) The obstruction arc FULLY CLOSED (§7-§7.8 + pnp's discharges: the Q₁-lift

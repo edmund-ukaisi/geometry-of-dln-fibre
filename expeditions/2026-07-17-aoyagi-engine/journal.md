@@ -19263,3 +19263,13 @@ statement set verbatim-stable — only proofs re-target. STATE: elder's three fo
 elder folded pass + INV transport-shape review + CAPF kill go → then GM grinds interior +
 last-layer together (#79) with every statement having survived two seats' falsity checks, three
 elder rulings, and a paper-first fidelity ruling.
+
+## 2026-07-23 (~15:30 UTC, heartbeat) — idle pulse: memo wait-state rewritten to the #82-pivot
+board; task hygiene (#16 LL superseded-into-GM closed; #82 in_progress)
+
+Placement/cron/liveness all green (INV/CAPF/pnp transcripts < 1 min at the sweep; GM idle =
+declared hold). The memo's wait-state block rewritten: the board now serializes through #82
+(clear-location), with the full post-verdict cascade pre-wired (pnp locus verify → elder folded
+pass 2/3-armed → INV transport review → CAPF kill go → GM grinds #79). Task #16 (seat-LL's
+lastLayer twin) closed as superseded-into-GM (the cleared re-points are #83-resolved GM scope).
+No calibration entry this pulse (the last one ran this window). Next event: pnp's #82 verdict.
