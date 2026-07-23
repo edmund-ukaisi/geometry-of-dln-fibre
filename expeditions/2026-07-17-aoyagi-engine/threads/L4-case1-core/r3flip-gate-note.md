@@ -45,13 +45,22 @@ Reading B). Split by output column:
 - **D_J (col-1): both carry `u₀₁₁`** (the reused divisor's exceptional). Per decorrelated Codex, this is
   **legitimate** — `u₀₁₁` is a `D_J` block COORDINATE, not an external row-scaling `b`-factor; exceptional
   coordinates inside `D_J` are expected. So col-1 carrying `u₀₁₁` is NOT a re-open trigger.
-- **THE ONE FLAG — R3 `D_J` degree.** R3's col-1 is degree 5, `u₀₀₁`-degree **2** (a genuine `u₀₀₁²` term:
-  `2·u₀₀₁²·u₀₁₀·u₁₀₀·u₂₀₀ + …`), vs baked's degree-4 `u₀₀₁`-degree-1. Mechanism: the −γ flip cleans the pivot
-  COLUMN direction (col-0) but the uncleared pivot ROW (`u₀₀₁` in `A₀[0][1]`) interacts with the flipped
-  recoord to square `u₀₀₁` in col-1. This is the same "pivot row/col not cleared" residue as in §7 — R3 fixes
-  the column half, the row half remains. **Elder check against worked.tex's `D_J`:** if the clean `D_J` is
-  allowed degree-2 in a pivot-row coord, R3 passes; if `D_J` is degree-1 per pivot-row coord (multilinear-ish),
-  the `u₀₀₁²` is a deviation.
+- **THE ONE FLAG — R3 `D_J` carries `u₀₀₁²`, a genuine deviation from the faithful `D_J`**
+  (`verify/r3flip_rowclear_twin.py`, exit 0). R3's col-1 is `u₀₀₁`-degree **2** (`2·u₀₀₁²·u₀₁₀·u₁₀₀·u₂₀₀ + …`);
+  the FAITHFUL (honest_clear: `+γ` recoord + pivot row/col CLEARED) `D_J` is `u₀₀₁`-degree **≤ 1** (with the
+  input-change) or **0** (without). So R3's `u₀₀₁²` is NOT in the faithful clean `D_J` — it is the omitted
+  pivot-ROW clear. Mechanism (traced): R3's `−γ` cleans the pivot-COLUMN direction (giving clean `E_J`), but
+  the pivot ROW stays uncleared (`u₀₀₁ = A₀[0][1]`), and the ed2 recoord then READS that uncleared `u₀₀₁`, so
+  two `u₀₀₁` sources multiply. The faithful clears the row at ed1 (`u₀₀₁ → 0`) before ed2, so no `u₀₀₁²`. The
+  fix (clear the pivot ROW, the `U` col-op twin of the column-clear) is `u₀₀₁ → 0` = rank-reducing, NOT
+  shear-representable — the same skeleton-revision tension as the column clear, ROW side.
+  **Does it break boostReady_case11?** CHART-DEPENDENT, def-side (seat-L4D): boostReady = `Deg1SupportedOn`
+  the boost CENTER, and the center is in the normalized-chart coords (`e₂ = u₀₁₁ − u₀₁₀·u₀₀₁`, recoorded `w`),
+  NOT the raw coords — and `u₀₀₁` is entangled inside `e₂`, so a raw-coord degree test does NOT decide it
+  (my `verify/` block is labeled diagnostic-only for that reason). The robust fact from this seat: R3's `D_J`
+  ≠ the faithful clean `D_J` (differs by the `u₀₀₁²` = the omitted row clear). Whether the ruling's
+  clean-`D_J`/boostReady tolerates that spectator-side `u₀₀₁²` is the elder's call against worked.tex + the
+  def-side center.
 
 ## Decorrelated Codex (object-identity criterion)
 Verbatim verdicts (xhigh, structure given, my leaning withheld): (1) clean `E_J` ⟹ **R3**, baked's
