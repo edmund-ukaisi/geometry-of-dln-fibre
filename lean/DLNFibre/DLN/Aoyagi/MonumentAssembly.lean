@@ -2,6 +2,7 @@ import DLNFibre.DLN.Aoyagi.LeafChartWire
 import DLNFibre.DLN.Aoyagi.LeafGeometryWire
 import DLNFibre.DLN.Aoyagi.Case1Wire
 import DLNFibre.DLN.Aoyagi.Case2Wire
+import DLNFibre.DLN.Aoyagi.CaseStepAssembly
 
 /-!
 # `DLN.Aoyagi.MonumentAssembly` — the primed composition drivers (variant B')
@@ -34,8 +35,8 @@ theorem leaf_stepInv_of_path' (d : Fin (N + 1) → ℕ) (hN : 0 < N)
       ∀ c : Fin atlas.n, ∃ q r : Fin (d (Fin.last N) * d 0) → (Fin (flatDim d) → ℝ) → ℝ,
         PrincipalInv (coreGen d e) (atlas.gmap c) (monoOf (atlas.bexp c)) q r (atlas.region c) := by
   -- map: B-L5-path-fold (primed: case leaves → case1'/case2'; fold body sorried)
-  have _hc2 := case2_preserves_stepInv' (d := d)
-  have _hc1 := case1_preserves_stepInv' (d := d)
+  have _hc2 := case2_preserves_stepInv'' (d := d)
+  have _hc1 := case1_preserves_stepInv'' (d := d)
   have _hlastclear := lastLayer_clear_preserves (d := d)
   have _hsubsume := foldStepInvAt_to_lastLayerInv (d := d)
   have _hterm_edge := terminal_edge_stepInv (d := d)
