@@ -18340,3 +18340,20 @@ case12/2 δ=1 route's object-attribution at wide nodes (extend the §7 architect
 alternative), and the corrected full consumer scope. CAPR's freeze STAYS HELD (overriding §12's
 lift — the def edit cannot land first). The controller gate-before-render discipline catching a
 ruling's scope gap: the sensors work on rulings too.
+
+## 2026-07-24 (~19:00) — the cap-frontier certificate BANKED (a0ead56e3): obligation (a) via THE
+HOMOGENEITY ROUTE — simpler than scoped, and its one contingency DISSOLVES
+
+pnp-cap's deliverable: the descent's obligation (a) needs NEITHER hslot NOR the b-ledger — (H) the
+parent's layer-(S+1) homogeneity decomposition + (L) the step map preserves ⟨layerCoords(S+1)⟩
+(spectators + branch-(ii) writes staying in the ideal), composed; the pivot term that killed the
+hslot route never arises. Verified exact on all four edge types + wide rollover. THE CONTINGENCY
+DISSOLVES: (H) is the PROVEN primed twin foldResid_layerHomogeneous' (clean-three, until now
+consumer-less — its first load-bearing consumer found; the "banked, available if ever needed"
+bet paying off). So the cap frontier's (a)-proof = proven machinery + ONE bounded new lemma (L).
+Obligation (b) = the supportAt question at the elder (§12 + my addendum). The docstring correction
+rides my next MonumentAtlas batch (one gated edit with the addendum render). pnp-cap's commission
+COMPLETE pending the addendum; the elder gets the simpler-route appendix (the b-ledger stays the
+CAPSTONE's tool; the two properties keep separate, simpler machinery). The cap frontier — the
+ETA's tail-risk item — is now: certificate done, route simpler than scoped, one def-ruling from
+render-ready.
