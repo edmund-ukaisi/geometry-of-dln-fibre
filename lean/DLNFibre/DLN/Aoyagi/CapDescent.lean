@@ -479,15 +479,34 @@ theorem ignoresCoords_union {D : ℕ} {c : (Fin D → ℝ) → ℝ} {A B : Finse
   · exact hA w hw m h t
   · exact hB w hw m h t
 
+/-- **Canonical (full-diagonal) pivots along a path** (#95 — the row-phantom scope). Every fresh-clear
+(case2/case12) edge's pivot is the DIAGONAL corner `cornerToFlat d layer cleared = (layer, cleared, cleared)`
+(`= canonPivotOf`), not a free fan pivot. Case11 pivots are canonical already (forced by `IsRealBranch`'s
+fan rule (b), `= canonPivotOf`); rollover has no pivot. **This is the scope the KILL / cap invariant needs:**
+an off-diagonal (row-repeat) fan pivot has `belowPivotCol = ∅`, so `couplingClear` is the identity there and
+the escaped column is read COUPLING-FREE (the KILL is FALSE off-diagonal — `(2,3,3,3)` `(0,2,0)+(0,2,1)`,
+#95). On the diagonal the entering escaped column is read only through the recoord-(ii) shear whose
+coefficients are the below-diagonal couplings `couplingClear` zeroes. (Matches the INV-lane
+`CanonicalPivots`, `cornerToFlat (layer, cleared)`; reconcile the two at integration `#73`.) -/
+def CanonicalPivots (d : Fin (N + 1) → ℕ) : TreePath d → Prop
+  | .root => True
+  | .step p _center pivot cse _ns _φ =>
+      CanonicalPivots d p ∧
+        (cse = StepCase.case12 ∨ cse = StepCase.case2 →
+          cornerToFlat d p.conState.layer p.conState.cleared = some pivot)
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
 case2/case12 step where layer-`(S+1)`'s escaped columns ENTER — absorbed because the recoord-(ii) shear
-`A_{S+1}·Q₁⁻¹` writes them into the block with coefficients = the accumulated couplings `couplingClear`
-zeroes (V3, the load-bearing absorption). -/
+`A_{S+1}·Q₁⁻¹` writes them into the block with coefficients = the accumulated (below-diagonal) couplings
+`couplingClear` zeroes (V3, the load-bearing absorption). **`hcanon`-scoped (#95):** the diagonal pivots
+are what give `belowPivotCol` the full below-diagonal column, so `couplingClear` is non-trivial and the
+escaped-column reads carry a zeroed coupling. -/
 -- map: B-CAPF-kill-escapedBelow ⟨CRUX — the certified telescoping invariant; V3 = the last-clear absorption⟩
 theorem sourceClearedResid_ignoresEscapedBelow (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
-    (q : TreePath d) (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    (q : TreePath d) (hbranch : q.IsRealBranch (canonFlatten d))
+    (hcanon : CanonicalPivots d q) (j : Fin (foldNR d q)) :
     IgnoresCoords (sourceClearedResid d q j)
       (escapedBelow d q.conState.layer q.conState.cleared) Set.univ := by
   sorry
@@ -506,11 +525,12 @@ Read off from the certified invariant `sourceClearedResid_ignoresEscapedBelow`: 
 `escapedCol S ⊆ escapedBelow (S, 0)`. -/
 theorem sourceClearedResid_ignoresEscaped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer) (hcl : q.conState.cleared = 0)
-    (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    (hbranch : q.IsRealBranch (canonFlatten d)) (hcanon : CanonicalPivots d q)
+    (j : Fin (foldNR d q)) :
     IgnoresCoords (sourceClearedResid d q j)
       (layerCoords d q.conState.layer \ blockCoords d q.conState.layer) Set.univ :=
   ignoresCoords_of_subset
-    (sourceClearedResid_ignoresEscapedBelow d hpos q hbranch j)
+    (sourceClearedResid_ignoresEscapedBelow d hpos q hbranch hcanon j)
     (escapedCol_subset_escapedBelow d q.conState.layer q.conState.cleared)
 
 /-- **The capped statement under the interior guard `layer + 1 < N`** (seat-CX; the guard excludes the
@@ -523,7 +543,8 @@ routes here. -/
 theorem sourceClearedResid_capped_guarded (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer)
     (hlayer : q.conState.layer + 1 < N)
-    (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    (hbranch : q.IsRealBranch (canonFlatten d)) (hcanon : CanonicalPivots d q)
+    (j : Fin (foldNR d q)) :
     Deg1SupportedSlot d (sourceClearedResid d q) j
       (supportAt d q.conState.layer q.conState.cleared)
       (supportLayerOf q.conState)
@@ -547,7 +568,7 @@ theorem sourceClearedResid_capped_guarded (d : Fin (N + 1) → ℕ) (hpos : ∀ 
       have hhomS : HomogeneousDeg1On (sourceClearedResid d q j)
           (layerCoords d q.conState.layer) Set.univ :=
         hhomL q.conState.layer (le_of_eq hsl) (by omega)
-      have hkill := sourceClearedResid_ignoresEscaped d hpos q hnonterm hcl hbranch j
+      have hkill := sourceClearedResid_ignoresEscaped d hpos q hnonterm hcl hbranch hcanon j
       have hhomB : HomogeneousDeg1On (sourceClearedResid d q j)
           (blockCoords d q.conState.layer) Set.univ :=
         homogeneousDeg1On_of_subset_ignores (sourceClearedResid d q j)
@@ -601,7 +622,8 @@ the `(b)`-twin (`supportAt = blockCoords`); the escaped-ignore is a corollary. R
 theorem sourceClearedResid_capped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer)
     (hlayer : q.conState.layer + 1 < N)
-    (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    (hbranch : q.IsRealBranch (canonFlatten d)) (hcanon : CanonicalPivots d q)
+    (j : Fin (foldNR d q)) :
     Deg1SupportedSlot d (sourceClearedResid d q) j
       (supportAt d q.conState.layer q.conState.cleared)
       (supportLayerOf q.conState)
@@ -609,9 +631,10 @@ theorem sourceClearedResid_capped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d
   -- GUARD-ADD (GO'd): the interior guard `layer + 1 < N` routes to the guard-independent core
   -- `sourceClearedResid_capped_guarded`. The excluded last-layer arm (`layer + 1 = N`, `cleared ≠ 0`)
   -- has `supportAt = ∅` yet the residual's cleared slots are units — the statement is FALSE there
-  -- (the 28th catch), so the guard is a fidelity necessity, not a convenience. The sole consumer
-  -- `realBranch_appendResidDescent_fresh_sourceCleared'` carries `hlayer` and passes it through.
-  sourceClearedResid_capped_guarded d hpos q hnonterm hlayer hbranch j
+  -- (the 28th catch), so the guard is a fidelity necessity, not a convenience. `hcanon` (#95, the
+  -- diagonal-pivot scope) is the row-phantom fix, threaded from `sourceClearedResid_ignoresEscaped`.
+  -- The sole consumer carries `hlayer` + `hcanon` and passes them through.
+  sourceClearedResid_capped_guarded d hpos q hnonterm hlayer hbranch hcanon j
 
 /-- **Cap-frontier obligation (b), source-cleared — PRIMED TWIN.** Statement byte-identical to
 `SourceClearedResid.realBranch_appendResidDescent_fresh_sourceCleared` (the controller swaps its `sorry`
@@ -624,14 +647,15 @@ theorem realBranch_appendResidDescent_fresh_sourceCleared' (d : Fin (N + 1) → 
     (hroll : ed.case = StepCase.rollover)
     (hfresh : (p.extend ed).conState.cleared = 0)
     (hlayer : (p.extend ed).conState.layer + 1 < N)
-    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d))
+    (hcanon : CanonicalPivots d (p.extend ed)) :
     ∀ j, Deg1SupportedSlot d (sourceClearedResid d (p.extend ed)) j
       (blockCoords d (p.extend ed).conState.layer)
       (supportLayerOf (p.extend ed).conState)
       (foldRegion d (canonFlatten d) (p.extend ed)) := by
   intro j
   have hnonterm : ¬ N ≤ (p.extend ed).conState.layer := by omega
-  have hcap := sourceClearedResid_capped d hpos (p.extend ed) hnonterm hlayer hbranch j
+  have hcap := sourceClearedResid_capped d hpos (p.extend ed) hnonterm hlayer hbranch hcanon j
   have hsa : supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
       = blockCoords d (p.extend ed).conState.layer := by
     unfold supportAt; rw [if_pos hfresh]
