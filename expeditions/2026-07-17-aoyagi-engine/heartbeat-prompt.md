@@ -54,7 +54,21 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-24 ~11:30): THE OBSTRUCTION ARC — one amendment from closure.
+- CURRENT WAIT-STATE (2026-07-24 ~13:40): THE BRIDGE CONVERGED (§7.7); ψ_gen is the ONLY gate.
+  The obstruction arc CLOSED its design: ψ = a det-1 polynomial automorphism (F∘ψ=C, verified)
+  that IS Aoyagi's chart transition — ideal-EQUIVALENCE ψ*⟨F⟩=⟨C⟩, RLCT-PRESERVING (pnp
+  retracted its own dimension argument; the elder its ideal-equality — truth won both ways).
+  THE VALUE CHAIN READS ON C: RLCT(loss) = via ⟨C⟩ (p.15 invariant) = ½·min M_{s,k} (p.22
+  boxed rule, the LANDED atlas); ψ separately certifies RLCT(F)=RLCT(C). MEASURE-COMPAT
+  DISSOLVES under read-on-C (ψ never transports a weighted integral). MERGED RECURSION
+  UNTOUCHED (the fork I surfaced resolved: fold def unchanged; the READ-OFF runs on C — both
+  Option-2 economy and recursion-untouched satisfied; operator decision no longer needed).
+  B2 verified at the archetype + the DEEP-intermediate crux (re-open trigger DISARMED). THE
+  ONE OPEN CONSTRUCTION: pnp's ψ_gen (multi-coupling composite of unipotent Q₁ clears; wide
+  (3,3,3,2) needs higher-degree; FULL before the certificate — (B)≠(D), no gaps). ON ψ_gen:
+  the positive per-edge certificate → the FRESH RENDER SEAT (turn-key frame: §7-§7.7 +
+  L4D's scaffold (predicate/assembly/wired-variant, all reusable) + the banked consumer
+  contract + L4D as named def-owner consult). Elder + L4D resting; LL parked. (Old:)
   Since ~06:30: the wall PROVEN modulo the content lemma + merged (census 42; turn-key swap;
   L4D released) → pnp's KILL-CONDITION verdict: the content lemma is FALSE on the raw fold
   (CHART-ONLY, triple-confirmed; (B) degree≤1 TRUE raw / (D) ⟨center⟩-membership FALSE raw,

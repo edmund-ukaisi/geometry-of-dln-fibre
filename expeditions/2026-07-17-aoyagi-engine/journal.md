@@ -18109,3 +18109,20 @@ text. pnp: B2 verified at the ARCHETYPE + the DEEP-intermediate crux (the re-ope
 DISARMED — the case we feared is det-1-sound); the wide case = higher-degree ψ_gen, ordered FULL
 before the certificate ((B)≠(D): no structural-expectation gaps). OPERATOR SURFACE: Option 2
 recommended, proceeding on silence per the autonomy rule.
+
+## 2026-07-24 (~13:40) — §7.7: THE BRIDGE CONVERGED; ψ IS her chart transition; measure-compat
+DISSOLVES; the surfaced fork resolves without an operator decision; ψ_gen = the only gate
+
+The elder's §7.7 (banked 0c7c552cb) lands the full unification: ψ = the unipotent Q₁ conjugation
+moving the pivot to the cleared chart — the det-1 reading and the cover reading are THE SAME FACT
+(ψ IS the chart transition). The value chain reads ON C (her p.15 ideal-invariant + her p.22
+boxed min — the LANDED Lean atlas); ψ separately certifies RLCT(F)=RLCT(C). The Codex
+measure-caveat DISSOLVES by design: read-on-C uses ψ only for the ideal-equivalence (the value),
+never to transport a weighted integral (the caveat's trigger); the fallback shape that WOULD need
+the check is simply not taken. L4D's Option-2-vs-recursion-untouched fork: RESOLVED by shape —
+the fold def is unchanged (recursion untouched, as merged) AND the read-off runs on C (Option 2's
+economy) — the proceed-on-silence item to the operator closes harmlessly. Remaining: pnp's ψ_gen
+(FULL, wide+deep), then the certificate, then the fresh render seat. Memo updated. The design
+phase of the deepest catch of the expedition is COMPLETE — five rulings, four retractions (two
+per side), zero wasted renders, the learning coefficient never at risk, and the final shape is
+the paper's own.
