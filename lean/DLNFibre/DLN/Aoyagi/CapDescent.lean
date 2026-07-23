@@ -509,7 +509,35 @@ theorem sourceClearedResid_ignoresEscapedBelow (d : Fin (N + 1) → ℕ) (hpos :
     (hcanon : CanonicalPivots d q) (j : Fin (foldNR d q)) :
     IgnoresCoords (sourceClearedResid d q j)
       (escapedBelow d q.conState.layer q.conState.cleared) Set.univ := by
-  sorry
+  classical
+  suffices H : ∀ (r : TreePath d), r.IsRealBranch (canonFlatten d) → CanonicalPivots d r →
+      ∀ (i : Fin (foldNR d r)), IgnoresCoords (sourceClearedResid d r i)
+        (escapedBelow d r.conState.layer r.conState.cleared) Set.univ from
+    H q hbranch hcanon j
+  intro r
+  induction r with
+  | root =>
+    -- `escapedBelow (0, 0) = ∅` (escapedCol 0 = ∅ via `blockCoords_zero_eq_layerCoords`; the
+    -- `escaped(1)` term is gated off by `¬ widthMinUpto d 1 ≤ 0`).
+    intro _ _ i
+    have hEB : escapedBelow d (TreePath.root : TreePath d).conState.layer
+        (TreePath.root : TreePath d).conState.cleared = (∅ : Finset (Fin (flatDim d))) := by
+      show escapedBelow d 0 0 = ∅
+      have h0 : escapedCol d 0 = (∅ : Finset (Fin (flatDim d))) := by
+        rw [escapedCol, blockCoords_zero_eq_layerCoords]; exact Finset.sdiff_self _
+      have hwmu : ¬ (widthMinUpto d 1 ≤ 0) := by have := widthMinUpto_pos hpos 1; omega
+      rw [escapedBelow, if_neg hwmu, Finset.union_empty, Finset.eq_empty_iff_forall_not_mem]
+      intro x hx
+      obtain ⟨M, hM, hxM⟩ := Finset.mem_biUnion.mp hx
+      rw [Finset.mem_range, Nat.lt_one_iff] at hM
+      subst hM
+      rw [h0] at hxM; exact absurd hxM (Finset.notMem_empty x)
+    rw [hEB]
+    intro w _ m hm _; exact absurd hm (Finset.notMem_empty m)
+  | step p' c pv cse ns φ ih =>
+    -- map: B-CAPF-kill-escapedBelow-step ⟨the certified telescoping step; V3 at the last clear⟩
+    intro hbr hcanonStep i
+    sorry
 
 /-- **THE KILL ⟨CRUX — route (a) whole-path coupling factorization⟩ — the source-cleared residual ignores
 the escaped out-of-cap columns.** At a fresh node (`cleared = 0`, layer `S`) the layer-`S` columns beyond
