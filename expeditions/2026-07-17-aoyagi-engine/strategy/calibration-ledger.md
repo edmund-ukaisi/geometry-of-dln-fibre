@@ -1097,3 +1097,12 @@ NAVIGATOR VERDICT (the gap CONFIRMED — a two-theorem conflation, not untracked
   replaces the cite; hbox=adapter path A default; DITCH the hole if B prices shorter") suggests B
   is the substantive goal + the re-point folds it into the headline — but that's the operator's
   definition-of-done to confirm, not silently assumed.
+
+## 2026-07-23 — diff-read under-observes a live co-author's late append
+Committing an elder-authored shared doc (elder writes to the controller's cwd): a `git diff | head -N`
+verification read BEFORE `git add` can miss content the co-author appends between the read and the add
+(`git add <file>` stages the final file, not the read snapshot). Here f5f840b65 captured §9.11 AND the
+§9.11 ADDENDUM though I'd claimed "§9.11 only." No soundness impact (co-author content, correct) — but
+the commit provenance was mis-stated. FIX: when committing a doc a live co-author may still be editing,
+verify with `git diff --cached` AFTER staging (or full `git diff`, not truncated), and let the commit
+message name what's actually staged.

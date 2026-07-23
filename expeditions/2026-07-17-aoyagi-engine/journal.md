@@ -20616,3 +20616,37 @@ if blocked. The escalation ruling (if any) comes back to the elder.
 + the thread-reaches probe; pnp rested as decorrelated-consult (next wake = the escalation read if
 the probe blocks, or #73). The 29th catch is now a well-scoped render task with a named
 compiler-decidable cross-check, not an open design question.
+
+## 2026-07-23 (~20:10 UTC) — #95 crux RESOLVED (elder §9.11 ADDENDUM): cap-descent is DIAGONAL-scoped by construction ⟹ (i) clean, NO new transport; escalation triage pre-stated + forwarded to seat-KILL; a commit-provenance accuracy correction banked
+
+**The ADDENDUM (crux resolved).** The elder answered "does the cap-descent visit off-diagonal
+nodes?": NO — per §9.4 the chain INCLUDING the cap-descent / conjunct-1 is an induction over the
+CANONICAL (diagonal, hcanon) sub-family; the off-diagonal genuine row-fans are NOT in the chain's
+induction, they get their per-chart LEAF facts via σ-transport (§9.4 L5). So the cap-descent
+visits ONLY CanonicalPivots-holding (diagonal) nodes, hcanon holds by construction ⟹ (i) is the
+clean thread. KEY: the confinement (Deg1SupportedSlot) is a diagonal-only INTERMEDIATE that
+PRODUCES the diagonal leaf FORM; off-diagonal leaf forms are σ-IMAGES of the diagonal leaf forms
+(labeled-jac preserved, #86B/C). The confinement itself does NOT transport — only the leaf form
+does (already covered). So there is NO "transport the cap-support" obligation to add; the
+off-diagonal confinement simply isn't needed. ⟹ the probe is EXPECTED clean.
+
+**Escalation triage pre-stated (elder) + forwarded to seat-KILL.** If the probe walls at a
+∀-IsRealBranch site, seat-KILL captures: (1) exact ∀-site file:line; (2) WHAT it consumes from
+conjunct-1 — leaf FORM only ⟹ elder ruling (a) re-scope-that-consumer-to-diagonal (default, keeps
+(i) clean); confinement/Deg1SupportedSlot ITSELF at off-diagonal nodes ⟹ (b) extend σ-transport to
+carry the confinement (bigger; elder pulls pnp); (3) downstream-reachability from summit canonical
+scope. Then STOP — NEVER a row-pin (kills genuine non-repeat row-fans, §9.11). Target consumer to
+watch = leaf_stepInv_of_path' (the L5 fold body). If clean: (i) done, #95 closes on seat-KILL's
+diagonal KILL + the thread landing green.
+
+**Accuracy correction (faithful-reporting).** I told the elder "f5f840b65 — verified the diff was
+§9.11 only." WRONG: git log -S confirms f5f840b65 captured BOTH §9.11 AND the §9.11 ADDENDUM. The
+elder (writing to the doc in my cwd) appended the ADDENDUM between my `git diff | head -60` read
+and my `git add`, so the truncated read under-observed it and `git add <file>` grabbed the whole
+file. No harm — both are the elder's correct content, committed and synced (HEAD == origin) — but
+the commit contains more than my message claimed. Corrected to the elder; banked to the
+calibration ledger.
+
+**Status.** #95 stands at (i) hcanon-thread, crux resolved, ONE compiler-decidable cross-check
+open (expected clean), escalation criterion armed. seat-KILL owns the diagonal KILL (GO) + the
+probe. No design question remains open on the row-phantom.
