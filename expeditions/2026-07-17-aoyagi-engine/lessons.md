@@ -329,3 +329,15 @@ WITHDRAWN as an erratum candidate — L&R's θ is the count of top-dimensional f
 the rlcm (pole multiplicity, Aoyagi's a(ℓ−a)+1); two different quantities, no discrepancy, no
 authors' correspondence. Conflating quantities that share a formula's neighborhood is the same
 class of error as the source ambiguity above: name the OBJECT, not just the formula.
+
+## (B) ≠ (D): name the PROPERTY an instrument tests, not just the object (L4D, 2026-07-24)
+
+The capstone obstruction survived 25 instruments because they all tested property (B) (degree ≤ 1
+per coordinate) while the wall needs property (D) (center-sub-ideal membership) — and (B) does not
+imply (D). A render that "re-checked the batteries" would have re-proven (B) and shipped the (D)
+hole. **Why:** a battery's PASS certifies exactly the property it computes, and near-miss
+properties feel interchangeable in prose ("multilinear-clean" read as "supported on the center").
+**How to apply:** every battery row and every claim card names the PROPERTY as a formula (the
+ideal, the degree bound, the membership — not an adjective); when a consumer needs property P,
+check the instrument history for P ITSELF, not for its neighbors; a verification claim without its
+formula is treated as unverified.

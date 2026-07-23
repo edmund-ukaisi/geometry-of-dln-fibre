@@ -17950,3 +17950,18 @@ consumer re-wire. If DET-0: Option 1 proper (separate object + append-crux re-wi
 CAUTION relayed to pnp: judge the det AS COMPOSED IN THE FOLD (post pivot→1 quotient, where an
 own-coordinate read against the normalized pivot can silently lose rank). The arc's theme holds to
 the last: at every layer, the error was the unpairing.
+
+## 2026-07-24 (~10:05) — the det-question sharpened to THREE maps (the def-owners' priors conflict
+because they describe different objects); (B)≠(D) banked as a standing lesson
+
+L4D's crux constraints delivered (the append is HARD-WIRED to pointwise StepInv on the raw object;
+F₂'s bridge is ideal-level — so a naive object-swap can't re-derive the crux; designs (a) separate
+cleared fold + ideal-StepInv vs (b) cleared+remainder decomposition are the det-0 fallbacks). Its
+det-0 read vs the elder's det-1 prior reconciled as probably DIFFERENT MAPS: (i) the operational
+projection (det-0, pnp's verified repair as coded); (ii) her unipotent row-clear pre-quotient
+(det-1 candidate); (iii) (ii)'s post-quotient degeneration to (i) (the pivot→1 chart kills the
+rank). pnp's adjudication sharpened accordingly: is there a FOLD-ORDER placement of (ii) — before
+the edge's quotient, det-1 there — producing the verified cleared object at the case11 node?
+YES → the elder's render-completion path (tension dissolves); NO → #69 part 2 chooses between
+L4D's (a)/(b) with the pointwise-vs-ideal crux as the cost function. The (B)≠(D) lesson banked
+(instruments certify the property they compute; name properties as formulas, not adjectives).
