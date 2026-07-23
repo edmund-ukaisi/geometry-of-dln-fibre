@@ -131,7 +131,19 @@ theorem foldResid_case11_mergeBoostSplit_sourceCleared (d : Fin (N + 1) → ℕ)
       MergeBoostSplit d (sourceClearedResid d p) e₂ part extra ed.center
         (foldRegion d (canonFlatten d) p) := by
   -- map: B-wall-mergeboostsplit-content-sourceCleared — the §4 decomposition: read-off ∘ INV-holds
-  exact mergeBoostSplit_of_sourceClearedInv d ed hδ hc11 hbranch (sourceClearedInv_holds d p hbranch.1)
+  -- `0 < N` is forced by the case11 edge: a live oracle step (its `∃ sc ∈ stepChildren`) needs
+  -- `p.conState.layer < N` (a terminal state emits no children), so `0 ≤ layer < N`.
+  have hN : 0 < N := by
+    obtain ⟨sc, hsc, _⟩ := hbranch.2.1
+    have hlive : ¬ N ≤ p.conState.layer := by
+      intro hle
+      have hterm : conOracle d p.conState = oracleTerminal d p.conState := by
+        unfold conOracle; rw [dif_pos hle]
+      rw [hterm] at hsc
+      simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+    exact lt_of_le_of_lt (Nat.zero_le _) (not_le.mp hlive)
+  exact mergeBoostSplit_of_sourceClearedInv d ed hδ hc11 hbranch
+    (sourceClearedInv_holds d hN p hbranch.1)
 
 /-- **[FOSSIL — SUPERSEDED-BY `foldResid_case11_mergeBoostSplit_sourceCleared`; retained for statement
 provenance]** The OLD raw-object content lemma (REFUTED-AS-STATED — see the banner below; consumer-less

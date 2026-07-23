@@ -129,15 +129,26 @@ noncomputable def couplingClear (d : Fin (N + 1) → ℕ) (p : TreePath d) :
     (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ) :=
   fun u k => if k ∈ couplingCoords d p then 0 else u k
 
-/-- **The accumulated blow-up pivots along a path** — the recorded pivot of every ancestor BLOW-UP step
-(case11/case12/case2; a rollover has no blow-up, `canonPivotOf = none`, so its unconstrained pivot field is
-excluded). Recursive, sibling to `couplingCoords`. These are the exceptional divisor coordinates; a case11
-edge's reused-divisor birth corner `e₂ = canonPivotOf` is one of them (born at an earlier blow-up step). -/
-noncomputable def accumulatedPivots (d : Fin (N + 1) → ℕ) : TreePath d → Finset (Fin (flatDim d))
-  | .root => ∅
-  | .step p _center pivot cse _ns _φ =>
-      (match cse with | StepCase.rollover => (∅ : Finset (Fin (flatDim d))) | _ => {pivot})
-        ∪ accumulatedPivots d p
+/-- **The accumulated blow-up exceptionals of a path** (elder §9.2 REDEFINE, 2026-07-23 — was the stored
+path pivots, which the free case12/case2 fan pivot need not put at the diagonal; the containment's
+`e₂ ∈ accumulatedPivots` then failed). These are the **ledger birth-corner coordinates** of the node's
+state: the flat coords `cornerToFlat (divBirthCoord k)` of every divisor `k` in `p.conState`'s ledger — the
+exceptional divisor axes. `= { c | IsLedgerCorner d p.conState c }` (`mem_accumulatedPivots`). A case11
+edge's reused-divisor birth corner `e₂ = canonPivotOf = cornerToFlat (divBirthCoord mergeIdx)` is one of
+them BY CONSTRUCTION (`k = mergeIdx`), so the containment's leg-1 is immediate. `∅` at the root
+(`conRoot.numDiv = 0`); the b-monomial exponents (conjunct (3)) read only these exceptional axes. -/
+noncomputable def accumulatedPivots (d : Fin (N + 1) → ℕ) (p : TreePath d) : Finset (Fin (flatDim d)) :=
+  Finset.univ.biUnion (fun k : Fin p.conState.numDiv =>
+    (cornerToFlat d (p.conState.divBirthCoord k).1 (p.conState.divBirthCoord k).2).toFinset)
+
+/-- **Membership in `accumulatedPivots`** — a flat coord is an accumulated exceptional iff some ledger
+divisor's birth corner decodes to it (the ledger-corner characterization; `= IsLedgerCorner`). -/
+theorem mem_accumulatedPivots (d : Fin (N + 1) → ℕ) (p : TreePath d) (c : Fin (flatDim d)) :
+    c ∈ accumulatedPivots d p ↔
+      ∃ k : Fin p.conState.numDiv,
+        cornerToFlat d (p.conState.divBirthCoord k).1 (p.conState.divBirthCoord k).2 = some c := by
+  simp only [accumulatedPivots, Finset.mem_biUnion, Finset.mem_univ, true_and, Option.mem_toFinset,
+    Option.mem_def]
 
 /-- **The invariant's edge-independent `IgnoresCoords` target** (§12/§7-family; L4D + Codex + cert §4
 converged, controller-ruled): the accumulated blow-up exceptionals `∪` the current descending support
@@ -221,7 +232,7 @@ def SourceClearedInv (d : Fin (N + 1) → ℕ) (p : TreePath d) : Prop :=
 LIVE-frontier — the expedition's last hard proof, decomposed into root/δ=1/δ=0 in the fill). ⟨hpos may be
 needed by the cap; reconcile with the content lemma's hyps at the delta⟩. -/
 -- map: B-wall-sourceClearedInv-holds (the §4 b-ledger induction)
-theorem sourceClearedInv_holds (d : Fin (N + 1) → ℕ) (p : TreePath d)
+theorem sourceClearedInv_holds (d : Fin (N + 1) → ℕ) (hN : 0 < N) (p : TreePath d)
     (hbranch : p.IsRealBranch (canonFlatten d)) :
     SourceClearedInv d p := by
   sorry
