@@ -15593,3 +15593,17 @@ first. The elder's convening gates on the R0 verdict (invited to overrule the se
 pnp-transport's Gröbner ideal-preservation on the baked def is now the PIVOTAL datum either way
 (preserves ⟹ valid-but-different resolution, restate the invariant; fails ⟹ escalate).
 Battery row-(i)'s reference may move if R0=YES (flagged to pnp; no rebuild yet).
+
+## 2026-07-23 (~01:00) — the formal SKELETON-REVISION verdict banked; the polynomial-≠-unipotent subtlety pinned; R0 confirmed as the current item
+
+seat-L4D's formal #46 head-question verdict banked (346d1fdc8 → canonical:
+recoord-pairing-adjudication.md + verify script, controller re-ran exit-0 — asserts the coeff-2
+defect + both broken jacDets). THE SUBTLETY PINNED (the doc's lasting value): the column-clear
+IS a polynomial pre-quotient displacement — the naive representability reading would have waved
+def-edit 3 through — but polynomial ≠ valid shear: the fold requires UNIPOTENT (hshear jacDet=1,
+what the Jacobian/RLCT rides), and any coordinate-clearing displacement is rank-reducing
+(naive → jacDet 0; extend-branch-(i) → 1−u₀₀₀). Verdict: SKELETON-REVISION, the elder's gate,
+possibly the operator's. Messages crossed in transit: sequencing re-confirmed to the seat — R0
+(the diag(b)-row-factoring consistency check) is the CURRENT item, Codex GO covers R0 then
+R1/R2/R3; the elder's convening gates on R0; pnp's Gröbner triple runs in parallel as the
+pivotal datum.
