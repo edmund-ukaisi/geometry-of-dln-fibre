@@ -18399,3 +18399,20 @@ MonumentAtlas BATCH now has FOUR items, landing together after pnp-transport's e
 the verdict); (3) the frontier docstring correction (hslot → the homogeneity route); (4) the
 frontier's e-pin (+he, he-after-e). pnp-cap resting; wake-conditions noted (a §5 reshape or the
 Lean-skeleton ask).
+
+## 2026-07-24 (~20:10) — §12.2: THE 17th CATCH CLOSED on the cleared-object route; supportAt and
+every proven theorem UNTOUCHED; my atomic def batch DISSOLVES to docstrings
+
+The elder concurred with the discriminator (owned its third object-error of the arc — the widen
+under-weighted the twice-flagged falsification; "the fix is my own §7 architecture generalized"):
+§12.2 supersedes §12(1)/§12.1. FINAL SHAPE: supportAt/blockCoords/realBranch_cover/codim/
+MergeBoostSplit-partition ALL UNCHANGED; obligation (b) re-states of sourceClearedResid (verified
+confined on three cap-bite witnesses); obligation (a) via the homogeneity route (proven twin +
+the bounded (L) lemma); case12/2's boostReady reads the cleared object (§7 all-cases). MY ATOMIC
+BATCH SHRINKS: no def edit at all — the widen and the realBranch_cover re-point are history;
+remaining = docstring corrections + the e-pin, riding with/after CAPR's SPECIFY merge (the
+(b)-restatement lives DOWNSTREAM per the twin pattern — the import-graph note sent to CAPR).
+DISPATCHED: CAPR fully unfrozen (partition stands as drafted; the (b)-home architecture note);
+pnp re-scoped (extent-check superseded; remaining: the no-widen-assumption confirm + B1-wide +
+the NEW case12/2-cleared-confinement witness for the now-RULED claim). The 17th catch: three
+rulings, zero def churn, zero wasted renders, every proven theorem intact.
