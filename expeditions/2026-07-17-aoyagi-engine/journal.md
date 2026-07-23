@@ -16433,3 +16433,25 @@ necessary. "No silent instrument disagreement outstanding" — the calibration r
 elder asked for is complete. Both watchers confirmed on their posts for the render: seat-L4D
 = the def-read gate (sum-range scope) + the D_J slot mapping; pnp = the two-row battery.
 Board unchanged: arch-C-3 rendering (live); everything else staged.
+
+## 2026-07-23 (~06:00) — arch-C-3's prep finding: Lemma 2's Jacobian is a UNIT ⟹ R4-not-in-blockShear is FORCED; a placement candidate deviating-with-justification
+
+The fresh render seat's paper-first prep (before touching files — the recycled-seat contrast
+complete): Lemma 2's variable change (A₂↦−A₁⁻¹A₂, A₃↦−A₃A₁⁻¹, A₄↦C₄) has Jacobian det =
+det(A₁⁻¹)² — a nonzero UNIT, not det-exactly-1. CONSEQUENCE (the placement theorem): R4
+structurally CANNOT be a blockShear branch (blockShear = u+φ, det exactly 1 = hshear); the
+"generator-level" constraint is FORCED by her math. RLCT-safety rides Lemma 1 ideal-invariance
++ the unit-Jacobian local iso (consistent with §8(k), now sharpened). It also identified that
+pnp's battery models R4 as a coordinate clear (right BLOCK FORM, but jacDet-0 as a coordinate
+change) — the faithful residual-tuple render must reproduce the block without that.
+
+PLACEMENT CANDIDATE (a deviation from §8(i)'s literal "branch-(i) REPLACED", to be justified):
+keep branch-(i)'s interior Schur cross-term (det-1, faithful for the INTERIOR C₄) in the
+shear; R4 adds ONLY the pivot-row/col clearing (Lemma 2's F₂/F₃, the unit-Jacobian part) at
+the generator level. CONDITIONED (relayed): (1) validate against the double-count witness
+(diag(1, e₂-classical) EXACTLY ONCE); (2) justify the decomposition as Lemma-2-faithful in the
+render report EXPLICITLY as deviation-with-justification — the elder's delta-read rules;
+(3) scoped/prior-clear-aware reads on both components. The honest fork pre-declared by the
+seat itself: if reaching diag(1,e₂) crosses into a foldResid/fold-order redesign →
+STOP-ON-OBSTRUCTION → the elder's §8(l) branch. It is pinning the insertion point with
+seat-L4D (design prep, no edits). GO confirmed (the original GO crossed its prep report).
