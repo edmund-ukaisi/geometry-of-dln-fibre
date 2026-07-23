@@ -16241,3 +16241,25 @@ prior-clear-awareness. THE MERGE GATE IS CRISP: all-i≠a → u₀₀₁² → r
 multilinear clean block. The elder offered the precise §8 clarification wording. THE RENDER
 TARGET IS COMPLETE — frozen spec §8(i) + the scope bound; nothing else open on the design
 side. Waiting: arch-C's restate + rework (the only moving piece).
+
+## 2026-07-23 (~04:20) — the elder's 5th correction × pnp's pinned fix CROSS AND COMPOSE; the battery gains its two-row final form
+
+The elder (writing pre-upgrade) verified the inter-edge coupling AT THE DEF
+(foldResid_extend_delta0, Case1Wire:100-107: the deeper edge's stepMap applies to raw u FIRST;
+ed1 outermost) — pnp's u₀₀₁² is REAL and per-edge R4 does NOT dissolve it; its §8(j)/(k)
+"R4 dissolves" claim CORRECTED (the fifth, data-forced). Its reframe: the block criterion is
+CHART-FRAME (boostReady = Deg1SupportedOn the chart center; u₀₀₁ is ENTANGLED inside e₂, so a
+raw-degree-2 can be chart-degree-1 — the same frame discipline as the field, now at the block
+criterion); it commissioned the decisive chart-frame inter-edge test (pnp's reuse-node trace
+in seat-L4D's exact center) and named the failure branch: a fold-order/recoord-accumulation
+re-open (her Q₂'⁻¹ reads the cleared outer state; the fold reads raw).
+
+THE COMPOSITION with pnp's pinned fix (which crossed): the i≥cleared scope bound IS her
+accumulated-Q₂'⁻¹ semantics in the raw fold (cleared rows read as 0 by not being read) and
+makes the RAW form clean outright — the stronger resolution; chart-frame benignity is not
+needed under it. HARMONIZED (proposed to the elder): PRIMARY battery row = raw block-form on
+the SCOPED formulas; CROSS-CHECK row = the chart-frame inter-edge boostReady (closes the
+single-step-vs-inter-edge gap in boost_center; remains THE criterion if entanglement appears
+elsewhere). Escalation map: rendered all-i≠a → re-open; scoped-but-dirty → the fold-order
+branch (immediate flag); scoped + both rows clean → merge. Elder's §8 chart-frame edit
+committed (8639475d1); its criterion-text reconciliation pending.
