@@ -422,6 +422,76 @@ theorem homogeneousDeg1On_of_subset_ignores {D : ℕ} (G : (Fin D → ℝ) → �
   · have : x ∈ X \ Y := Finset.mem_sdiff.mpr ⟨hx, hxY⟩
     simp only [hu0, if_pos this]
 
+/-! ### THE KILL — the escaped-column ignore, via the certified telescoping invariant `Z(p)`
+
+pnp certificate `verify/capstone_kill_invariant.py` (V1/V2/V3, 4 witnesses, commit `a24726b18`). The
+source-cleared residual `sourceClearedResid = foldResid ∘ couplingClear` IGNORES the accumulated
+`killZ p := couplingCoords p ∪ escapedBelow (S, c)`, where `escapedBelow (S, c)` collects the escaped
+columns of layers `≤ S` plus — once `c` reaches the rollover threshold `widthMinUpto d (S+1)` (the LAST
+clear of layer `S`) — the escaped columns of layer `S+1`. The KILL is the read-off at a fresh node
+(`cleared = 0`): `escapedCol S ⊆ escapedBelow (S, 0) ⊆ killZ`. The couplingCoords part is trivial
+(`couplingClear` zeroes them); the escapedBelow part is the certified induction (`escapedBelow` grows only
+at a last clear, where the recoord-(ii) shear `A_{S+1}·Q₁⁻¹` writes the entering escaped columns with
+coefficients = the accumulated couplings `couplingClear` zeroes — V3). -/
+
+/-- The escaped (out-of-running-min-cap) columns of layer `M`: `layerCoords ∖ blockCoords` (col
+`≥ widthMinUpto d M`). `∅` for `M ≥ N` (both sides `∅`) and for `M = 0` (`blockCoords_zero_eq_layerCoords`). -/
+noncomputable def escapedCol (d : Fin (N + 1) → ℕ) (M : ℕ) : Finset (Fin (flatDim d)) :=
+  layerCoords d M \ blockCoords d M
+
+/-- The accumulated escaped columns at construction state `(S, c)` (pnp's `escapedBelow`): the escaped
+columns of every layer `≤ S`, PLUS the escaped columns of layer `S+1` once `c` reaches the rollover
+threshold `widthMinUpto d (S+1)` (the last clear of layer `S`, when the layer-`S` recoord shears have
+accumulated the couplings that absorb layer-`(S+1)`'s escaped columns). -/
+noncomputable def escapedBelow (d : Fin (N + 1) → ℕ) (S c : ℕ) : Finset (Fin (flatDim d)) :=
+  (Finset.range (S + 1)).biUnion (escapedCol d) ∪
+    (if widthMinUpto d (S + 1) ≤ c then escapedCol d (S + 1) else ∅)
+
+/-- `escapedCol d S ⊆ escapedBelow d S c` (for any `c`): layer `S` sits in the `range (S+1)` biUnion. -/
+theorem escapedCol_subset_escapedBelow (d : Fin (N + 1) → ℕ) (S c : ℕ) :
+    escapedCol d S ⊆ escapedBelow d S c := fun x hx =>
+  Finset.mem_union.mpr (Or.inl (Finset.mem_biUnion.mpr
+    ⟨S, Finset.mem_range.mpr (Nat.lt_succ_self S), hx⟩))
+
+/-- **`sourceClearedResid` ignores the ancestor coupling coordinates** — trivially: `couplingClear`
+zeroes them, so a perturbation of a coupling coordinate does not survive the clear. -/
+theorem sourceClearedResid_ignoresCouplingCoords (d : Fin (N + 1) → ℕ)
+    (q : TreePath d) (j : Fin (foldNR d q)) :
+    IgnoresCoords (sourceClearedResid d q j) (couplingCoords d q) Set.univ := by
+  intro w _ m hm t
+  show foldResid d (canonFlatten d) q j (couplingClear d q (Function.update w m t))
+      = foldResid d (canonFlatten d) q j (couplingClear d q w)
+  congr 1
+  funext k
+  show (if k ∈ couplingCoords d q then (0 : ℝ) else Function.update w m t k)
+      = (if k ∈ couplingCoords d q then 0 else w k)
+  by_cases hk : k ∈ couplingCoords d q
+  · rw [if_pos hk, if_pos hk]
+  · have hkm : k ≠ m := by rintro rfl; exact hk hm
+    rw [if_neg hk, if_neg hk, Function.update_of_ne hkm]
+
+/-- **`IgnoresCoords` over a union** — the conjunction of the two parts. -/
+theorem ignoresCoords_union {D : ℕ} {c : (Fin D → ℝ) → ℝ} {A B : Finset (Fin D)}
+    {V : Set (Fin D → ℝ)} (hA : IgnoresCoords c A V) (hB : IgnoresCoords c B V) :
+    IgnoresCoords c (A ∪ B) V := by
+  intro w hw m hm t
+  rcases Finset.mem_union.mp hm with h | h
+  · exact hA w hw m h t
+  · exact hB w hw m h t
+
+/-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
+Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
+rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
+case2/case12 step where layer-`(S+1)`'s escaped columns ENTER — absorbed because the recoord-(ii) shear
+`A_{S+1}·Q₁⁻¹` writes them into the block with coefficients = the accumulated couplings `couplingClear`
+zeroes (V3, the load-bearing absorption). -/
+-- map: B-CAPF-kill-escapedBelow ⟨CRUX — the certified telescoping invariant; V3 = the last-clear absorption⟩
+theorem sourceClearedResid_ignoresEscapedBelow (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
+    (q : TreePath d) (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
+    IgnoresCoords (sourceClearedResid d q j)
+      (escapedBelow d q.conState.layer q.conState.cleared) Set.univ := by
+  sorry
+
 /-- **THE KILL ⟨CRUX — route (a) whole-path coupling factorization⟩ — the source-cleared residual ignores
 the escaped out-of-cap columns.** At a fresh node (`cleared = 0`, layer `S`) the layer-`S` columns beyond
 the running-min cap (`layerCoords d S ∖ blockCoords d S`, i.e. col `≥ widthMinUpto d S`) are read by the raw
@@ -431,14 +501,17 @@ an ancestor case2/case12 clear — cap-escape trace `d=(2,3,2,2)`: coeff of the 
 `sourceClearedResid = foldResid ∘ couplingClear` does not depend on the escaped columns. FUNCTION-level kill
 (the escaped coords are NOT in `couplingCoords`; the disjointness is `col ≥ widthMinUpto` vs
 coupling-`col < widthMinUpto`). The dependence factors through the couplings of MULTIPLE ancestor layers via
-the composed shears (single-recoord refuted on `(2,3,3,3)`, pnp 81ba59d2b) — a whole-path property. -/
+the composed shears (single-recoord refuted on `(2,3,3,3)`, pnp 81ba59d2b) — a whole-path property.
+Read off from the certified invariant `sourceClearedResid_ignoresEscapedBelow`: at `cleared = 0`,
+`escapedCol S ⊆ escapedBelow (S, 0)`. -/
 theorem sourceClearedResid_ignoresEscaped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer) (hcl : q.conState.cleared = 0)
     (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
     IgnoresCoords (sourceClearedResid d q j)
-      (layerCoords d q.conState.layer \ blockCoords d q.conState.layer) Set.univ := by
-  -- map: B-CAPF-kill-escaped ⟨GENUINELY NEW — escaped coeffs factor through ancestor couplings⟩
-  sorry
+      (layerCoords d q.conState.layer \ blockCoords d q.conState.layer) Set.univ :=
+  ignoresCoords_of_subset
+    (sourceClearedResid_ignoresEscapedBelow d hpos q hbranch j)
+    (escapedCol_subset_escapedBelow d q.conState.layer q.conState.cleared)
 
 /-- **The capped statement under the interior guard `layer + 1 < N`** (seat-CX; the guard excludes the
 last-layer born-unit arm where `supportAt = ∅` but cleared slots are units — the 28th catch, fix pending).
@@ -527,13 +600,18 @@ the `(b)`-twin (`supportAt = blockCoords`); the escaped-ignore is a corollary. R
 `D_J` confinement via the source-clear rendering (coordinate-form differs by our shear-frame). -/
 theorem sourceClearedResid_capped (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (q : TreePath d) (hnonterm : ¬ N ≤ q.conState.layer)
+    (hlayer : q.conState.layer + 1 < N)
     (hbranch : q.IsRealBranch (canonFlatten d)) (j : Fin (foldNR d q)) :
     Deg1SupportedSlot d (sourceClearedResid d q) j
       (supportAt d q.conState.layer q.conState.cleared)
       (supportLayerOf q.conState)
-      (foldRegion d (canonFlatten d) q) := by
-  -- map: B-CAPF-sourceClearedResid-capped ⟨CRUX — route (a) path induction; step = absorb-into-cap w/ depth⟩
-  sorry
+      (foldRegion d (canonFlatten d) q) :=
+  -- GUARD-ADD (GO'd): the interior guard `layer + 1 < N` routes to the guard-independent core
+  -- `sourceClearedResid_capped_guarded`. The excluded last-layer arm (`layer + 1 = N`, `cleared ≠ 0`)
+  -- has `supportAt = ∅` yet the residual's cleared slots are units — the statement is FALSE there
+  -- (the 28th catch), so the guard is a fidelity necessity, not a convenience. The sole consumer
+  -- `realBranch_appendResidDescent_fresh_sourceCleared'` carries `hlayer` and passes it through.
+  sourceClearedResid_capped_guarded d hpos q hnonterm hlayer hbranch j
 
 /-- **Cap-frontier obligation (b), source-cleared — PRIMED TWIN.** Statement byte-identical to
 `SourceClearedResid.realBranch_appendResidDescent_fresh_sourceCleared` (the controller swaps its `sorry`
@@ -553,7 +631,7 @@ theorem realBranch_appendResidDescent_fresh_sourceCleared' (d : Fin (N + 1) → 
       (foldRegion d (canonFlatten d) (p.extend ed)) := by
   intro j
   have hnonterm : ¬ N ≤ (p.extend ed).conState.layer := by omega
-  have hcap := sourceClearedResid_capped d hpos (p.extend ed) hnonterm hbranch j
+  have hcap := sourceClearedResid_capped d hpos (p.extend ed) hnonterm hlayer hbranch j
   have hsa : supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared
       = blockCoords d (p.extend ed).conState.layer := by
     unfold supportAt; rw [if_pos hfresh]
