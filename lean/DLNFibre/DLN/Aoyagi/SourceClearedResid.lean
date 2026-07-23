@@ -288,20 +288,119 @@ theorem realBranch_appendResidDescent_fresh_sourceCleared (d : Fin (N + 1) → �
       (foldRegion d (canonFlatten d) (p.extend ed)) := by
   sorry
 
+/-- **The case11 child's run-length is capped by the layer's running-min width**
+`s.cleared + sc.esubst.runLen ≤ widthMinUpto d s.layer`. From the oracle's case-1 eligibility: the merge
+target `τ = s.divTilde f` satisfies `s.cleared + 1 ≤ τ` and `τ + 1 ≤ widthMinUpto d s.layer` (the filterMap
+guard), and `runLen = τ − s.cleared`, so `s.cleared + runLen = τ < widthMinUpto d s.layer`. Dispatches the
+`conOracle` decision (terminal / rollover / case2 give `sc.ecase ≠ case11`; case1's merge child carries the
+bound). Mirrors `MultiAffineStepWire.conOracle_case11_mergeIdx_lt`'s dispatch (re-derived here — that lemma
+is import-downstream of this module). -/
+theorem conOracle_case11_runLen_bound (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (sc : StepChild d s) (hsc : sc ∈ (conOracle d s).stepChildren)
+    (hc11 : sc.ecase = StepCase.case11) :
+    s.cleared + sc.esubst.runLen ≤ widthMinUpto d s.layer := by
+  by_cases h1 : N ≤ s.layer
+  · have horacle : conOracle d s = oracleTerminal d s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hsc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+  · have hlive : s.layer < N := not_le.mp h1
+    by_cases h2 : widthMinUpto d (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle d s = rolloverDecision d s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hsc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hsc
+      subst hsc; exact absurd hc11 (by simp)
+    · have hlt : s.cleared < widthMinUpto d (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap d := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap d _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto d s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · have horacle : conOracle d s = case2Decision d s
+            (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hsc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hsc
+        subst hsc; exact absurd hc11 (by simp)
+      · have htar : s.cleared + 1 ≤ target ∧ target + 1 ≤ widthMinUpto d s.layer := by
+          obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+          rw [List.mem_filterMap] at hmemtar
+          obtain ⟨k0, -, hk0⟩ := hmemtar
+          by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+              s.divTilde k0 + 1 ≤ widthMinUpto d s.layer
+          · rw [if_pos hc0] at hk0
+            have hdt : s.divTilde k0 = target := Option.some.inj hk0
+            omega
+          · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+        rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle d s = oracleTerminal d s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [horacle] at hsc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hsc
+        · have horacle : conOracle d s = case1Decision d s f (target - s.cleared)
+              (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
+          rw [horacle] at hsc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hsc
+          rcases hsc with rfl | rfl
+          · show s.cleared + (target - s.cleared) ≤ widthMinUpto d s.layer
+            omega
+          · exact absurd hc11 (by simp)
+
 /-- **The hard containment `ed.center ⊆ ledgerTarget`** (§12 / L4D's hard constraint — the piece that lets
 IgnoresCoords-`ledgerTarget` specialize to IgnoresCoords-`ed.center` at the read-off). At a case11 edge the
-center `{e₂} ∪ (layer-S partial block)` sits inside `(accumulated pivots) ∪ (support block)`: `e₂ =
-canonPivotOf` is a recorded ancestor blow-up pivot (the reused divisor's birth corner), and the layer-S
-partial block sits in `supportAt(p) = blockCoords(S)` (`cleared = 0` via `hδ`). STATE-ONLY (tracked
-LIVE-frontier): the `e₂ ∈ accumulatedPivots` step rides the construction structure (the reused divisor was
-born at an ancestor blow-up edge, via `IsRealBranch`/`DescendView`); the partial-block ⊆ block bound rides
-`runLen ≤ widthMinUpto`. Representation-independent (no INV reference) — banked ahead of the INV. -/
+center `{e₂} ∪ (layer-S partial block)` sits inside `accumulatedPivots ∪ supportAt`: `e₂ = canonPivotOf`
+is a ledger birth-corner (`cornerToFlat (divBirthCoord mergeIdx)`, so `∈ accumulatedPivots` by the §9.2
+redefine — `mem_accumulatedPivots`), and the layer-S partial block sits in `supportAt(p) = blockCoords(S)`
+(`cleared = 0` via `hδ`, `runLen ≤ widthMinUpto` via `conOracle_case11_runLen_bound`).
+Representation-independent (no INV reference). -/
 -- map: B-wall-case11-center-subset-ledgerTarget (the ed.center ⊆ T containment)
 theorem case11_center_subset_ledgerTarget (d : Fin (N + 1) → ℕ)
     {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
     (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
     ed.center ⊆ ledgerTarget d p := by
-  sorry
+  classical
+  obtain ⟨hrec, ⟨sc, hsc, hecase, hchild, hcenter, hpivpin⟩, hwc, hvpin⟩ := hbranch
+  have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
+  have hsce : sc.ecase = StepCase.case11 := hecase.trans hc11
+  rw [hcenter]
+  intro x hx
+  simp only [canonCenterOf, hsce, Finset.mem_union] at hx
+  rw [ledgerTarget, Finset.mem_union]
+  rcases hx with hpiv | hrow
+  · -- LEG 1: x is the reused-divisor birth corner ⟹ x ∈ accumulatedPivots (ledger corner)
+    left
+    rw [Option.mem_toFinset, Option.mem_def] at hpiv
+    simp only [canonPivotOf, hsce] at hpiv
+    rw [mem_accumulatedPivots]
+    split_ifs at hpiv with hm
+    exact ⟨⟨sc.esubst.mergeIdx, hm⟩, hpiv⟩
+  · -- LEG 2: x in the run-block ⟹ x ∈ supportAt = blockCoords (cleared=0, runLen ≤ widthMinUpto)
+    right
+    rw [Finset.mem_image] at hrow
+    obtain ⟨q, hq, rfl⟩ := hrow
+    rw [Finset.mem_filter] at hq
+    obtain ⟨-, hlayer, -, -, hqrun⟩ := hq
+    have hbound := conOracle_case11_runLen_bound d p.conState sc hsc hsce
+    rw [supportAt, if_pos hcl, blockCoords, Finset.mem_image]
+    exact ⟨q, by rw [Finset.mem_filter]; exact ⟨Finset.mem_univ _, hlayer, by omega⟩, rfl⟩
 
 end DLNFibre.DLN.Aoyagi
