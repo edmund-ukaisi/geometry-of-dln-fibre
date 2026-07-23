@@ -850,3 +850,53 @@ SURVIVED; item 9 = non-blocking docstring follow-on.**
 - MERGE POSTURE: elder green banked (gate 1/3). Remaining: pnp all-rows battery + L4D 11-item
   slot-confirm. The wall (#38, boostReady_case11 via the r4Clear/e₂-decomposition device) is next
   post-merge.
+
+---
+
+## §11 — Scope-justification erratum: the `u₀₀₁²` is a CLEAR-MODEL fact, the scope is FIDELITY (elder-standing, 2026-07-23; from pnp's all-rows battery, REBAKE2 @ 8b0c33476)
+
+**THE ERRATUM.** §9's re-check (b) (lines 711–719: "the `i≥cleared` bound is STILL NEEDED, NOT
+subsumed... Unscoped `+γ`-paired STILL gives `u₀₀₁²`. So KEEP the scope explicitly") states the
+scope's role as a **degree-necessity**. On the RENDER's object this is imprecise, and the render
+docstring inherited it. pnp's all-rows battery on the shears-only fold (controller re-ran, exit-0)
+finds `foldResid` is **degree-≤1 in the pivot-row coord `u₀₀₁` both scoped and unscoped** — the
+`u₀₀₁²` never arises in the render's fold. The `u₀₀₁²` is a **CLEAR-MODEL** fact: it belongs to the
+`f2_paired_boostready` instrument, whose object splices the pivot-cross clear INTO the fold. The §9
+PROPERTY-HOME ruling (§9-PROPERTY-HOME) moved that clear OUT of the recursion (into `boostReady`),
+so the render's fold is shears-only and does not reproduce the square.
+
+**WHY §9 REGRESSED (and §8(m) was already right).** §8(m)'s own correction (lines 640–644) had
+ALREADY ruled: "§8(m)'s justification rests on FAITHFULNESS (uncontested — the `i ≥ cleared` scope IS
+her accumulated-`Q₂'⁻¹` current-chart semantics), NOT on a necessity claim (contested between
+instruments, moot)", with the unscoped degree-status logged CONTESTED-but-MOOT (lines 635–639). §9's
+re-check answered a DIFFERENT question — "does the `+γ`-pairing SUBSUME the scope?" — on the
+`f2_paired` clear-model instrument, correctly found the two axes independent (not subsumed), but
+re-imported the necessity label ("STILL NEEDED... STILL gives `u₀₀₁²`") that §8(m) had retired. pnp's
+render-object battery now RESOLVES §8(m)'s CONTESTED-but-MOOT: on the render's object the degree is
+≤1 either way, so the scope is a **fidelity** choice, full stop.
+
+**THE CORRECT GROUNDING (what the docstring and §9 should say).** The scope `cleared ≤ i` is kept
+because not summing the already-cleared outer-pivot rows is her accumulated-`Q₂'⁻¹` current-chart
+semantics, which keeps `E_J`'s col-0 free of the pivot-row coord — faithful to her normalized `D_J`.
+Unscoped, branch-(ii) would re-inject `w_{i,b}` terms from rows her `Q₂'⁻¹` has already zeroed: a
+FIDELITY defect (the residual block no longer matches `D_J`), even though the degree bound survives.
+
+**THE TWO-AXIS PICTURE SURVIVES — structurally, not by degree.** I still endorse it: the `+γ`-pairing
+is a within-step (INTRA-edge) ideal-close choice; the `cleared ≤ i` scope is keyed to `s.cleared`,
+which is INTER-edge accumulated clearing state. Two independent axes, both kept. Only the scope's WHY
+changes — from `u₀₀₁²`-necessity to `Q₂'⁻¹`/`E_J`-col-0 fidelity. (The `u₀₀₁²` mention is RE-SCOPED,
+not deleted: kept as a quarantined clear-model fact so a future reader does not "simplify" by dropping
+the scope.)
+
+**FOR THE RECORD (pnp's criterion note, adopted):** the Lean `StepInv` (`PrincipalInv:82`) is
+CONTINUOUS-quotient divisibility, not polynomial entry-ideal-equality — the det-1 CoV test is the
+right row-1 criterion and passes. Consistent with §8(h)→(j)→(l)'s criterion corrections; no action.
+
+**FROZEN REPLACEMENT TEXT** (handed to arch-C-4; docstring-only, MonumentAtlas @ 8b0c33476):
+- Site 1 (outer enumeration, ~:911–913) and Site 2 (inline comment, ~:951–955): replace the
+  `u₀₀₁²`-necessity clauses with the fidelity grounding above (see the message to team-lead for the
+  exact strings). Site 2 keeps the two-axis line, re-grounded.
+
+**MERGE IMPACT: NONE in substance** (the def is correct; the scope is kept either way — pnp GREEN, 5
+rows PASS). This is a doc-precision fix so the merge ships precise text, not an erratum queued behind
+it. §11 is this ruling's own erratum on §9; the frozen docstring text is the render-side companion.
