@@ -20836,3 +20836,40 @@ pnp-transport idle/resting. seat-CFF ping (GM ClearedFold finisher liveness) sti
 **Board.** #92 → de-risked to the ONE step, seat-descent spawned. Critical path now: seat-descent
 (the KILL step, L3T3-scale descent) + seat-CFF (GM ClearedFold sorries) + seat-KILL (probe) grinding
 in PARALLEL → all feed #73. The KILL long-pole is now a single scoped step on a green foundation.
+
+## 2026-07-23 (~21:50 UTC) — seat-CFF status resolves the drift-glance (unit complete-and-released, NOT stalled) + the re-open call: KEEP HOLD (producer/consumer topology); board de-staled
+
+seat-CFF replied to the liveness ping: unit COMPLETE-and-released (my earlier release; #88 was
+correct), 2h quiet = post-completion idle, NOT a stall. My ping crossed its exit report — I was
+over-cautious (should have trusted #88's "released"). Calibration: a completed-and-released seat
+idling is expected; re-pinging it reads the release as suspect. Low cost here, but the lesson is
+trust the release record. The payoff of the ping: an authoritative GM-cleared-chain map.
+
+**GM's 7 handoff sorries (authoritative):** 2 CLOSED by CFF (canonNormalizationOf_vanishes via
+cert (i) core+wrapper modulo the #73 hlayerbd = CAPF's proven couplingCoords_decode_layer_le;
+stepInv_child_delta0_cleared). 5 are #73 FRONTIERS: (b) pivot_notMem_couplingCoords_extend ←
+INV CanonicalPivots; δ=1 stepInv_child_delta1_append_cleared ← (b)+CAPR stepMap-pivot-mul; conjA
+case1/case2_cleared ← δ=1; conjB realBranch_multiAffine_step_cleared ← CAPF/CapDescent.
+
+**THE RE-OPEN CALL (CFF asked, given δ-agnostic CanonicalPivots + #95 ruling): KEEP HOLD.** Not a
+reversal — the HOLD is now MORE right, for a sharper reason than the old base-conflict. (i) The 5
+are #73-integration WIRING that CONSUME other lanes' lemmas not on CFF's base (INV/CAPR/CapDescent)
+— CFF could only stub/re-derive = merge-conflict + duplication. (ii) DECISIVE: δ=1 + conjB overlap
+the EXACT multi-layer-descent CapDescent chain seat-descent + seat-KILL are grinding NOW —
+re-opening CFF = two seats on the same chain = conflict + waste. The clean topology is
+PRODUCER/CONSUMER: the CapDescent lane (seat-KILL/seat-descent) PRODUCES the KILL+cap+append lemmas;
+GM ClearedFold conjB/δ=1 CONSUMES them at #73. So the 5 discharge at #73 on the pinned canonical
+base, NOT by CFF grinding a mismatched base.
+
+**Cross-lane value surfaced:** CFF's building blocks (mem_couplingCoords_belowPivotCol =
+ancestor-decomposition of couplingCoords membership + conOracle_stepChild_layer_mono) are exactly
+the accumulated-all-layer-couplingCoords machinery seat-descent's multi-layer descent rides —
+flagged to seat-descent (proof-phase, post-restate) to CONSUME rather than re-derive; banked for #73.
+
+**Board de-staled:** #79 updated to the accurate state (2/7 closed, 5 #73-frontiers, KEEP-HOLD
+ruling, NOT complete — folded into #73). #88 confirmed accurate (CFF complete-and-released).
+
+**Critical path (parallel, clean producer/consumer):** seat-descent (KILL multi-layer descent step,
+PRODUCES the CapDescent lemmas) + seat-KILL (thread-reaches probe + #6/#73 close + consult) → these
+PRODUCE what GM ClearedFold's 5 held frontiers CONSUME at #73. INV/CAPR the other producers. #73 =
+the assembly where GM's 5 frontiers + all lanes land on the pinned canonical base. seat-CFF at rest.
