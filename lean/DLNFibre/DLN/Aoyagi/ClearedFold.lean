@@ -102,6 +102,27 @@ def FoldStepInvAt_cleared (d : Fin (N + 1) → ℕ)
     (∀ j, Deg1SupportedSlot d (sourceClearedResid d p) j C (supportLayerOf p.conState)
       (foldRegion d (canonFlatten d) p))
 
+/-- **The cleared LAST-LAYER (S=L) mixed invariant** (elder 1-bis / #83 — the last-layer cleared route).
+The cleared analogue of `MonumentAtlas.LastLayerInv`, on the cleared trio: the accumulated cleared `StepInv`
+divisibility, AND a per-slot DISJUNCTION — each cleared residual slot is either `Deg1SupportedSlot` (an
+uncleared slot) OR a unit nonvanishing at `0` (a cleared slot). Needed because the last-layer conjunct-A's
+case11 branch (`LastLayerWire.lastLayer_conjA` :145) consumes the boost-center `(D)`, which is FALSE on raw
+`foldResid` — so the last-layer route re-points to the cleared object exactly like the interior route. The
+born-unit value at `0` is UNCHANGED under the clear (`couplingClear d p 0 = 0`, so
+`sourceClearedResid d p j 0 = foldResid d (canonFlatten d) p j 0`), so `GeneratorCleared`'s at-origin datum
+transports trivially. -/
+def LastLayerInv_cleared (d : Fin (N + 1) → ℕ)
+    (C : Finset (Fin (flatDim d))) (p : TreePath d) : Prop :=
+  (∃ q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ,
+    StepInv (coreGen d (canonFlatten d)) (clearedFoldG d p) (clearedFoldB d p)
+      (sourceClearedResid d p) q (foldRegion d (canonFlatten d) p)) ∧
+    (∀ j : Fin (foldNR d p),
+      Deg1SupportedSlot d (sourceClearedResid d p) j C (supportLayerOf p.conState)
+          (foldRegion d (canonFlatten d) p) ∨
+        (∃ unit : (Fin (flatDim d) → ℝ) → ℝ,
+          ContinuousOn unit (foldRegion d (canonFlatten d) p) ∧ unit 0 ≠ 0 ∧
+            ∀ u ∈ foldRegion d (canonFlatten d) p, sourceClearedResid d p j u = unit u))
+
 /-! ### §2 Region / continuity of `couplingClear` (controller delta 1 — STATED, not implicit) -/
 
 /-- **`couplingClear` fixes the origin** — SPECIFY-trivial (`0 k` is `0` on both branches of the `if`). -/
