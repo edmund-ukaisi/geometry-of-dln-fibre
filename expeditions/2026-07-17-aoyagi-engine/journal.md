@@ -18056,3 +18056,20 @@ uncovered coupling = the RE-OPEN trigger); (iii') min-over-charts tied to the fa
 old ∃q-ideal-transport linchpin RE-CAST as a cover/leaf obligation. On pnp's green: the positive
 certificate + the fresh render seat with the frozen contract. The recursion, census-0, payoff all
 untouched through the whole arc.
+
+## 2026-07-24 (~12:40) — §7.6: the bridge is HER OWN p.22 RULE, and its Lean anchor is ALREADY
+LANDED; the #63 audit closes complete (both parts)
+
+§7.6 (banked 6d106920a): Aoyagi p.22 VERBATIM — "candidates for the log canonical threshold …
+ON THIS LOCAL COORDINATE are ½·min{M_{s,k}}" — the RLCT = min over charts IS her framework, and
+Lean already has the atlas (rlctAt_sumSqFam_eq_iInf_charts, LANDED). So the bridge needs
+VERIFICATION + WIRING, not new analytic machinery: B1 cover-completeness (siblings cover
+coupling≠0), B2 chart-faithfulness ({u₀₁₀=0} = ancestor E_J structure, NOT an arbitrary
+hyperplane — the intermediate crux + the re-open trigger), B3 the min-tie. The honest-worry
+reconciliation stated: the shears-only foldResid supplies ideal-equality to ∏C (the VALUE);
+sourceClearedResid = her local coordinate supplies (D)/M_{s,k} (the READ-OFF); min-over-charts
+reconciles them. The elder's bridge role ENDS (stated precisely, paper-grounded); pnp certifies.
+AND: reading pp.19-22 for the bridge CLOSED the C9 audit tail — Case 2 + the M_{s,k} read-off
+match worked.tex ((T-C) confirmed at p.20). #63 COMPLETE, both parts: the Aoyagi-axis coverage
+matrix (NO unplanned gap) + the full-paper image class C0-C13 (ONE erratum total, E-1, fixed).
+The operator's commissioned audit is done.
