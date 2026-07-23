@@ -1089,6 +1089,166 @@ theorem case11_pivot_diag {N : ℕ} {d : Fin (N + 1) → ℕ}
     (hpivpin _ (hcp1.trans hcp2)).symm
   rw [hpiv, Equiv.symm_apply_apply]
 
+/-! ### Corner-in-block — every recorded birth corner sits strictly inside the running-min block
+
+`DivBirthInv`/`CornerValid` bounds a birth corner's column only by the two ADJACENT layer widths
+(`bc.2 < d[bc.1]`, `bc.2 < d[bc.1+1]`); the KILL's case11-δ0 arm needs the stronger RUNNING-MIN bound
+`bc.2 < widthMinUpto d (bc.1+1)` (hence, by antitonicity, `bc.2 < widthMinUpto d bc.1`), which places a
+case11 merge pivot `(bc.1, bc.2, bc.2)` strictly inside layer `bc.1`'s block — off `escapedBelow`. Proved
+by the same construction induction as `DivBirthInv`: a corner is born at a case2/case12 step under the
+threshold guard `cleared < widthMinUpto (layer+1)`, and its value is immutable thereafter (case11/rollover
+carry it verbatim). This is the unbanked strengthening the case11-δ0-AT-at-pivot needs. -/
+
+/-- **The running-min corner bound** (state predicate) — every recorded birth corner's column is below the
+running-min width one layer past its birth. Strengthens `DivBirthInv`'s adjacent-layer `CornerValid`. -/
+def CornerInBlock (d : Fin (N + 1) → ℕ) (s : ConState N) : Prop :=
+  ∀ k : Fin s.numDiv, (s.divBirthCoord k).2 < widthMinUpto d ((s.divBirthCoord k).1 + 1)
+
+/-- Root: `numDiv = 0`, vacuous. -/
+theorem CornerInBlock_conRoot (d : Fin (N + 1) → ℕ) : CornerInBlock d (conRoot : ConState N) :=
+  fun k => k.elim0
+
+/-- Rollover carries the ledger verbatim (`numDiv`/`divBirthCoord` unchanged; `widthMinUpto` is a function
+of `d`), so the bound transfers by defeq. -/
+theorem CornerInBlock_stepRollover (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (h : CornerInBlock d s) : CornerInBlock d s.stepRollover := h
+
+/-- Case-1(1) merge carries the ledger verbatim. -/
+theorem CornerInBlock_stepCase11 (d : Fin (N + 1) → ℕ) (s : ConState N) (i : Fin s.numDiv)
+    (h : CornerInBlock d s) : CornerInBlock d (s.stepCase11 i) := h
+
+/-- Case-1(2)/case-2 birth `Fin.snoc`s the fresh corner `(layer, cleared)`; the append guard
+`cleared < widthMinUpto (layer+1)` gives the new entry's bound, parent entries carry at `castSucc`. -/
+theorem CornerInBlock_stepAppendAdvance (d : Fin (N + 1) → ℕ) (s : ConState N) (e : ℕ)
+    (t₀ : Fin N → ℕ) (hlt : s.cleared < widthMinUpto d (s.layer + 1))
+    (h : CornerInBlock d s) : CornerInBlock d (s.stepAppendAdvance e t₀) := by
+  intro k
+  induction k using Fin.lastCases with
+  | last => simpa [ConState.stepAppendAdvance, Fin.snoc_last] using hlt
+  | cast j => simpa [ConState.stepAppendAdvance, Fin.snoc_castSucc] using h j
+
+/-- **`CornerInBlock` maintenance through `conOracle`'s step-children** — mirrors
+`DivBirthInv_conOracle_stepChildren`'s dispatch, swapping in the per-transition bounds above. The case2
+append supplies its birth guard directly; the case1 append's guard rides `s.cleared < widthMinUpto`. -/
+theorem CornerInBlock_conOracle_stepChildren (d : Fin (N + 1) → ℕ) (s : ConState N)
+    (h : CornerInBlock d s) (c : StepChild d s) (hc : c ∈ (conOracle d s).stepChildren) :
+    CornerInBlock d c.child := by
+  by_cases h1 : N ≤ s.layer
+  · have horacle : conOracle d s = oracleTerminal d s := by unfold conOracle; rw [dif_pos h1]
+    rw [horacle] at hc
+    simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+  · have hlive : s.layer < N := not_le.mp h1
+    by_cases h2 : widthMinUpto d (s.layer + 1) ≤ s.cleared
+    · have horacle : conOracle d s = rolloverDecision d s (le_of_lt (not_le.mp h1)) h2 := by
+        unfold conOracle; rw [dif_neg h1, dif_pos h2]
+      rw [horacle] at hc
+      simp only [rolloverDecision, ConDecision.stepChildren, List.mem_singleton] at hc
+      subst hc
+      exact CornerInBlock_stepRollover d s h
+    · have hlt : s.cleared < widthMinUpto d (s.layer + 1) := not_le.mp h2
+      have hcap : s.cleared < layerCap d := lt_of_lt_of_le hlt (widthMinUpto_le_layerCap d _)
+      rcases hmin : ((List.finRange s.numDiv).filterMap (fun k =>
+          if s.cleared + 1 ≤ s.divTilde k ∧ s.divTilde k + 1 ≤ widthMinUpto d s.layer
+          then some (s.divTilde k) else none)).min? with _ | target
+      · have horacle : conOracle d s = case2Decision d s
+            (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared) hcap := by
+          unfold conOracle; rw [dif_neg h1, dif_neg h2]
+          split <;> simp_all only [reduceCtorEq]
+        rw [horacle] at hc
+        simp only [case2Decision, ConDecision.stepChildren, List.mem_singleton] at hc
+        subst hc
+        exact CornerInBlock_stepAppendAdvance d s _ _ hlt h
+      · rcases hf : chooseMin s target with _ | f
+        · have horacle : conOracle d s = oracleTerminal d s := by
+            unfold conOracle; rw [dif_neg h1, dif_neg h2]
+            split <;> simp_all only [reduceCtorEq, Option.some.injEq]
+            all_goals (try subst_vars)
+            all_goals (try (split <;> simp_all only [reduceCtorEq]))
+          rw [horacle] at hc
+          simp only [oracleTerminal, ConDecision.stepChildren, List.not_mem_nil] at hc
+        · have hgt : s.cleared < target := by
+            obtain ⟨hmemtar, -⟩ := List.min?_eq_some_iff'.mp hmin
+            rw [List.mem_filterMap] at hmemtar
+            obtain ⟨k0, -, hk0⟩ := hmemtar
+            by_cases hc0 : s.cleared + 1 ≤ s.divTilde k0 ∧
+                s.divTilde k0 + 1 ≤ widthMinUpto d s.layer
+            · rw [if_pos hc0] at hk0
+              have hdt : s.divTilde k0 = target := Option.some.inj hk0
+              omega
+            · rw [if_neg hc0] at hk0; exact absurd hk0 (by simp)
+          have horacle : conOracle d s = case1Decision d s f (target - s.cleared)
+              (widthMinUpto d s.layer - s.cleared) (d ⟨s.layer + 1, by omega⟩ - s.cleared)
+              (not_le.mp h1) (by omega) (by rw [(chooseMin_spec s target hf).1]; omega) hcap := by
+            unfold conOracle
+            rw [dif_neg h1, dif_neg h2]
+            split
+            · rename_i target' heq
+              obtain rfl : target' = target := Option.some.inj (heq ▸ hmin)
+              split
+              · rename_i f' hf'
+                obtain rfl : f' = f := Option.some.inj (hf' ▸ hf)
+                rfl
+              · rename_i hf'
+                exact absurd (hf' ▸ hf) (by simp)
+            · rename_i heq
+              exact absurd (heq ▸ hmin) (by simp)
+          rw [horacle] at hc
+          simp only [case1Decision, ConDecision.stepChildren, List.mem_cons,
+            List.not_mem_nil, or_false] at hc
+          rcases hc with rfl | rfl
+          · exact CornerInBlock_stepCase11 d s f h
+          · exact CornerInBlock_stepAppendAdvance d s _ _ hlt h
+
+/-- **`CornerInBlock` holds along a real branch** (`TreePath` induction off `CornerInBlock_conRoot` +
+the maintenance; a step's `conState = sc.child`). -/
+theorem cornerInBlock_of_isRealBranch (d : Fin (N + 1) → ℕ) :
+    ∀ p : TreePath d, p.IsRealBranch (canonFlatten d) → CornerInBlock d p.conState := by
+  intro p
+  induction p with
+  | root => intro _; exact CornerInBlock_conRoot d
+  | step p' c pv cse ns φ ih =>
+    intro hbranch
+    obtain ⟨hrec, ⟨sc, hsc, _, hchild, _, _⟩, _⟩ := hbranch
+    have hp : CornerInBlock d p'.conState := ih hrec
+    exact hchild ▸ CornerInBlock_conOracle_stepChildren d p'.conState hp sc hsc
+
+/-- **A case11 (merge) pivot lies OFF `escapedBelow(parent)`.** Its birth corner `bc` has
+`bc.2 < widthMinUpto d (bc.1+1) ≤ widthMinUpto d bc.1` (`cornerInBlock_of_isRealBranch`) and
+`bc.1 ≤ parent.layer` (`DivBirthInv`), so the diagonal pivot `(bc.1, bc.2, bc.2)` sits inside layer
+`bc.1`'s running-min block, hence off the escaped set (`notMem_escapedBelow_of_col_lt_wmu`). This is the
+case11-δ0 arm's AT-at-pivot fact — the sole consumer of corner-in-block. -/
+theorem case11_pivot_notMem_escapedBelow {N : ℕ} {d : Fin (N + 1) → ℕ}
+    {p' : TreePath d} {c : Finset (Fin (flatDim d))} {pv : Fin (flatDim d)}
+    {ns : ConState N} {φ : (Fin (flatDim d) → ℝ) → Fin (flatDim d) → ℝ}
+    (hbr : (TreePath.step p' c pv StepCase.case11 ns φ).IsRealBranch (canonFlatten d)) :
+    pv ∉ escapedBelow d p'.conState.layer p'.conState.cleared := by
+  obtain ⟨hrec, ⟨sc, hsc, hecase, -, -, hpivpin⟩, -, -⟩ := hbr
+  have hsce : sc.ecase = StepCase.case11 := hecase
+  have hmi : sc.esubst.mergeIdx < p'.conState.numDiv :=
+    conOracle_case11_mergeIdx_lt p'.conState sc hsc hsce
+  obtain ⟨hval, hlayerLE, -, -⟩ := PivotPres.divBirthInv_of_isRealBranch (canonFlatten d) p' hrec
+  set bc := p'.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩ with hbc
+  have hcv := hval ⟨sc.esubst.mergeIdx, hmi⟩
+  have hS : bc.1 < N := hcv.1
+  have hrr : bc.2 < d (⟨bc.1, hS⟩ : Fin N).succ := hcv.2.2 _ rfl
+  have hcc : bc.2 < d (⟨bc.1, hS⟩ : Fin N).castSucc := hcv.2.1 _ rfl
+  have hcp1 : canonPivotOf d p'.conState sc = cornerToFlat d bc.1 bc.2 := by
+    simp only [canonPivotOf, hsce]; rw [dif_pos hmi, ← hbc]
+  have hcp2 : cornerToFlat d bc.1 bc.2
+      = some (tupIdxEquiv d ⟨⟨⟨bc.1, hS⟩, ⟨bc.2, hrr⟩⟩, ⟨bc.2, hcc⟩⟩) := by
+    simp only [cornerToFlat]; rw [dif_pos hS, dif_pos hrr, dif_pos hcc]
+  have hpiv : pv = tupIdxEquiv d ⟨⟨⟨bc.1, hS⟩, ⟨bc.2, hrr⟩⟩, ⟨bc.2, hcc⟩⟩ :=
+    (hpivpin _ (hcp1.trans hcp2)).symm
+  have hpvlay : (((tupIdxEquiv d).symm pv).1.1 : ℕ) = bc.1 := by rw [hpiv, Equiv.symm_apply_apply]
+  have hpvcol : (((tupIdxEquiv d).symm pv).2 : ℕ) = bc.2 := by rw [hpiv, Equiv.symm_apply_apply]
+  have hcib : bc.2 < widthMinUpto d (bc.1 + 1) := by
+    have := cornerInBlock_of_isRealBranch d p' hrec ⟨sc.esubst.mergeIdx, hmi⟩
+    rwa [← hbc] at this
+  have hcol : bc.2 < widthMinUpto d bc.1 :=
+    lt_of_lt_of_le hcib (widthMinUpto_mono d (Nat.le_succ bc.1))
+  have hlay : bc.1 ≤ p'.conState.layer := hlayerLE ⟨sc.esubst.mergeIdx, hmi⟩
+  exact notMem_escapedBelow_of_col_lt_wmu hlay hpvlay (by rw [hpvcol]; exact hcol)
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
@@ -1148,7 +1308,243 @@ theorem sourceClearedResid_ignoresEscapedBelow (d : Fin (N + 1) → ℕ) (hpos :
     · -- NON-TERMINAL: the reduction lemma over `escapedBelow(parent)` + the per-arm `escapedBelow` transition.
       have hredEB : IgnoresCoords (sourceClearedResid d (TreePath.step p' c pv cse ns φ) i)
           (escapedBelow d p'.conState.layer p'.conState.cleared) Set.univ := by
-        sorry
+        -- The reduction: the child residual ignores the PARENT's escapedBelow. Write it as
+        -- `(sourceClearedResid d p') ∘ σ` where σ = step-map ∘ couplingClear(child); the FP
+        -- (`couplingClear p'` fixes σ, since σ vanishes on `couplingCoords p'`) bridges
+        -- `foldResid p' → sourceClearedResid p'`, and the AT (σ preserves off-EB agreement) feeds the IH.
+        have hNReq : foldNR d (TreePath.step p' c pv cse ns φ) = foldNR d p' := by
+          show (if N ≤ ns.layer then 1 else foldNR d p') = foldNR d p'; rw [if_neg hnt]
+        have hmono : p'.conState.layer ≤ ns.layer := by
+          rw [← hchild]
+          rcases htrans with ⟨_, _, hL, _⟩ | ⟨_, hL, _⟩ | ⟨_, hL, _⟩ <;> omega
+        have hlayerN : p'.conState.layer < N := lt_of_le_of_lt hmono (not_le.mp hnt)
+        have hIH := ih hrec hcanonP (Fin.cast hNReq i)
+        rw [ignoresCoords_univ_iff_agree] at hIH ⊢
+        intro u v hag
+        -- SHEAR-VANISH on couplings (the FP shear-half): Sfp at case2/12, `id` at case11/rollover.
+        have hSV : ∀ (w : Fin (flatDim d) → ℝ) (k : Fin (flatDim d)), k ∈ couplingCoords d p' →
+            edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) w) k = 0 := by
+          intro w k hk
+          have hkchild : k ∈ couplingCoords d (TreePath.step p' c pv cse ns φ) :=
+            couplingCoords_subset_step d p' c pv cse ns φ hk
+          have hccz : couplingClear d (TreePath.step p' c pv cse ns φ) w k = 0 := by
+            show (if k ∈ couplingCoords d (TreePath.step p' c pv cse ns φ) then (0:ℝ) else w k) = 0
+            rw [if_pos hkchild]
+          cases cse with
+          | case11 =>
+              show couplingClear d (TreePath.step p' c pv StepCase.case11 ns φ) w k = 0; exact hccz
+          | rollover =>
+              show couplingClear d (TreePath.step p' c pv StepCase.rollover ns φ) w k = 0; exact hccz
+          | case12 =>
+              obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+              show couplingClear d (TreePath.step p' c pv StepCase.case12 ns φ) w k
+                  + φ (couplingClear d (TreePath.step p' c pv StepCase.case12 ns φ) w) k = 0
+              have hsfp := canonNormalizationOf_vanishes_on_couplings p'
+                (TreePath.step p' c pv StepCase.case12 ns φ) hcanonP hrec pv
+                (couplingCoords_subset_step d p' c pv StepCase.case12 ns φ)
+                (fun x hx => Finset.mem_union.mpr (Or.inr hx)) hpl hpr hpc w hk
+              rw [← hvpin] at hsfp
+              rw [hccz, zero_add]; exact hsfp
+          | case2 =>
+              obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+              show couplingClear d (TreePath.step p' c pv StepCase.case2 ns φ) w k
+                  + φ (couplingClear d (TreePath.step p' c pv StepCase.case2 ns φ) w) k = 0
+              have hsfp := canonNormalizationOf_vanishes_on_couplings p'
+                (TreePath.step p' c pv StepCase.case2 ns φ) hcanonP hrec pv
+                (couplingCoords_subset_step d p' c pv StepCase.case2 ns φ)
+                (fun x hx => Finset.mem_union.mpr (Or.inr hx)) hpl hpr hpc w hk
+              rw [← hvpin] at hsfp
+              rw [hccz, zero_add]; exact hsfp
+        -- SHEAR-AGREE off escapedBelow(parent) on cleared inputs (the AT shear-half): Sat at case2/12.
+        have hWA : ∀ s : Fin (flatDim d),
+            s ∉ escapedBelow d p'.conState.layer p'.conState.cleared →
+            edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) u) s
+              = edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) v) s := by
+          intro s hs
+          have hccag : couplingClear d (TreePath.step p' c pv cse ns φ) u s
+              = couplingClear d (TreePath.step p' c pv cse ns φ) v s :=
+            couplingClear_agree_of_agree d (TreePath.step p' c pv cse ns φ)
+              (escapedBelow d p'.conState.layer p'.conState.cleared) hag s hs
+          cases cse with
+          | case11 =>
+              show couplingClear d (TreePath.step p' c pv StepCase.case11 ns φ) u s
+                  = couplingClear d (TreePath.step p' c pv StepCase.case11 ns φ) v s
+              exact hccag
+          | rollover =>
+              show couplingClear d (TreePath.step p' c pv StepCase.rollover ns φ) u s
+                  = couplingClear d (TreePath.step p' c pv StepCase.rollover ns φ) v s
+              exact hccag
+          | case12 =>
+              obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+              have hclt := conOracle_case2or12_cleared_lt p'.conState sc hsc (Or.inr hecase)
+              show couplingClear d (TreePath.step p' c pv StepCase.case12 ns φ) u s
+                  + φ (couplingClear d (TreePath.step p' c pv StepCase.case12 ns φ) u) s
+                = couplingClear d (TreePath.step p' c pv StepCase.case12 ns φ) v s
+                  + φ (couplingClear d (TreePath.step p' c pv StepCase.case12 ns φ) v) s
+              have hsat := canonNormalizationOf_agree_on_cleared p'
+                (TreePath.step p' c pv StepCase.case12 ns φ) hcanonP hrec pv hlayerN
+                (fun x hx => Finset.mem_union.mpr (Or.inr hx))
+                (couplingCoords_subset_step d p' c pv StepCase.case12 ns φ) hpr hpc hclt u v
+                (fun z hz => couplingClear_agree_of_agree d
+                  (TreePath.step p' c pv StepCase.case12 ns φ)
+                  (escapedBelow d p'.conState.layer p'.conState.cleared) hag z hz) hs
+              rw [← hvpin] at hsat
+              rw [hccag, hsat]
+          | case2 =>
+              obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+              have hclt := conOracle_case2or12_cleared_lt p'.conState sc hsc (Or.inl hecase)
+              show couplingClear d (TreePath.step p' c pv StepCase.case2 ns φ) u s
+                  + φ (couplingClear d (TreePath.step p' c pv StepCase.case2 ns φ) u) s
+                = couplingClear d (TreePath.step p' c pv StepCase.case2 ns φ) v s
+                  + φ (couplingClear d (TreePath.step p' c pv StepCase.case2 ns φ) v) s
+              have hsat := canonNormalizationOf_agree_on_cleared p'
+                (TreePath.step p' c pv StepCase.case2 ns φ) hcanonP hrec pv hlayerN
+                (fun x hx => Finset.mem_union.mpr (Or.inr hx))
+                (couplingCoords_subset_step d p' c pv StepCase.case2 ns φ) hpr hpc hclt u v
+                (fun z hz => couplingClear_agree_of_agree d
+                  (TreePath.step p' c pv StepCase.case2 ns φ)
+                  (escapedBelow d p'.conState.layer p'.conState.cleared) hag z hz) hs
+              rw [← hvpin] at hsat
+              rw [hccag, hsat]
+        -- The pivot is OFF escapedBelow(parent) (case11 = corner-in-block; case2/12 = fresh-corner
+        -- in-block; rollover = empty center, no pivot read).
+        have hpvT : pv ∉ escapedBelow d p'.conState.layer p'.conState.cleared
+            ∨ c = (∅ : Finset (Fin (flatDim d))) := by
+          cases cse with
+          | rollover => right; rw [hcenter]; simp only [canonCenterOf, hecase]
+          | case11 =>
+              exact Or.inl (case11_pivot_notMem_escapedBelow
+                ⟨hrec, ⟨sc, hsc, hecase, hchild, hcenter, hpivpin⟩, hwcRaw, hvpin⟩)
+          | case12 =>
+              refine Or.inl ?_
+              obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+              have hclt := conOracle_case2or12_cleared_lt p'.conState sc hsc (Or.inr hecase)
+              refine notMem_escapedBelow_of_col_lt_wmu (le_refl _) hpl ?_
+              rw [hpc]; exact lt_of_lt_of_le hclt (widthMinUpto_mono d (Nat.le_succ _))
+          | case2 =>
+              refine Or.inl ?_
+              obtain ⟨hpl, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+              have hclt := conOracle_case2or12_cleared_lt p'.conState sc hsc (Or.inl hecase)
+              refine notMem_escapedBelow_of_col_lt_wmu (le_refl _) hpl ?_
+              rw [hpc]; exact lt_of_lt_of_le hclt (widthMinUpto_mono d (Nat.le_succ _))
+        by_cases hδ : edgeδ d p' = true
+        · -- δ=1 arm: the strict-transform quotient. The pivot slot is the constant `1` (no pivot read).
+          have hstep : ∀ w : Fin (flatDim d) → ℝ,
+              foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i w
+                = foldResid d (canonFlatten d) p' (Fin.cast hNReq i)
+                    (fun k => blockBlowupCoordQuot pv k (edgeShearRaw d cse φ w)) := by
+            intro w
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i w = _
+            rw [foldResid, dif_neg hnt, if_pos hδ]; rfl
+          have hdiag : (((tupIdxEquiv d).symm pv).1.2 : ℕ) = (((tupIdxEquiv d).symm pv).2 : ℕ) := by
+            cases cse with
+            | case11 =>
+                exact case11_pivot_diag
+                  ⟨hrec, ⟨sc, hsc, hecase, hchild, hcenter, hpivpin⟩, hwcRaw, hvpin⟩
+            | case12 => obtain ⟨_, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv; rw [hpr, hpc]
+            | case2 => obtain ⟨_, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv; rw [hpr, hpc]
+            | rollover =>
+                exfalso
+                have hcl0 : p'.conState.cleared = 0 := by simpa [edgeδ] using hδ
+                rcases htrans with ⟨_, hthr, _, _⟩ | ⟨he2, _, _⟩ | ⟨he11, _, _⟩
+                · have := widthMinUpto_pos hpos (p'.conState.layer + 1); omega
+                · rcases he2 with h | h <;> exact absurd (hecase.symm.trans h) (by decide)
+                · exact absurd (hecase.symm.trans he11) (by decide)
+          have hFP : ∀ w : Fin (flatDim d) → ℝ,
+              couplingClear d p' (fun k => blockBlowupCoordQuot pv k
+                  (edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) w)))
+                = (fun k => blockBlowupCoordQuot pv k
+                  (edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) w))) := by
+            intro w; funext k
+            show (if k ∈ couplingCoords d p' then (0:ℝ)
+                else blockBlowupCoordQuot pv k
+                  (edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) w)))
+              = blockBlowupCoordQuot pv k
+                  (edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) w))
+            by_cases hkc : k ∈ couplingCoords d p'
+            · rw [if_pos hkc]
+              have hkpv : k ≠ pv := by
+                intro heq
+                have hlt := couplingCoords_row_gt_col p' hcanonP hkc
+                rw [heq] at hlt; omega
+              simp only [blockBlowupCoordQuot, if_neg hkpv]
+              exact (hSV w k hkc).symm
+            · rw [if_neg hkc]
+          have hfun2 : ∀ w : Fin (flatDim d) → ℝ,
+              sourceClearedResid d (TreePath.step p' c pv cse ns φ) i w
+                = sourceClearedResid d p' (Fin.cast hNReq i)
+                    (fun k => blockBlowupCoordQuot pv k
+                      (edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) w))) := by
+            intro w
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i
+                  (couplingClear d (TreePath.step p' c pv cse ns φ) w)
+                = foldResid d (canonFlatten d) p' (Fin.cast hNReq i)
+                    (couplingClear d p' (fun k => blockBlowupCoordQuot pv k
+                      (edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) w))))
+            rw [hstep (couplingClear d (TreePath.step p' c pv cse ns φ) w), hFP w]
+          rw [hfun2 u, hfun2 v]
+          apply hIH
+          intro s hs
+          show (if s = pv then (1:ℝ)
+                else edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) u) s)
+            = (if s = pv then (1:ℝ)
+                else edgeShearRaw d cse φ (couplingClear d (TreePath.step p' c pv cse ns φ) v) s)
+          by_cases hspv : s = pv
+          · rw [if_pos hspv, if_pos hspv]
+          · rw [if_neg hspv, if_neg hspv]; exact hWA s hs
+        · -- δ=0 arm: the full block blow-up. The row-block slots read the pivot factor → need pv∉EB.
+          have hδ0 : edgeδ d p' = false := by
+            cases h : edgeδ d p' with
+            | false => rfl
+            | true => exact absurd h hδ
+          have hstep : ∀ w : Fin (flatDim d) → ℝ,
+              foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i w
+                = foldResid d (canonFlatten d) p' (Fin.cast hNReq i)
+                    (stepMapRaw d cse c pv φ w) := by
+            intro w
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i w = _
+            rw [foldResid, dif_neg hnt, if_neg (by simp [hδ0])]; rfl
+          have hFP : ∀ w : Fin (flatDim d) → ℝ,
+              couplingClear d p' (stepMapRaw d cse c pv φ
+                  (couplingClear d (TreePath.step p' c pv cse ns φ) w))
+                = stepMapRaw d cse c pv φ (couplingClear d (TreePath.step p' c pv cse ns φ) w) := by
+            intro w; funext k
+            show (if k ∈ couplingCoords d p' then (0:ℝ)
+                else stepMapRaw d cse c pv φ (couplingClear d (TreePath.step p' c pv cse ns φ) w) k)
+              = stepMapRaw d cse c pv φ (couplingClear d (TreePath.step p' c pv cse ns φ) w) k
+            by_cases hkc : k ∈ couplingCoords d p'
+            · rw [if_pos hkc]
+              simp only [stepMapRaw, Function.comp_apply, blockBlowupMap]
+              split_ifs with h1 h2
+              · exact h1 ▸ (hSV w k hkc).symm
+              · rw [hSV w k hkc, mul_zero]
+              · exact (hSV w k hkc).symm
+            · rw [if_neg hkc]
+          have hfun2 : ∀ w : Fin (flatDim d) → ℝ,
+              sourceClearedResid d (TreePath.step p' c pv cse ns φ) i w
+                = sourceClearedResid d p' (Fin.cast hNReq i)
+                    (stepMapRaw d cse c pv φ (couplingClear d (TreePath.step p' c pv cse ns φ) w)) := by
+            intro w
+            show foldResid d (canonFlatten d) (TreePath.step p' c pv cse ns φ) i
+                  (couplingClear d (TreePath.step p' c pv cse ns φ) w)
+                = foldResid d (canonFlatten d) p' (Fin.cast hNReq i)
+                    (couplingClear d p' (stepMapRaw d cse c pv φ
+                      (couplingClear d (TreePath.step p' c pv cse ns φ) w)))
+            rw [hstep (couplingClear d (TreePath.step p' c pv cse ns φ) w), hFP w]
+          rw [hfun2 u, hfun2 v]
+          apply hIH
+          intro s hs
+          simp only [stepMapRaw, Function.comp_apply, blockBlowupMap]
+          by_cases hspv : s = pv
+          · rw [if_pos hspv, if_pos hspv]; exact hspv ▸ hWA s hs
+          · rw [if_neg hspv, if_neg hspv]
+            by_cases hsc : s ∈ c
+            · rw [if_pos hsc, if_pos hsc, hWA s hs]
+              congr 1
+              rcases hpvT with hpvnT | hcE
+              · exact hWA pv hpvnT
+              · rw [hcE] at hsc; exact absurd hsc (Finset.notMem_empty s)
+            · rw [if_neg hsc, if_neg hsc]; exact hWA s hs
       rcases htrans with ⟨hcaseR, hthr, hLR, hCR⟩ | ⟨hcase2, hL2, hC2⟩ | ⟨hcase11, hL11, hC11⟩
       · -- ROLLOVER: `escapedBelow(S+1, 0) = escapedBelow(S, c)` (`c ≥ wmu(S+1)` — the layer exhausts).
         have hnsL : ns.layer = p'.conState.layer + 1 := hchild ▸ hLR
