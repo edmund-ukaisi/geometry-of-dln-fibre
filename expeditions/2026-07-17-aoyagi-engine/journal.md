@@ -18509,3 +18509,15 @@ general-with-witness, pnp on-call); the literal + the mirrors (fine). Obligation
 confirmed as my raw-only MonumentAtlas edit. Census: net-new 4 tracked, all named, two proofs
 clean. STEP-3 grinds NOW (the crossing resolved — the (b)-statement never gated the induction;
 a ruled shape change = a signature line on a sorried statement, zero proof impact).
+
+## 2026-07-24 (~22:25) — the (b)-shapes ruled in one pass: FULL slot (conjunct-2 descends via
+degree-non-increase, reusing the homogeneity twin) + the selector PINNED to rollover
+(consumer-correctness: case11-δ=1 fresh children route through boostReady, not this descent);
+3+4 confirmed as drafted
+
+The elder's selector reasoning is the precision principle at its best: the broad cleared=0 form
+wasn't merely less clean — it over-broadened into a CONSUMER-LESS lane (children that route
+elsewhere), demanding witnesses nobody needs. Faithful-narrow = the only consumer's exact
+instance. Relayed to CAPR (one hypothesis line, strictly-safe narrowing, no re-read; the
+induction stays the priority). The full statement set is now shape-final; the integration base
+re-freezes at CAPR's next push.
