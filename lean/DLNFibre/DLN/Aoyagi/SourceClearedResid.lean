@@ -352,6 +352,20 @@ noncomputable def bMon {D : ℕ} (m : Fin D →₀ ℕ) (u : Fin D → ℝ) : �
 @[simp] theorem bMon_zero {D : ℕ} (u : Fin D → ℝ) : bMon (0 : Fin D →₀ ℕ) u = 1 := by
   simp [bMon]
 
+/-- **`bMon m` is continuous** — a finite product of the continuous monomials `(u k)^(m k)`. -/
+theorem continuous_bMon {D : ℕ} (m : Fin D →₀ ℕ) : Continuous (bMon m) :=
+  continuous_finset_prod m.support (fun k _ => (continuous_apply k).pow (m k))
+
+/-- **`bMon m` ignores every coordinate on which `m` vanishes** — updating a coord `x` with `m x = 0`
+leaves the monomial unchanged (`x ∉ m.support`, so it is not a factor). -/
+theorem bMon_ignoresCoords {D : ℕ} (m : Fin D →₀ ℕ) (X : Finset (Fin D)) (V : Set (Fin D → ℝ))
+    (h : ∀ x ∈ X, m x = 0) : IgnoresCoords (bMon m) X V := by
+  intro w _hw x hx t
+  simp only [bMon, Finsupp.prod]
+  refine Finset.prod_congr rfl (fun k hk => ?_)
+  have hkx : k ≠ x := fun heq => (Finsupp.mem_support_iff.mp hk) (heq ▸ h x hx)
+  rw [Function.update_of_ne hkx t w]
+
 /-- **The b-ledger invariant `SourceClearedInv`** (certificate §4; hybrid ∃-bound multiset, pnp Q2-confirmed
 + elder-delta will bless the boost conjunct's shape). Per slot: an exponent ledger `μ` (per support coord)
 and clean coefficients `q`, with the source-cleared residual `= ∑_{i∈supportAt} bMon(μ i)·q i·u i`, where
@@ -616,6 +630,35 @@ theorem accumulatedPivots_notMem_supportAt (d : Fin (N + 1) → ℕ) (p : TreePa
     simp only [layerCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
     exact ⟨q, hq.1, hqc⟩
   omega
+
+/-- **The reused pivot at a case11 real branch is an accumulated exceptional** — `ed.pivot = canonPivotOf
+= cornerToFlat (divBirthCoord mergeIdx)`, a ledger birth-corner (valid via `DivBirthInv` clause-1), so
+`∈ accumulatedPivots`. The read-off's `e₂ ∉ part` rides this (+ `accumulatedPivots_notMem_supportAt`). -/
+theorem case11_pivot_mem_accumulatedPivots (d : Fin (N + 1) → ℕ)
+    {p : TreePath d} (ed : TreeEdge d p) (hc11 : ed.case = StepCase.case11)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) :
+    ed.pivot ∈ accumulatedPivots d p := by
+  obtain ⟨hrec, ⟨sc, hsc, hecase, _hchild, _hcenter, hpivpin⟩, _hwc, _hvpin⟩ := hbranch
+  have hsce : sc.ecase = StepCase.case11 := hecase.trans hc11
+  simp only [hc11] at hpivpin
+  have hmi : sc.esubst.mergeIdx < p.conState.numDiv := (conOracle_case11_data d p.conState sc hsc hsce).1
+  have hcv := (PivotPres.divBirthInv_of_isRealBranch (canonFlatten d) p hrec).1 ⟨sc.esubst.mergeIdx, hmi⟩
+  have hS : (p.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1 < N := hcv.1
+  have hrr : (p.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).2
+      < d (⟨(p.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1, hS⟩ : Fin N).succ :=
+    hcv.2.2 _ rfl
+  have hcc : (p.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).2
+      < d (⟨(p.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1, hS⟩ : Fin N).castSucc :=
+    hcv.2.1 _ rfl
+  have hcf : cornerToFlat d (p.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).1
+      (p.conState.divBirthCoord ⟨sc.esubst.mergeIdx, hmi⟩).2
+      = some (tupIdxEquiv d ⟨⟨⟨_, hS⟩, ⟨_, hrr⟩⟩, ⟨_, hcc⟩⟩) := by
+    simp only [cornerToFlat]; rw [dif_pos hS, dif_pos hrr, dif_pos hcc]
+  have hcpsome : canonPivotOf d p.conState sc = some (tupIdxEquiv d ⟨⟨⟨_, hS⟩, ⟨_, hrr⟩⟩, ⟨_, hcc⟩⟩) := by
+    simp only [canonPivotOf, hsce]; rw [dif_pos hmi]; exact hcf
+  have hpiv : ed.pivot = tupIdxEquiv d ⟨⟨⟨_, hS⟩, ⟨_, hrr⟩⟩, ⟨_, hcc⟩⟩ := (hpivpin _ hcpsome).symm
+  rw [mem_accumulatedPivots]
+  exact ⟨⟨sc.esubst.mergeIdx, hmi⟩, by rw [hpiv]; exact hcf⟩
 
 /-- **ROOT base of the b-ledger invariant** (§4 (i), the induction's root case, factored standalone).
 At `.root` there are no exceptionals: `μ = 0` (`bMon 0 = 1`), `accumulatedPivots = ∅` so conjunct-3 is
