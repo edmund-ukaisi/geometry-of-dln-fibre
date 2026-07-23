@@ -901,3 +901,63 @@ right row-1 criterion and passes. Consistent with §8(h)→(j)→(l)'s criterion
 **MERGE IMPACT: NONE in substance** (the def is correct; the scope is kept either way — pnp GREEN, 5
 rows PASS). This is a doc-precision fix so the merge ships precise text, not an erratum queued behind
 it. §11 is this ruling's own erratum on §9; the frozen docstring text is the render-side companion.
+
+---
+
+## §12 — SUPPORT `J=0` WIDENING (the 17th catch; pnp-cap 19868e890/-CAP; amends DEF-EDIT-1/§1)
+
+**FINDING (statement-class, exact-def sympy + Codex xhigh, verified):** `supportAt(S, 0) = blockCoords d S`
+is UNDER-TIGHT for `S ≥ 1`. A real fresh-rollover edge has `center = ∅`, `shear = id` — the step map is the
+IDENTITY — so the child residual EQUALS the parent's and reads the FULL `layerCoords d S`, NOT the
+running-min-capped `blockCoords d S`. On width-INCREASING `d = (2,3,2,2)` the witness monomial
+`2·u₀₂₀·u₁₀₂·u₂₀₀` carries the out-of-cap `u₁₀₂` (layer-1 col 2, beyond `widthMinUpto 1`), so
+`Deg1SupportedSlot` over `blockCoords 1` FAILS — `realBranch_appendResidDescent`'s obligation (b) is FALSE
+as rendered. **SAME class as the tenth catch:** DEF-EDIT-1 widened the `J ≥ 1` (descended) branch to
+`layerCoords d (S+1)`, but the `J = 0`-fresh branch never got the parallel treatment. (Signal was already in
+pnp-transport's empirical-invariant-table §2 row 3.)
+
+**PAPER-FIRST (the §7 (B)/(D) split, replayed at the support level):** her `D_J` at `J=0` has the CAPPED
+dims `M(S)×M^(S+1)` — but that cap describes the NORMAL FORM (the cleared representative / the blown-up
+center), while the raw shears-only fold's function-support reads RAW width. So the cap belongs to the CLEARED
+object (`canonCenterOf`, running-min), NOT to `supportAt` (the raw fold's support). Same object-split as §7:
+raw fold reads wider; the cleared center carries the cap.
+
+### RULING
+
+**(1) THE `supportAt` FIX — drop the cap from the `J=0` branch:** `if J = 0 then blockCoords d S` →
+`if J = 0 then layerCoords d S`. Since `blockCoords d 0 = layerCoords d 0` (root cap trivial:
+`widthMinUpto d 0` = the full layer-0 width), this is safe at `S=0` and widens only `S ≥ 1` (where the
+running-min bites). Net: **`supportAt` is now uncapped `layerCoords` throughout** (`J=0`: `layerCoords d S`;
+`J≥1`: `layerCoords d (S+1)`) — the parallel completion of DEF-EDIT-1. The `blockCoords`/running-min cap
+lives ONLY on `canonCenterOf` (UNCHANGED), where the codim/`M_{s,k}` bookkeeping reads it. This is fix (ii)
+(cap off `supportAt` entirely, on the cleared center) — it coincides with fix (i) at the root and is the
+clean object-split, dovetailing with §7–§7.8.
+
+**(2) HYPOTHESIS-SHAPE (Finding 1 — proof-interface):** `hslot` is INSUFFICIENT for both obligations (the
+δ=1 pivot-quotient constant; the rollover identity). Per the idiom ruling's **derive-class**,
+`realBranch_appendResidDescent` is a DERIVATION: its proof OPENS the concrete recursion (the b-ledger
+invariant via `hbranch` + `canonFlatten`); it does NOT consume `hslot`. **Keep `hbranch`** (the derivation's
+input); the statement is unchanged; **correct the docstring's "consume `hslot`" sketch to the derivation
+route** (consistent with §7.7/§7.8 — the derivation lives at `canonFlatten`, opens the recursion).
+
+**(3) CROSS-IMPACT SCOPE (the blast radius):**
+- **Widen with `supportAt`** (all quantify over it at `J=0`/`S≥1`): `FoldStepInvAt`, the capstone `INV(p)`,
+  every `Deg1SupportedSlot` instance, `realBranch_appendResidDescent` obligation (b), and
+  **`MergeBoostSplit`'s partition** (`part = supportAt ∩ ed.center`, `extra = supportAt ∖ ed.center` — the
+  `extra` WIDENS on width-increasing `d`).
+- **UNCHANGED:** `canonCenterOf` (keeps the running-min cap — the codim/`M_{s,k}` object); the payoff; `λ`.
+- **`λ` NOT at risk:** the raw fold's WIDER support is the harmless direction (more coords, not fewer);
+  obligation (a) is true-but-under-hypothesized (verified on the real object) — the frontier SURVIVES.
+- **CAPSTONE RE-VERIFICATION (the one live cross-impact on the §7 arc):** `MergeBoostSplit`'s `extra` widens
+  (`layerCoords ∖ center ⊋ blockCoords ∖ center`), so the capstone must re-confirm the WIDER `extra` factors
+  through `e₂` on the cleared object. Expected to hold (the out-of-cap coords are the raw `D_J` the b-ledger
+  already handles), COVERED by pnp adding the width-increasing `(2,3,2,2)` witness to the capstone verified
+  set (all prior witnesses were width-non-increasing — the axis was never exercised). **RE-OPEN trigger:** if
+  the out-of-cap coords do NOT factor through `e₂` on that witness, the capstone `extra`-partition needs
+  re-adjudication (I fire Codex).
+- **B1 (cover completeness)** explicitly verified at the width-increasing witness before the certificate
+  (already pnp's task).
+
+**MERGE POSTURE:** sound and paper-faithful (the raw support IS `layerCoords`; the cap is the center's).
+CAPR's SPECIFY freeze lifts on this ruling; pnp adds the `(2,3,2,2)` width-increasing witness (capstone
+`extra` + B1). Nothing about `λ` is at risk.
