@@ -17404,3 +17404,18 @@ FALSE ∀e statement (β-death). Codex on the L2 route fires in BACKGROUND (xhig
 cap preempted). WATCH-ITEM: the seat idles awaiting its own background task — same lost-wake class;
 if its transcript is frozen well past the Codex runtime next tick, nudge with the check-your-
 background-output pattern.
+
+## 2026-07-23 (~20:05) — L3T3's rollover catch RULED: 3-way δ0 dispatch, rollover through the CAP frontier (no new frontier)
+
+The asymmetric supportAt widen (J≥1 layerCoords / J=0 blockCoords) breaks descent_delta0's uniform
+hCSchild at ROLLOVER: the fresh-layer child's support claim is a TIGHTENING (layerCoords → the
+width-CAPPED blockCoords) across an identity pullback — not derivable from the parent slot. The
+seat's diagnosis is exactly right: that tightening IS the cap claim, which is the mathematical debt
+realBranch_appendResidDescent was restated to own (task #9, "cap = named frontier sorry").
+Paper-first: her invariant (:562-577) claims the D_J block shape at EVERY stage incl. fresh layers
+(J=0 = the block at the rollover boundary) — the frontier is that invariant-component's Lean home.
+RULED: 3-way dispatch (case12/case2 → frontier; case11 → clean; rollover → the SAME frontier), with
+3 guards: (1) statement-coverage check — if the frontier doesn't instantiate to rollover, restate
+OPENLY with old/new verbatim; (2) frontier docstring enumerates BOTH debts (descended-layer support
++ fresh-layer cap-confinement); (3) forced-axiom audit still shows the single frontier root.
+Restate-gate tally: 7-for-7 (the silent alternative was a quietly weakened rollover case).
