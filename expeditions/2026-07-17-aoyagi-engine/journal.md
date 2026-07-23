@@ -16865,3 +16865,25 @@ The elder's reconciliation (accepted verdict; the direction loop closed):
 The record's meta-line: the def-fidelity hierarchy is now fully internalized at every level —
 exact-instrument-on-the-real-object > hand-derivation > intuition — applied by the elder to
 its OWN council consult without flinching. seat-L4D's StepInv-scope read is the last gate.
+
+## 2026-07-23 (~10:35) — §7 FORMALLY FIRES: both gates resolved (ALL-ENTRIES airtight; SURVIVES authoritative, 3 outs closed); F₂ census-0 decorrelated-confirmed; the elder rules
+
+The batch that resolves everything (banked d264f2e39 + 86355bc91, both re-ran exit-0):
+(1) THE FORK = ALL-ENTRIES (seat-L4D, airtight): StepInv sums over ALL resid j; foldNR
+full-width at every non-terminal step (the "absorbed into foldB" docstring = the scalar
+accumulating, NOT width shrinking); case1_conjA consumes full-width. D_J-only escape DEAD.
+(2) THE AUTHORITATIVE SURVIVES (pnp, verbatim formulas, all witnesses): three outs closed —
+branch-(ii) both signs; REAL foldB closed ANALYTICALLY (scalar b-weighting is membership-
+neutral: b·x∈⟨b·G⟩ ⟺ x∈⟨G⟩); δ=1 divisibility fails. AND the clean separation at last: the
+two-row battery PASSES on the same formulas — pure-zero breaks ONLY the parent-child IDEAL;
+the child FORM/boostReady was always fine. Two properties, two verdicts, no conflation left.
+(3) F₂ CENSUS-0 CONFIRMED decorrelated (seat-L4D's script, independent of pnp's rows A/D):
+the full-faithful F₂ preserves the product IDENTICALLY ⟹ StepInv close by EQUALITY ⟹ the +1
+core DISSOLVES. Placement det-1/in-shear; r4Clear discarded; the 1/det wrinkle benign.
+(4) THE SIGN: both instruments concur — F₂ supersedes §8(m); +γ PAIRED; −γ+scope retired as
+the pure-zero-regime patch. ONE re-check opened (pnp charged): boostReady/block-form under
+the +γ-paired regime + the scope-subsumption question (incl. inter-edge reads under pairing).
+
+§7 HAS FIRED; the elder rules the F₂ adoption with every condition's datum in hand; then the
+fresh arch-C invoke renders the F₂ form. The wall's route unchanged (boostReady from the
+clean block — the F₂ regime produces it via her actual mechanism).
