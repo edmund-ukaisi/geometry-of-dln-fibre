@@ -19058,3 +19058,23 @@ paragraph before my acceptance arrived); contents align, no reconciliation neede
 before the proofs grind: pnp's O2 grown-set-commutation confirm + the elder's 4-item delta
 (now including the provenance ratification). All four fronts otherwise working: INV (leaves),
 CAPF (read-in → SPECIFY), pnp (O2), elder (delta queue).
+
+## 2026-07-23 (~15:55) — THE 19th CATCH (seat-INV, first read): accumulatedPivots collects stored
+FREE pivots, not ledger corners — the containment leg-1 unprovable as defined; verified + routed
+
+seat-INV, within its first hour, surfaced a def-content mismatch on the containment leaf:
+accumulatedPivots (SourceClearedResid.lean:110) collects the STORED path pivot per blow-up step,
+but IsRealBranch's case12/case2 arm makes that pivot a FREE fan choice within canonCenterOf — its
+own docstring says "fresh corners lie in NO earlier ledger" — while case11's e₂ is the DIAGONAL
+birth corner from the STATE ledger (cornerToFlat ∘ divBirthCoord). On arbitrary real branches the
+birth edge's free pivot ≠ the diagonal corner, so e₂ ∈ accumulatedPivots is UNPROVABLE as defined
+— the def diverged from its own docstring's claim AND from certificate §4's b-ledger semantics
+(exponents on exceptional-DIVISOR coords; the divisor's identity is ledger data, the stored pivot
+is chart-choice data). CONTROLLER VERIFIED all three def-reads at ground truth before routing
+(gate-before-relay; the def :110, the free-pivot arm ~:1052, the divBirthCoord/IsLedgerCorner
+machinery). The proposed redefine (state-based: the cornerToFlat image of the divBirthCoord
+ledger) is the faithful object; blast radius = INV's file only (GM's consumed set verified
+untouched). ROUTED: CAPR intent-confirm → elder frozen-statement blessing → controller go; INV
+grinds ROOT meanwhile (unaffected, μ=0 vacuous). The charter-§3 pattern again: a def-level
+divergence invisible to every statement gate, caught by a fresh read at the leaf — 19/19
+pre-render.
