@@ -18521,3 +18521,20 @@ elsewhere), demanding witnesses nobody needs. Faithful-narrow = the only consume
 instance. Relayed to CAPR (one hypothesis line, strictly-safe narrowing, no re-read; the
 induction stays the priority). The full statement set is now shape-final; the integration base
 re-freezes at CAPR's next push.
+
+## 2026-07-24 (~22:50) — THE 18th EVENT (L4D's pre-grind surfacing): the C→F bridge doesn't exist
+at the POINTWISE level; the ∃q-level check dispatched BEFORE the elder rules the fork
+
+L4D's two blockers, def-exact: (1) the δ=1 append is SHARED — case12 feeds raw-Deg1 (true via the
+cover), case11 now feeds cleared-Deg1; one hdeg1 type can't serve both (the append likely SPLITS
+per-case under any ruling); (2) the pointwise crux identity is false at case11 and couplingClear
+is non-invertible — no pointwise bridge cleared→raw; the Q₁-lift lives at rlctGlobal, not
+per-node. Its fork: a GLOBAL move (FoldStepInvAt + the resolution invariant on C — MonumentAtlas
+re-architecture, its (i)-(iv) scope draft banked) vs a per-node bridge it "does not see."
+MY LEVEL-DISTINCTION before ruling: StepInv is ∃q — the pointwise identity was the ROUTE, not the
+content; the ∃ can absorb a witness change. THE DECISIVE CHECK (pnp, running): does the RAW child
+StepInv hold at case11 at the ∃-level, route-independent (Gröbner module-membership with
+continuous coefficients)? ∃q-holds → a case11-specific append route, no global move; ∃q-fails →
+the global re-architecture is forced and the elder rules it. L4D holds (no breakage added —
+the discipline held); CAPR's induction unaffected under both verdicts. The elder gets the fork
+WITH the verdict. Same machinery, 18th time: algebra first, rule second, render third.
