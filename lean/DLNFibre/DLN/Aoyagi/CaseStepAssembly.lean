@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.MultiAffineStepWire
+import DLNFibre.DLN.Aoyagi.ClearedFold
 
 /-!
 # CaseStepAssembly — route the case-preservation step through the PROVED step twin
@@ -27,33 +28,37 @@ open DLNFibre.Core DLNFibre.Core.Aoyagi DLNFibre.DLN.RLCT DLNFibre.DLN.RLCT.Engi
 
 namespace DLNFibre.DLN.Aoyagi
 
-/-- `= Case1Wire.case1_preserves_stepInv'` with conjunct B's step call routed to the proved twin
-`realBranch_multiAffine_step'` (MultiAffineStepWire). Conjunct A is `case1_conjA`, byte-identical
-(both carry the idiom-ruling pin `he : e = canonFlatten d` and pass it to conjA for the case11 branch). -/
+/-- **Returns the CLEARED step invariant `FoldStepInvAt_cleared`** (27th-catch re-point, CFF): consumes
+`ClearedFold.case1_preserves_cleared` (the raw `case1_conjA` chain is REFUTED-raw + DELETED — the cleared
+object is where property (D) holds). `he : e = canonFlatten d` bridges to the canonFlatten-pinned cleared
+trio. Conjunct B rides `realBranch_multiAffine_step_cleared` inside `case1_preserves_cleared` (a CAPF
+frontier). -/
 theorem case1_preserves_stepInv'' {N : ℕ}
     (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase1 : ed.isCase1)
     (hlayer : ed.nextState.layer + 1 < N)
-    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hinv : FoldStepInvAt_cleared d (supportAt d p.conState.layer p.conState.cleared) p)
     (hbranch : (p.extend ed).IsRealBranch e) :
-    FoldStepInvAt d e
+    FoldStepInvAt_cleared d
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
-  refine ⟨case1_conjA d e he p ed hcase1 hlayer hinv hbranch, ?_⟩
-  exact realBranch_multiAffine_step' hpos e p ed hlayer hbranch hinv.2
+  subst he
+  exact case1_preserves_cleared d hN hpos p ed hcase1 hlayer hinv hbranch
 
-/-- `= Case2Wire.case2_preserves_stepInv'` with conjunct B's step call routed to the proved twin
-`realBranch_multiAffine_step'` (MultiAffineStepWire). Conjunct A is `case2_conjA`, byte-identical. -/
+/-- **Returns the CLEARED step invariant `FoldStepInvAt_cleared`** (27th-catch re-point, CFF): consumes
+`ClearedFold.case2_preserves_cleared` (the easy case; same locus route). `he : e = canonFlatten d` bridges
+to the canonFlatten-pinned cleared trio. Uniform with the case-1 twin so the summit carries one cleared
+invariant across both case families. -/
 theorem case2_preserves_stepInv'' {N : ℕ}
     (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
-    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
+    (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d) (he : e = canonFlatten d)
     (p : TreePath d) (ed : TreeEdge d p) (hcase2 : ed.isCase2)
     (hlayer : ed.nextState.layer + 1 < N)
-    (hinv : FoldStepInvAt d e (supportAt d p.conState.layer p.conState.cleared) p)
+    (hinv : FoldStepInvAt_cleared d (supportAt d p.conState.layer p.conState.cleared) p)
     (hbranch : (p.extend ed).IsRealBranch e) :
-    FoldStepInvAt d e
+    FoldStepInvAt_cleared d
       (supportAt d (p.extend ed).conState.layer (p.extend ed).conState.cleared) (p.extend ed) := by
-  refine ⟨case2_conjA d hpos e p ed hcase2 hlayer hinv hbranch, ?_⟩
-  exact realBranch_multiAffine_step' hpos e p ed hlayer hbranch hinv.2
+  subst he
+  exact case2_preserves_cleared d hN hpos p ed hcase2 hlayer hinv hbranch
 
 end DLNFibre.DLN.Aoyagi
