@@ -357,6 +357,12 @@ theorem covers_cexTree : Covers (fun r ↦ r + r ^ 2) cexTree 1 :=
     fun _ _ ↦ ⟨fun _ _ ↦ cexShear_covers (zero_le_one.trans (le_max_right _ 1)),
       fun _ _ ↦ Metric.closedBall_subset_closedBall (by norm_num)⟩⟩
 
+-- Forced axiom gate (rev-L7cover): the cover theorems + regression witnesses rest only on
+-- `[propext, Classical.choice, Quot.sound]`. A future edit that makes any of them depend on
+-- `sorryAx` FAILS this red — not masked by a stale-olean `exit 0` (lean/CLAUDE.md caveat).
+#assert_banked_clean_batch [covers_subset, exists_ball_subset_leafImages, covers_qtree,
+  covers_cexTree, qshear_covers, cexShear_covers, ball_subset_iUnion_blockBlowup_comp]
+
 end FanTree
 
 end DLNFibre.DLN.Aoyagi.LeafCoverTiling
