@@ -317,4 +317,56 @@ ENCODING — the worst failure (charter §3). The kill-battery must consume the 
   rejected on mathematical-necessity grounds (patch-the-universal / abandon-`∀e`).
 - The minimal re-statement set (§4) + the WIDE-witness, LEAN-def battery (§5) are the authorised bake.
 - Nothing outside §4 changes; `PerLayerDeg1From` and the numeric b-chain/`M_{s,k}` ledger (Objects
-  C/D) are UNTOUCHED. Payoff isolation holds. **The gate LIFTS for bakes conforming to §4–§5.**
+  C/D) are UNTOUCHED. Payoff isolation holds. **The gate LIFTS for bakes conforming to §4–§5** — with
+  the §7 prerequisite.
+
+---
+
+## 7. Prerequisite def-edit (3) — the UNPAIRED RECOORD (found by the §5 harness; the gate working)
+
+pnp-transport's §5 harness — the first instrument transcribing the ACTUAL baked
+`canonNormalizationOf`/`readEntry`/`blockEntryFlat` (MonumentAtlas:832–882), NOT a hand model —
+found the baked def applies the deeper recoord (ii, `A_{S+1}·Q₁⁻¹`) UNPAIRED: branch (i)'s guard
+excludes the pivot cross (`col ≠ b ∧ row ≠ a`), so the pivot-column clearing `Q₁·A_S` (worked.tex:453
+`Q''_1` "to clear the bottom-left"; npivot-certificate §1 "`row/col→0`") was DROPPED in the render.
+The recoord without its paired clearing does not cancel — it DOUBLES: on `(2,2,2,2)`,
+`(A_1·A_0)[0][0] = u₁₀₀ + 2·u₀₁₀·u₁₀₁`, which in the running-chart frame is `w₁₀₀ + u₀₁₀·u₁₀₁` — a
+leftover whose extra-block coord `u₁₀₁` carries `u₀₁₀` (the `F=x+yz` defect coord), NOT the pivot.
+The triangle: full-clear → 0 (boost-ready); `canonShearOf` (no recoord) → coeff 1; baked (recoord,
+no clear) → coeff 2 (strictly worse). Banked: `threads/L4-case1-core/faithful-harness-note.md` +
+`verify/faithful_lean_harness.py` (exit-0), seat-L4D adjudicating at the def.
+
+**This does NOT touch §1 (SHAPE) or §2 (FIELD) — both are paper-anchored.** It is one level below:
+whether the baked `canonNormalizationOf` faithfully implements the certificate's `N_p` the N_p bake
+was ratified against. But it is a PREREQUISITE for the ruled field to be TRUE on the baked def — the
+field asserts the extra-block coeff factors by the reused divisor's exceptional; on the current
+(unpaired) def it factors by `u₀₁₀` (a non-pivot coord), so the field's INTRO is UNPROVABLE. So this
+is not optional and not merely additive.
+
+**GATE RULING — STAGED on seat-L4D's def-level verdict (term-by-term vs certificate §1, BOTH
+directions incl. harness mis-transcription):**
+- **IF a genuine def gap AND the pivot-cross clearing is representable as a (pre-quotient) shear
+  displacement in the current fold order** (`blockBlowupCoordQuot ∘ edgeShear`): the recoord-completion
+  (extend branch (i) to the pivot cross so `A_{S+1}·Q₁⁻¹` is paired with `Q₁·A_S`) is AUTHORISED
+  within this re-bake as fidelity-restoration — making the baked def satisfy npivot-certificate §1.
+  It is def-edit (3), rides the same re-bake, my delta-read covers all three.
+- **IF the clearing is NOT cleanly representable** — the harness's own caveat: Aoyagi's
+  `γ = A_S[row][b]/A_S[a][b]` needs the pivot INVERTED (a division, not a polynomial displacement),
+  and the fold order sets pivot→1 only at the quotient AFTER the shear — then this is a FOLD-ARCHITECTURE
+  question (a SKELETON REVISION), **NOT within the re-bake and NOT mine to wave through: it returns to
+  the elder (route-adoption gate), and to the operator if it moves the definition of done.** Do NOT let
+  def-edit (3) become a silent fold redesign under the "fidelity-restoration" banner.
+- **EITHER way, seat-L4D re-verifies the N_p BAKE's OWN ratified claims on the COMPLETED def**, not
+  only on the certificate: ideal-preservation / `StepInv` (the unpaired recoord means the baked step
+  is `A_{S+1}·Q₁⁻¹·A_S`, not `A_{S+1}·A_S` — does it still preserve `⟨∏C⟩`? — check by Gröbner
+  ideal-equality, NOT coefficient-matching, per compass F4), monomialisation (block `= u·unit`), and
+  `M_{s,k}` preservation. This is the THIRD instance of the same gap — the N_p ratification (task #26)
+  verified the CERTIFICATE's `N_p`, not the BAKED encoding; identical in class to the cap-escape
+  (ratified value/Jacobian, not support) and the original unfaithful shear (hand model had `Q₁⁻¹`, def
+  did not). The §5 harness-transcribes-the-baked-def discipline is exactly the fix, and the charter §3
+  gate now mandates it at every bake — but the N_p bake's monomialisation/`M` claims must be
+  re-confirmed on the completed def before any downstream leans on them.
+
+def-edit (1) (SHAPE widen) is INDEPENDENT of this verdict (the support-set widen does not touch the
+recoord) — arch-C proceeds on it. def-edit (2) (FIELD) + the INTRO/PRESERVE/BASE frontiers HOLD until
+the recoord verdict lands (the field is not true until the pairing is in the fold). Correct sequencing.
