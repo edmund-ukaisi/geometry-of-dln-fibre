@@ -250,6 +250,47 @@ theorem belowPivotCol_subset_couplingCoords_extend (d : Fin (N + 1) → ℕ) {p 
   rw [hcc]
   exact Finset.mem_union_right _ hx
 
+/-- **couplingCoords ancestor-decomposition** (structural, #87-independent). Every coupling coord sits in
+the `belowPivotCol` of SOME ancestor pivot, and that whole below-pivot column is itself in couplingCoords.
+The keystone for cert (i)'s factor-2 argument (moving the read row within the ancestor's column) and the
+branch-(ii) layer bound. Proven by induction on the path (`couplingCoords` step arm is a union). -/
+theorem mem_couplingCoords_belowPivotCol (d : Fin (N + 1) → ℕ) :
+    ∀ (p : TreePath d) {k : Fin (flatDim d)}, k ∈ couplingCoords d p →
+      ∃ piv : Fin (flatDim d), k ∈ belowPivotCol d piv ∧ belowPivotCol d piv ⊆ couplingCoords d p := by
+  intro p
+  induction p with
+  | root =>
+    intro k hk
+    rw [show couplingCoords d (TreePath.root : TreePath d) = ∅ from rfl] at hk
+    exact absurd hk (Finset.notMem_empty k)
+  | step p center pivot cse ns φ ih =>
+    intro k hk
+    cases cse with
+    | case2 =>
+      rw [show couplingCoords d (TreePath.step p center pivot StepCase.case2 ns φ)
+            = couplingCoords d p ∪ belowPivotCol d pivot from rfl] at hk ⊢
+      rw [Finset.mem_union] at hk
+      rcases hk with hkp | hkm
+      · obtain ⟨piv, hpiv, hsub⟩ := ih hkp
+        exact ⟨piv, hpiv, hsub.trans Finset.subset_union_left⟩
+      · exact ⟨pivot, hkm, Finset.subset_union_right⟩
+    | case12 =>
+      rw [show couplingCoords d (TreePath.step p center pivot StepCase.case12 ns φ)
+            = couplingCoords d p ∪ belowPivotCol d pivot from rfl] at hk ⊢
+      rw [Finset.mem_union] at hk
+      rcases hk with hkp | hkm
+      · obtain ⟨piv, hpiv, hsub⟩ := ih hkp
+        exact ⟨piv, hpiv, hsub.trans Finset.subset_union_left⟩
+      · exact ⟨pivot, hkm, Finset.subset_union_right⟩
+    | case11 =>
+      rw [show couplingCoords d (TreePath.step p center pivot StepCase.case11 ns φ)
+            = couplingCoords d p ∪ ∅ from rfl, Finset.union_empty] at hk ⊢
+      exact ih hk
+    | rollover =>
+      rw [show couplingCoords d (TreePath.step p center pivot StepCase.rollover ns φ)
+            = couplingCoords d p ∪ ∅ from rfl, Finset.union_empty] at hk ⊢
+      exact ih hk
+
 /-- **The edge pivot is not an ancestor coupling coordinate (ALL cases)** — the pivot is a diagonal corner
 (`canonPivotOf` at case11, `∈ canonCenterOf` diagonal at case12/case2, both via `IsRealBranch`), and
 `couplingCoords` are strictly-below-diagonal `belowPivotCol` entries; pnp-verified structurally. Hence
