@@ -1617,6 +1617,11 @@ import DLNFibre.DLN.Aoyagi.AoyagiCompLinear
 import DLNFibre.DLN.Aoyagi.AoyagiRecoordLinear
 import DLNFibre.DLN.Aoyagi.MultiAffineHomogWire
 import DLNFibre.DLN.Aoyagi.MultiAffineStepWire
+-- THE WALL's split layer (Codex route b; the 4-consumer contract in threads/L4-case1-core/
+-- split-consumers-needed-facts.md): the MergeBoostSplit predicate + 2 TRACKED frontiers —
+-- the assembly (MergeBoostSplit.deg1SupportedOn) + the content capstone
+-- (foldResid_case11_mergeBoostSplit_canon, canonFlatten-stated per the idiom ruling).
+import DLNFibre.DLN.Aoyagi.MergeBoostSplit
 -- LeafGeometryWire: seat-L3T's L8 proof (leafPath_realizesExponents', clean-three) ported to the
 -- baked tip by seat-L3T2; the MonumentAtlas L8 sorry-swap rides the post-pin mini-round.
 import DLNFibre.DLN.Aoyagi.LeafGeometryWire
