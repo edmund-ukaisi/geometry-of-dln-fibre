@@ -19549,3 +19549,33 @@ architecture). GM threads the carrier through its append-dependent chain (enumer
 statements for the elder's folded pass); the (b)-independent S2/locus grind is carrier-free and
 continues. The L5 debt now = transport equivariance + phantom redundancy + carrier discharge —
 one unit's opening obligations (#81-adjacent).
+
+## 2026-07-23 (~17:50 UTC) — THE WITNESS (crossed the hold, decisively valuable, re-ran exit 0):
+REALIGNS; option (2) outright INSUFFICIENT; the transport is PER-STEP; #82's debt closes
+negatively. CAPF's 24th catch — INCLUDING the controller's own exemption error, owned
+
+THE WITNESS (02e0ee507): the case11 merge REALIGNS to the diagonal (DivBirthReach:128 snocs the
+COUNTER corner — e₂ diagonal always) and the FOLD FACT corrects CAPR's double-carry mechanism:
+fresh births at cleared≥1 are δ=0 (blockBlowupMap SCALES by the fan coord; NO foldB factor) —
+foldB is canonical-frame; the pathology is scaling-vs-quotient at different coords. S1: diagonal
+birth TRUE / row-off-diagonal NON-PHANTOM FALSE / phantom FALSE. CONSEQUENCES: #85's option (2)
+is INSUFFICIENT outright (a non-phantom fan birth breaks raw S1) — only (1) or (2′) work,
+retro-validating the (2′) executive call as load-bearing; the #82 parked debt closes NEGATIVELY
+(no raw fan multi-edge S1 exists — canonical-pin is load-bearing, not a preference); the L5
+transport is PER-STEP (variant B is not conjugate by a single row-swap — the birth-merge mismatch
+is intrinsic) — #86-B's equivariance check assumes per-step σ composition. Crossing noted: pnp
+built the witness before the hold arrived; result accepted; queue correct (kill consult next).
+CAPR's mechanism read corrected with conclusions intact (its caveat discipline made it a clean
+correction); its CanonicalPivots spec unaffected.
+
+CAPF: B1 cherry-pick executed (104d701d1, clean, MultiAffineHomogWire green, full import
+restored). THE 24th CATCH — #1 continuous_foldResid was FALSE AS STATED (arbitrary TreePath
+shearφ carries no analyticity; continuity is a real-branch fact) — CAUGHT BEFORE GRINDING and
+fixed (hbranch added, 9e49243fe). CONTROLLER ERROR OWNED: I exempted #1 from the elder delta as
+helper-class — the class judgment skipped the falsity scan; the exemption-bypass is repaired via
+the folded-pass list (the corrected #1 + the new sub-lemma). LESSON (controller calibration):
+an exemption is a JUDGMENT about a statement — it gets the same 30-second falsity scan as any
+statement, not just a class label. NEW SHARED SUB-LEMMA: analyticOnNhd_canonNormalizationOf
+(nothing in the tree transfers TreeEdge's hshear_analytic to path shears; the value-pin carries
+value only) — CAPF builds it in-unit, upstream-ready, dedup at #73; it is CAPF's critical path
+for #1+#4. Catches 24/24 pre-render (23 by the process, 1 catching the process's own shortcut).
