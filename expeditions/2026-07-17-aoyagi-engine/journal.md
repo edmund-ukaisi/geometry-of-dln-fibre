@@ -20002,3 +20002,22 @@ realBranch_cover re-verified clean (THE tripwire theorem, checked explicitly). G
 handoff banked at the requested path (gm-clearedfold-handoff.md @ 3ed42a3d4, superseding the
 earlier doc — CFF notified to fetch the newer version, one commit past its base). GM retired to
 unit-consult with the unit's full arc acknowledged.
+
+## 2026-07-23 (~17:40 UTC) — the charter gains the canonCenterOf tripwire (elder-authored,
+controller-committed); pnp's (α) confirm with the nonemptiness chain; the 26th-catch arc CLOSED
+
+THE CHARTER LINE committed (§3, final bullet, elder-authored per the ownership rule): the
+canonCenterOf full-block shape is LOAD-BEARING via realBranch_cover's exact coincidence — never
+edit the center's shape; fan restrictions go to the PIVOT surface, which IsRealBranch pins
+separately; generalized to "a green SPECIFY framing is not sufficient for a def-edit; every
+def-edit bless runs the known-tripwire checklist FIRST" — a peer to the source-fidelity bullet,
+cross-referenced. The standing guard against the 4th firing is now charter-durable. pnp's crisp
+(α) confirm adds the NONEMPTINESS CHAIN (forwarded to seat-BAKE): not-exhausted ⟹ cleared <
+widthMinUpto(layer+1) ≤ min(d[layer+1], widthMinUpto(layer)) ⟹ the diagonal pivot
+(S,cleared,cleared) is ALWAYS in the pinned set — the pivot-set nonemptiness that replaces the
+center-nonemptiness concern. (α) recommended over (β) as one clause on the existing arm vs a
+needless wrapper def. The elder's mutual-catch reflection banked: the value is the INDEPENDENCE
+of the errors + the reality of the cross-checks — "green build necessary, never sufficient"
+holding under a fast autonomous cadence; the charter tripwire + the known-tripwire checklist are
+the two catches converted into a standing guard. All #87 inputs now final; seat-BAKE's
+mini-SPECIFY is the next event on that thread.

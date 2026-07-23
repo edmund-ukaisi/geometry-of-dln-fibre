@@ -112,6 +112,16 @@ category before reporting progress; the elder gates every route and every progre
   missing b-chain = her `diag(b)`), and the source is the cheapest, most decisive instrument. Only then
   commission elaboration (traces, candidate designs, decorrelated consults) — which then VERIFY her answer
   and serve as the acceptance battery, never as de-novo design of an object the source already has.
+- **The `canonCenterOf` full-block tripwire (fired 3×, each pre-render: 16th `supportAt`-widen / P2
+  root-widen / 26th phantom-fix center-edit).** `canonCenterOf`'s FULL `widthMinUpto`-capped-block shape is
+  LOAD-BEARING: `realBranch_cover` proves `supportAt ⊆ ed.center` BY the exact coincidence
+  `canonCenterOf = blockCoords = supportAt` at δ=1 case12/case2. So ANY edit that shrinks or widens the
+  CENTER's shape falsifies a proven consumer — **NEVER edit `canonCenterOf`'s shape.** Chart-choice / fan
+  restrictions go to the PIVOT surface (`IsRealBranch` rule-(b) / `canonPivotOf`), which `IsRealBranch` pins
+  SEPARATELY from the center, so the pivot edit leaves `realBranch_cover` + the Deg1 bounds untouched.
+  Generalises: a green SPECIFY framing is NOT sufficient for a def-edit (statement gates never catch a wrong
+  def — cf. the source-fidelity bullet); every def-edit bless runs the known-tripwire checklist (this
+  coincidence = item #1) FIRST.
 
 ## §4  Durability
 Read first, every cycle, by every role. Elder is sole author (holds the abstract-object frame; gates
