@@ -670,42 +670,46 @@ theorem couplingCoords_row_gt_col {N : ℕ} {d : Fin (N + 1) → ℕ} :
 
 /-- **Ancestor decomposition of `couplingCoords` membership** — every coupling coordinate lies in the
 below-pivot column of SOME ancestor fresh-clear pivot `q`, and that WHOLE column is coupling (`⊆
-couplingCoords`). Lets a sibling in the same cleared column (same layer, same col, deeper row) be seen as
-coupling too — the branch-(iii)/(descent) step where a shear read lands on a deeper entry of a cleared
-column. -/
+couplingCoords`). Under `CanonicalPivots` the pivot `q` is DIAGONAL (`q.row = q.col`), so its below-column
+is `{(layer, r, col) : r > col}`: any deeper entry in the same cleared column is coupling too — the
+branch-(iii)/(descent) step where a shear read lands on a deeper entry of a cleared column. -/
 theorem couplingCoords_mem_belowPivotCol {N : ℕ} {d : Fin (N + 1) → ℕ} :
-    ∀ (p : TreePath d) {x : Fin (flatDim d)}, x ∈ couplingCoords d p →
-      ∃ q, x ∈ belowPivotCol d q ∧ belowPivotCol d q ⊆ couplingCoords d p := by
+    ∀ (p : TreePath d), CanonicalPivots d p → ∀ {x : Fin (flatDim d)}, x ∈ couplingCoords d p →
+      ∃ q, (((tupIdxEquiv d).symm q).1.2 : ℕ) = (((tupIdxEquiv d).symm q).2 : ℕ) ∧
+        x ∈ belowPivotCol d q ∧ belowPivotCol d q ⊆ couplingCoords d p := by
   intro p
   induction p with
-  | root => intro x hx; simp [couplingCoords] at hx
+  | root => intro _ x hx; simp [couplingCoords] at hx
   | step p' c pv cse ns φ ih =>
-    intro x hx
+    intro hcanon x hx
+    obtain ⟨hcanonP, hcanonPiv⟩ := hcanon
     cases cse with
     | case11 =>
       have hcc : couplingCoords d (TreePath.step p' c pv StepCase.case11 ns φ)
           = couplingCoords d p' := Finset.union_empty _
-      rw [hcc] at hx ⊢; exact ih hx
+      rw [hcc] at hx ⊢; exact ih hcanonP hx
     | rollover =>
       have hcc : couplingCoords d (TreePath.step p' c pv StepCase.rollover ns φ)
           = couplingCoords d p' := Finset.union_empty _
-      rw [hcc] at hx ⊢; exact ih hx
+      rw [hcc] at hx ⊢; exact ih hcanonP hx
     | case12 =>
       have hcc : couplingCoords d (TreePath.step p' c pv StepCase.case12 ns φ)
           = couplingCoords d p' ∪ belowPivotCol d pv := rfl
       rw [hcc] at hx ⊢
       rcases Finset.mem_union.mp hx with h1 | h2
-      · obtain ⟨q, hq1, hq2⟩ := ih h1
-        exact ⟨q, hq1, hq2.trans Finset.subset_union_left⟩
-      · exact ⟨pv, h2, Finset.subset_union_right⟩
+      · obtain ⟨q, hdiag, hq1, hq2⟩ := ih hcanonP h1
+        exact ⟨q, hdiag, hq1, hq2.trans Finset.subset_union_left⟩
+      · obtain ⟨_, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+        exact ⟨pv, by omega, h2, Finset.subset_union_right⟩
     | case2 =>
       have hcc : couplingCoords d (TreePath.step p' c pv StepCase.case2 ns φ)
           = couplingCoords d p' ∪ belowPivotCol d pv := rfl
       rw [hcc] at hx ⊢
       rcases Finset.mem_union.mp hx with h1 | h2
-      · obtain ⟨q, hq1, hq2⟩ := ih h1
-        exact ⟨q, hq1, hq2.trans Finset.subset_union_left⟩
-      · exact ⟨pv, h2, Finset.subset_union_right⟩
+      · obtain ⟨q, hdiag, hq1, hq2⟩ := ih hcanonP h1
+        exact ⟨q, hdiag, hq1, hq2.trans Finset.subset_union_left⟩
+      · obtain ⟨_, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+        exact ⟨pv, by omega, h2, Finset.subset_union_right⟩
 
 /-- **`blockEntryFlat` decodes to its `(S, row, col)`** — the flat coord of a matrix entry has exactly
 that layer/row/col. Mirror of `cornerToFlat_decode`. -/
@@ -769,6 +773,62 @@ theorem notMem_escapedBelow_of_col_lt_wmu {N : ℕ} {d : Fin (N + 1) → ℕ} {S
       have := decode_layer_of_mem_layerCoords d (S + 1) x hcond.1
       rw [hlay] at this; omega
     · exact absurd hcond (by simp)
+
+/-- **The recoord shear VANISHES on the ancestor couplings, on a coupling-cleared input (Sfp).** For a
+DIAGONAL fresh-clear pivot `pv = (S, cl, cl)` and any coupling coordinate `k ∈ couplingCoords p'`, the
+displacement `canonNormalizationOf p'.conState pv (couplingClear q u) k = 0` — provided the current below-
+pivot column AND the ancestor couplings are cleared (`belowPivotCol pv, couplingCoords p' ⊆ couplingCoords
+q`). Branch (i) (layer-`S` Schur) reads the pivot's below-column `(S, kr, cl)` (`kr > cl`), a current-pivot
+coupling → `0`. Branch (ii) (layer `S+1`) can't fire (couplings sit at layer `≤ S`). Branch (iii) (layer
+`S−1` input recoord) reads `(S−1, k', kc)` in the SAME cleared column as `k` (`k`'s ancestor pivot is
+diagonal, `col = kc`, and `k' > cl > kc`), a coupling → `0`. This is the FP's shear half; the FUNCTION-level
+KILL. -/
+theorem canonNormalizationOf_vanishes_on_couplings {N : ℕ} {d : Fin (N + 1) → ℕ}
+    (p' q : TreePath d) (hcanonP : CanonicalPivots d p') (hrec : p'.IsRealBranch (canonFlatten d))
+    (pv : Fin (flatDim d))
+    (hcc : couplingCoords d p' ⊆ couplingCoords d q)
+    (hbpv : belowPivotCol d pv ⊆ couplingCoords d q)
+    (hpvlay : (((tupIdxEquiv d).symm pv).1.1 : ℕ) = p'.conState.layer)
+    (hpvrow : (((tupIdxEquiv d).symm pv).1.2 : ℕ) = p'.conState.cleared)
+    (hpvcol : (((tupIdxEquiv d).symm pv).2 : ℕ) = p'.conState.cleared)
+    (u : Fin (flatDim d) → ℝ) {k : Fin (flatDim d)} (hk : k ∈ couplingCoords d p') :
+    canonNormalizationOf d p'.conState pv (couplingClear d q u) k = 0 := by
+  have hkl : (((tupIdxEquiv d).symm k).1.1 : ℕ) ≤ p'.conState.layer :=
+    couplingCoords_decode_layer_le d p' hrec hk
+  have hkrc : (((tupIdxEquiv d).symm k).2 : ℕ) < (((tupIdxEquiv d).symm k).1.2 : ℕ) :=
+    couplingCoords_row_gt_col p' hcanonP hk
+  simp only [canonNormalizationOf]
+  split_ifs with hb1 hb2 hb3
+  · -- branch (i): first factor reads `(S, kr, cl)`, a current-pivot below-column coupling → 0.
+    obtain ⟨_, hbne_row, _, hbge_row, _⟩ := hb1
+    rw [hpvrow] at hbne_row
+    have h0 : readEntry d (couplingClear d q u) p'.conState.layer
+        (((tupIdxEquiv d).symm k).1.2) (((tupIdxEquiv d).symm pv).2) = 0 := by
+      refine readEntry_couplingClear_eq_zero q u _ _ _ (fun fc hfc => hbpv ?_)
+      obtain ⟨hl, hr, hc⟩ := blockEntryFlat_decode hfc
+      refine mem_belowPivotCol_of_decode pv fc (by rw [hl, hpvlay]) hc ?_
+      rw [hr, hpvrow]; omega
+    rw [h0]; ring
+  · -- branch (ii): layer `S+1` can't be a coupling layer (`≤ S`).
+    obtain ⟨hbl2, _⟩ := hb2; omega
+  · -- branch (iii): each term's second factor reads a sibling of `k` in the same cleared column → 0.
+    obtain ⟨hbl3, hbcol3⟩ := hb3
+    rw [hpvcol] at hbcol3
+    obtain ⟨qa, hqadiag, hqamem, hqasub⟩ := couplingCoords_mem_belowPivotCol p' hcanonP hk
+    obtain ⟨hqac, hqar⟩ := belowPivotCol_decode d qa hqamem
+    have hqalay := belowPivotCol_decode_layer d qa hqamem
+    refine Finset.sum_eq_zero (fun k' hk' => ?_)
+    split_ifs with hg
+    · rfl
+    · push_neg at hg
+      have h0 : readEntry d (couplingClear d q u) (((tupIdxEquiv d).symm k).1.1) k'
+          (((tupIdxEquiv d).symm k).2) = 0 := by
+        refine readEntry_couplingClear_eq_zero q u _ _ _ (fun fc hfc => hcc (hqasub ?_))
+        obtain ⟨hl, hr, hc⟩ := blockEntryFlat_decode hfc
+        refine mem_belowPivotCol_of_decode qa fc (by rw [hl, hqalay]) (by rw [hc, hqac]) ?_
+        rw [hr]; omega
+      rw [h0, mul_zero]
+  · rfl
 
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
