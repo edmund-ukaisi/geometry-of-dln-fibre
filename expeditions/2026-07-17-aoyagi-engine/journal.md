@@ -16013,3 +16013,30 @@ below-support (PerLayerDeg1From tolerates deg-2 there); may be moot if R4 is the
 STATE: everything the elder staged for is on its desk; my integration reads the mechanism as
 R4-PAIRED (the elder rules formally + freezes the render spec); pnp pre-warned for the R4-
 candidate gate battery; seat-L4D holding for the frozen spec, then the wall. #49/#50 completed.
+
+## 2026-07-23 (~02:40) — §8(i): THE FROZEN RENDER SPEC; all three GOs issued; the diagnostic arc is CLOSED
+
+The elder's §8(i) (committed 384ac17dc) rules the spec-consistency question and freezes the
+render spec — the arc's design work is DONE:
+- The two candidate def-edit sets cleaned DIFFERENT objects: the two-sign flip cleaned the ed1
+  PRODUCT; the block set diagonalises the BLOCK. foldResid IS the block-slot (the scalar-foldB
+  def-fact) ⟹ the two-sign flip cleaned the WRONG OBJECT — SUPERSEDED (its condition-b work
+  remains load-bearing: it proved no unpaired coordinate-side variant works).
+- THE FROZEN SET: (1) branch-(i) REPLACED by R4 = Q₁·A_S·Q₂ on the RAW A_S → diag(1,e₂)
+  (subsumes; no stacking); (2) branch-(ii) FLIPPED to A_{S+1}·Q₁ (−γ); (3) foldResid at case11
+  = the CLEAN BLOCK D_J, consumed by boostReady DIRECT (e₂ ∈ center); the b-scaled product is
+  NOT foldResid — never chase it clean; (4) DEF EDIT 2 = no new conjunct. Satisfies §8(h)
+  (R4 IS her product-preserving clear, worked.tex:619-629 ⟹ ⟨R3+R4⟩ should = ⟨faithful⟩).
+- CONFIRMATION (paper-first: the spec is RULED; these confirm): #49 on the R3+R4 def (NOT
+  R3-alone) + #50 clean-block-at-reuse-node. RE-OPEN: either fails.
+
+GOs ISSUED: arch-C renders §8(i) (its architecture call: how R4 renders in the fold — step-map
+component vs rewritten branch — stated + justified in the render report; G2 one-presentation
+the constraint; awaiting-confirmation flag; forced payoff axioms load-bearing); pnp pre-builds
+the R3+R4 model now + final battery on the EXACT rendered formulas; seat-L4D queued for the
+joint slot-confirm + its battery half + THE WALL post-merge (boostReady from the clean block —
+"the clean-block form should make it short"). Memo updated to the frozen-spec state.
+
+ARC NOTE for the synthesis: from the cap-escape surfacing to the frozen spec — 12 catches
+adjudicated, 2 elder self-retractions, 3 exact instruments, ~40 banked artifacts, every fork
+paper-ruled, zero Lean bakes under uncertainty, payoff isolation intact throughout.

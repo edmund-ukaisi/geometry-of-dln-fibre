@@ -26,24 +26,25 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   (descended support escapes blockCoords(S+1) on WIDE branches — INHERENT, witness (2,3,2,2),
   banked + re-ran exit-0), that is the 10th+11th catches, BOTH in the carried invariant: support
   TOO TIGHT + form TOO WEAK — FoldStepInvAt under-transcribes Aoyagi's induction hypothesis.
-  RULING FINALIZED (§8, 62bfa334d — the arc's endpoint): the 12th-catch crisis resolved to
-  R3 = a SIGN FLIP in canonNormalizationOf branch (ii) (A_{S+1}·Q₁ = −γ, not the baked Q₁⁻¹;
-  direction from HER TEXT — the certificate's Q₁⁻¹ was an old-to-new/new-to-old conversion
-  error) + READING B (her CLEAN-BLOCK invariant: b's in the EXTERNAL ledger; foldResid = the
-  clean D_J; §2's FIELD RETRACTED as symptom-fitted — additive AND m_k·β; the 11th catch
-  DISSOLVES as a broken-def artifact). boostReady_case11 proves DIRECT from clean-D_J + the
-  existing foldB — no field, no ChainNF, no new conjunct. RLCT value was NEVER at risk (globally
-  invertible path — 3 instruments concur); the fix is for the PROOF VEHICLE (monomialised block
-  = the M_{s,k} read-off). R4/R5 stand down; no operator escalation. THE RE-BAKE = def-edit 1
-  (shape widen, unchanged) + def-edit 3 (the sign flip); DEF EDIT 2 likely UNNEEDED (arch-C +
-  L4D confirm no Deg1SupportedSlot change at the def). MERGE GATES: seat-L4D confirmation
-  battery (direction cross-check + full flip verification + block form + foldB def-fact) +
-  pnp #49/#50 (Gröbner triple on the flipped def; reuse-node forms — if the reuse node is NOT
-  clean under R3, the elder RE-OPENS) + elder delta-read → controller merges → seat-L4D grinds
-  the wall from clean-D_J + foldB. Batteries run the EXACT rendered form (certificate-fidelity
-  lesson applies to batteries). seat-L3T3: finish step-2, push, rebase post-merge. Battery
-  canon: WIDE witness + baked-def, always. Charter §3 composed discipline committed; compass F6
-  being updated to the final resolution (elder).
+  THE FROZEN RENDER SPEC (§8(i), 384ac17dc — supersedes all interim scopes incl. the two-sign
+  flip, which cleaned the WRONG OBJECT = the ed1 product; foldResid IS the block-slot per the
+  scalar-foldB def-fact): DEF-EDIT-1 = supportAt widen (unchanged). DEF-EDIT-3 = (a) branch-(i)
+  REPLACED by R4, the generator transform Q₁·A_S·Q₂ on the RAW A_S → diag(1,e₂) (SUBSUMES
+  branch-(i); stacking double-counts); (b) branch-(ii) FLIPPED to A_{S+1}·Q₁ (−γ, council Q1);
+  (c) foldResid at case11 = the CLEAN BLOCK D_J — boostReady consumes THIS (e₂ ∈ center,
+  Deg1SupportedOn ed.center DIRECT). DEF-EDIT-2 = NO new conjunct (existing slot confirmed
+  against the R4-rendered residuals, joint arch-C+L4D). §8(h) criterion: faithful =
+  PRODUCT-PRESERVING (her invariant is an IDEAL EQUALITY; ledger reads HER diag(b)); Gröbner
+  ideal-equality, never entry-cleanliness. Full circle: honest_clear/the certificate's MATH was
+  product-preserving all along — only its rendering as an unpaired coordinate shear was wrong.
+  §2 field RETRACTED (symptom-fitted); 11th catch dissolves; RLCT value never at risk; no
+  operator escalation. MERGE GATES: arch-C renders §8(i) (awaiting-confirmation flag; FORCED
+  payoff axioms load-bearing) → pnp battery on the EXACT rendered formulas (#49 on R3+R4 not
+  R3-alone: ⟨R3+R4⟩ = ⟨faithful⟩; #50 clean-block-at-reuse-node; u₀₀₁² flag re-check; RE-OPEN
+  if either fails) + seat-L4D joint slot-confirm + elder delta-read → controller merges →
+  seat-L4D takes THE WALL (boostReady from clean block + foldB — no field, no ChainNF).
+  seat-L3T3: finish step-2, push, rebase post-merge. Battery canon: WIDE witness + EXACT
+  rendered form, always.
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
   failed wakes) AND its 23:05 adjudication was DELIVERY-LOST (recovered from transcript, banked:
   threads/L4-case1-core/elder-capescape-interim-adjudication.md — its fix-β superseded by the
