@@ -21293,3 +21293,50 @@ rather than re-deriving — the producer/consumer topology working intra-lane.
 **Status.** KILL step: architecture+FP-helpers green, 2 sorries left (hredEB + growth V3). seat-descent
 grinds the mine-regardless pieces + consumes CFF's on the port confirm. Wall (a) decorrelated-priced,
 (3,3,4) hardening witness in flight (pnp). seat-L7cover on the L7 long-pole. Summit path healthy.
+
+## 2026-07-24 (~01:40 UTC) — WALL value-side (a) BEDROCK (pnp's corank-2 (3,3,4) witness re-ran exit 0); but seat-L7cover's mini-restate surfaced a DISTINCT L7-COVER question (col-pin drops the column-orbit) → the elder's L7 SPECIFY
+
+Two developments — one closes, one opens.
+
+**WALL VALUE-SIDE (a) BEDROCK.** pnp's belt-and-braces (3,3,4) corank-2 witness returned + controller
+RE-RAN (29a18e5c2, capstone_corank2_witness.py, exit 0): the genuine-corank-2 coupled leaf
+monomializes to E²·unit via single-center blow-ups + the JOIN (shared-divisor merge = the
+cleared-chain case11-merge), the join REQUIRED (decoupled u-divisor non-clean, G|origin=0), yielding
+the SHARED exponent rlct=4=½·8. So the wall's VALUE/monomialization side (L8) is bedrock bookkeeping,
+no coupled Hironaka construction beyond the merge the cleared chain provides. KILL corank-2 blind-spot
+CLEAN. The hunt-at-the-confident-headline confirmed (a) with fresh ground-truth — no (b) re-open. The
+belt-and-braces (commissioned last tick per hunt-precedes-trust) paid off: (a) is now witness-backed,
+not just paper-mechanism + Codex.
+
+**L7-COVER SIDE — a DISTINCT question opened (seat-L7cover, stop-on-suspect).** seat-L7cover's
+mini-restate (GATE 1) found that the LITERAL col-pinned FoldRealizes atlas does NOT cover the ball:
+concrete (2,2,2) escape — x=ε·e_{(0,0,1)} (col=1) is missed by EVERY col-pinned chart (blockBlowupMap
+forces the pivot slot=0 ⟹ output_{(0,0,1)}=0≠ε; the blow-up is OUTERMOST so unrepairable), and the
+col-pin drops the very (0,0,1)-pivot chart that covers it in the FULL fan. So leafPath_compactCover is
+FALSE over the literal col-pinned atlas — the #86(B) column-orbit (col>cleared pivots, dropped by
+#87's col-pin) is NEEDED. This is EXACTLY the "L7/L5 SPECIFY" adjudication #87's docstring + §9.9.1
+explicitly DEFERRED to this point — now due. CRUCIAL DISTINCTION: this is the COVER geometry (L7),
+SEPARATE from the value monomialization (L8, bedrock above) — it does NOT reopen value-(a).
+
+ROUTED to the elder as THE L7 SPECIFY (the deferred #87/§9.9.1 adjudication): (1) fork (A) abstract
+full-fan-cover + the col-pinned→full-fan #86(B) σ-transport bridge [my lean, design-consistent —
+#87 ALWAYS intended row-fan + column-orbit-via-σ] vs (B) literal-col-pin [false-as-stated, a frontier
+/ #87-re-open]; (2) is the σ-transport COVER-bridge detail-at-scale (does #86(B)'s value-equivariance
+give the COVER-bridge, or is that new?) — reconcile with the (a) L7-pricing; (3) fan-completeness
+(FoldRealizes gives leaf-surjectivity not fan-completeness — L5-hypothesis vs a def-edit). seat-L7cover
+HOLDS all proof work (correctly — the ruling sets the lemma's exact statement); I offered it the
+ruling-INDEPENDENT pnp-fan-mechanism scaffolding as optional-safe.
+
+**Assessment.** seat-L7cover's spawn was NOT premature — its mini-restate did exactly its job: caught
+the real L7 architecture question (the deferred column-orbit SPECIFY) before any wasted proof work.
+This is the second time the col-pin boundary surfaced at a seat gate (#95 row-phantom, now the L7
+column-orbit) — the elder's L7 SPECIFY should give the DEFINITIVE col-pin/column-orbit/fan-completeness
+architecture, closing the deferred #87/§9.9.1 rulings.
+
+**Operator-facing:** the wall's VALUE side is bedrock-(a) (witness-confirmed). The L7-COVER side has a
+surfaced sub-question (the column-orbit), likely (A)/detail-at-scale (#87 anticipated it), the elder
+adjudicating — NOT a value-(a) reopen. No definition-of-done change.
+
+**Status.** #99 value-(a) bedrock; L7-cover → elder L7 SPECIFY (seat-L7cover holds). KILL step
+(seat-descent, consuming CFF blocks) in motion. Summit path healthy. Awaiting: the elder's L7 SPECIFY,
+seat-descent hredEB green, seat-KILL/seat-CFF consume-loop.
