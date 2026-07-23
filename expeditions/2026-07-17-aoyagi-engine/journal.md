@@ -16081,3 +16081,26 @@ Gate relays done (pnp re-specced; seat-L4D FYI'd); memo gate corrected as the el
 Note the criterion's trajectory across the arc — entry-cleanliness → ideal-equality →
 BLOCK-FORM — each correction moving the test closer to what her invariant actually asserts;
 the synthesis should record the trajectory, not just the endpoint.
+
+## 2026-07-23 (~03:10) — L3T3 LANE COMPLETE (green, reviewed, no new frontiers); Lean merge DEFERRED behind the re-bake (merge-order discipline)
+
+seat-L3T3 delivered the full 4-step lane (tip 69f8bf3ac, pushed): AoyagiRecoordLinear.lean NEW
+(the recoord X-linearity — the bottleneck lemma — + the hagree helpers, axiom-clean);
+foldResid_layerHomogeneous' PROVED sorry-free clean-three (statement-identical to the
+MonumentAtlas twin incl. hpos); MultiAffineStepWire slot GREEN (:429 fixed; clause-2 via the
+new perLayerDeg1From_stepMap_split; clause-1 ROUTED to the same canonical appendResidDescent
+cap — NO new frontier introduced). Full build 9008 jobs 0 errors; independent reviewer (fresh
+worktree, forced elaboration) SURVIVED all 3 fidelity items; two decorrelated Codex consults
+corroborated FAITHFUL. The only remaining Gap-B sorryAx = the canonical cap (seat-L4D's lane).
+Statement card + codex artifacts banked to canonical.
+
+MERGE SEQUENCING (controller call, the merge-order discipline): the Lean merge is DEFERRED
+behind the §8(i) re-bake — L3T3's proofs elaborate against exactly the defs the re-bake
+changes (branch-(i)→R4 removes the interior Schur from the shear; branch-(ii) flips;
+supportAt widens). Two def-touching integrations in flight = collision churn; the re-bake is
+the critical path and merges FIRST; L3T3 then rebases seat-side + re-greens + reports the
+def-sensitivity delta (pre-assessment: the X-linearity should survive the sign flip; the
+agree-off lemma may SIMPLIFY with branch-(i) gone; the induction may survive if R4 renders
+outside blockShear — read arch-C's render report). Task #52 opened; seat-LL's frontier-#1
+unblock rides the L3T3 merge, one cycle behind. Board: still waiting on arch-C's
+§8(i)-conformance confirmation.
