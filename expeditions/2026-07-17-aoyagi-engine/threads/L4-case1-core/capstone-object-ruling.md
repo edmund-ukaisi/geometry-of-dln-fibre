@@ -80,10 +80,101 @@ below-pivot input row-clear. If the input-clear is the det-1 `Q₁·A_0` half, t
 pairing in `canonNormalizationOf`, not a statement change. Confirm the det-character + whether the render's
 branch-(ii) is the unpaired half.
 
-## 6. Bottom line
+## 6. Bottom line (superseded by §7 — all inputs now in)
 
 The capstone target's *shape* is faithful (my (a)/(b)/(c) verdict holds); its *object* is wrong (raw
-foldResid, not cleared). The recursion and F₂ are untouched. Most likely a det-1 unpaired-compensator render
-bug in `canonNormalizationOf` (complete branch-(ii)'s pairing) — L4D + pnp confirm the det-character; on
-det-1, it is a render fix that dissolves the tension; on det-0, Option 1's separate cleared object with the
-append-crux re-wire. Options 2 and 3 are out either way.
+foldResid, not cleared). The recursion and F₂ are untouched. [My §5 "det-1 render-bug, complete the pairing
+in the recursion" prior is **withdrawn** — see §7: the verified repair is a source-COLUMN-clear on ANCESTOR
+edges, a derived object, and the merged recursion is untouchable by constraint; it is Option 1 proper, not a
+recursion-branch fix.]
+
+---
+
+## 7. FINAL RULING (#69; all inputs in — kill-condition FINAL, repair VERIFIED, paper-first confirmed)
+
+**Status of inputs.** Kill-condition FINAL = **CHART-ONLY** (pnp 02049b6ac + Codex concur). Repair
+**VERIFIED** (pnp 672007eb8, both witnesses, all slots, exit-0). Triple-confirmed (pnp + Codex + L4D
+def-owner). My source-validation **vindicated** (level-confusion, not error). This section supersedes §5's
+open det-character question.
+
+### 7.1 PAPER-FIRST (step 1, the operator's rule) — CONFIRMED at the source
+
+Her recursion carries boost-readiness **of the CLEARED representative**, not the raw product. Confirmed on
+pp.15–18 (fresh): the invariant (p.15, :562–577) is the **ideal equality** `⟨∏C⟩ = ⟨diag(b)·[E_J|D_J]·∏C⟩`;
+the step (pp.17–18) applies **regular** matrices `Q`, `P` (unipotent, Lemma-1-neutral) and factors
+`u_{S,J+1}` to produce the NEXT cleared normal form `diag(b')·[E_{J+1}|D_{J+1}]`, and recurses on THAT. The
+raw product `∏C` appears **only inside the ideal `⟨·⟩`**. So boost-readiness (the b-ledger, the `D_J`
+structure) is a property of her **cleared** `D_J`. **The Lean raw-`foldResid` statement of the property
+rendered it of the WRONG OBJECT.**
+
+### 7.2 The (B)/(D) language (adopt it in the re-shaped statements)
+
+- **(B)** — degree ≤ 1 per coordinate, no `u_{e₂}²` ("multilinear-clean"): **TRUE of the raw shears-only
+  foldResid, everywhere.** This is what F₂ delivers, what batteries #48–56 proved; a correct raw fact,
+  already consumed correctly. It STAYS on the raw object.
+- **(D)** — slots `∈ ⟨ed.center⟩` (`Deg1SupportedOn`, the wall's conclusion): **FALSE of raw, TRUE of the
+  source-cleared object.** (B) ⊬ (D): the input coupling `u₀₁₀` is degree-1 (so (B)) but outside
+  `⟨ed.center⟩` (so ¬(D)). The 25 prior instruments tested (B); the wall needs (D) — why they missed it.
+- The chart value at the `e₂` slot is the birth Schur exceptional `u₀₁₁ − u₀₀₁·u₀₁₀`; the extra block
+  factors through its CONSTITUENT `u₀₁₀`, never raw `u_{e₂}`.
+
+### 7.3 THE RULING — a named cleared object + an ideal-equality bridge (Option 1 proper)
+
+1. **New derived object `sourceClearedResid d p`** := `foldResid d (canonFlatten d) p` composed with the
+   ancestor-column-clear map (pnp's verified repair: clear each ancestor case2/case12 cleared-column's
+   below-pivot INPUT entries BEFORE that edge's shear; the **COLUMN-clear alone suffices**, the row-clear is
+   not needed). This object is canonFlatten-pinned (a concrete-chart operation — consistent with the idiom
+   ruling: the derivation lives at canonFlatten).
+2. **(D) is re-stated OF `sourceClearedResid`.** `realBranch_boostReady_case11` concludes
+   `Deg1SupportedOn (sourceClearedResid d p) ed.center`; `foldResid_case11_mergeBoostSplit_canon` asserts
+   `MergeBoostSplit` of `sourceClearedResid`. This makes §9's "BOOSTREADY = the form" **literal**: the form
+   is a NAMED OBJECT, not a device inside a proof of a false raw statement.
+3. **The merged recursion is UNTOUCHED.** `foldResid` (StepInv, product-preserving, census-0) stays raw and
+   shears-only; the source-clear does NOT enter `foldResid`. (B) stays a raw fact.
+4. **The CLEARED↔RAW BRIDGE (the gating design item) = an ideal-equality bridge.** The source-column-clear
+   is a **regular / Lemma-1-neutral** operation (her `Q`,`P` are regular; the column-clear is unipotent,
+   det-1, ideal-preserving), so `⟨sourceClearedResid⟩ = ⟨foldResid⟩`. The append crux
+   (`stepInv_child_delta1_append`, `Case1Wire:332–369`) is re-wired to consume **cleared-(D)** and produce
+   the child StepInv; the raw child's StepInv `∃q`-witness transports through the Lemma-1-neutral clear (the
+   StepInv is an existential ideal-divisibility, so the specific `q` may change — the `∃` absorbs the
+   transport; only the ideal fact must transport, and it does under a regular clear). **This matches HER
+   accumulation exactly:** she carries the invariant of the cleared representative and the raw product
+   appears only inside `⟨·⟩`; the Lean shape (cleared object carries (D); the raw StepInv rides the
+   ideal-equality) is the faithful transcription of that.
+
+### 7.4 The re-shaped chain (old → new; L4D def-owner renders, pnp certifies)
+
+| lemma | OLD | NEW |
+|---|---|---|
+| `sourceClearedResid` | — | NEW: `foldResid ∘ ancestor-column-clear` (canonFlatten-pinned) |
+| `foldResid_case11_mergeBoostSplit_canon` | `MergeBoostSplit … (foldResid …) …` | `MergeBoostSplit … (sourceClearedResid …) …` |
+| `realBranch_boostReady_case11` | `Deg1SupportedOn (foldResid p) ed.center` | `Deg1SupportedOn (sourceClearedResid p) ed.center` |
+| `MergeBoostSplit.deg1SupportedOn` (assembly) | — | **UNCHANGED** (true implication, reusable — L4D confirmed) |
+| `case1_conjA` / `stepInv_child_delta1_append` | consumes `hdeg1` on raw `foldResid` | consumes cleared-(D) + the **ideal-equality bridge** → raw child StepInv `∃q` |
+| LL case11 / conjunct-2 / born-unit contract | on raw `foldResid` | re-point to `sourceClearedResid` + the same bridge |
+
+### 7.5 Rejections + the honest self-correction
+
+- **Option 2** (enlarge `ed.center` to the below-pivot input row) REJECTED — needs an `e₂` per output
+  column, contradicts single-`e₂`, breaks the codim bookkeeping; unfaithful (my (a)-fidelity + her
+  single-exceptional-per-step).
+- **Option 3** (splice the clear into the recursion) REJECTED — forbidden by the "merged recursion
+  untouched / render-around forbidden" constraint, and it breaks F₂'s census-0 closure.
+- **Self-correction (owned):** my §5 prior ("det-1 render-bug — complete branch-(ii)'s pairing IN the
+  recursion") is WITHDRAWN. pnp's verified repair is a source-column-clear on ANCESTOR edges (a global
+  derived object), not a local case11 recursion-branch; and the constraint forbids touching the merged
+  recursion. Direction (Option 1, cleared object) was right; the recursion-branch rendering was wrong.
+
+### 7.6 What pnp certifies / L4D renders (the closing contract)
+
+- **pnp** — the positive per-edge certificate for `sourceClearedResid`: (i) cleared-(D) holds (done — the
+  verified repair); (ii) `⟨sourceClearedResid⟩ = ⟨foldResid⟩` (Lemma-1-neutrality of the column-clear);
+  (iii) the append's StepInv `∃q` transports across the bridge (the one genuinely-open verification — that
+  cleared-(D) → the raw child StepInv the append needs).
+- **L4D** — define `sourceClearedResid` (the ancestor-column-clear map); re-state the chain (7.4); render
+  the ideal-equality bridge lemma; re-point the append crux + LL's contract. The payoff/destination
+  unchanged; the merged recursion untouched.
+
+The wall's *shape* was faithful; its *object* is corrected to the cleared representative her recursion
+actually carries. The remaining critical path (fresh formaliser, pnp's certificate, LL's two renders) is
+unblocked on this ruling.
