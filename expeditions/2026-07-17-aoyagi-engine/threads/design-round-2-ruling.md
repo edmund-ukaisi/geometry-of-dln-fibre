@@ -547,3 +547,25 @@ ran R3-ALONE (branch-(ii) flip only), NOT the frozen R3+R4. Findings + my read:
   (no `u₀₀₁²`), `E_J` clean. RE-OPEN only if R3+R4 does NOT reach the multilinear clean block. The
   RLCT VALUE stays safe throughout (invertibility); no escalation. The block axis's mechanism (R3+R4) and
   criterion (block-form) are now ruled; the R3+R4 block-form re-run is the last datum before merge.
+
+**(k) FINAL block ruling — R4 IS Aoyagi's LEMMA 2; pnp's caveats resolve against it.** worked.tex:400-420
+(Lemma 2) is the decisive anchor: her clearing is `Q₁AQ₂ = diag(A₁, C₄)`, `Q₁,Q₂` UNIPOTENT ("units of
+the local ring"), `C₄ = −A₃A₁⁻¹A₂+A₄` the Schur complement, and the variable change is a LOCAL ANALYTIC
+ISOMORPHISM (UNIT JACOBIAN).
+- **R4 = her Lemma 2** — unipotent generator transform clearing BOTH pivot column (`Q₁`) and pivot row
+  (`Q₂`), giving `C₄`. Unit Jacobian, NOT rank-reducing. DECISIVELY resolves pnp's caveat-1 ("the row clear
+  `u₀₀₁→0` is rank-reducing"): that is the COORDINATE-clear misreading; her `Q₂` is a unipotent matrix
+  col-op — the F1 point on the row side. R4 clears the row unipotently ⟹ eliminates R3-alone's `u₀₀₁²`.
+- **worked.tex D_J degree — ANSWERED:** her `D_J = C₄` is BILINEAR (degree-1 per blow-up coord), so
+  `u₀₀₁²` IS a deviation ⟹ R3-alone insufficient ⟹ R4 required. R4 → multilinear `C₄` = classical
+  `e₂ = u₀₁₁−γβ`.
+- **pnp's caveat-2 (u₀₀₁² breaks boostReady, chart-dependent) MOOT under R4** — R4 eliminates the `u₀₀₁²`;
+  boostReady consumes the clean multilinear block directly.
+- **CRITERION clarification:** the controller's #49 reading (`⟨R3⟩≠⟨faithful⟩ ⟹ R4`) reached R4 via the
+  SUPERSEDED (h) ideal-equality lens; the correct ground is (j)/(k) — block-form + Lemma 2 — reaching R4
+  robustly. The merge gate is the block-form test, NOT `⟨R3+R4⟩=⟨faithful⟩` ideal-equality.
+- **FULL CIRCLE:** honest_clear / the certificate's MATH was Aoyagi's Lemma 2 (product-preserving,
+  unit-Jacobian) all along; only its RENDERING as an unpaired coordinate shear was wrong. R3+R4 = the
+  faithful Lemma 2 restored in the fold.
+Block mechanism RULED: **R3 (branch-ii recoord direction) + R4 (Lemma 2 `Q₁·A_S·Q₂`, replaces branch-i).**
+Last datum before merge: the R3+R4 block-form re-run reaches her multilinear clean block.
