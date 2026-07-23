@@ -19046,3 +19046,15 @@ relayed). GM's descent-sites position taken via #78 (the raw sites survive as th
 CAPF discharges their frontier). Riders restated (REFUTED-raw deletion documentation;
 case1'''s cleared-content docstring). GATE STATE: pnp core-passed + O2 open (grown-set
 commutation confirm) + elder delta outstanding — GM starts proofs the moment both close.
+
+## 2026-07-23 (~15:50) — GM SPECIFY-side COMPLETE (@ e33ab0607): positions durable in the module
+docstring; riders acked verbatim; the unit waits purely on the two external gates
+
+The provenance position + the descent-sites treatment are now IN THE MODULE DOCSTRING (charter-§3
+durability — the owned deferral with owner/trigger named survives any message loss), and both
+riders acked in the exact required form (REFUTED-raw + SUPERSEDED-BY documentation; the
+cleared-content docstring on the kept name). GM's messages and mine crossed (it wrote the
+paragraph before my acceptance arrived); contents align, no reconciliation needed. Remaining
+before the proofs grind: pnp's O2 grown-set-commutation confirm + the elder's 4-item delta
+(now including the provenance ratification). All four fronts otherwise working: INV (leaves),
+CAPF (read-in → SPECIFY), pnp (O2), elder (delta queue).
