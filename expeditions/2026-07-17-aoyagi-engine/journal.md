@@ -19921,3 +19921,18 @@ quick re-bless on pnp's confirm; the render seat spawns then. THE TRIPWIRE SCORE
 cover has now caught three center/support re-shapes pre-render (the §12 widen, the root-widen
 counterfactual, this center-shrink) — the single most valuable proven theorem in the gate stack.
 Catches 26/26 pre-render.
+
+## 2026-07-23 (~17:00 UTC) — INV: the root arm WIRED (sourceClearedInv_holds root case CLOSED);
+the read-off re-planned as route-doc + small bites (second fatigue stop on the same leaf)
+
+sourceClearedInv_holds is now the induction skeleton with root := sourceClearedInv_root d hN
+CLOSED and the step arm as the single named transport sorry (gated on the finisher's commutation
+core + #87) — the capstone induction's shape is FINAL, with exactly one arm of open proof. INV's
+lane: 10 axiom-clean commits. THE READ-OFF re-planned after the SECOND honest fatigue stop on
+the same leaf: (1) bank the turn-key route as a DOC (inv-readoff-route.md — the artifact-first
+rule; the route now includes 4 named helpers h1-h4 with line estimates + the assembly with the
+LOAD-BEARING IF-GUARD warning: α/β must ignore ed.center for ALL i, so the guards go in the
+witnesses); (2) grind h1-h4 as four SEPARATE small banks (fatigue-compatible bites) then the
+assembly as the fifth; (3) the finisher escape hatch PRE-ARMED — any stall ⟹ stop at the last
+green bank, a finisher spawns on the route doc within the hour. Board: the elder holds for pnp's
+pivot-pin confirm (the #87 implementation re-route); GM's handoff doc pending; CAPF grinding.
