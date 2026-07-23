@@ -21023,3 +21023,45 @@ diagonal-by-construction), compiler-confirmed at #73's correctly-targeted gate; 
 armed for a #73 wall. seat-descent grinding the step (non-growth unblocked; growth via the direct
 seat-KILL/pnp-cap consult); seat-KILL holding the INV probe (unneeded under the defer) + consult +
 #6/#73.
+
+## 2026-07-23 (~23:20 UTC) — elder CONFIRMED the two-cap target (1)+(2) + a precision correction I accepted: the :457 swap-target is currently GENERAL; hcanon lands via seat-KILL's render swap at #73 (not already-on-target); #73 gate corrected
+
+The elder confirmed both target questions + made a precision correction (read-the-def):
+- (1) YES: #95's hcanon-thread is the SOURCECLEARED cap (realBranch_appendResidDescent_fresh_sourceCleared,
+  SourceClearedResid:457), not the raw value cap.
+- (2) YES: the RAW value cap (realBranch_appendResidDescent, MonumentAtlas:1442) stays
+  IsRealBranch-general (all-branches value/leaf-form chain, off-diagonal via σ #86B/C). The two-cap
+  structure IS the §9.4/ADDENDUM architecture concretized. The elder also corrected its OWN
+  cross-check framing: MultiAffineStepWire carries the RAW value cap (general) — NO
+  hcanon-propagation-through-MultiAffineStepWire; hcanon lives on the SEPARATE sourceCleared chain.
+
+**PRECISION CORRECTION (I accepted; corrects my over-read):** the sourceCleared CAP does NOT yet
+carry hcanon. SourceClearedResid:457 (the #73 swap-target / obligation-b sorry) is
+IsRealBranch-GENERAL. The hcanon comes from seat-KILL's KILL RENDER (sourceClearedResid_capped, on
+the CX/KILL lane) which SWAPS IN for the :457 sorry at #73. My "the #6 twin ALREADY carries hcanon"
+was accurate for the RENDER, not the swap-target — I conflated them. The :738 read-off carrying
+hcanon is the type-check PRECEDENT (hcanon threads on this file family), not the cap. So #95(i)'s
+hcanon-carry is the render's IN-PROGRESS work arriving at #73 — structurally supported (two-cap
+split + :738 precedent + diagonal-by-construction), NOT already compiler-real on the target.
+
+**CORRECTED #73 NAMED GATE (recorded in #73):** seat-KILL's hcanon-carrying KILL render swaps in
+for the general :457 sorry; its consumers (the sourceCleared / RLCT read-off summit chain) accept
+the hcanon-carrying form compiler-green; the raw value cap sites (:1442→:805→:39/:53→:35) stay
+general + green. A wall = a sourceCleared-cap consumer that can't supply hcanon → elder's (a)/(b).
+
+**DEFER STANDS (elder + me):** no early standalone probe — a probe of the current general :457 is
+wrong-target (no hcanon yet). The meaningful check is the KILL render's OWN build (does
+sourceClearedResid_capped type-check + consumers accept) + the #73 swap gate. #95(i) structurally
+resolved on the right target; the hcanon-carry is the render's work landing at #73.
+
+**Calibration (banked):** I twice slightly over-read the hcanon status ("already carries" — first the
+raw-cap probe target, now the sourceCleared swap-target). The elder's read-the-def precision caught
+both. LESSON: "already carries hcanon" is a per-STATEMENT fact — distinguish the RENDER (carries it,
+in progress) from the SWAP-TARGET sorry (general, until the render lands) from the READ-OFF PRECEDENT
+(a different statement). Name the exact statement, not "the cap." The two-cap split + this
+render-vs-target-vs-precedent distinction are the same lesson: precision on WHICH Lean object.
+
+**Status.** #95(i) target + gate CONFIRMED (sourceCleared cap; hcanon via render swap at #73);
+defer stands; #73 gate corrected + recorded. seat-descent grinding (non-growth unblocked; growth via
+the direct seat-KILL/pnp-cap consult); seat-KILL consult + #6/#73. The thread-reaches question is
+fully disentangled + correctly posed.
