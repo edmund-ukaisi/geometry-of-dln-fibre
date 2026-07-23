@@ -620,3 +620,11 @@ cleared value 0 = exactly this scope bound.
   open def detail; the render target (DEF-EDIT-1 widen; DEF-EDIT-3 = branch-i→R4, branch-ii flip + `i≥cleared`
   scope) is COMPLETE. The correction chain converged onto the faithful fix — the scope bound is her
   current-chart reading, found by chasing the `u₀₀₁²` the fifth correction surfaced.
+- **CLOSING COROBORATION (seat-L4D, decorrelated from pnp's flat model):** the inter-edge mechanism is
+  confirmed AT THE DEF via the full composition chain (`canonNormalizationOf` raw layer-`s` reads +
+  `foldResid` deeper-edge-first + `pathMap` root-outermost). AND the last hypothetical escape is CLOSED:
+  seat-L4D's center-degree check finds the unscoped `u₀₀₁²` is NOT center-degree-1 either — so the (l)
+  chart-frame benign-artifact HYPOTHESIS FAILS for the UNSCOPED formula (raw-deg-2 does NOT collapse to
+  chart-deg-1 via `e₂` for the unscoped sum). Consequence: the `i ≥ cleared` scope bound is NECESSARY, not
+  merely the stricter option — unscoped, BOTH battery rows fail. §8(m) intact (with the scope, both pass);
+  the criterion trajectory (raw → chart-frame → scope) landed on the ONLY sound point, decorrelated-confirmed.
