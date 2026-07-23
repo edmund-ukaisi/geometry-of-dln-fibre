@@ -17441,3 +17441,16 @@ worked.tex edits; errata to a sibling doc with severity + blast radius per item)
 for discrepancies anchoring banked rulings or the live lanes; INCREMENTAL BANKING per chunk-batch
 (wedge-proof). First deliverable: the elder's chunk map. Source PDF confirmed in-repo:
 paper-sources/aoyagi-2023-consideration-of-learning-efficiency-of-dln/aoyagi-2023-neural-networks-preprint.pdf.
+
+## 2026-07-23 (~21:00) — L3T3 MERGED (8c2b5253e local) + aggregator wired; Gap-B swap spec requested (import-layering)
+
+Seat's half verified before merging: MonumentAtlas hunk docstring-only (the dual-obligation
+enumeration, 7 lines, zero code tokens); the frontier statement untouched by construction (the
+hunk IS the whole file delta); guard-3 axioms reading (descent_delta1_case11 CLEAN THREE, others
+single-frontier sorryAx) to be controller-re-derived post-wire. Merged --no-ff; aggregator
+(controller single-writer) gained the 4 modules with provenance comments; full build running as
+the gate. THE GAP-B SWAP: not executed on a guess — MonumentAtlas:22 records the import-cycle
+obstruction (the atlas is imported BY the wire modules), so the literal in-place swap is
+impossible; spec requested from seat-L3T3 (which 3 sites, which mechanism: consumer re-point vs
+statement relocation). Board: #64 dupe deleted; #65 = the controller wire. seat-LL notification
+goes out on build-green regardless (frontier-#1 can consume the twins directly).
