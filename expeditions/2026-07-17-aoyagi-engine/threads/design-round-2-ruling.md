@@ -643,3 +643,25 @@ cleared value 0 = exactly this scope bound.
   RAW frame). MERGE UNAFFECTED (we render the scoped formula; both battery rows clean). The block axis is
   CLOSED — both instruments concur on the operative question (no re-open; scoped/faithful reference clean;
   the chart-frame `boostReady` test passes).
+
+**(n) R4's placement is a THEOREM (Jacobian precision); + the arch-C-3 decomposition ruling.**
+- **PLACEMENT THEOREM (arch-C-3 prep, sharpening (k)):** distinguish the MATRICES from the CoV. Lemma 2's
+  `Q₁,Q₂` are UNIPOTENT MATRICES (det exactly 1), but the induced VARIABLE CHANGE
+  (`A₂↦−A₁⁻¹A₂, A₃↦−A₃A₁⁻¹, A₄↦C₄`) has Jacobian `det = det(A₁⁻¹)²` — a nonzero UNIT, NOT det-1. So R4
+  structurally CANNOT be a `blockShear` (`u↦u+φ`, det EXACTLY 1 = `hshear`): "R4 not in blockShear" is
+  FORCED by her math, a placement THEOREM, not a checklist choice. RLCT-safe (a unit Jacobian suffices —
+  Lemma 1 + the unit-Jacobian local iso); `M_{s,k}`-preserving (a UNIT vanishes on no exceptional divisor
+  ⟹ adds zero exceptional-coordinate power — the correct justification for a unit, superseding the loose
+  "det-1 adds nothing"). (Fixes (k)'s "unipotent (unit Jacobian)" conflation.)
+- **arch-C-3's DECOMPOSITION candidate — ACCEPTABLE IN PRINCIPLE (delta-read rules on the render report).**
+  It keeps the interior Schur cross-term in the SHEAR (det-1, faithful for `C₄`'s interior, off the pivot
+  cross) and has R4 add ONLY the pivot-row/col clearing (`F₂/F₃`, the unit-Jacobian part) at the generator
+  level. §8(i)'s literal "REPLACE branch-(i) with R4" was a MEANS to the intent (reach Lemma 2's
+  `diag(1, e₂-classical)` WITHOUT the double-count); the split is a DIFFERENT means to the SAME intent —
+  interior (branch-i) + pivot-cross (R4), DISJOINT ⟹ no overlap ⟹ no double-count (not "stacking R4 on the
+  Schur'd block"). Arguably cleaner (isolates the fix to the pivot-cross that was actually wrong). SIGN-OFF
+  CONDITIONS: (a) the reuse-node block = `diag(1, e₂-classical)` EXACTLY ONCE, corner `−γβ`; (b) render
+  report justifies the split EXPLICITLY as Lemma-2-faithful (branch-i = interior `C₄`; R4 = `F₂/F₃`
+  pivot-cross) — deviation-WITH-justification (def-fidelity gate); (c) BOTH components scoped/prior-clear-aware
+  (`i ≥ cleared`). All three ⟹ satisfies §8(i)'s intent, sign off. arch-C-3's honest fork (STOP + report if
+  reaching `diag(1,e₂)` needs a `foldResid`/fold-order redesign) = the §8(l) branch, endorsed not waved.
