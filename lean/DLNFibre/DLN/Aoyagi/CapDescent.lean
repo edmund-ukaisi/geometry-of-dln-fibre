@@ -45,6 +45,40 @@ namespace DLNFibre.DLN.Aoyagi
 
 variable {N : ℕ}
 
+/-- **`readEntry` is continuous** — it reads a fixed flat coordinate (`u fc`, `fc` from `blockEntryFlat`,
+which is `u`-independent) or `0` off-cone. -/
+@[fun_prop]
+theorem continuous_readEntry (d : Fin (N + 1) → ℕ) (S row col : ℕ) :
+    Continuous (fun u : Fin (flatDim d) → ℝ ↦ readEntry d u S row col) := by
+  unfold readEntry
+  split
+  · exact continuous_apply _
+  · exact continuous_const
+
+/-- **`canonNormalizationOf` is continuous** ⟨shared Core/CanonShear-grade fact; relocate at integration
+`#73`⟩. Its four branches are `readEntry`-polynomials (the Schur cross-term, the two recoord sums, and `0`)
+selected by conditions on the DECODED coordinate index — all `u`-independent — so each component is
+continuous, division-free (`canonNormalizationOf` never inverts). This is the real-branch shear-continuity
+atom that `continuous_foldResid` needs: `TreeEdge.hshear_analytic` covers only edges, not a path's stored
+shears, and `IsRealBranch`'s value-pin carries the value only. (Continuity is the strength `continuous_foldResid`
+needs; the `analyticOnNhd` upgrade — from which continuity falls out — is deferrable at relocation.) -/
+theorem continuous_canonNormalizationOf (d : Fin (N + 1) → ℕ) (s : ConState N) (p : Fin (flatDim d)) :
+    Continuous (canonNormalizationOf d s p) := by
+  apply continuous_pi
+  intro k
+  unfold canonNormalizationOf
+  refine continuous_if_const _ (fun _ ↦ ?_) (fun _ ↦ ?_)
+  · exact (Continuous.neg (continuous_readEntry d _ _ _)).mul (continuous_readEntry d _ _ _)
+  · refine continuous_if_const _ (fun _ ↦ ?_) (fun _ ↦ ?_)
+    · refine continuous_finset_sum _ (fun i _ ↦ ?_)
+      refine continuous_if_const _ (fun _ ↦ continuous_const) (fun _ ↦ ?_)
+      exact (continuous_readEntry d _ _ _).mul (continuous_readEntry d _ _ _)
+    · refine continuous_if_const _ (fun _ ↦ ?_) (fun _ ↦ ?_)
+      · refine continuous_finset_sum _ (fun i _ ↦ ?_)
+        refine continuous_if_const _ (fun _ ↦ continuous_const) (fun _ ↦ ?_)
+        exact (continuous_readEntry d _ _ _).mul (continuous_readEntry d _ _ _)
+      · exact continuous_const
+
 /-- **Continuity of the fold residual (on a real branch).** `coreGen` (continuous) composed with the
 per-edge step maps (strict-transform `blockBlowupCoordQuot` is the projection `if k = pivot then 1 else ·`,
 NOT a division; the blow-up `blockBlowupMap` is continuous). The `IsRealBranch` hypothesis is REQUIRED:
