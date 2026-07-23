@@ -98,6 +98,13 @@ scoped to match. The case12/case2 born-unit (Consumer 4, child.cleared=1) is a D
 degenerate `extra=∅` split would mix two distinct situations under one name (anti-bedrock). The
 conclusion carries `∀ k ∈ extra, k ∉ ed.center` (automatic since `extra = supportAt ∖ ed.center`) so it
 wires DIRECTLY into `MergeBoostSplit.deg1SupportedOn` (which needs that disjointness `hex`). -/
+-- REFUTED-AS-STATED (pnp #68, obstruction b31a3cc8c + repair 672007eb8; L4D independently
+-- re-derived): FALSE on the RAW foldResid — on real case11 branches the E_J col-0 input coupling
+-- survives the shears-only recursion (slot0|_{center=0} ≠ 0 on (2,2,2,2)); Deg1SupportedOn is
+-- STRICTLY STRONGER than the ideal-equality F₂ closed. TRUE on the SOURCE-COLUMN-CLEARED residual
+-- (each ancestor clear's below-pivot input entries zeroed BEFORE that edge's shear). Do NOT
+-- attempt this proof as stated — the OBJECT re-shape ruling is #69 (elder, in flight); the
+-- predicate + the assembly implication above SURVIVE the re-shape unchanged.
 theorem foldResid_case11_mergeBoostSplit_canon (d : Fin (N + 1) → ℕ)
     {p : TreePath d} (ed : TreeEdge d p)
     (hδ : edgeδ d p = true) (hc11 : ed.case = StepCase.case11)
