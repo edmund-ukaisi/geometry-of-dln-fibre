@@ -126,6 +126,15 @@ cross-check). GATES before the full commit (retire the geometric monument + redi
       not wait-for-explicit-go, but big enough to surface + proceed-on-silence).
 Held meanwhile: all geometric-fold render (#92/#95/#98). Nothing retired until the prototype is green.
 
+**GATE (ii) MET (2026-07-23 ~23:40): elder-standing FINAL = RE-ARCHITECT** (holds from interim,
+strengthened; recorded compass "THE PIVOTAL FORK — RESOLVED"). Concurs on the localized L3/L4/L5 scope;
+frames it as a charter §3 FIDELITY WIN (Schur-clearing IS Aoyagi's Cases 1&2/Lemma 2; the fold was our
+invention; the ~29 catches = the drift cost). Elder's condition = the same gate (i): the prototype must
+show the Lean tax manageable (no hidden Mathlib ideal-membership/equality cost). Elder next re-engage =
+the re-architecture BLUEPRINT (charter/compass reframe + new L3/L4/L5 SPEC statement-delta) on
+prototype-green + operator-go. REMAINING GATES: (i) corank-2 prototype [pnp-ideal certificate → formaliser,
+in pipeline]; (iii) operator blessing [surfaced].
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
