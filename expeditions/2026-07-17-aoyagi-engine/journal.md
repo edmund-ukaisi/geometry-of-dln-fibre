@@ -17679,3 +17679,16 @@ points, non-vanishing, paper anchor) → L4D holds the content lemma's final SHA
 grind unaffected). The wall now serves FOUR consumers (#38 subject updated). LL parks on #66
 (GeoAlphaGauge retire/restate, elder-gated statement) while #38 grinds. The dependency cone has
 collapsed onto: the wall's content lemma + the cap frontier + the L5 fold body — three objects.
+
+## 2026-07-24 (~02:50) — needed-facts list banked (c9f70dabd) + relayed; the shaping fork left to
+the prover
+
+LL's list: consumers 1/2 = the Deg1 conclusion (served); consumer 4 (born-unit, CORRECTED to
+case12/2 — not case11) = the exposed pivot coefficient + ∃j, c_{e₂}(j) 0 ≠ 0 (anchor :566-573,
+E_J's unit diagonal = b_i); consumer 3 (conjunct-2) = the per-slot pivot-carrying-XOR-pivot-free
+disjunction. The shaping fork (case-generic-with-degenerate-extra=∅ vs case11-only + an easier
+case12/2 sibling) left explicitly to L4D — the prover's simplicity on the capstone outranks
+consumer convenience; the only hard requirements are all-four-served + name=content. Banked as
+the render contract BEFORE the relay (artifact-first). PROCESS NOTE: LL reported L4D "wasn't
+reachable by name" seat-to-seat — the controller is the message hub; relays go through me (matches
+the substrate's design; noted so seats don't wait on direct sends).
