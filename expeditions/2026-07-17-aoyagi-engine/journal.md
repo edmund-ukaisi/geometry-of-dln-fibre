@@ -21435,3 +21435,37 @@ in parallel so it's ready when seat-descent reaches (4) after (1)-(3).
 (#98). seat-L7cover rendering the full-fan cover under (A) (fan-lift banked). Wall (a) both sides,
 #99 closed. Awaiting: seat-descent hredEB green (#97), seat-L7cover tree-fold green, pnp-cap growth
 carrier.
+
+## 2026-07-24 (~03:10 UTC) — OPERATOR status+DAG+board-cleanup delivered; seat-L7cover MILESTONE 1 green (abstract full-fan cover engine); (2a) shear-interface RULED
+
+OPERATOR (back, mid-turn) asked for a status update + an updated DAG (frontier detail + broader
+picture) + a task-board cleanup. Delivered:
+- STATUS: the summit path is fully priced + owned; the wall resolved (a) both sides (value bedrock +
+  cover detail-at-scale); two render lanes grinding (KILL step, L7 cover); controller-owned wire
+  (σ-bridge + fan-completeness + #73). Frontier: 42 sorries on integration (16 MonumentAtlas = the
+  summit cone), split into the cleared-chain leaves (→#73 swap) + the atlas leaves (the wall, (a)).
+- DAG: /tmp/aoyagi-dag-2026-07-24.svg — the two sub-cones (cleared-chain #73 / atlas-assembly wall),
+  frontier leaves grouped by cone, seat/lane ownership, status colors, #73 integration band,
+  foundations layer.
+- BOARD CLEANUP: pruned ~85 completed-history + 2 superseded-in_progress (#38 raw-fold WALL, #68 §7.5
+  — both superseded by the sourceClearedResid/cleared-chain route) into the journal. Live board now =
+  11 active (#72/#73/#74/#79/#81/#92/#94/#95/#97/#98/#101) + 2 anchors (#87 canonical base, #99 wall).
+
+seat-L7cover MILESTONE 1 (green, pushed 0291a9865, LeafCoverTiling.lean): the abstract FULL-FAN cover
+engine — closed block-atom (Q, closed variant) + FanTree (full fan, one child per pivot) + the
+SHEAR-FREE tree fold (closedBall ⊆ leaf-images, structural induction) + the ∃ρ open-ball corollary +
+the fan-lift. All axiom-clean + cordon-clean + integration-safe. (Re-derive at #73-wire.)
+
+MILESTONE 2 interface RULED (2a): the per-node SHEAR-CONTAINMENT is a NAMED HYPOTHESIS (the shear
+maps the child's covered box over the source box; R·(1+R)^m inflation absorbed abstractly) —
+CONTROLLER-discharged at wire from canonNormalizationOf's concrete polynomial bound; the engine stays
+MONUMENT-FREE. Same division as fan-completeness + the σ-bridge (abstract fold = seat; concrete
+monument bounds = controller). NOT 2b (pulls monument facts in). CONSUMABLE = the sheared FanTree fold
+(monument-free, fan-completeness + shear-containment as named hyps): controller-lean over FanTree (the
+atlas IS tree-structured — buildTree leaf-paths — so FanTree maps naturally; flat would encode the
+tree in the hyp anyway). Controller owns at wire: buildTree→FanTree, the atlas-chart bridge, + the 3
+discharges (fan-completeness ex buildTree, shear-containment ex canonNormalizationOf, σ-bridge).
+
+**Status.** L7: engine (M1) green; sheared fold (M2, 2a) rendering. KILL step: FP+machinery green,
+(1)-(3) solo + (4) with pnp-cap carrier. Wall (a) both sides. Board clean. Awaiting: seat-descent
+hredEB green, seat-L7cover sheared-fold green.
