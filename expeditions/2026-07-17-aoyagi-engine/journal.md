@@ -19832,3 +19832,27 @@ sequences, the elder's two triggers, and the merge order through SUMMIT-RETIRE. 
 delivery-loss discipline (2 incidents today) added as a standing memo line. No calibration
 entry this pulse (the board is mid-grind with reports incoming; the last entry's pre-flag
 already paid out through §9.4-§9.8).
+
+## 2026-07-23 (~16:35 UTC) — INV: CanonicalPivots δ-AGNOSTIC (the contingency fired correctly) +
+the read-off crux banked; GM: 10 proven incl. the corrected S2 PAIR PROVEN — hands off at the
+second honest flag (finisher seat next)
+
+INV (63cb69600 + 8366233b3): the def-check resolved AGAINST the edgeδ guard — divisors can be
+δ=0-born and the b-ledger ADDS the pivot exponent at δ=0, so CanonicalPivots renders δ-AGNOSTIC
+(strictly stronger; GM's carrier shapes unchanged; the wider excluded fan family = exactly the
+δ=0-transportable sub-species). hcanon threaded on all four statements. THE READ-OFF CRUX:
+accumulatedPivots_notMem_supportAt — every ledger corner sits at layer < s.layer (DivBirthInv
+layer-strictness), so the ledger and the support are DISJOINT — which makes the read-off's
+IgnoresCoords leg almost free. The full α/β assembly mapped in 5 steps; INV stopped on honest
+fatigue one turn-key leaf short — GO'd to grind it next wake (its map, its file; a fresh seat
+would spend more absorbing than executing). GM (d9fd8b0fc): 10 declarations proven including
+the CORRECTED S2 pair — caught and PROVEN in the same session (pure unfolding, as the cert
+predicted; the RHS-shape delta noted to the elder's pass). Remaining 7: (a)'s cert-(i)
+canonNormalizationOf branch sub-lemma (~50-80 lines, the ONE deep piece) + carrier-threaded 4
+(INV's def now available) + CAPF-gated conjB. GM's SECOND honest context flag — ACCEPTED this
+time: it banks a handoff doc (the CAPR→INV pattern: lane state, the (a) reduction trace with
+cert (i)'s per-arm pattern inlined, the threading spec incl. the δ-agnostic cross-lane note,
+the exit-gate protocol) and retires to unit-consult; a FINISHER SEAT spawns on the doc. Elder's
+folded pass gains: the as-proven S2 shape + the δ-agnostic re-bless evaluation. The board's
+remaining execution: the finisher's cascade + INV's read-off + CAPF's ladder + pnp's #87 cert —
+then the merges.
