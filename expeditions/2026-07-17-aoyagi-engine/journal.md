@@ -17305,3 +17305,14 @@ of pnp's battery. L4D also self-corrected its item-2 RATIONALE to pnp's reading 
 clean-cleared-column fidelity, not u₀₀₁²-removal; check itself unchanged) — independent convergence
 on the row-3 nuance. ALL REVIEW HALVES CLOSED. The merge waits ONLY on the elder's row-3 frozen
 sentence; then: merge 8b0c33476+sentence → GO L4D on THE WALL → L3T3 rebase.
+
+## 2026-07-23 (~17:30) — elder §11 erratum banked @ dbcd475b6; row-3 frozen text to arch-C-4 (the last render item)
+
+Elder's ruling: pnp's finding correct with clean provenance — §8(m) had ALREADY ruled the scope a
+fidelity choice (contested-but-moot on unscoped-u₀₀₁²); §9's re-check (b) REGRESSED to a necessity
+framing and the render docstring inherited it; pnp's render-object battery resolves the moot flag.
+Two-axis line ENDORSED re-grounded (pairing intra-edge; scope tracks s.cleared inter-edge state);
+u₀₀₁² RE-SCOPED as a quarantined clear-model fact (not deleted — guards future "simplification").
+Elder authored §11 in the ruling file itself (its office write); controller verified content + committed.
+Frozen two-site replacement dispatched to arch-C-4 (docstring-only, clean boundaries). ON ITS
+LANDING: the controller merge executes — all three review gates green, all controller-re-derived.
