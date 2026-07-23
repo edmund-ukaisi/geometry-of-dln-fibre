@@ -17662,3 +17662,20 @@ each layer characterized at the weakest hypotheses that suffice). LL's board: ca
 exfalso) + born-unit (wall) + conjunct-2 S=L (descent — its next grind if case11 waits). THE WALL
 IS NOW UNAMBIGUOUSLY THE CRITICAL PATH: 2 of LL's 3 holes + case1_conjA + the primed driver's
 footprint all ride it.
+
+## 2026-07-24 (~02:30) — conjA FULLY WIRED (LL, 1d46ec13d): case11 consumes the wall at S=L (no
+interior guard, reachability confirmed); the twin's last 2 holes = the S=L unit-flip = the wall's
+SPLIT structure; ruled consume-the-content-lemma (no standalone descent_lastLayer)
+
+lastLayer_conjA is sorry-free in-body: case12/2 (pin+vanishing), case11 → realBranch_boostReady_
+case11 (which carries NO interior guard — applies at S=L directly; the weakest-hypotheses concern
+was already satisfied by the statement), rollover excluded. LL's scoping finding on conjunct-2:
+every descent lemma is interior-guarded, and the S=L obligation is the ∅/born-unit slot-flip —
+the SAME b-chain content as #38. RULED (b)+sharpened: the two holes consume the MergeBoostSplit
+CONTENT LEMMA (the explicit α/β split, from which the dehomogenised pivot's unit-flip c_pivot(0)
+reads off) — NOT a new S=L descent lemma (duplicate derivation) and NOT merely the wall's Deg1
+conclusion (too weak for the flip). LL drafts the needed-facts list (coefficients, evaluation
+points, non-vanishing, paper anchor) → L4D holds the content lemma's final SHAPE for it (proof
+grind unaffected). The wall now serves FOUR consumers (#38 subject updated). LL parks on #66
+(GeoAlphaGauge retire/restate, elder-gated statement) while #38 grinds. The dependency cone has
+collapsed onto: the wall's content lemma + the cap frontier + the L5 fold body — three objects.
