@@ -17163,3 +17163,32 @@ REMAINING: the cross-clear home ruling (property vs splice — the elder's one o
 arch-C-4's render (#58 in progress), then the authoritative battery (all rows enumerated:
 bridge + block-form + chart-frame + scope + on-frame polynomiality + corner-A + interior) +
 slot-confirm + delta-read → merge.
+
+## 2026-07-23 (~14:05) — PROPERTY-HOME RULED with 4-point scrutiny; RECURSION=IDEAL / BOOSTREADY=FORM canonical; the wall survives EXPLICIT AND PROVABLE
+
+The batch that settles the render's last question (seat-L4D's def-confirm + the elder's
+ruling, same tick):
+- seat-L4D's BOTH-YES def-confirm: delta1_append's hdeg1 (Case1Wire:333-341) takes a BARE
+  Deg1SupportedOn property (no recursion-level clear in its type); its proof closes the
+  recursion with the compensator shear + blowup ONLY (the crux consuming hdeg1 to factor
+  u_pivot); the wall route PRODUCES exactly that property. The property-home is the
+  def-consistent reading — the ideal-close break the Gröbner found NEVER ARISES because the
+  clear never enters the recursion.
+- THE ELDER'S RULING with the 4-point scrutiny (run at highest suspicion — a simplification
+  of a named hard part): (1) SOUND — the splice breaks the equality close; the shears-only
+  green is NOT vacuous (StepInv = the ideal identity, discharged via Lemma-1 ideal-
+  preservation of the unimodular shears); RECURSION = THE IDEAL, BOOSTREADY = THE FORM —
+  "two properties cleanly separated at last." (2) FAITHFUL — her Theorem 3 exactly (per-factor
+  block-elim closes the ideal; the diag form is the property read off it). (3) THE WALL
+  SURVIVES — boostReady_case11 remains #38, explicit; and PROVABLE: pnp's chart-frame pass
+  proved the property TRUE of the shears-only residual (the e₂-decomposition as the device;
+  NOT the dead β-route). (4) EVIDENCE-FIT — every banked row consistent. The elder
+  re-corrected its own path-A splice phrasing, owned in-file. Splice-home REJECTED.
+- GO relayed to arch-C-4: #59 re-worded (NO fold splice; re-docstring the clear as the
+  property-lemma device; the corner/three-home/per-chart/input-side-principle docstrings);
+  #58 + #60 as charged; census delta literally 0 (the recursion unchanged). Tasks #59/#38
+  updated to the final forms.
+
+The render's every line is now determined for the second time — and this time the recursion
+itself needs NOTHING new: the F₂ render = branch-(iii) + the support lemma + docstrings +
+gates. The wall fires post-merge on a property already proven true at the model level.
