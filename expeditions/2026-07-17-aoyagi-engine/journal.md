@@ -17272,3 +17272,10 @@ the code-untouched sweep of foldResid/stepMap/stepMapRaw/foldG/foldB/edgeShear (
 no splice). Cheerful re-run (f2_census0_confirm.py) exit-0: the rendered 3-compensator form preserves
 the product identically; pure-zero fails. Wall-readiness declared (post-merge, on GO).
 MERGE GATES: elder ✓, L4D ✓; remaining = pnp all-rows battery + arch-C-4's item-9 docstring commit.
+
+## 2026-07-23 (~17:00) — item-9 docstring landed @ 8b0c33476 (controller-verified prose-only diff)
+
+arch-C-4 rendered the elder's frozen per-chart sentence at both corner-gauge sites; controller read
+the raw diff (8 lines, both hunks docstring/comment prose, zero code tokens) and committed+pushed
+REBAKE2 @ 8b0c33476. Render items ALL CLOSED. The merge now waits on exactly one gate: pnp's
+all-rows battery (#44/#51). Merge target = REBAKE2 @ 8b0c33476 (1a113e4db + the docstring).
