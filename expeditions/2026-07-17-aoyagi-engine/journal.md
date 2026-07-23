@@ -19745,3 +19745,26 @@ stays). Nothing new to dispatch — pnp's queue already carries both deciders (t
 the #87 cert with the oracle-guard interplay); the elder finalizes scope + bake-bless on their
 landing. The ruling chain §9→§9.7 is now a complete, self-correcting record of the deepest
 object question the expedition has faced.
+
+## 2026-07-23 (~19:20 UTC) — GM's 2 certificates delivered (re-ran exit 0): cert (i) consumable
+(the per-arm write pattern); cert (ii) = THE 25th CATCH (GM's S2 statements false-as-transcribed
+at fresh clears; the corrected child-cleared-input form verified all edges)
+
+CERT (i): the shear-write-cleared-factor fact, Lean-consumable with the full per-arm pattern
+(branch (i)'s interior write -readEntry(row,b_cur)·readEntry(a_cur,col) always carries a cleared
+coupling factor — the r>a_cur / r<a_cur dichotomy; branch (ii) writes above all ancestor
+couplings; branch (iii) vanishes by the same mechanism) — GM's keystone (a) closes on it without
+reading canonNormalizationOf. CERT (ii) — THE 25th CATCH: GM's stated
+sourceClearedResid_extend_delta1/delta0 put the δ-transform on RAW u — FALSE at case2/case12
+FRESH clears (the child-born belowPivotCol coupling is read by the fresh shear, never cleared by
+the parent-clear on the RHS; exact failing edges listed, 3 witnesses); TRUE at case11 only —
+which is why every prior case11-scoped check passed. pnp's VERIFIED S2 always used the
+child-cleared input (its scripts' clc argument); the Lean transcription diverged from the
+verified form — a NEW catch class: verified-form vs stated-form transcription divergence,
+caught at the certificate stage before any proof bent. CONSUMPTION ANSWERED from GM's own
+enumeration: the fresh cases ARE consumers (case2 conjA δ=1 + the δ=0 pullback) ⟹ the corrected
+form is mandatory, not scope-narrowing. The corrected statement (δ-transform of the
+child-cleared input; RHS-as-parent-sourceClearedResid coincides via cert (i)'s no-op) is
+verified ALL edges. GM applies the fix (folded-pass delta noted to the elder); then its map
+runs: (a) via cert (i) → corrected S2 → appends → conjA, all mechanical. pnp has moved to
+#86(C) — the labeled-jac decider in production. Catches 25/25 pre-render.
