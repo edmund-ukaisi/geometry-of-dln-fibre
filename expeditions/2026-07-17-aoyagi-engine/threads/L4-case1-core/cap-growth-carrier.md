@@ -28,9 +28,21 @@ factors (the coord sits at the layer-`(S+1)` edge of every monomial path):
     coeff_m  =  [ left factor: rows of A_{N-1}···A_{S+2} reaching row a ]  ×  [ row e of P_S ] ,
 
 where `P_S = A_S·A_{S-1}···A_0`. The left factor reads only layers `≥ S+2` (disjoint from the couplings).
-So the coupling content is entirely in **row `e` of `P_S`, with `e ≥ wmu(S+1)`** — a REMNANT ROW. The blow-up
-`Φ_q` preserves this (each layer-`≥S+1` coord is a spectator of the layer-`≤S` blow-ups; verified on the real
-fold at depth 2, `cap_growth_carrier_battery.py`). So the carrier reduces to a statement about `P_S`.
+So the coupling content is entirely in **row `e` of `P_S`, with `e ≥ wmu(S+1)`** — a REMNANT ROW.
+
+**BRIDGE IS NON-TRIVIAL (render-pricing, corrected — `cap_growth_bridge_and_trace.py`).** The fold-level
+coefficient `fold c_m` (of `u_m` in `foldResid q = coreGen ∘ Φ_q`) does NOT equal the pure `pure c_m` (row
+`e` of `P_S`): the escaped coord `m` (col `e ≥ wmu(S+1)`) is a SPECTATOR as an OUTPUT of `Φ_q` (shears write
+only block cols `< wmu(S+1)`), BUT the shear branch-(ii) READS escaped coords to write block cols, so
+`coreGen` reading those block-col slots picks up `u_m` — `fold c_m = pure c_m + shear corrections`. HOWEVER
+**both `fold c_m` and `pure c_m` are `∈ ⟨couplings⟩`** (verified, `(2,3,3,3)`+`(3,2,3,3)`). So the render has
+two routes (pick with the controller; I hold no Lean-feasibility model):
+- **(A) reduce-to-pure**: prove §2 on the static `P_S`, then bridge `foldResid = coreGen ∘ Φ_q` (the shear
+  corrections are also coupling-carrying — extra Lean work: the branch-(ii) read analysis).
+- **(B) fold-native** (likely cheaper): prove `escaped-coeff ∈ ⟨accumulated couplings⟩` DIRECTLY by induction
+  on the FOLD recursion, mirroring `foldResid_layerHomogeneous'`'s structure (which the render already
+  consumes for the homogeneity), NO bridge. §2/§3 below is the MECHANISM either route uses; stated on the
+  static `P_S` for clarity, but route (B) runs the analogous split on the fold's own step.
 
 ## 2. THE DESCENT LEMMA (the internal helper seat-descent renders)
 
