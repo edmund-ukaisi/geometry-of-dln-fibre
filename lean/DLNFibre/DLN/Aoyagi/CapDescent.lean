@@ -603,6 +603,71 @@ theorem conOracle_case2or12_cleared_lt {N : ℕ} {d : Fin (N + 1) → ℕ} (s : 
   subst hsc
   rcases hc with h | h <;> simp at h
 
+/-- **A `cornerToFlat` corner decodes to the DIAGONAL** `(S, J, J)` — layer `S`, row `J`, col `J`. The
+building block for "couplings sit strictly below the diagonal": a fresh-clear pivot is `cornerToFlat(S,
+cleared)`, so its row `=` its col. -/
+theorem cornerToFlat_decode {N : ℕ} {d : Fin (N + 1) → ℕ} {S J : ℕ} {pv : Fin (flatDim d)}
+    (h : cornerToFlat d S J = some pv) :
+    (((tupIdxEquiv d).symm pv).1.1 : ℕ) = S ∧ (((tupIdxEquiv d).symm pv).1.2 : ℕ) = J ∧
+      (((tupIdxEquiv d).symm pv).2 : ℕ) = J := by
+  simp only [cornerToFlat] at h
+  split_ifs at h with hS hr hc <;> simp only [reduceCtorEq, Option.some.injEq] at h
+  -- only the all-conditions-true branch survives; `h : tupIdxEquiv ⟨…⟩ = pv`.
+  have hd : (tupIdxEquiv d).symm pv = ⟨⟨⟨S, hS⟩, ⟨J, hr⟩⟩, ⟨J, hc⟩⟩ := by
+    rw [← h, Equiv.symm_apply_apply]
+  rw [hd]; exact ⟨rfl, rfl, rfl⟩
+
+/-- **`belowPivotCol` shares the pivot's column and lies strictly below its row.** -/
+theorem belowPivotCol_decode (d : Fin (N + 1) → ℕ) (pivot : Fin (flatDim d))
+    {y : Fin (flatDim d)} (hy : y ∈ belowPivotCol d pivot) :
+    (((tupIdxEquiv d).symm y).2 : ℕ) = (((tupIdxEquiv d).symm pivot).2 : ℕ) ∧
+      (((tupIdxEquiv d).symm pivot).1.2 : ℕ) < (((tupIdxEquiv d).symm y).1.2 : ℕ) := by
+  unfold belowPivotCol at hy
+  rw [Finset.mem_image] at hy
+  obtain ⟨q, hq, rfl⟩ := hy
+  rw [Equiv.symm_apply_apply]
+  exact ⟨(Finset.mem_filter.mp hq).2.2.1, (Finset.mem_filter.mp hq).2.2.2⟩
+
+/-- **Every ancestor coupling coordinate is STRICTLY BELOW the diagonal** (`col < row`), under
+`CanonicalPivots`. Each fresh-clear pivot is the diagonal corner `cornerToFlat(S, cleared) = (S, cleared,
+cleared)`, and its below-pivot column `{(S, r, cleared) : r > cleared}` therefore has `col = cleared =
+pivot.row < r = row`. Gives `pv ∉ couplingCoords` for the DIAGONAL `pv` the FP needs (a diagonal coord has
+`col = row`, contradicting `col < row`). -/
+theorem couplingCoords_row_gt_col {N : ℕ} {d : Fin (N + 1) → ℕ} :
+    ∀ (p : TreePath d), CanonicalPivots d p → ∀ {x : Fin (flatDim d)}, x ∈ couplingCoords d p →
+      (((tupIdxEquiv d).symm x).2 : ℕ) < (((tupIdxEquiv d).symm x).1.2 : ℕ) := by
+  intro p
+  induction p with
+  | root => intro _ x hx; simp [couplingCoords] at hx
+  | step p' c pv cse ns φ ih =>
+    intro hcanon x hx
+    obtain ⟨hcanonP, hcanonPiv⟩ := hcanon
+    cases cse with
+    | case11 =>
+      have hcc : couplingCoords d (TreePath.step p' c pv StepCase.case11 ns φ)
+          = couplingCoords d p' := Finset.union_empty _
+      rw [hcc] at hx; exact ih hcanonP hx
+    | rollover =>
+      have hcc : couplingCoords d (TreePath.step p' c pv StepCase.rollover ns φ)
+          = couplingCoords d p' := Finset.union_empty _
+      rw [hcc] at hx; exact ih hcanonP hx
+    | case12 =>
+      rw [couplingCoords] at hx
+      rcases Finset.mem_union.mp hx with h1 | h2
+      · exact ih hcanonP h1
+      · change x ∈ belowPivotCol d pv at h2
+        obtain ⟨hcol, hrow⟩ := belowPivotCol_decode d pv h2
+        obtain ⟨_, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+        omega
+    | case2 =>
+      rw [couplingCoords] at hx
+      rcases Finset.mem_union.mp hx with h1 | h2
+      · exact ih hcanonP h1
+      · change x ∈ belowPivotCol d pv at h2
+        obtain ⟨hcol, hrow⟩ := belowPivotCol_decode d pv h2
+        obtain ⟨_, hpr, hpc⟩ := cornerToFlat_decode hcanonPiv
+        omega
+
 /-- **THE INVARIANT `Z` (pnp certificate V1) — the source-cleared residual ignores `escapedBelow`.**
 Proven by induction on the path (mirrors `foldResid_layerHomogeneous'`): root (`escapedBelow (0,0) = ∅`),
 rollover / case11 (Z unchanged, carries verbatim through the identity blow-up), and the last-clear
