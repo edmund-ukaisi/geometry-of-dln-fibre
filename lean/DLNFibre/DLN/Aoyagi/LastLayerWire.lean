@@ -85,6 +85,7 @@ theorem lastLayer_conjA
     -- merge-block, the open sub-subtlety; rollover: excluded by hparent + hlast).
     subst he
     have hcl : p.conState.cleared = 0 := of_decide_eq_true hδ
+    have hbfull := hbranch
     obtain ⟨hpbr, ⟨sc, hsc, hecase, hchild, hcenter, -⟩, -⟩ := hbranch
     have hpnt : ¬ N ≤ p.conState.layer := by omega
     have hsl : supportLayerOf p.conState = p.conState.layer := by
@@ -107,7 +108,7 @@ theorem lastLayer_conjA
       · refine absurd ?_ hne0
         rw [← hunit 0 (by rw [hguniv]; exact Set.mem_univ _)]; exact hvanish j
     have htrans := conOracle_child_transition p.conState sc hsc
-    rcases htrans with ⟨-, -, hL, -⟩ | ⟨hc12or2, -, -⟩ | ⟨-, -, -⟩
+    rcases htrans with ⟨-, -, hL, -⟩ | ⟨hc12or2, -, -⟩ | ⟨h11sc, -, -⟩
     · -- rollover: child.layer = parent.layer + 1 = N, contradicting hlast (child.layer = N-1).
       exfalso; rw [hchild] at hL; omega
     · -- case12/case2: ed.center = supportAt, then extract Deg1SupportedOn (mirrors case2_conjA).
@@ -136,11 +137,12 @@ theorem lastLayer_conjA
           (fun u => hc_repr u (by rw [hguniv]; exact Set.mem_univ u)) haff
         exact ⟨c', fun i => (hc'_cont i).continuousOn, fun u _ => hc'_repr u, hc'_ign⟩
       exact case_child_stepInv_divisibility d (canonFlatten d) p ed (by omega) hdeg1 hinv.1
-    · -- case11 (MERGE): `ed.center = canonCenterOf` is the merge-block (pivot ∪ `col < runLen`),
-      -- NOT `supportAt` (`col < widthMinUpto`). Needs Deg1 on that merge-block — the parent's Deg1
-      -- on `supportAt` (from `hslot`) is on a DIFFERENT (larger) set — a genuine sub-hole.
-      -- map: B-Llast-conjA-delta1-case11 (merge-block Deg1; open sub-subtlety)
-      sorry
+    · -- case11 (MERGE): `ed.center` is the merge-block, NOT `supportAt`; the Deg1-on-merge-block
+      -- is the WALL `realBranch_boostReady_case11` (#38, boost-center Deg1 via the b-chain). It has
+      -- NO interior guard, so it applies at S=L (layer=N-1) directly — this case11 rides the wall.
+      have h11 : ed.case = StepCase.case11 := hecase.symm.trans h11sc
+      exact case_child_stepInv_divisibility d (canonFlatten d) p ed (by omega)
+        (realBranch_boostReady_case11 d (canonFlatten d) ed hδ h11 hbfull hslot) hinv.1
   · -- δ=0 (subsequent clear, parent.cleared ≥ 1): pure pullback — CLOSED, case-blind, from hinv.1.
     have hδ0 : edgeδ d p = false := by
       cases h : edgeδ d p with
