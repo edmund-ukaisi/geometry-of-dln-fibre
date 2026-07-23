@@ -20912,3 +20912,43 @@ seat-descent grinds; no commission needed unless a specific gap surfaces.
 **Status.** Invariant shape FROZEN + verified self-inductive; seat-descent on b8fec5647 with the
 frozen contract + :603 + the multi-layer-descent mechanism; seat-KILL on the probe; seat-CFF
 acknowledged HOLD (resting). The KILL step is a clean, frozen-contract render on a green foundation.
+
+## 2026-07-23 (~22:25 UTC) — seat-descent mini-restate PASSED (correct decomposition); thread-reaches probe DEFERRED to #73 (base-staleness); direct seat-descent↔seat-KILL consult authorized
+
+seat-descent's mini-restate is excellent — PASSED. It correctly decomposes the KILL step:
+- **SPLIT** via conOracle_child_transition's arms: NON-GROWTH (rollover/case11/non-last case2·case12
+  → escapedBelow(ns) = escapedBelow(p')) vs GROWTH (last case2·case12, cleared+1 = widthMinUpto(S+1)
+  → escapedBelow(p') ∪ escapedCol(S+1), the conditional arm firing).
+- NON-GROWTH reduction: (FP) τ_δ(couplingClear(step) u) is couplingCoords(p')-cleared ⟹ foldResid p'
+  → sourceClearedResid p'; (AT) agreement off escapedBelow(p') transports through τ_δ; then IH.
+- GROWTH arm = the V3 crux: escapedCol(S+1) flips read→ignored at the last clear because THIS step
+  unions belowPivotCol(pv) (diagonal below-diagonal col) into couplingCoords; rendered as the
+  product-chain LAYER DESCENT on coreGen=∏A (accumulated all-layer couplingCoords; single-layer
+  FALSE on wide layers; hcanon load-bearing), mirror foldResid_layerHomogeneous'.
+Statement-lock understood. I PASSED it + confirmed: outer statement FROZEN, the accumulated-couplings
+descent is an INTERNAL HELPER seat-descent introduces (seat-KILL's option (i), keep outer as-is —
+consistent with the freeze; NOT a contract change). Base-corrected seat-descent to b8fec5647 (+1 FF
+from its dae6f3534 branch; sorry :601→:603).
+
+**THREAD-REACHES PROBE — DEFERRED to #73 (seat-KILL's base-staleness catch).** seat-KILL found the
+probe on its base (b8fec5647, CX-derived) tests the WRONG summit: that base PREDATES the INV summit
+restructure, so the three summit sites (realBranch_multiAffine_step' :805, case1/case2_preserves_
+stepInv'' :39/:53, leaf_stepInv_of_path' :35) take general IsRealBranch with no hcanon — a
+base-staleness artifact, not the integration answer. The INV base HAS the hcanon summit threading
+(INV:738) + the §9.4 diagonal-scoped fold (= the elder's ADDENDUM: diagonal-scoped by construction),
+so the structural answer is CLEAN. DECISION: defer the compiler-definitive probe to #73's
+rebase-onto-canonical (the natural + definitive test site); don't fragment seat-KILL onto a
+confirmatory INV-worktree probe. #95's cross-check = structurally clean now (INV:738), compiler-
+confirmed at #73; elder's (a)/(b) armament stays ready if #73 walls. Elder FYI'd (proceed-on-silence).
+
+**DELEGATION:** authorized a DIRECT seat-descent↔seat-KILL consult loop on the KILL-step proof
+MECHANICS (seat-descent's 2 questions — the FP+AT+IH reduction + the growth-arm foldResid-vs-coreGen
+bridge — + follow-ups); pnp-cap is the descent-cert consult for the bridge (owns
+capstone_kill_multilayer.py). I stay cc'd for material findings / blockers / statement-class catches
+/ scope questions. Controller = decisions (base, contract, probe-scope), seats = mechanics — no
+bottlenecking a technical consult on my context.
+
+**Board.** #96 (mini-restate) DONE; #97 (non-growth skeleton) + #98 (growth arm) = seat-descent's
+active sub-tasks. Critical path: seat-descent grinding the step (non-growth unblocked now, growth via
+the direct consult) + seat-KILL consult/#6/#73 + INV/CAPR producers → #73 assembly (where the probe
+is also definitively tested).
