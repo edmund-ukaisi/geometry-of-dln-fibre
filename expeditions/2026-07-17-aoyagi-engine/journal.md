@@ -15524,3 +15524,25 @@ pnp-transport charged with the compute half (its faithful harness extends natura
 now, completed candidate after L4D specifies); the two coordinate directly. arch-C unchanged
 (def-edit 1 proceeds; field + frontiers held). The recoord verdict is now the gating item ahead
 of the field render. Task #46 opened.
+
+## 2026-07-23 (~00:45) — the pre-staged battery CONFIRMS the §7 premise against the RULED field; the reflexive def-fidelity lesson authored
+
+pnp-transport's complete §5 battery pre-stage (banked, controller re-ran exit-0:
+verify/battery_field_frame.py): MATH-vs-ENCODING split against the RULED e₂-factoring form —
+honest_clear (the certificate's math) HOLDS the field on BOTH wide witnesses (2,3,2)/(2,3,2,2);
+the baked canonNormalizationOf FAILS it (non-factoring witness: coeff of u101 in resid[0] =
+2·u010·u200, not e₂-divisible). All four §5 rows staged: (i) field baked-FAIL + witness,
+(ii) FRAME red row (root-frame bare-pivot misread correctly fails — able-to-fail ✓),
+(iii) PerLayerDeg1From regression ✓, (iv) scrambled-e vacuity ✓. Its third surfacing of the
+recoord gap, each at a sharper target; the decisive one: §4's two def edits do NOT touch
+canonNormalizationOf, so the REBAKE INHERITS the defect — arch-C's field hold now formally
+spans def-edit 3, and the PRESERVE frontier is a FALSE GOAL until the recoord completes.
+Everything gates on seat-L4D's branch verdict (representable-displacement vs
+skeleton-revision); pnp's §7 Gröbner re-verification charge restated (crossed in transit).
+
+LESSON AUTHORED (lessons.md, elder root-cause, controller-authored on its request): rulings ship
+def-facts with the def-check attached, or flagged as inference-to-be-checked — the charter §3
+gate applied REFLEXIVELY to the adjudicator; convergence ≠ verification (the elder's intuition
+and the wrong reading agreed; the mechanical def-trace broke the tie). Paired with the
+controller's artifact-first/brief-second rule: provenance and propagation, two halves of one
+failure class, both now standing.
