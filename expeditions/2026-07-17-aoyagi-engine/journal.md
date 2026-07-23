@@ -17915,3 +17915,18 @@ conjA; no cleared-form wiring exists), and THE GATING DESIGN ITEM — the cleare
 AND bridge back to the raw StepInv q-witness; her accumulation carries the CLEARED representative,
 the raw object only ever appears inside her ideal). L4D + pnp hold; the fresh formaliser spawn
 waits on ruling → certificate.
+
+## 2026-07-24 (~09:15) — ADJUDICATION FINAL: CHART-ONLY (02049b6ac); the (B)/(D) distinction
+resolves the instrument-history tension; everything gates on #69
+
+pnp's decisive re-run (def-exact Φ_p, F₂ recoord correctly applied incl. the birth edge; (2,2,2,2)
++ wide-interior + double-boost; scoped AND unscoped; Codex concurring): raw-split FALSE everywhere;
+degree≤1 TRUE everywhere; center-ideal membership FALSE everywhere. THE RESOLUTION: the prior 25
+instruments proved property (B) (degree≤1 — the F₂ recoord's actual job, still true) which does
+NOT imply property (D) (⟨ed.center⟩ membership — the wall's need); u₀₁₀ is degree-1 but outside
+the center ideal. The instruments never tested (D) — the miss is explained, not mysterious. The
+chart e₂-value = the birth Schur exceptional; the extra factors through its CONSTITUENT u₀₁₀.
+(D) is TRUE of the source-column-cleared residual (the verified repair). Relayed to the elder as
+the language for the re-shaped statements: (B) stays a raw fact; (D) re-states of the cleared
+object; the cleared↔raw bridge = the one open design item. #68 adjudication CLOSED; the positive
+certificate + fresh formaliser + LL's renders all queue behind #69.
