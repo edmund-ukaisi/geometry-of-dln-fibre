@@ -18000,3 +18000,12 @@ pnp-fan machinery is the relevant asset), or (c) a misread at pp.15-18. L4D's SP
 stage the stable half (the object + (D)-statements + assembly wiring); HOLD the bridge + append
 re-point + LL contract. pnp holds. The positive bound stands: predicate + assembly reusable; only
 the bridge's shape is open.
+
+## 2026-07-24 (~11:30, heartbeat tick) — the amendment round fully in motion; memo refreshed
+
+Liveness: L4D (stable-half SPECIFY), pnp (post-correction hold/support), elder (§7.5 amendment —
+the paper-first read of her intermediate-layer clear: Lemma-1-internal vs chart/cover vs misread)
+all active within the minute. LL parked. Memo wait-state refreshed to the full obstruction-arc
+position (obstruction → ruling → bridge refutation → amendment; canonical sound throughout, all
+questionable statements sorry-gated + fenced). Nothing owed this tick; next event = the elder's
+§7.5 (the bridge's true shape decides the corrected closing contract).

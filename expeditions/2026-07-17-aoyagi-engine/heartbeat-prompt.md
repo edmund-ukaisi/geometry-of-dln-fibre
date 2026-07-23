@@ -54,7 +54,23 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-24 ~06:30): THE FRONTIER IS ONE LEMMA + the re-shape is in flight.
+- CURRENT WAIT-STATE (2026-07-24 ~11:30): THE OBSTRUCTION ARC — one amendment from closure.
+  Since ~06:30: the wall PROVEN modulo the content lemma + merged (census 42; turn-key swap;
+  L4D released) → pnp's KILL-CONDITION verdict: the content lemma is FALSE on the raw fold
+  (CHART-ONLY, triple-confirmed; (B) degree≤1 TRUE raw / (D) ⟨center⟩-membership FALSE raw,
+  TRUE on the source-column-cleared residual — the (B)≠(D) lesson banked; the lemma FENCED
+  on canonical 64092da06) → elder #69 ruling: the (D)-carrier = the NAMED derived object
+  sourceClearedResid; recursion untouched; options 2/3 rejected; det-1 prior WITHDRAWN →
+  pnp's crossing correction 5aa7dadad REFUTES the ruled ideal-equality bridge (⟨src⟩≠⟨raw⟩;
+  the object is a HYPERPLANE RESTRICTION; RLCT-soundness OPEN at INTERMEDIATE-layer reuse,
+  witness (2,2,2,2,2)) → ELDER §7.5 AMENDMENT in flight (paper-first: her intermediate clear =
+  Lemma-1-internal vs CHART/COVER structure (the fan; bridge = cover-membership) vs misread).
+  L4D stages the STABLE SPECIFY half (object def + (D)-statements + assembly wiring); the
+  bridge/append-re-point/LL-contract statements HELD. pnp holds post-correction. LL parked
+  (its 2 renders re-target the amended contract). ON THE AMENDMENT: corrected closing contract
+  → pnp certifies the true bridge → L4D full SPECIFY + elder statement-delta → proofs + the
+  fresh-formaliser spawn (targets sourceClearedResid's content lemma). Canonical is SOUND
+  throughout (all questionable statements sorry-gated + fenced). (Old state for context:)
   Since ~03:30: the LL lane MERGED (LastLayerWire wired; conjA fully wired; census 44); L4D's
   session-2 landed — the assembly lemma PROVEN clean-three, the content statement hardened
   (case11-only + case12/2 sibling ratified), realBranch_boostReady_case11' PROVEN via
