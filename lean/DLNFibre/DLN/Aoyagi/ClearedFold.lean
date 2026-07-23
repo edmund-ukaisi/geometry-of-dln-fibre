@@ -228,16 +228,66 @@ theorem pivot_notMem_couplingCoords_extend (d : Fin (N + 1) → ℕ) {p : TreePa
   -- map: B-globalmove-pivot-notMem-couplingCoords (pnp: pivot=diagonal corner ∉ strictly-below-diag)
   sorry
 
+/-- **cert (i) — `canonNormalizationOf` writes zero at ancestor couplings on the child-cleared locus.**
+For `k ∈ couplingCoords d p`, the current-edge shear `canonNormalizationOf d p.conState ed.pivot` applied to
+the child-cleared input vanishes at `k`. Each of the shear's 3 branches writes a `readEntry` product one of
+whose factors is a cleared coupling coordinate (`r > a_cur` ⟹ the current pivot's coupling; `r < a_cur` ⟹
+`a_cur > r > a_anc` ⟹ the ancestor's), so it vanishes on `{couplings = 0}`. VERIFIED all edges, 3 witnesses
+(pnp cert (i), 3ec969d8f). NAMED FRONTIER: the deep 3-branch write-index arithmetic (cert (i) supplies the
+per-arm pattern; the render fills it — RLCT-equivalent via the source-clear rendering per §10). -/
+theorem canonNormalizationOf_vanishes_on_couplingCoords (d : Fin (N + 1) → ℕ) {p : TreePath d}
+    (ed : TreeEdge d p) (u : Fin (flatDim d) → ℝ) {k : Fin (flatDim d)}
+    (hk : k ∈ couplingCoords d p) :
+    canonNormalizationOf d p.conState ed.pivot (couplingClear d (p.extend ed) u) k = 0 := by
+  -- map: B-globalmove-canonNormalizationOf-vanishes ⟨FRONTIER: cert (i) 3ec969d8f — 3-branch write-carries-cleared-factor⟩
+  sorry
+
 /-- **THE LOCUS CONTAINMENT (load-bearing; replaces the false M-level commutation).** `stepMap d ed` sends
 `L_child` into `L_parent`: after clearing the child's couplings and applying the step, the ancestor
 couplings (`couplingCoords d p`) are still zero — they are spectators of the current step's shear+blow-up.
-Stated in directly-usable no-op form: the parent clear fixes the child-cleared, stepped point. pnp-verify. -/
+Stated in directly-usable no-op form: the parent clear fixes the child-cleared, stepped point. Assembled from
+cert (i) (`canonNormalizationOf_vanishes_on_couplingCoords`) + `edgeShear_keeps_pivot` + the `blockBlowupMap`
+case split; carrier-free, fan-robust (pnp a8a956809). -/
 theorem couplingClear_parent_fixes_stepMap_child (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (hbranch : (p.extend ed).IsRealBranch (canonFlatten d)) (u : Fin (flatDim d) → ℝ) :
     couplingClear d p (stepMap d ed (couplingClear d (p.extend ed) u))
       = stepMap d ed (couplingClear d (p.extend ed) u) := by
-  -- map: B-globalmove-couplingClear-parent-fixes-stepMap-child (locus containment; ancestor coords spectators)
-  sorry
+  classical
+  set v := couplingClear d (p.extend ed) u with hv
+  obtain ⟨-, -, -, hpin⟩ := hbranch
+  -- `v` vanishes on `couplingCoords d p` (⊆ `couplingCoords d (p.extend ed)`, cleared).
+  have hvzero : ∀ k ∈ couplingCoords d p, v k = 0 := by
+    intro k hk
+    show couplingClear d (p.extend ed) u k = 0
+    simp only [couplingClear, if_pos (couplingCoords_mono_extend d ed hk)]
+  -- the current-edge shear vanishes on `couplingCoords d p` (id at case11/rollover; cert (i) at case12/case2).
+  have hshearzero : ∀ k ∈ couplingCoords d p, edgeShear d ed v k = 0 := by
+    intro k hk
+    have hkc : ∀ φ : (Fin (flatDim d) → ℝ) → (Fin (flatDim d) → ℝ), blockShear φ v k = φ v k := by
+      intro φ; show (v + φ v) k = φ v k; rw [Pi.add_apply, hvzero k hk, zero_add]
+    show edgeShearRaw d ed.case ed.shearφ v k = 0
+    cases ed.case with
+    | case11 => exact hvzero k hk
+    | rollover => exact hvzero k hk
+    | case12 =>
+      show blockShear ed.shearφ v k = 0
+      rw [hkc ed.shearφ, hpin]; exact canonNormalizationOf_vanishes_on_couplingCoords d ed u hk
+    | case2 =>
+      show blockShear ed.shearφ v k = 0
+      rw [hkc ed.shearφ, hpin]; exact canonNormalizationOf_vanishes_on_couplingCoords d ed u hk
+  -- assemble: the parent clear is a no-op on the stepped point (each `couplingCoords d p` coord is 0 there).
+  funext k
+  show (if k ∈ couplingCoords d p then (0 : ℝ) else stepMap d ed v k) = stepMap d ed v k
+  by_cases hk : k ∈ couplingCoords d p
+  · rw [if_pos hk]
+    symm
+    show blockBlowupMap ed.center ed.pivot (edgeShear d ed v) k = 0
+    unfold blockBlowupMap
+    split_ifs with h1 h2
+    · rw [← h1]; exact hshearzero k hk
+    · rw [hshearzero k hk, mul_zero]
+    · exact hshearzero k hk
+  · rw [if_neg hk]
 
 /-- **δ=1 cleared child residual = parent fold at the STRICT TRANSFORM of the CHILD-CLEARED input** (S2).
 25th-CATCH CORRECTED (pnp cert (ii), 3ec969d8f): the δ-transform is applied to `couplingClear d (p.extend
