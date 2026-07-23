@@ -17605,3 +17605,22 @@ not a free hyp). Meanwhile on canonical: CaseStepAssembly merged (0dc89dc4d) + 3
 applied (MonumentAtlas ×2, Case2Wire ×1; Case1Wire's HELD for #38) + case1''/case2'' added as
 gated AxCheck roots with documented expected footprints; full build in flight, then cordon + push.
 Still gating: THE IDIOM RULING (elder queue).
+
+## 2026-07-24 (~01:15) — THE IDIOM RULING LANDED: PIN at derivations + the invoking spine;
+transports stay general-e; all three lanes GO'd
+
+Elder's ruling (threads/idiom-ruling.md, banked): the criterion is DERIVE vs TRANSPORT — pin
+`he : e = canonFlatten d` exactly where the property is BORN from the concrete coreGen (the wall,
+coreGen_layerHomogeneous) and through the derivation-INVOKING spine (case1_conjA,
+case1_preserves_stepInv', the two MonumentAssembly statements — whose (he0, he_lin) is REPLACED by
+he, fixing the insufficient he_lin — and the lastLayer conjA family); genuine TRANSPORTS
+(realBranch_multiAffine_step, foldResid_layerHomogeneous') stay general-e, consumed at canonFlatten
+by the pinned lemmas. No ∀-node consume (pin in disguise). Payoff/destination UNCHANGED —
+ladder-restating, no operator gate. Grounds: the per-node subtlety, name=content honesty, and
+paper fidelity (her proof never runs at abstract e — C6/C7 confirmed).
+DISPATCH: L4D renders the FULL spine ATOMICALLY on its lane (#1-3 Case1Wire + the 2-line case1''
+threading in CaseStepAssembly + #5-6 MonumentAssembly) — I completed the elder's unassigned #5/#6
+ownership to L4D; LL renders the lastLayer family pin (option (a), stub re-bake accepted); L3T3
+reviews L4D's CaseStepAssembly hunk (its lane otherwise closed — 3 load-bearing catches today).
+CROSSING RESOLVED: canonical keeps the both-case CaseStepAssembly (my merge predates L3T3's
+case2''-only re-push; 65e14acf2 = dead tip). Elder → C9 prose-intent (the last audit chunk).
