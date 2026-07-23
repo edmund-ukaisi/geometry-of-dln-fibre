@@ -19246,3 +19246,20 @@ feeder (controller read: dissolves — sourceClearedResid j 0 = foldResid j 0 vi
 the case2_preserves_cleared addition (sent ~15:25) is not in d2179efe7 — reminded; it is the
 LAST statement item and event (2) of the elder's three-event folded-pass trigger. GM holds for
 #82 + the pnp revision check; grind will run interior + last-layer together.
+
+## 2026-07-23 (~15:45 actual) — GM's delta-SPECIFY FULLY COMPLETE (be2225c1a); elder folded-pass
+event 2 of 3 satisfied; the whole convergence pivots on #82
+
+The case2 twins added (case2_conjA_cleared + case2_preserves_cleared — the easy no-boostReady
+case: δ=1 via the cover route Or.inr, δ=0 via the pullback, conjB shared; mirrors Case2Wire with
+hpos; integration consumer = CaseStepAssembly.case2''). pnp's definitional S2 reason cited in the
+transport docstring (the honest contrast with the false M-level commutation). All elder outcomes
+absorbed edit-ready (deletion FORCED protocol, single fossil-of-record, _cleared suffix taken up
+from the recommend). GM's own def-independence analysis is correct and banked: its statements
+reference sourceClearedResid/couplingCoords BY NAME, so any #82-driven redefine leaves the
+statement set verbatim-stable — only proofs re-target. STATE: elder's three folded-pass events —
+(1) #82 verdict PENDING (pnp), (2) case2 addendum DONE (be2225c1a), (3) locus-core verify PENDING
+(behind #82). Everything now serializes through pnp's #82; on its verdict: pnp locus-core check +
+elder folded pass + INV transport-shape review + CAPF kill go → then GM grinds interior +
+last-layer together (#79) with every statement having survived two seats' falsity checks, three
+elder rulings, and a paper-first fidelity ruling.
