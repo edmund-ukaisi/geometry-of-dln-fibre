@@ -294,7 +294,8 @@ theorem foldResid_layerHomogeneous' (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 <
         refine hcb pv ?_
         have : pv ∈ canonCenterOf d p'.conState sc := by
           have := hpivpin
-          rcases hactive with h | h <;> · rw [h] at this; simpa using this
+          -- #87 pivot-pin: at case12/case2 the rule-(b) arm is now `∈ center ∧ col = cleared`; take `.1`.
+          rcases hactive with h | h <;> · rw [h] at this; simpa using this.1
         rw [hcenter]; exact this
       -- `σ` (the δ-dependent step map) equals `blockShear φ` at layer-`ℓ` coords (off pivot/center)
       -- and equals it via the value-pin. Split ℓ = child_sl (recoord) vs ℓ > child_sl (fixing).
