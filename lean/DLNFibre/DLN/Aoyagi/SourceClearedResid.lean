@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
 import DLNFibre.Core.SubmultComp
+import DLNFibre.DLN.Aoyagi.PivotPreservation
 
 /-!
 # `DLNFibre.DLN.Aoyagi.SourceClearedResid` — the Case-1(1) chart residual (the capstone object)
@@ -592,6 +593,41 @@ theorem case11_center_subset_ledgerTarget (d : Fin (N + 1) → ℕ)
     have hbound := (conOracle_case11_data d p.conState sc hsc hsce).2
     rw [supportAt, if_pos hcl, blockCoords, Finset.mem_image]
     exact ⟨q, by rw [Finset.mem_filter]; exact ⟨Finset.mem_univ _, hlayer, by omega⟩, rfl⟩
+
+/-- **Accumulated exceptionals sit strictly below the current layer** (at `cleared = 0`), hence are
+DISJOINT from `supportAt` — the read-off's crux. Every ledger birth-corner `c = cornerToFlat(divBirthCoord
+k)` decodes to layer `(divBirthCoord k).1`, which `DivBirthInv` bounds `≤ s.layer` (clause 2) with
+freshness `= s.layer → < s.cleared` (clause 3); at `cleared = 0` freshness forces `≠ s.layer`, so `<
+s.layer`. But `supportAt d s.layer 0 = blockCoords d s.layer` reads layer `s.layer`. So no accumulated
+exceptional is in `supportAt`: the only `ed.center` coord an accumulated `μ` can read is the reused pivot
+`e₂` itself (`accumulatedPivots ∩ supportAt = ∅`; `partialBlock ⊆ supportAt`). -/
+theorem accumulatedPivots_notMem_supportAt (d : Fin (N + 1) → ℕ) (p : TreePath d)
+    (hbranch : p.IsRealBranch (canonFlatten d)) (hcl : p.conState.cleared = 0)
+    (c : Fin (flatDim d)) (hc : c ∈ accumulatedPivots d p) :
+    c ∉ supportAt d p.conState.layer p.conState.cleared := by
+  rw [mem_accumulatedPivots] at hc
+  obtain ⟨k, hk⟩ := hc
+  obtain ⟨_, hlayerLE, hfresh, _⟩ := PivotPres.divBirthInv_of_isRealBranch (canonFlatten d) p hbranch
+  have hlt : (p.conState.divBirthCoord k).1 < p.conState.layer := by
+    rcases eq_or_lt_of_le (hlayerLE k) with heq | hlt
+    · exact absurd (hfresh k heq) (by rw [hcl]; exact Nat.not_lt_zero _)
+    · exact hlt
+  simp only [cornerToFlat] at hk
+  split_ifs at hk with hS hr hcc
+  have hce : c = tupIdxEquiv d ⟨⟨⟨(p.conState.divBirthCoord k).1, hS⟩,
+      ⟨(p.conState.divBirthCoord k).2, hr⟩⟩, ⟨(p.conState.divBirthCoord k).2, hcc⟩⟩ :=
+    (Option.some.inj hk).symm
+  have hdec : (((tupIdxEquiv d).symm c).1.1 : ℕ) = (p.conState.divBirthCoord k).1 := by
+    rw [hce, Equiv.symm_apply_apply]
+  rw [supportAt, if_pos hcl]
+  intro hmembl
+  have hclay : (((tupIdxEquiv d).symm c).1.1 : ℕ) = p.conState.layer := by
+    refine decode_layer_mem d p.conState.layer c ?_
+    simp only [blockCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hmembl
+    obtain ⟨q, hq, hqc⟩ := hmembl
+    simp only [layerCoords, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨q, hq.1, hqc⟩
+  omega
 
 /-- **ROOT base of the b-ledger invariant** (§4 (i), the induction's root case, factored standalone).
 At `.root` there are no exceptionals: `μ = 0` (`bMon 0 = 1`), `accumulatedPivots = ∅` so conjunct-3 is
