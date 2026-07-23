@@ -18460,3 +18460,13 @@ claim has its witness (confined + linear ⟹ Deg1 directly, the same coupling me
 argument (on non-wide layers the source-clear is trivial — one statement, both regimes). BOARD:
 one gate left before the integration merge + STEP-3 — the elder's six-item delta-read of CAPR's
 SPECIFY (queued in its inbox).
+
+## 2026-07-24 (~21:30) — the certificate set COMPLETE (§0-§9 + all checks); pnp-transport's queue
+formally empty; certificate synced to canonical
+
+The crossing reconciled: my "two remaining" items were checks 1+2 of the 13c8bd553 run. The
+certificate now carries §9 (the §12.2 architecture + the width-mechanism refinement). pnp's full
+deliverable set, all exit-0-scripted on its lane and synced to canonical: the content-lemma
+certificate §0-§9, the Q₁-lift, the width-axis coverage, the §12.2 checks, the §12.1 diagnostic.
+It holds as the render-phase exact-algebra consult (tripwire/re-engage/further checks). The live
+render = CAPR's #72; the one gate = the elder's SPECIFY delta.
