@@ -20375,3 +20375,26 @@ structural merge (the lanes assemble; obligation-b's :242 sorry-swap waits on th
 named frontier the payoff tolerates unless the L5/summit wiring puts it on L1's clean-three cone,
 a downstream question). Board: BAKE integrated; CFF cert-i closed + re-points in flight; INV
 resting; #92 the deep long-pole in pnp's design phase.
+
+## 2026-07-23 (~19:20 UTC) — MAJOR MILESTONE: THE GLOBAL MOVE'S SUMMIT RE-POINT DONE (CFF exit
+MET) — MonumentAssembly GREEN + L1 CLEAN-THREE off the frontier cone; LastLayerWire re-scoped to #73
+
+CFF's (A+) exit MET (11 commits, tip c4380af55): the CaseStepAssembly re-point (c4380af55: import
+ClearedFold + case1/2_preserves_stepInv'' → FoldStepInvAt_cleared) un-broke the by-design red, the
+SUMMIT CLOSURE builds GREEN (MonumentAssembly, 8467 jobs), and forced #print axioms on
+aoyagi_learning_coefficient_L1 = [propext, Classical.choice, Quot.sound] — CLEAN-THREE, verified
+via scratch off the frontier cone. So THE #74 GLOBAL-MOVE RENDER IS COMPLETE modulo the named
+frontiers (which are the OTHER lanes' work — INV's spine, CAPF/CX's cap, CAPR's pivot-mul); the
+payoff is provably axiom-clean and does NOT wait on the frontiers. This closes the expedition's
+LARGEST render unit end-to-end (spawn → 5/5 restate → four SPECIFY gate rounds → the fan-artifact
+arc §9-§9.10 → the pivot-pin bake → GM's keystone → CFF's cert-i + summit re-point). CFF's 6 named
+frontiers cone-registered for #73. LASTLAYERWIRE RE-SCOPED (controller, from the (c) I'd listed to
+CFF): ground-truth — it IS in the aggregator (a #73 full-build item) but is a LEAF (only the
+aggregator imports it; the summit uses MonumentAtlas's RAW lastLayer_clear_preserves, not
+LastLayerWire's, so it's off CFF's green closure), its case11 branch is REFUTED-RAW (can't sorry),
+and its cleared restatement carries the SAME δ=1/conjB frontiers as the interior chain — so it
+folds NATURALLY into #73's cleared-chain assembly (mine; possible MonumentAtlas touch). CFF's read
+accepted; unit COMPLETE, released to unit-consult. BOARD: BAKE integrated (canonical green); the
+global move summit-done + L1 clean-three; the cap crux = the one deep KILL (#92, pnp designing);
+INV resting; #73 assembles all onto the pinned canonical. The payoff is axiom-clean NOW; #73
+delivers full-DLNFibre-green.
