@@ -15,6 +15,12 @@ All facts below are verified in `verify/` (exit 0): `capstone_split_oracle.py`,
 
 ## 0. The object (§7 ruling) — what the split is about
 
+**NOTATION (fixed — the overload WILL bite the render seat otherwise).**
+`∏A := A_{N-1}···A_1·A_0` is the PRODUCT of the network's matrices (Aoyagi's `∏ C^{(s)}`; `coreGen` = its
+entries). `C := sourceClearedResid` is the CLEARED chart residual object (defined below). These are
+DIFFERENT objects; this certificate never writes a bare "∏C". `D_J` is Aoyagi's residual block, `E_J` the
+cleared unit block, `b_i` the accumulated exceptional monomial.
+
 The raw shears-only `foldResid d (canonFlatten d) p` does NOT satisfy `Deg1SupportedOn … ed.center`
 (the obstruction, §1 below). The (D)-carrier is the **Case-1(1) chart residual**
 
@@ -67,19 +73,36 @@ per ancestor clear, `A_L → Q₁·A_L`, `A_{L+1} → A_{L+1}·Q₁⁻¹`, `Q₁
 
 So `RLCT(loss) = RLCT via ⟨sourceClearedResid⟩ = ½·min M_{s,k}` (Aoyagi p.15 invariant + p.22 boxed rule,
 the LANDED atlas `rlctAt_sumSqFam_eq_iInf_charts`), and the raw-fold `foldResid` supplies the recursion's
-ideal-equality to `∏C` for the VALUE. The two reconcile because `sourceClearedResid` IS the faithful
+ideal-equality to `∏A` for the VALUE. The two reconcile because `sourceClearedResid` IS the faithful
 Case-1(1) local coordinate (B2). The Codex measure-caveat is DISCHARGED by product-preservation (no
 weighted integral is transported). This is the LIFT (§7.8 item 2).
+
+**SCOPING of ψ (airtight, per §7.8(3)) — two node classes, both sound, measure-caveat vacuous in each:**
+The parameter-space `Q₁`-lift (det-1, product-preserving) holds for ALL node classes — the loss is
+literally gauge-invariant, so RLCT-preservation is DIRECT and rlctGlobal-intrinsic everywhere; no weighted
+integral is ever transported. Where the classes differ is only in HOW the split/faithfulness is exhibited:
+- **single-coupling nodes** (layer-0 reuse): the explicit fold-coordinate straightening `ψ` (F∘ψ = C, det-1,
+  `capstone_straightening_psi.py`) constructs cleanly — `ψ` IS the fold-chart image of the `Q₁`-lift, so the
+  bridge is witnessed by an explicit CoV.
+- **multi-coupling nodes** (wide / intermediate reuse): a single fold-coordinate `ψ` does NOT construct (a
+  chart-normalization artifact — the couplings interact in-chart), but this is NOT needed: (a) the
+  `Q₁`-lift still holds at the matrix level (each `Q₁` independently unipotent — `capstone_lift_certificate.py`),
+  giving RLCT-preservation directly; (b) the split/faithfulness (B2) is exhibited by the DIRECT argument
+  (couplings are ancestor `E_J`-coords; the `extra` block VANISHES — a VERIFIED property, not a structural
+  expectation). So the value chain reads on `C` via the cover from the start; NO weighted integral is
+  transported, and the measure-caveat is vacuous by construction (§7.8(4) discharged).
 
 ---
 
 ## 3. B1 / B2 / B3 — the cover (min-over-charts is Aoyagi's own framework, p.22)
 
-- **B1 cover-completeness** — the `coupling ≠ 0` locus is carried by the sibling charts
-  (Case 1(2) / Case 2 / complementary). CITED to the landed fan-cover certificate (pnp-fan #11-14: the
-  fanned-spine predicate, the cover argument over the fanned tree, the worked (2,2,2) instance). [If the
-  render wants it re-verified at (2,2,2,2,2), it is a short oracle-charts-cover check; folded as a citation
-  here per the fan asset.]
+- **B1 cover-completeness** — CITATION, not re-proved here, and the demotion is honest: (1) the `Q₁`-lift
+  (§2) now gives RLCT-preservation DIRECTLY for ALL node classes (the loss is literally gauge-invariant),
+  so the cover is NO LONGER load-bearing for RLCT-SOUNDNESS — it is the FIDELITY narrative (Aoyagi's own
+  p.22 min-over-charts framing). (2) The genuine cover-completeness proof obligation lives where the
+  formalisation ladder already carries it — **L7 `leafPath_compactCover`** (the fibre-exhaustion frontier,
+  consuming lemma Q + the fan certificate #11-14); re-proving it inside this certificate would DUPLICATE
+  L7's debt. So: cover completeness = L7's obligation, consumed there; cited here as the fidelity frame.
 - **B2 chart-faithfulness** — `sourceClearedResid` IS the Case-1(1) chart residual. VERIFIED:
   the coupling coords are below-pivot entries of ANCESTOR-cleared columns (`E_J = identity`), and clearing
   them makes the `extra` block VANISH. At the (2,2,2,2,2) layer-2 intermediate crux the couplings are
@@ -105,8 +128,8 @@ is the accumulated exceptional monomial, and the `clean D_J entry` is a single s
 
 ### (i) ROOT base case  (`MonumentAtlas:476`)
 `sourceClearedResid d .root = coreGen d (canonFlatten d)` (the ancestor-clear is empty at root).
-`coreGen d e k u = (mult d (e u))[decode k]` = the entries of `∏C = A_{N-1}···A_0`
-(`LearningCoefficient:50`). At `S=J=0`, `D_0 = ∏C`, `b_i ≡ 1` (no exceptional yet) — `INV(.root)` holds:
+`coreGen d e k u = (mult d (e u))[decode k]` = the entries of `∏A = A_{N-1}···A_0`
+(`LearningCoefficient:50`). At `S=J=0`, `D_0 = ∏A`, `b_i ≡ 1` (no exceptional yet) — `INV(.root)` holds:
 each product entry is multilinear degree-1 per layer, support = the full block (`coreGen_layerHomogeneous`,
 banked L3T2/L3T3). VERIFIED numerically (`capstone_split_oracle.py`).
 
@@ -182,3 +205,29 @@ RLCT-equivalence bridge (Lean side = the landed det-1-CoV machinery, `integrable
 certificate supplies existence/explicitness, not new analysis); (d) the append crux
 `foldResid_stepMap_eq_pivot_mul` (`Case1Wire:36-72`) consumes `Deg1SupportedOn (sourceClearedResid p)
 ed.center` on the ORIGINAL center (Option 2′). L4D owns the exact append re-point.
+
+---
+
+## 8. Kill-conditions per section (what would falsify each; the render seat re-checks on failure)
+
+- **§2 bridge / lift** — if, on any real case11 witness, the paired `Q₁` gauge FAILS to preserve `∏A`
+  (loss not gauge-invariant) or the `Q₁` is NOT det-1 with the pivot free, the RLCT-intrinsic lift is
+  refuted → the measure-caveat becomes real and the elder fires Codex. (Checked TRUE on
+  (2,2,2,2)/(2,2,2,2,2)-both/(3,3,3,2); `capstone_lift_certificate.py`.)
+- **§3 B2** — if a real case11 node has a coupling coord that is NOT a below-pivot entry of an
+  ancestor-cleared column (an UNCOVERED output-coordinate coupling), then `sourceClearedResid` is not the
+  faithful chart residual → re-open (elder §7.7 trigger). (Checked FALSE-of-trigger at the intermediate
+  crux (2,2,2,2,2): both couplings are ancestor `E_J` coords.)
+- **§4 induction** — if `INV(p)` is NOT preserved by the δ=1 (`blockBlowupCoordQuot`) or δ=0
+  (`stepMapRaw`) transport (e.g. a slot gains per-layer degree ≥ 2, or the strict-transform pivot factor
+  fails to divide), the b-ledger invariant breaks. (Checked: per-layer deg≤1 TRUE all nodes,
+  `capstone_adjudication.py`; the δ=1 division is the `blockBlowupMap_shear_center_eq` factoring.)
+- **§4 iv read-off** — if the single-`e₂` split FAILS on `sourceClearedResid` for `e₂ = canonPivotOf`
+  (some extra coeff not divisible by `u_{e₂}`, or `α/β` reading `ed.center`), the `MergeBoostSplit` shape
+  is wrong. (Checked TRUE, all slots, `capstone_split_sourcecleared.py`.) NOTE: this holds on
+  `sourceClearedResid`, NOT the raw fold (§1) — the render MUST target `sourceClearedResid`.
+- **§5 born-unit** — if at a case12/case2 δ=1 clear NO slot has `c_{e₂}(j) 0 ≠ 0`, the born-unit consumer
+  fails. (The fresh pivot is the blow-up coordinate; its coefficient is the non-vanishing `b_i`.)
+- **§6 KILLED-BY-e** — if the split held for a generic scrambler `e`, the canonFlatten-specificity (and
+  the whole route-β-is-dead ruling) would be wrong. (Checked: scrambler BREAKS it,
+  `capstone_split_chartframe.py`.)
