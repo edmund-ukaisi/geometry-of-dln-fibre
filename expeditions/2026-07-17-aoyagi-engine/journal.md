@@ -18894,3 +18894,32 @@ content; the small (ii)+cap lemma groups; the L5 fold body = the one remaining m
 unit); render-vs-mechanical distinguished; the operator-gated ceremonies dash-marked; ETA
 optimistic 5-6d / median 8-11d / tail 14d with the tail-driver (object surprises) noted as
 materially reduced (18/18 caught pre-render).
+
+## 2026-07-23 (~15:00) — navigator pass (gates CLEAN, 4 proposals — 3 adopted, 1 held);
+CAPR ROOT(a) banked + fresh-grind-seat handoff ACCEPTED
+
+NAVIGATOR (phase-transition audit, two-channel re-derivation): gate chain CLEAN — statement-lock
+verified BYTE-IDENTICAL between GM's base and the CAPR tip (GM→CAPR is pure sorry-propagation,
+no inversion); all SPECIFY gates have runners. ADOPTED: (1) L3T2 #8/#10 CLOSED AS MOOT (the
+unprimed homogeneity lemma is a consumer-less superseded fossil; the proven primed twin supplies
+(H)) — false in-progress signal removed. (2) The cap-parallelisation ONE QUESTION (does
+obligation-(b) transport from the raw descent, or re-derive on C?) dispatched to L4D as def-owner
+consult + mirrored as a required SPECIFY position for GM — a TRANSPORTS answer starts a cap-render
+formaliser in parallel NOW. (3) GM push-hygiene flag relayed (zero commits, unpushed — the
+process-restart lesson). HELD: L5 pre-work until GM's SPECIFY stabilizes (consumes the cleared
+invariant + the provenance decision); L7 deferred past integration. ETA recalibrated: the binding
+constraint = GM-SPECIFY-stabilization (the serial gate opening the parallel front GM-proofs ∥
+INV-grind ∥ L5-SPECIFY), then the L5 fold body is the long pole; median 8-10d reads
+optimistic-leaning with the proving front barely opened. Q3 confirmed the provenance-layer
+pre-flag as the rising-sea action (already named in GM's SPECIFY items).
+
+CAPR: post-guard progress banked — the codex consult (d4ccb78c7, artifact-first) + ROOT(a)
+blockCoords_zero_eq_layerCoords PROVEN axiom-clean (585f75fb9, lane green). Then the honest
+budget flag: ~26 heavy turns consumed; the remaining leaves are substantial multi-lemma
+sub-builds (ROOT(b) needs a continuous_submult chain — the homogeneity lemma records
+IgnoresCoords but NOT continuity, and SourceClearedInv needs continuous coeffs; ROOT(c) the
+oracle match-reduction; transports/read-off/containment comparable). FRESH-SEAT RECOMMENDATION
+ACCEPTED (the L4D→GM pattern): CAPR banks a per-leaf handoff doc + pushes + retires to
+def-owner-consult; single-writer on SourceClearedResid.lean/MergeBoostSplit.lean transfers to
+the fresh grind seat at spawn (GM-primitive stability pledge transfers with the files). Fresh
+seat spawns ON the banked handoff.
