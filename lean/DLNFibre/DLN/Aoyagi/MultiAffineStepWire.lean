@@ -446,7 +446,7 @@ theorem descent_delta0 {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d 
       rw [hσx, hlin_bs u x hx]
     refine ⟨?_, ?_⟩
     · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry)
-      -- map: B-recoord-cap-frontier (recoord confinement to blockCoords(S+1) — coupled corank ≥ 2 wall)
+      -- map: B-L3T-appendResidDescent-cap (the ONE canonical cap; recoord confinement to blockCoords(S+1) is the coupled corank ≥ 2 wall)
       have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
       rwa [hCSchild, hguniv] at happend
     · -- clause 2: per-layer grade via the recoord ℓ-split
@@ -650,10 +650,11 @@ theorem perLayerDeg1From_comp_of_fixing {N : ℕ} {d : Fin (N + 1) → ℕ}
 -- below consumes it from there; the old in-file copy is retired to avoid the name clash.
 
 /-- **The δ=1 case12/case2 arm — THE DEEP CORE (cofactor / Schur descent).** Clause-1 (the support
-DESCENT `blockCoords (p.layer) → blockCoords (p.layer+1)`) consumes `realBranch_cofactorDescent` through
-`exists_graded_decomp` — the SINGLE tracked hole. Clause-2 (per-layer grade from `p.layer+1`) is PROVED
-here: the strict-transform map `qm` fixes layers `≥ p.layer+1` and preserves off-`layerCoords ℓ`
-agreement (spectator centre bound + `ShearWithinCarve` I/II), so the parent grade survives. -/
+DESCENT `blockCoords (p.layer) → blockCoords (p.layer+1)`) delegates to the canonical cap frontier
+`realBranch_appendResidDescent` — the SINGLE tracked hole. Clause-2 (per-layer grade from `p.layer+1`) is
+PROVED here via the N_p recoord ℓ-split (`perLayerDeg1From_stepMap_split`): STRICTLY above `p.layer+1` the
+shear vanishes (`ShearWithinCarveRaw` I/II) so `σ` fixes the layer; AT `p.layer+1` `σ` is the recoord
+X-linear form (`canonNorm_blockShear_linear_on_succLayer`), so the parent grade survives either way. -/
 theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)
     (p : TreePath d) (ed : TreeEdge d p) (hlayer : ed.nextState.layer + 1 < N)
@@ -769,7 +770,7 @@ theorem descent_delta1_append {N : ℕ} {d : Fin (N + 1) → ℕ} (hpos : ∀ k,
   rw [hCSchild, hFLchild, hguniv, Deg1SupportedSlot]
   refine ⟨?_, ?_⟩
   · -- clause 1: the support DESCENT — the canonical cap (MonumentAtlas frontier sorry)
-    -- map: B-recoord-cap-frontier (recoord confinement to blockCoords(S+1) — the coupled corank ≥ 2 wall)
+    -- map: B-L3T-appendResidDescent-cap (the ONE canonical cap; recoord confinement to blockCoords(S+1) is the coupled corank ≥ 2 wall)
     have happend := realBranch_appendResidDescent d hpos e p ed hlayer hbranch hslot j
     rwa [hCSchild, hguniv] at happend
   · -- clause 2: the per-layer grade survives via the recoord ℓ-split (comp_of_linear at S+1, fixing above)
