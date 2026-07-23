@@ -21340,3 +21340,48 @@ adjudicating — NOT a value-(a) reopen. No definition-of-done change.
 **Status.** #99 value-(a) bedrock; L7-cover → elder L7 SPECIFY (seat-L7cover holds). KILL step
 (seat-descent, consuming CFF blocks) in motion. Summit path healthy. Awaiting: the elder's L7 SPECIFY,
 seat-descent hredEB green, seat-KILL/seat-CFF consume-loop.
+
+## 2026-07-24 (~02:00 UTC) — ELDER RULED THE L7 SPECIFY: (A) full-fan cover + #86(B) σ-cover-bridge + fan-completeness-from-buildTree, ALL detail-at-scale → wall (a) holds BOTH sides; #99 CLOSED; seat-L7cover UNBLOCKED
+
+The elder ruled the L7 SPECIFY decisively, and OWNED + corrected its earlier error (it had conflated
+the LEDGER-fan [col-pinned, diagonal leaves] with the COVER-fan [all coordinate charts] in its
+last-turn (a)-note; compass b-leaf7 corrected):
+
+1. (A) confirmed — L7 = the ABSTRACT FULL-FAN cover (pnp-fan mechanism, pivots over all S); the
+   col-pinned→full-fan bridge = the #86(B) column-orbit σ-transport. #87's col-pin is for the LEDGER
+   (leaf-invariant), NEVER the cover — as #87 itself flagged. (B) [literal col-pinned atlas covers] is
+   FALSE-as-stated (seat-L7cover's (2,2,2) escape); its "column-orbit as real charts" collapses into
+   (A)'s σ-transport (a #87 re-open is REJECTED — col-pin is ledger-only).
+2. σ-cover-BRIDGE = DETAIL-AT-SCALE (elder verified): the DLN gauge σ IS a coordinate permutation on
+   the flat coords (EndpointNormalization:129 mult(P·A)=P_last·mult(A)·P_0⁻¹; FibreChartConjugation),
+   so σ permutes chart domains cleanly + commutes with blow-up (#86(B)) → σ(diagonal cover) covers the
+   σ-orbit of directions. Established gauge machinery, NOT new coupled content.
+3. FAN-COMPLETENESS = DERIVABLE from buildTree (enumerates ALL admissible-pivot branches) — a property
+   to EXPOSE (FoldRealizes def-edit / L5 lemma), NOT a new obligation.
+
+RECONCILE: (a) HOLDS on the cover side, REFINED — L7 = full-fan tiling + σ-cover-bridge +
+fan-completeness, ALL detail-at-scale, NONE a coupled monument. Value side stays bedrock (pnp's
+(3,3,4) corank-2 witness). So the wall is priced (a) on BOTH sides — #99 CLOSED. The navigator's
+hard-part-avoidance flag RESOLVES fully to the good side: NO hidden coupled monument on value OR cover;
+the coupled monument is #73 (the ledger); L7 is geometric detail-at-scale.
+
+ACTIONS:
+- seat-L7cover UNBLOCKED under (A): render the abstract full-fan cover (pnp-fan → general-d) with
+  fan-completeness as a NAMED HYPOTHESIS. Its exact statement is now set.
+- CONTROLLER-OWNED discharge pieces (both detail-at-scale, → at wire; recorded #101): (i) the
+  σ-cover-bridge (column-orbit σ-transport, riding #86(B)-gauge); (ii) fan-completeness exposure (from
+  buildTree). seat-L7cover carries NO bare undischarged hypothesis — I discharge both at wire.
+- #99 CLOSED (a); #101 = seat-L7cover rendering under (A).
+
+**Meta (the arc that just closed):** the navigator's phase-transition audit flagged the wall as
+parked/unpriced (hard-part-avoidance risk) → I commissioned the pricing (elder comprehension + pnp
+paper-first) → both converged (a) → I ran the belt-and-braces corank-2 witness (hunt-precedes-trust
+at the favorable headline) → value-(a) bedrock → seat-L7cover's stop-on-suspect caught the DISTINCT
+cover-side question → the elder's L7 SPECIFY ruled it (A)/detail-at-scale, owning its own error. The
+wall is fully priced (a), both sides, with every claim either witness-confirmed or ruled on established
+machinery. This is the decorrelated-check discipline working end-to-end: a favorable headline
+subjected to value-witness + cover-SPECIFY, both surviving, no confound.
+
+**Status.** Summit path fully priced + owned: #73 (KILL step in motion — seat-descent + producers) +
+L7 (seat-L7cover rendering the full-fan cover under (A); σ-bridge + fan-completeness = my wire work) +
+L1/L6/L8 wiring. Awaiting: seat-descent hredEB green, seat-L7cover full-fan-cover green.
