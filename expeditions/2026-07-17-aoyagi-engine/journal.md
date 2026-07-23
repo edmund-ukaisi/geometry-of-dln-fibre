@@ -17090,3 +17090,21 @@ per-chart input basis — bounded either way) + the INTERIOR-pivot witness (the 
 layer-1 edges; (2,2,2,2) is all-corner). arch-C-4 renders #58/#59 under the three-home GO.
 The corner was the LAST ruling of the arc — everything from here is verification + mechanics:
 gates → battery → the corner-clause delta-read → merge → rebase → THE WALL.
+
+## 2026-07-23 (~13:10) — (A) RATIFIED with the §9 NARRATIVE LINE; ALL RULINGS OF THE ARC RESOLVED
+
+The elder's ratification (its §9-corner addition committed 1ef9ccacb): the paper-first
+question answered YES (her P₁/P₂ end-transforms absorbed globally via Lemma 1 — the corner
+row IS her input-basis gauge); combined with arch-C-4's feasibility verification, (A) is both
+faithful AND feasible. THE §9 NARRATIVE LINE (the honest global element, named not buried):
+"the fibre resolution is PER-BRANCH (the fan of charts, each a composite of unimodular shears
++ the Schur read-side clear, product-preserving per edge); the corner INPUT-BASIS freedom is
+disposed of ONCE, GLOBALLY, via the GL_{d₀} end-factor (Aoyagi's regular-end-transform /
+Lemma-1 absorption, banked, codim-invariant)." The elder's reasoning for naming it: "a global
+CoV entering an otherwise-per-fibre resolution is exactly the kind of thing that must be
+visible." The delta-read gains the end-factor-honest item + the corner clause.
+
+ALL RULINGS OF THE ARC ARE NOW RESOLVED AND RATIFIED. What remains is purely mechanical:
+arch-C-4's #58/#59 render (GO standing) → gates → the battery (+ the realization-condition
+and interior-pivot rows) + slot-confirm → the split-checklist delta-read → merge → the
+two-line L3T3 rebase → THE WALL.
