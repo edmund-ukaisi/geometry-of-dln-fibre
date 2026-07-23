@@ -16152,3 +16152,30 @@ gated on the restate. Elder notified (delta-read HOLDS; do not spend a read on t
 text). LESSON (queued for lessons.md at the seam): long-turn seats + fast-moving rulings need
 an ACK-AND-RESTATE gate per re-scope — message delivery is not scope adoption; the anchor wins
 unless the seat is made to re-derive the scope in its own words.
+
+## 2026-07-23 (~03:40) — §8(k): THE RULING COMPLETES ON LEMMA 2; the crisis is fully ruled end-to-end
+
+The elder's final block ruling (§8(k), committed 9666d627d — the append landed in-file after
+commit-collision retries): the decisive anchor is AOYAGI'S LEMMA 2 (worked.tex:400-420) — her
+clearing IS Q₁AQ₂ = diag(A₁, C₄), Q₁ AND Q₂ UNIPOTENT ("units of the local ring"), C₄ the
+Schur complement, the variable change a LOCAL ANALYTIC ISOMORPHISM with UNIT JACOBIAN. So:
+R4 = her Lemma 2, restored in the fold. Resolutions grounded on it: pnp's caveat-1 (row-clear
+"rank-reducing") = the coordinate-clear MISREADING — her Q₂ is a unipotent col-op (the F1
+point, row side); her C₄ is BILINEAR ⟹ u₀₀₁² is a genuine deviation ⟹ R4 required (the D_J
+degree question ANSWERED); caveat-2 MOOT under R4. CRITERION clarification accepted for the
+record: the controller's "#49 reads NO ⟹ R4" relay reached the right conclusion via the
+SUPERSEDED ideal-equality lens; the correct ground is BLOCK-FORM (§8(j)) — memo already right.
+
+THE CRISIS IS FULLY RULED, every question closed on the paper + instruments: SHAPE widen (§1);
+FORM field retracted (§2, def-confirmed); DIRECTION R3 (council Q1 + Lemma 2); BLOCK R4 =
+Lemma 2; CRITERION block-form; BOUNDED (RLCT safe; no monument; no operator). The re-bake =
+DEF-EDIT-1 + DEF-EDIT-3 (branch-i→R4, branch-ii flip); DEF-EDIT-2 none. FULL CIRCLE, final
+form: the paper held the invariant (:562-577), the direction (:445), AND the mechanism
+(Lemma 2, :400-420) — every layer of the fix was transcription-restoration; the certificate's
+math was her Lemma 2 all along.
+
+seat-L3T3's preliminary def-sensitivity read: (a) survives (sign in recoordCoeff only),
+(b) simplifies (guard-1 drops), (d) trivial; (c) gated on R4's PLACEMENT — exactly the
+architecture question arch-C's rework report must answer (§8(k)'s math points to
+generator-side/off-blockShear = L3T3's favorable case). Remaining: arch-C's scope-restate +
+§8(i)-conformant rework → the block-form battery → the elder's delta-read → merge.
