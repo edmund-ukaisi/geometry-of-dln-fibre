@@ -20152,3 +20152,21 @@ immediately-preceding recoord. pnp's honest scope preserved for the docstring: b
 design-confirm on the expedition is closed; the remaining work is exactly: BAKE's render (in
 progress), CFF's cascade (on BAKE's SHA), CAPF's crux (now grinding), the elder's folded pass
 (trigger assembling), and the merges.
+
+## 2026-07-23 (~19:15 UTC) — CAPF's assembly banked (#6 derives from the capped helper); #5
+DROPPED (un-consumed, superseded); the crux → a fresh seat (CAPF's third honest flag taken)
+
+CAPF banked the assembly (3c1a4c2a8): the private helper sourceClearedResid_capped is in with
+the full pnp-confirmed route in its docstring, and #6 — THE DELIVERABLE TWIN — now DERIVES from
+it (supportAt at cleared=0 = blockCoords); CapDescent green at 2 sorries (the crux + #5).
+RULED: (A) #5 DROPPED — un-consumed and strictly stronger than the deliverable needs (the
+helper→#6 route needs supported-on-blockCoords, not escaped-coefficient vanishing); a SPECIFY
+stepping-stone superseded by a better route; keep-and-derive for an un-consumed lemma = motion;
+SUPERSEDED-BY commit note + the kill-mechanism prose preserved in the helper's docstring +
+folded-pass delta (the §9.9-honesty-bar class). (B) the CRUX (the capped-homogeneity induction,
+the unit's one genuinely-new fidelity-critical piece) goes to a FRESH SEAT — CAPF's third honest
+context-flag, taken on the proven pattern (fresh eyes on fidelity-critical content produced the
+27th catch this very afternoon; the danger in such proofs lives in auxiliary STATEMENT choices,
+which Lean does not check). CAPF's last acts: verify the helper docstring carries the COMPLETE
+standalone design (invariant/base/step-with-depth-in-bold/#6-derivation/pnp's honest scope) →
+the #5 drop → push → unit-consult. The crux seat spawns on its report.
