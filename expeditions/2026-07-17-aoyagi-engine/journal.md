@@ -15499,3 +15499,28 @@ regardless.)
 seat-L4D: ruling internalized (will NOT build the rejected pure-vanishing form); battery plan
 approved with the combination-e₂ amendment; its priority remains the recoord-pairing
 adjudication (gates DEF EDIT 2). Board unchanged otherwise.
+
+## 2026-07-23 (~00:40) — elder §7: the staged gate on the unpaired recoord; the DIVISION-BRANCH question leads; N_p ratified claims must re-verify on the baked def
+
+The elder's §7 (committed 437ba4ea7) rules the unpaired-recoord finding a PREREQUISITE, not a
+shape/field change: on the current def the leftover extra-block coord factors by u₀₁₀ (a
+NON-pivot) with coeff 2, so the ruled FIELD's INTRO is UNPROVABLE until the pairing is in the
+fold. STAGED on seat-L4D's verdict with the critical fork made explicit:
+- DEF-EDIT-3-REPRESENTABLE: the Q₁·A_S pivot-column clearing is a PRE-QUOTIENT POLYNOMIAL shear
+  displacement in the current fold order → fidelity restoration, rides the re-bake.
+- SKELETON-REVISION: the clearing needs the pivot INVERTED (Aoyagi's γ is a division) or a
+  fold-order rethink → NOT within the re-bake; returns to the elder's route-adoption gate (and
+  the operator if it moves the definition of done). The elder's explicit forbidden move: a
+  silent fold redesign smuggled under the fidelity-restoration banner.
+REQUIRED regardless (the "third instance" reading — the N_p ratification verified the
+CERTIFICATE's N_p, not the BAKED encoding; same class as the cap-escape and the original
+unfaithful shear): the bake's own ratified claims re-verified ON THE BAKED DEF — ideal-
+preservation/StepInv by GRÖBNER IDEAL-EQUALITY (compass F4; the unpaired step is
+A_{S+1}·Q₁⁻¹·A_S, not a conjugation), monomialisation (u·unit), M_{s,k}. If those fail too, the
+blast radius exceeds the field — immediate flag-up.
+
+EXECUTION: seat-L4D charge extended (branch verdict leads, verdict vocabulary pinned);
+pnp-transport charged with the compute half (its faithful harness extends naturally; baked def
+now, completed candidate after L4D specifies); the two coordinate directly. arch-C unchanged
+(def-edit 1 proceeds; field + frontiers held). The recoord verdict is now the gating item ahead
+of the field render. Task #46 opened.
