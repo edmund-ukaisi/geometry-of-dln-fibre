@@ -15954,3 +15954,29 @@ seat-L4D's battery vs the elder's 5-point bar (banked c77392480):
 
 NET: the deflation is def-confirmed; ONE open question (the mechanism); the wall's final form
 unchanged (boostReady from clean-D_J + foldB) whichever mechanism is faithful.
+
+## 2026-07-23 (~02:20) — block axis DECIDED: R3+R4 (R4 REPLACES branch (i)); foldB is a SCALAR (Reading B refined); one spec-consistency question isolated before the render freezes
+
+seat-L4D's two decisive items (banked 1e7e1d166 → canonical, controller re-ran exit-0):
+
+(1) BLOCK AXIS: the block stays NON-DIAGONAL under R3 (R3 acts on A_{S+1}; branch (i)'s guard
+excludes the pivot cross so β,γ stay uncleared in A_S) ⟹ R3+R4. No re-open — R4 (the generator
+transform Q₁·A_S·Q₂ = diag(1,e₂)) diagonalises within the fold, contained + G1-clean
+(worked.tex:619-629). RENDER DETAIL: R4 applies to the RAW A_S and SUBSUMES branch (i) —
+stacking double-counts ([1][1] = u₀₁₁ − 2u₀₀₁u₀₁₀); the block edit REPLACES branch (i).
+
+(2) foldB DEF-FACT, Reading B REFINED: foldB (:402-406) is a SCALAR — the accumulated dominant
+monomial applied uniformly in StepInv (one b for all slots); the per-row diag(b₁..b_M) lives in
+the EXTERNAL ConState.divExp/M_{s,k} combinatorial ledger, not the fold. Def architecture =
+scalar foldB + external per-row ledger + foldResid the clean block. DEF EDIT 2 = clean-block
+form, def-confirmed.
+
+(3) SPEC-CONSISTENCY QUESTION (controller-caught, routed to both seat-L4D and the elder): the
+TWO-SIGN finding kept branch (i) as a flipped shear (that cleaned the ed1 product); the block
+verdict RETIRES branch (i) to the generator side. Different defs, different foldResid forms
+(hand check: retired-(i) + flipped-(ii) gives P[0][1] = b·u₁₀₀ + e₂·u₁₀₁ — e₂-carrying, not
+coeff-0). Under scalar-foldB, foldResid may be the block-slot object so neither ed1-product
+form is what boostReady consumes — to be RULED, not assumed. The elder's mechanism ruling =
+the frozen render spec (shear branches + signs; R4's position; foldResid's clean form at the
+case11 node). pnp #50 = the empirical cross-check; arch-C holds the def-edit-3/4 render until
+the spec freezes (def-edit-1 unaffected).
