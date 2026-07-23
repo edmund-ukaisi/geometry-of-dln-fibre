@@ -16197,3 +16197,29 @@ affirms the frozen-spec-as-contract + gate; its delta-read checklist now include
 WAITING ON: arch-C's 5-line scope-restate (not yet received) → its §8(i)-conformant rework →
 pnp's block-form battery (#51) → the elder's delta-read → merge. Everything else is holding
 by design.
+
+## 2026-07-23 (~04:00) — pre-render flag: the INTER-EDGE COUPLING (u₀₀₁² survives R4 in the reconstruction); converted to an explicit RENDER REQUIREMENT
+
+pnp's block-form pre-stage (banked bb17f5784 → canonical, re-ran exit-0): in its faithful
+RECONSTRUCTION of the frozen R3+R4, the u₀₀₁² SURVIVES at the reuse-parent node on all three
+witnesses — NOT a per-edge failure but an INTER-EDGE COUPLING: the fold's shears read RAW
+coords in ONE global system (blockShear, MonumentAtlas:332/PathAtoms:63; deepest edge
+innermost, Case1Wire:101), so ed2's branch-(ii) recoord reads ed1's raw pivot-row entry
+BEFORE ed1's R4 clear composes — R4 clears each edge's OWN cross only. Source-isolated
+(drop ed2 → clean). The pivot COLUMN half and E_J are fully fixed by R4; only the inter-edge
+ROW read fails. CERT-FIDELITY CAVEAT (pnp's, correctly): a reconstruction — the flag fires
+IFF arch-C's exact rendered branch-(ii) reads outer-pivot RAW rows.
+
+THE FAITHFUL RESOLUTION (why this is a render requirement, not a spec change): Aoyagi's
+Lemma 2 operates per stage IN THE CURRENT CHART — her step-2's reads see post-step-1 values,
+where the outer pivot row is ALREADY ZERO; the coupling cannot arise in her tower. The
+requirement pinned to arch-C's rework (folded into its restate gate): later edges' reads
+(branch-(ii) γ and R4's own) must see the outer edges' CLEARED values — how is its
+architecture call (interacts with the R4-placement decision); its report MUST state
+raw-vs-cleared explicitly; pnp's ed1/ed2 witness is the binding test on exact formulas.
+Offered to the elder: a one-line §8 clarification pinning the current-chart semantics in the
+ruling. seat-L4D's joint confirm gains the slot question (col-1 ↔ D_J mapping — if the
+coupling sits outside the wall-consumed slots, the flag weakens). Timing note for the
+synthesis: the battery instrument caught this PRE-RENDER — the third pre-lock catch of the
+§8 arc (field lock, scope non-conformance, now the composition semantics), each converting a
+would-be re-open into a cheap design input.
