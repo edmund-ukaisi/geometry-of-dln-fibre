@@ -21498,3 +21498,40 @@ Also this turn: OPERATOR status + DAG (/tmp/aoyagi-dag-2026-07-24.svg) + board c
 **Status.** KILL step: hard algebra done, (A)+(B) mechanical (continue → #97), (C) carrier-gated
 (pnp-cap commissioned). L7: engine (M1) green, sheared fold (M2/2a) rendering. Wall (a) both sides.
 Board clean. Awaiting: seat-descent #97 green, pnp-cap growth-V3 carrier, seat-L7cover sheared-fold.
+
+## 2026-07-24 (~04:00 UTC) — seat-L7cover MILESTONE 2 COMPLETE (full abstract cover engine, c069de133); vacuity refinement ACCEPTED (my shear-hyp was circular); reviewer rev-L7cover spawned; wire held on review
+
+seat-L7cover delivered its COMPLETE abstract full-fan cover engine (LeafCoverTiling.lean @ c069de133,
+green, pushed, monument-free, axiom-clean, cordon-clean): the closed block-atom + FanTree + `Covers K
+t R` fold condition + `covers_subset` (the sheared tree fold, structural induction) + the ∃ρ open-ball
+corollary + `covers_one_node` (non-vacuity witness) + the flat fan-lift. The L7 cover engine (the one
+buildable summit-after-#73 long-pole, priced (a) detail-at-scale) is DONE as an abstract module; the
+remainder is the controller-owned wire.
+
+VACUITY REFINEMENT — ACCEPTED (seat-L7cover caught MY phrasing). I had phrased the shear-containment
+hypothesis as "the shear maps the child's COVERED BOX over the source box" (closedBall ⊆ σ p ''
+child.leafImages) — which is VACUOUS: it references the child's cover set, silently assuming the
+conclusion at the child level. seat-L7cover rejected exactly this in its 2a design (task #103) and
+built the LOCAL-to-σ form: the shear clause is `closedBall 0 (max R 1) ⊆ σ p '' closedBall 0 (K·max R
+1)` (σ⁻¹ K-bounded, two explicit BOXES, no child-cover reference) + a SEPARATE recursive child-covers
+clause. Non-vacuous + dischargeable from canonNormalizationOf's polynomial bound. So at wire I
+discharge the LOCAL K-box shear facts + size the leaf boxes ≥ K^depth, NOT a shear-over-child
+containment.
+
+CALIBRATION (banked, controller): a "named hypothesis" I hand a seat + promise to discharge must NOT
+reference the conclusion — else it's vacuous/circular (the proof would be empty). Phrase discharge-
+hypotheses CONCRETELY (explicit boxes / bounds), not in terms of the cover set they're meant to
+produce. seat-L7cover's leaf-executor discipline (don't self-review fidelity; flag the vacuity) caught
+it — the reason the reviewer gate matters.
+
+REVIEWER rev-L7cover SPAWNED (seat-L7cover's request; controller-commissioned independent gate): the
+engine's FIDELITY (pnp-fan §2.3-2.4 general-d render) + SOUNDNESS (Covers non-vacuity / not-circular
+[the exact local-to-σ vs shear-over-child trap] / weakest-sufficient) + leafImages↔stepMap match +
+Codex decorrelated + a gate re-derivation. GATES whether I wire the engine into
+MonumentAtlas.leafPath_compactCover. I HOLD the wire until rev-L7cover passes (won't wire an
+unreviewed engine into the summit — the hunt precedes trust).
+
+**Status.** L7 cover: abstract engine DONE (M2), under independent review (rev-L7cover); the wire is
+mine, gated on the review. KILL step: hard algebra done, (A)+(B) mechanical (seat-descent continuing
+→ #97), (C) growth-V3 carrier commissioned (pnp-cap, #104). Wall (a) both sides. Awaiting: rev-L7cover
+verdict, seat-descent #97 green, pnp-cap growth carrier.
