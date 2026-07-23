@@ -17692,3 +17692,17 @@ consumer convenience; the only hard requirements are all-four-served + name=cont
 the render contract BEFORE the relay (artifact-first). PROCESS NOTE: LL reported L4D "wasn't
 reachable by name" seat-to-seat — the controller is the message hub; relays go through me (matches
 the substrate's design; noted so seats don't wait on direct sends).
+
+## 2026-07-24 (~03:10) — #66 RESOLVED as already-quarantined (controller-verified); LL parked;
+the wall single-threads the critical path
+
+LL's ground-truth investigation of the audit's Tier-1 #2: GeoAlphaGauge:675 is OFF every live cone
+(zero aggregator/AxCheck refs — controller re-grepped), inside the RETIRED Engine (RETIRED.md:8
+names it; charter §3 do-not-fill), and the :666 REFUTED-AS-STATED banner already points at the
+honest ideal-level route (aoyagi_learning_coefficient_gen) — the "fillable-looking" hazard is
+factually fenced. A restate would duplicate the honest engine inside a retired file; a mid-flight
+prune is UNGATEABLE (the retired Engine isn't built). RESOLVED-as-quarantined; the close-phase
+fossil sweep prunes the whole retired Engine wholesale (gateable as one unit). Elder's audit
+ledger to note the disposition at its next touch. LL parked on #38 (its whole remaining lane).
+BOARD PICTURE: the wall's content lemma (L4D) is the single-threaded bottleneck by design —
+correct shape for this phase; everything else is banked, parked, or C9.
