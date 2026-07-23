@@ -18923,3 +18923,23 @@ ACCEPTED (the L4D→GM pattern): CAPR banks a per-leaf handoff doc + pushes + re
 def-owner-consult; single-writer on SourceClearedResid.lean/MergeBoostSplit.lean transfers to
 the fresh grind seat at spawn (GM-primitive stability pledge transfers with the files). Fresh
 seat spawns ON the banked handoff.
+
+## 2026-07-23 (~15:05) — L4D's cap answer: one decidable hinge; pnp commissioned (two-level check);
+cap render HELD pending the verdict
+
+L4D (one-question consult, confidence boundary marked honestly): obligation-(b) canNOT transport
+from a raw CAPPED descent — that fact is FALSE on wide branches (the cap-escape); the confinement
+to blockCoords is cleared-object content. The hinge that flips it to TRANSPORTS: whether the
+couplingClear precompose kills the escaped-coordinate dependence — L4D's sufficient form is the
+set-containment escaped ⊆ couplingCoords (it could not confirm from context). CONTROLLER
+SHARPENING before dispatch: the set-containment is likely TOO STRONG (escaped coords live at the
+fresh layer; coupling coords at ancestor layers) — the level that matters is FUNCTION-level:
+whether the raw fold reads escaped coords only through terms couplingClear zeroes (the kill at
+the precompose). pnp commissioned two-level ((1) refute/verify the containment cheaply; (2) the
+function-level kill on (2,3,2,2) + a second width-increasing witness), verdict TRANSPORTS /
+INDEPENDENT, committed script. DECISION MEANWHILE: the cap render (incl. L4D's "raw uncapped can
+start regardless") is HELD — post-move the raw descent's consumers re-point to cleared, so even
+the raw uncapped fact risks orphaning if INDEPENDENT; one cheap decisive check beats a
+speculative render (the timidity/boldness line runs through the hinge, not around it). GM's
+SPECIFY position on the three raw descent sites (already required) will be cross-read against
+pnp's verdict.
