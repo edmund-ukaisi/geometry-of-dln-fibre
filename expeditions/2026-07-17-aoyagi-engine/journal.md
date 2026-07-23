@@ -18877,3 +18877,20 @@ sourceClearedResid_root = coreGen (rfl) keeps Resolution (coreGen d e) type-stab
 NAVIGATOR convened (phase-transition mandatory): gate-orphan walk, parallelisation audit (cap
 render / L3T2 staleness / L5 pre-work), L5 hard-part-avoidance check, ETA calibration. Memo
 wait-state rewritten to the render-phase board.
+
+## 2026-07-23 (~14:55) — operator: cwd re-pin caught + fixed (EnterWorktree→root); charter re-read;
+DAG rewritten around the remaining MATH obligations
+
+The operator flagged the controller's moved worktree/branch. Diagnosis: the harness had re-pinned
+the SESSION cwd to the CAPR seat worktree (the known re-pin hazard, memo lesson) — every commit
+batch was safe throughout (explicit cd-to-root + branch assertion, all commits verified on
+expedition/aoyagi-engine), but the session-level placement was wrong. FIXED per the memo's own
+prescription: EnterWorktree(path=root) — session now pinned to root on the canonical branch; the
+CAPR worktree is no longer writable from this session (correct: it is seat-CAPR's). Charter
+re-read in full (the §1 object frame + §3 warnings re-anchored). The operator-facing DAG
+(/tmp/aoyagi-dag-2026-07-22.svg) rewritten around REMAINING MATH OBLIGATIONS, charter-framed:
+A/C/D LANDED strip; open math concentrated in three places (CAPR's b-ledger leaves = coupled-B
+content; the small (ii)+cap lemma groups; the L5 fold body = the one remaining monument-class
+unit); render-vs-mechanical distinguished; the operator-gated ceremonies dash-marked; ETA
+optimistic 5-6d / median 8-11d / tail 14d with the tail-driver (object surprises) noted as
+materially reduced (18/18 caught pre-render).
