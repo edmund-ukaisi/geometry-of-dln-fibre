@@ -15980,3 +15980,36 @@ form is what boostReady consumes — to be RULED, not assumed. The elder's mecha
 the frozen render spec (shear branches + signs; R4's position; foldResid's clean form at the
 case11 node). pnp #50 = the empirical cross-check; arch-C holds the def-edit-3/4 render until
 the spec freezes (def-edit-1 unaffected).
+
+## 2026-07-23 (~02:30) — §8(h) + the gate data CROSS AND RESOLVE: the decisive test reads NO ⟹ the block mechanism points to R4-PAIRED; one degree flag rides to the delta-read
+
+The elder's §8(h) (committed e87234834): the faithfulness criterion, ruled paper-first and "NOT
+ambiguous" — her invariant is an IDEAL EQUALITY (⟨∏C⟩ = ⟨diag(b)·[E_J|D_J]·∏C⟩ maintained
+every step, worked.tex:565-567) and the M_{s,k} ledger reads off HER diag(b) (:668-676) ⟹ the
+faithful mechanism is necessarily PRODUCT-PRESERVING; candidates judged by GRÖBNER
+IDEAL-EQUALITY to her presentation, NOT entry-cleanliness ("a non-product-preserving
+sign-fiddle can clean the entries while giving the WRONG presentation"). Decisive test = #49.
+
+pnp's #49/#50 (crossed in transit; banked, both re-ran exit-0): #49 — ⟨R3⟩ ≠ ⟨honest⟩ ≠ ⟨baked⟩
+(pnp's pre-§8(h) framing "not the discriminator" INVERTS under the new criterion: it IS, and it
+reads NO) ⟹ per the elder's own staging: the two-sign flip is RLCT-safe but NOT
+product-preserving; R4 (the paired column-clear) is the faithful block mechanism. #50 — R3's
+E_J CLEAN at the reuse node (baked's POLLUTED — the disease was E_J pollution, never D_J's
+e₂-extras); col-1's u₀₁₁ = a legitimate D_J coordinate under both (honest-vs-R3 RECONCILED:
+same D_J object); b = 1 at the node (Reading B consistent). Codex: "R3 delivers the paper's
+clean-block object; BAKED does not."
+
+FULL CIRCLE, for the synthesis: honest_clear — the certificate's hand model — was the
+PRODUCT-PRESERVING object all along. The certificate's MATH was right; its RENDERING as an
+unpaired coordinate shear was the error. The R4-paired mechanism = the certificate's own
+conjugation, done properly at the generator level. seat-L4D's (ii) "confusion" was the right
+instinct.
+
+THE ONE FLAG to the elder's delta-read: R3's D_J carries u₀₀₁² (the −γ flip cleans the column
+half; the row half SQUARES) vs baked degree-1 — check against HER D_J; context: u₀₀₁ is
+below-support (PerLayerDeg1From tolerates deg-2 there); may be moot if R4 is the mechanism
+(R4's D_J form is then the one to check). The u₀₁₁+γβ corner convention rides along.
+
+STATE: everything the elder staged for is on its desk; my integration reads the mechanism as
+R4-PAIRED (the elder rules formally + freezes the render spec); pnp pre-warned for the R4-
+candidate gate battery; seat-L4D holding for the frozen spec, then the wall. #49/#50 completed.
