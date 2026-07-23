@@ -16818,3 +16818,26 @@ pnp's decisive Gröbner (banked 9f4e7efc0, controller re-ran exit-0; Codex corro
   ALL-ENTRIES ⟹ §7 fires + the F₂ ruling proceeds. One def-read decides.
 
 #54 completed. The elder rules on seat-L4D's read; every disposition remains pre-staged.
+
+## 2026-07-23 (~10:10) — the frame-aware placement theorem committed; the cheerful close + the verdict COMPOSE (+γ-paired); two gates at seat-L4D
+
+The elder's crossed message integrated with the landed verdict:
+- §8(n) PLACEMENT THEOREM corrected FRAME-AWARE (committed 328e346c8): "the full Lemma-2 CoV
+  can't be a shear OFF-FRAME (unit-not-1 Jacobian); AT THE NORMALIZED PIVOT (where the fold
+  reads) its det-1 pieces ARE legitimate blockShear branches." The F₂ absorption is
+  shear-legitimate; absorb-not-zero is invertible — passing exactly the test pure-zero failed.
+- THE CHEERFUL CLOSE pre-staged as the formal ruling (if the gates pass): NO fold-touch, NO
+  bridge, r4Clear DISCARDED, foldResid UNTOUCHED; the whole fix = det-1 shear branches in
+  canonNormalizationOf; census 0; CONTAINED, no operator escalation. Retro-simplification
+  included: "R4 = generator transform" collapses to "det-1 recoord branches at the normalized
+  pivot" — cleaner and more faithful.
+- THE COMPOSITION with the verdict (relayed): the cheerful close's F₂ branch renders +γ-PAIRED
+  (the verdict's (D) row; (C) −γ+Q₂⁻¹ is FALSE) — the certificate's own conjugation restored;
+  the −γ ruling stands as the correct unpaired-regime fix; the final-def ruling reconciles
+  sign + scope-status-under-pairing + the block-form/boostReady re-verification.
+- TWO GATES, both seat-L4D: (1) the D_J-only fork (deflates everything if D_J-only);
+  (2) the normalized-pivot reading trace (the F₂-polynomial wrinkle-gate).
+
+The board: two focused def-reads from the final ruling; every disposition staged; the arc's
+retro-arc visible — each "wrong" turn was the right fix for its regime, and the endpoint is
+her mechanism in the fold's own architecture.
