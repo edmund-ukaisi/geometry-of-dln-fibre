@@ -19682,3 +19682,21 @@ CAPR for the 30-second def-owner confirm; controller lean = child-path (one hypo
 GM's blocked-on list confirmed correct: (i) INV's CanonicalPivots render (in flight; SHA relayed
 on landing), (ii) pnp's 2 certificates (current job). The board's convergence points: INV's def
 push + pnp's cert delivery — both trigger GM's final grind phase.
+
+## 2026-07-23 (~18:50 UTC) — INV's ROOT ASSEMBLY banked (68e4c0155, axiom-clean, pivot-free);
+a LOST DELIVERY caught (the CanonicalPivots spec resent verbatim); INV's read-off unblocks
+
+sourceClearedInv_root proven: the turn-key §4 root case wiring ROOT(a)+(b)+(c), μ=0, boost
+conjunct vacuous, decomposition/continuity/IgnoresCoords from the ℓ=0 continuous decomp —
+elegantly HYPOTHESIS-FREE (the root has no pivots, so the canonical sub-family is trivially
+met). INV's full bank now spans 7 commits, all axiom-clean. DELIVERY LOSS CAUGHT: INV's
+waiting-list included "CAPR's CanonicalPivots spec" — which was SENT ~an hour prior with a
+RENDER-NOW instruction; the message was lost or buried (the documented teammate-message-loss
+hazard, now seen controller→teammate). RESENT VERBATIM with the updated batch: render the
+predicate + thread hcanon (incl. the content lemma — the elder-green statement change, folded-pass
+re-bless queued) + wire the root arm into the induction skeleton (step arms = named sorries on
+the transports) + THE READ-OFF now grindable (the boost crux dissolved in-regime). The remaining
+INV frontier after this batch: the two transport step arms alone (GM's commutation core + #86).
+LESSON REINFORCED: on any teammate wait-list, cross-check each wait item against MY sent log —
+a "waiting for X" where X was sent = a delivery incident, resend verbatim (don't point at the
+inbox).
