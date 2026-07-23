@@ -18606,3 +18606,23 @@ question — does the ∃-bound multiset thread the MULTI-STEP accumulation the 
 exhibits?); the elder blesses the final shape at the skeleton delta. The discipline note: CAPR
 surfaced rather than baked a disagreement-class call — the rule held under temptation (its own
 hybrid was the likely winner).
+
+## 2026-07-25 (~00:50) — THE MASTER GATE VERDICT: ∃q FAILS BY NECESSITY — the global move is
+FORCED; the ruling commissioned direction-now/render-gated; pnp constructs the cleared fold's
+soundness check first
+
+pnp's verdict (afa901662 + d6924b708, Codex-confirmed, 2 witnesses): the raw case11 child StepInv
+fails route-independently at the CONTINUOUS level — the necessity argument: foldB is a coordinate
+product, so StepInv forces foldB | coreGen∘foldG, false at the E_J slots (the boostReady
+obstruction's slots); the V-restriction escape is illegitimate for an RLCT claim; the aggregate
+reading also fails; the ∃ absorbs nothing. CONSISTENCY: the raw fold is wrong at case11 for BOTH
+properties — the whole invariant lives on C, uniformly (not an escape hatch). THE HONEST FLAG
+THAT PREVENTS THE NEXT MISTAKE: the global move's SUCCESS is unverified — foldG/foldB must
+re-architect too (a naive residual-only swap fails by the same divisibility argument). pnp GO'd
+on constructing the cleared foldG/foldB + verifying the cleared StepInv (witnesses incl. wide),
+with the paper-first constraint: the cleared fold IS her recursion — read the construction off
+her step; divergence = a flag. The elder rules direction-now/render-gated (the scope = L4D's
+(i)-(iv) + the per-case append split + the merged-machinery survival map + the "recursion
+untouched" supersession text). CAPR unaffected — its INV becomes the invariant of the REAL
+recursion. Board: #74 created (supersedes #73's shape). ETA impact honest: the re-architecture
+adds ~1-3 days to the median; the payoff statement remains untouched throughout.
