@@ -18961,3 +18961,26 @@ TRANSFERRED to seat-INV; CAPR stands down to def-owner consult (routes: sourceCl
 ledgerTarget semantics, boost-conjunct intent, couplingClear frame). The board's live renders:
 seat-INV (leaves) ∥ seat-GM (SPECIFY) ∥ pnp (the cap hinge #78); elder owes the P2 one-liner +
 GM's SPECIFY delta.
+
+## 2026-07-23 (~15:15) — GM's SPECIFY landed (52fed0330): gates fanned out; O1 ruled; per-file go
+granted with riders; the provenance paragraph REQUIRED
+
+The SPECIFY: ClearedFold.lean skeleton pushed + signature-validated via a throwaway stub (reverted
+— nothing landed in consumers); the precompose defs verbatim (clearedFoldG/B = fold∘couplingClear
+at canonFlatten; FoldStepInvAt_cleared mirroring the raw shape on the cleared trio); the region
+obligation STATED (delta-1 satisfied); (iv) CONSUMED from CAPR, not re-declared (Q1 as ruled);
+cross-ref honesty claimed in the module docstring. Statement list in three tiers (trivial /
+GM-frontiers incl. the (S2) commutation + the (ii) transports + the cleared appends + conjA/
+preserves / consumed-not-proven). Consumer plan: DELETE Case1Wire's refuted raw case11 chain
+(keep-list enumerated), re-point CaseStepAssembly (case1'' OUTPUT TYPE → cleared), LastLayerWire
+:145, MonumentAssembly minimal. Census scope verified by GM from AxCheck: the payoff L1
+value-path avoids the summit — the clean-three footprint untouched; only dirty intermediate
+cones shift frontiers. GATES DISPATCHED: pnp def-fidelity FIRST (cap hinge #78 second) with
+GM's O2 (case12/case2 commutation under GROWING couplingCoords) as a named focus item; elder
+delta-read with 4 items (the PROVENANCE GAP — explicit position or owned deferral required, my
+pre-flag; deletion-vs-fossil confirm; the (iv)-landing ruling; name=content on case1'').
+CONTROLLER RULINGS: O1 — the commutation core is GM's to state+prove (critical path + lanes
+can't cross-consume pre-integration; relocation to the substrate at the merge; seat-INV
+instructed to ping before its transports leaf, no re-derivation). Per-file go GRANTED (4 files)
+with riders: deletions documented as REFUTED-raw + SUPERSEDED-BY; case1'''s docstring carries
+the cleared content. GM holds for both gates; proofs phase not started.
