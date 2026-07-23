@@ -142,7 +142,7 @@ theorem lastLayer_conjA
       -- NO interior guard, so it applies at S=L (layer=N-1) directly — this case11 rides the wall.
       have h11 : ed.case = StepCase.case11 := hecase.symm.trans h11sc
       exact case_child_stepInv_divisibility d (canonFlatten d) p ed (by omega)
-        (realBranch_boostReady_case11 d (canonFlatten d) ed hδ h11 hbfull hslot) hinv.1
+        (realBranch_boostReady_case11 d (canonFlatten d) rfl ed hδ h11 hbfull hslot) hinv.1
   · -- δ=0 (subsequent clear, parent.cleared ≥ 1): pure pullback — CLOSED, case-blind, from hinv.1.
     have hδ0 : edgeδ d p = false := by
       cases h : edgeδ d p with
