@@ -17378,3 +17378,18 @@ Interface consumed downstream (hlin/hC/recoordCoeff signature) unchanged ⟹ rew
 its own file. GO sent with two guards: (1) consumer-grep agree_off_succLayer BEFORE restating
 (its old statement is FALSE for S≥1 under branch-(iii) — any consumer of the 2-layer shape =
 stop-and-report); (2) name=content if the statement shape moves (rename + 3-branch docstring).
+
+## 2026-07-23 (~19:25) — WALL restate PASSED; L4D's skeleton ratified (L1/L3 plumbing + L2 capstone); Codex fired; L2 stays in-seat with a stall tripwire
+
+L4D's terrain read (def-confirmed): case11's center = row-partial block ∪ CROSS-LAYER reused e₂;
+realBranch_cover is case12/case2-only ("case11's pivot-mechanism excludes it"), supportAt ⊄ center
+— the case12 cover+pad route is CLOSED to case11, as expected. THE CRUX identified correctly:
+extra-block terms must factor e₂·(cont. coeff) from the residual's CONCRETE structure — hslot's
+∃c continuity can't give it (the β-death constraint: any route working from hslot alone answers
+the wrong question; the proof must consume the canonFlatten pin / concrete coreGen). Steers sent:
+Codex consult GO (framed with the β-death constraint); L2 stays with L4D (holds the route + the
+5-for-5 restate taste) with the tripwire — ~2 non-converging grind sessions or wedge-size
+transcript ⟹ re-shape to pen-and-paper certificate + fresh render. Paper anchor for fidelity:
+her separated normal form at the case-1(1) merge (worked.tex:562-577 + council Q2 — complementary
+rows acquire the reused exceptional via the external b-ledger; in the render that information
+lives in coreGen at the merge, edgeShear=id). Lane: expedition/aoyagi-engine-L4D-wall.
