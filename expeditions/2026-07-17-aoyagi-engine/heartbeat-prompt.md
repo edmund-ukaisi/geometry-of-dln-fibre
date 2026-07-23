@@ -26,20 +26,21 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   (descended support escapes blockCoords(S+1) on WIDE branches — INHERENT, witness (2,3,2,2),
   banked + re-ran exit-0), that is the 10th+11th catches, BOTH in the carried invariant: support
   TOO TIGHT + form TOO WEAK — FoldStepInvAt under-transcribes Aoyagi's induction hypothesis.
-  ELDER holds the CONSOLIDATED ruling; its ruling GATES all descended-slot consumption + any
-  bake. INPUT SET COMPLETE (5/5, all banked): def-confirm BOTH SIDES (write: recoord col = pivot
-  ROW uncapped; residual composed-through-shears: blockBlowupCoordQuot pass-through + remnant-row
-  read; escape ⟺ d_{S+1} > widthMinUpto(S+1)) ✓; fields V/S ✓ (frame-pin amendment: the vanishing
-  locus = the SCHUR pivot in the running chart frame); Codex ✓; empirical table ✓ (PerLayerDeg1From
-  SURVIVES); consumer table ✓ (SHAPE⟂FIELD; L3T lane shape-insensitive). DECISIVE INTERLOCK:
-  L3T2's one load-bearing UNKNOWN (does any consumer need the S+1 cap) resolved by L4D's scope
-  check (boostReady reads layer-S + earlier pivot only) ⟹ (a)-WIDEN consumer-safe. RE-BAKE FORCED;
-  controller leans (B)+Form-V; OPERATOR DIRECTIVE (lessons 5746fd4a9): paper-first — the ruling
-  LEADS with worked.tex (her M_{s,k} frame, her b's), candidates judged as TRANSCRIPTIONS. Field
-  INTRO obligation rides the earlier DESCENDED clear (shape+field meet there). Hedge check =
-  low-weight residual at pnp (L4D = fallback). seat-L3T3 induction UNAFFECTED (its vanishing
-  clause = natural field-V producer, exact-match check = elder's); clause-1 ON HOLD; seat-LL =
-  rebase + twin. Battery canon: every battery includes a WIDE witness.
+  THE RULING LANDED (#40, threads/design-round-2-ruling.md, fe254b967; controller verified
+  worked.tex:562-577 at source — her ONE "inductive invariant" display had both answers). SHAPE =
+  (a) widen descended supportAt to layerCoords(S+1) (her raw D_J column; blockCoords + J=0
+  unchanged). FIELD = coherent product factoring c_i = m_k·β_i, RUNNING-FRAME-pinned IN-statement
+  (her diag(b); value-vanishing REJECTED per Codex 2a/2b; numeric M_{s,k} ledger stays OUT).
+  PerLayerDeg1From untouched. Hedge closed KILLED-BY-e (canonFlatten pin NECESSARY). PAYOFF:
+  boostReady_case11 becomes PROVABLE from the field. EXECUTION: arch-C renders §4 on branch
+  expedition/aoyagi-engine-REBAKE (2 def edits + field conjunct + consumer thread + INTRO/
+  PRESERVE/BASE as named sorried frontiers; stop-on-obstruction). MERGE ORDER: render report →
+  §5 battery ON THE BRANCH (pnp = FIELD+FRAME half incl. must-fail-on-frame-error + scrambled-e
+  VACUITY rows; L4D = SHAPE def-trace) → elder delta-read → controller merges. Then #38 = INTRO/
+  PRESERVE/BASE + case11 boundary (seat-L4D, the wall's endgame). seat-L3T3: finish step-2, push,
+  arch-C owns clause-1 restatement, rebase post-merge. Charter §3 = the composed source-fidelity
+  discipline (committed). Compass fork-entry: elder authoring. Battery canon: WIDE witness
+  ((2,3,2)/(2,3,2,2)) + baked-def + able-to-fail-on-frame-error, always.
 - ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
   failed wakes) AND its 23:05 adjudication was DELIVERY-LOST (recovered from transcript, banked:
   threads/L4-case1-core/elder-capescape-interim-adjudication.md — its fix-β superseded by the
