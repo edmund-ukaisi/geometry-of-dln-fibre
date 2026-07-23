@@ -178,3 +178,75 @@ rendered it of the WRONG OBJECT.**
 The wall's *shape* was faithful; its *object* is corrected to the cleared representative her recursion
 actually carries. The remaining critical path (fresh formaliser, pnp's certificate, LL's two renders) is
 unblocked on this ruling.
+
+---
+
+## §7.5 AMENDMENT — the bridge is NOT ideal-equality; it is COVER/CHART-membership (pnp crossing 5aa7dadad)
+
+### RETRACTION (owned — my second correction in this arc)
+
+§7.3 item 4 asserted the bridge = ideal-equality `⟨sourceClearedResid⟩ = ⟨foldResid⟩` via "the column-clear
+is regular/Lemma-1-neutral." **pnp's exact Gröbner REFUTES it:** `sourceClearedResid = foldResid`
+restricted to the hyperplane `{coupling = 0}` — a **RESTRICTION** (`⟨src⟩ ≠ ⟨raw⟩`, ideal-**changing**),
+NOT a regular transform, NOT product-preserving. My "regular column-clear ⟹ ideal-neutral" was wrong: a
+restriction is not a conjugation. Consequently the per-slot `(D)` is **not ideal-invariant** (a restriction
+can change the RLCT), so no ideal-equality bridge exists, and closing-contract item (ii) as I dispatched it
+would FAIL. Owned.
+
+### PAPER-FIRST (the amendment's step 1) — CONFIRMED: Case 1(1) is a BLOW-UP CHART
+
+Re-read pp.15–16 (fresh) with the pointed question. p.15: "**Construct the blow-up** along the submanifold
+`{d_{ij}=0 (…), u_{s,k}=0}`." p.16: "**Case 1(1): Consider instances in which** [the `J₁`-row block]
+`= u_{s,k}·[d']`"; Case 1(2): the complementary instances (only the first row factors, `u_{s,k}=u_{S,J+1}·u'`).
+So **Case 1(1)/1(2)/Case 2 are the CHARTS of the blow-up cover** — the RLCT is the **min over charts** (the
+boxed rule). The `{coupling=0}` is Aoyagi's `E_J = identity` (the cleared columns' below-pivot = 0),
+established at **ANCESTOR** edges by her regular Lemma-2 clears — ideal-neutral *at the ancestor's product*
+— and manifested at the case11 edge as the chart's coordinate structure. This is candidate **(b) CHART/COVER**
+(with candidate (a) — the ancestor clears are regular — as *why* the coupling is legitimately fixed). It is
+NOT candidate (c): the source is explicit that Case 1(1) is a blow-up chart.
+
+### THE BRIDGE'S TRUE SHAPE — cover/chart-membership (the fan), not ideal-equality
+
+`sourceClearedResid` is the residual **on the Case-1(1) chart** of the blow-up, where the coupling is fixed
+by the chart's coordinates (the ancestor `E_J = identity`). `(D)` holds on this chart. **RLCT-soundness =
+the boxed rule's min-over-charts:** the case11 chart is ONE branch of a COMPLETE cover (Case 1(1)/1(2)/Case 2
+— the fan), which covers `coupling ≠ 0` in the other branches. So re-stating `(D)` on the chart is
+RLCT-legitimate *because it is a genuine blow-up chart of a complete cover*, not because of any
+ideal-equality. **The `pnp-fan` machinery (tasks #11–14, the fanned cover) is the relevant banked asset** —
+the bridge is cover-membership, and the fan certificate is what carries the RLCT-soundness.
+
+### INTERMEDIATE-layer RLCT-soundness (team-lead's OPEN item) — LIKELY RESOLVED, pnp verifies
+
+The blow-up chart structure is **UNIFORM over `S`** (Case 1(1) applies at every `S = 1,…,L`, pp.15). So the
+chart-legitimacy of fixing the coupling is NOT a layer-0-only gauge argument (that was the corner ruling
+#61/#62's frame) — it is the uniform blow-up chart structure, which applies at intermediate layers equally.
+**So the intermediate case is EXPECTED to resolve uniformly** — but it rides a verification only pnp can do:
+
+**THE POINTED VERIFICATION (pnp):** on the intermediate witness `(2,2,2,2,2)` (case11 at layer 2 reusing a
+layer-1 divisor), is the coupling coordinate fixed by a **genuine ancestor blow-up chart** (the ancestor
+case2/case12 `E_J = identity` clear), so `{coupling=0}` IS a real chart of the cover (RLCT-legitimate)? OR
+does the coupling manifest through output-layer coords that NO ancestor chart fixes (an uncovered coupling →
+a genuine gap, re-open, candidate (c) after all)? Your (5aa7dadad) already localised the openness here; this
+names what settles it.
+
+### CORRECTED CLOSING CONTRACT (supersedes §7.6)
+
+- **pnp:** (i) cleared-`(D)` on the chart [done]; **(ii) RETRACTED** — do NOT certify ideal-equality (it is
+  false). INSTEAD: certify that `sourceClearedResid` IS the Case-1(1) blow-up-chart residual (the
+  `{coupling=0}` is the chart's coordinate fixing / ancestor `E_J=identity`, not an arbitrary hyperplane) on
+  BOTH a layer-0 witness AND the intermediate `(2,2,2,2,2)`; **(iii)** the RLCT-soundness — the chart is one
+  branch of a COMPLETE cover, so min-over-charts gives the right RLCT (tie to the `pnp-fan` cover
+  certificate). The old "StepInv `∃q` transport across an ideal-equality bridge" (#70's linchpin) is
+  RE-CAST: it is a **cover/leaf** obligation (the case11 chart's `(D)` feeds the per-leaf value; the RLCT is
+  the min over the fan), not an ideal-transport.
+- **L4D:** `sourceClearedResid` := the Case-1(1) chart residual (derived object); `(D)` stated of it; the
+  append/consumer bridges by **cover structure** (the fan/leaf machinery carries RLCT-soundness), NOT an
+  ideal-equality lemma. Merged recursion (per-branch foldResid) untouched; payoff/destination unchanged.
+- **RE-OPEN trigger:** if pnp's (ii)/(iii) shows the intermediate coupling is NOT chart-legitimate (an
+  uncovered output-coord coupling), the cover-membership bridge fails at intermediate layers → genuine gap;
+  I then fire a decorrelated Codex and re-adjudicate (candidate (c)).
+
+**Net:** the bridge is cover-membership (the fan), not ideal-equality (retracted). Paper-first grounds it
+(Case 1(1) = blow-up chart, uniform over `S`). The one open verification is pnp's chart-legitimacy of the
+intermediate coupling — expected to hold (uniform chart structure), which would close the arc via the banked
+`pnp-fan` cover asset.
