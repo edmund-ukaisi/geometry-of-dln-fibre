@@ -18194,3 +18194,14 @@ pnp-transport holding post-delivery; elder owes only the now-non-blocking confir
 resting in role. No lane pushes yet (expected — restate gates come first from both new seats).
 Memo refreshed to the render-phase position with the merge order pinned. Next events: the two
 restatements (CAPR + pnp-cap), then CAPR's SPECIFY → elder statement-delta.
+
+## 2026-07-24 (~15:45) — certificate REFINED + re-synced to canonical (70a9463d2); CAPR told to
+re-pull
+
+pnp's four seat-facing refinements (math unchanged): the §0 NOTATION block (∏A vs C — the
+overload fixed at the source), airtight §2 ψ-scoping (measure-caveat vacuous per node class),
+B1's honest demotion to citation (the cover debt named as L7's), and §8 per-section
+kill-conditions each tied to falsifier + script — a tripwire checklist the render seat can run
+mechanically. Canonical's copy synced same-tick (the stale-copy hazard caught before CAPR
+rendered against the old text); CAPR instructed to re-pull + re-derive its restate if in
+progress. pnp's arc formally complete; it holds as the exact-algebra consult.
