@@ -401,18 +401,6 @@ def CanonicalPivots {N : ℕ} (d : Fin (N + 1) → ℕ) : TreePath d → Prop
          | StepCase.case2 => cornerToFlat d p.conState.layer p.conState.cleared = some pivot
          | _ => True)
 
-/-- **The invariant holds on every real branch of the canonical sub-family** (certificate §4 induction:
-ROOT = `coreGen` at `μ=0` (`sourceClearedInv_root`, banked); δ=1 strict-transform subtracts the pivot
-exponent; δ=0 pullback adds it). The `hcanon : CanonicalPivots d p` hypothesis (§9.4 canonical-pin) pins the
-fan pivots to the diagonal so stored = ledger corner. STATE-ONLY here (tracked LIVE-frontier — the root arm
-is `sourceClearedInv_root d hN`; the δ=1/δ=0 step arms are the L5-layer transport obligation consuming GM's
-commutation core, wired at the full induction assembly). -/
--- map: B-wall-sourceClearedInv-holds (the §4 b-ledger induction)
-theorem sourceClearedInv_holds (d : Fin (N + 1) → ℕ) (hN : 0 < N) (p : TreePath d)
-    (hbranch : p.IsRealBranch (canonFlatten d)) (hcanon : CanonicalPivots d p) :
-    SourceClearedInv d p := by
-  sorry
-
 /-- **The Q₁-lift bridge** (certificate §2 — STATE-ONLY, tracked LIVE-frontier). The raw fold and the
 source-cleared residual are related by the parameter-space unipotent `Q₁` gauge (`A_L → Q₁·A_L`,
 `A_{L+1} → A_{L+1}·Q₁⁻¹`), which is det-1 and product-preserving, so the square-Frobenius loss `∑F²` is
@@ -665,5 +653,22 @@ theorem sourceClearedInv_root (d : Fin (N + 1) → ℕ) (hN : 0 < N) :
     rw [sourceClearedResid_root, hsupp, hc_repr u]
     refine Finset.sum_congr rfl (fun i _ => ?_)
     simp only [bMon_zero, one_mul]
+
+/-- **The invariant holds on every real branch of the canonical sub-family** (certificate §4 induction).
+ROOT = `sourceClearedInv_root d hN` (`coreGen` at `μ=0`, banked). The δ=1/δ=0 STEP arm is the L5-layer
+transport obligation: it reconstructs the child `SourceClearedInv` from the parent's (`ih`) via the
+b-ledger step law (δ=1 strict-transform subtracts the pivot exponent; δ=0 pullback adds it — the complement
+of `foldB`'s recursion) using GM's commutation core (`couplingClear`/step-map), gated on #87's `(1)`-bake.
+`hcanon : CanonicalPivots d p` (§9.4 canonical-pin) pins the fan pivots to the diagonal so stored = ledger
+corner in-regime. -/
+-- map: B-wall-sourceClearedInv-holds (the §4 b-ledger induction)
+theorem sourceClearedInv_holds (d : Fin (N + 1) → ℕ) (hN : 0 < N) (p : TreePath d)
+    (hbranch : p.IsRealBranch (canonFlatten d)) (hcanon : CanonicalPivots d p) :
+    SourceClearedInv d p := by
+  induction p with
+  | root => exact sourceClearedInv_root d hN
+  | step p c pv cse ns φ ih =>
+    -- STEP ARM (δ=1/δ=0 transport) — L5-layer obligation: GM's commutation core + #87 (1)-bake; PING-first.
+    sorry
 
 end DLNFibre.DLN.Aoyagi
