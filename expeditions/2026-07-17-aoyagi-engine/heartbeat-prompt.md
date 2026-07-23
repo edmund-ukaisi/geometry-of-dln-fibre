@@ -54,7 +54,22 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-24 ~13:40): THE BRIDGE CONVERGED (§7.7); ψ_gen is the ONLY gate.
+- CURRENT WAIT-STATE (2026-07-24 ~15:30): THE RENDER PHASE — two seats grinding the last two
+  elaborated objects. The obstruction arc FULLY CLOSED (§7-§7.8 + pnp's discharges: the Q₁-lift
+  verified ALL witnesses — the multi-coupling difficulty was a chart artifact, dissolves at the
+  matrix level; loss literally gauge-invariant; measure caveat RESOLVED not flagged; B1 = cited
+  to the fan cert, the genuine cover debt lives at L7). THE CERTIFICATE banked @ 0cf748516
+  (capstone-invariant-certificate.md — the render contract, math fully fixed). LIVE: seat-CAPR
+  (lean-formaliser, lane -CAPR): restate gate → SPECIFY (sourceClearedResid def + the new
+  content lemma NAMED FOR THE OBJECT + the Q₁-lift bridge stmt + old-lemma SUPERSEDED-BY; elder
+  statement-delta before proofs) → the certificated induction (tripwire: certificate-vs-def
+  mismatch = STOP) → gates. pnp-cap (pen-and-paper, lane -CAP): the cap-frontier certificate
+  (support-descent 2 obligations; wide witness mandatory; stop-on-false). pnp-transport: arc
+  complete, holding. Elder: owes the ψ_gen-split confirm (non-blocking now — its two re-engage
+  triggers resolved positively); then rests. L4D: consult-on-call. LL: parked (2 renders
+  contract-ready on the capstone). ETA (DAG panel): optimistic ≈6d / median 8-10d / tail 14d.
+  MERGE ORDER: CAPR's SPECIFY (elder delta + my gates) → CAPR's proof → LL renders → cap render
+  → L5 → L7 → swap batch → SUMMIT-RETIRE. (Old:)
   The obstruction arc CLOSED its design: ψ = a det-1 polynomial automorphism (F∘ψ=C, verified)
   that IS Aoyagi's chart transition — ideal-EQUIVALENCE ψ*⟨F⟩=⟨C⟩, RLCT-PRESERVING (pnp
   retracted its own dimension argument; the elder its ideal-equality — truth won both ways).

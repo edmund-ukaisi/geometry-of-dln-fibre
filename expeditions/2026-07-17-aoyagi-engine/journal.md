@@ -18186,3 +18186,11 @@ vs elder validation vs its own verification). pnp's obstruction-arc contribution
 new one NAMED FOR THE OBJECT) → the certificated induction (tripwire: any certificate-vs-def
 mismatch = STOP, statement-class) → gates. L4D/pnp as routed consults. The expedition's last
 hard proof is now in a seat's hands with the math fully fixed in advance.
+
+## 2026-07-24 (~15:30, heartbeat tick) — the render phase opens; all seats healthy
+
+Liveness: pnp-cap + seat-CAPR both alive in their brief-read phase (spawned last tick);
+pnp-transport holding post-delivery; elder owes only the now-non-blocking confirm; L4D/LL
+resting in role. No lane pushes yet (expected — restate gates come first from both new seats).
+Memo refreshed to the render-phase position with the merge order pinned. Next events: the two
+restatements (CAPR + pnp-cap), then CAPR's SPECIFY → elder statement-delta.
