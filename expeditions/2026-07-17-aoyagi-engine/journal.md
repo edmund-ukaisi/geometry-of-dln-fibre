@@ -20301,3 +20301,14 @@ couplingCoords_decode_layer_le). INV stays RESTING (its pin-rebase batches into 
 transport-arm readiness — avoids a double-rebase). Remaining lanes: CX (crux + guard), CFF
 (cert (i) wrapper), INV (transport arm, gated on CX's core) — then #73 merges them onto the
 now-pinned canonical.
+
+## 2026-07-23 (~18:25 UTC) — canonical GREEN post-#87-merge confirmed (background build 9015
+jobs exit 0); the merge gate closed
+
+The belt-and-suspenders full build of canonical @ 1fd87c1a6 returned GREEN (9015 jobs, exit 0) —
+matching the tree-identity prediction exactly (the merge's lean/ = BAKE's verified-green
+f4f73fc8e). The direct build AGREEING with the tree-identity reasoning validates the calibrated
+shortcut (skip the redundant rebuild of an identical tree; confirm identity + spot-build). The
+#87 pin is integrated, canonical green at 42 sorries (unchanged). Merge gate CLOSED. Board
+unchanged: CFF closing cert (i)'s wrapper on the pin, CX on the guard+KILL long-pole, INV resting
+(pin-rebase at #73). Next events: CFF's cert (i) closure, CX's crux progress.
