@@ -327,6 +327,7 @@ theorem sourceClearedResid_extend_delta0 (d : Fin (N + 1) → ℕ) {p : TreePath
 `Case1Wire.stepInv_child_delta0`. The child witness is `q' = q ∘ stepMap`. -/
 theorem stepInv_child_delta0_cleared (d : Fin (N + 1) → ℕ) {p : TreePath d} (ed : TreeEdge d p)
     (hlt : ¬ N ≤ ed.nextState.layer) (hδ : edgeδ d p = false)
+    (hbranch : (p.extend ed).IsRealBranch (canonFlatten d))
     (q : Fin (d (Fin.last N) * d 0) → Fin (foldNR d p) → (Fin (flatDim d) → ℝ) → ℝ)
     (hq : StepInv (coreGen d (canonFlatten d)) (clearedFoldG d p) (clearedFoldB d p)
       (sourceClearedResid d p) q (foldRegion d (canonFlatten d) p)) :
@@ -334,7 +335,67 @@ theorem stepInv_child_delta0_cleared (d : Fin (N + 1) → ℕ) {p : TreePath d} 
       StepInv (coreGen d (canonFlatten d)) (clearedFoldG d (p.extend ed)) (clearedFoldB d (p.extend ed))
         (sourceClearedResid d (p.extend ed)) q' (foldRegion d (canonFlatten d) (p.extend ed)) := by
   -- map: B-globalmove-stepInv-child-delta0-cleared (mirror Case1Wire.stepInv_child_delta0 on the cleared trio)
-  sorry
+  -- hbranch (CFF, 27th-catch delta): the fix-lemma (a) `couplingClear_parent_fixes_stepMap_child`
+  -- requires it; the conjA callers supply it. Weakest correct form (consumer-supplied).
+  classical
+  obtain ⟨hqc, hq0, hqd⟩ := hq
+  have hcast := foldNR_extend_of_lt d ed hlt
+  have hmem : ∀ w : Fin (flatDim d) → ℝ, w ∈ foldRegion d (canonFlatten d) p := by
+    rw [foldRegion_eq_univ]; exact fun w ↦ Set.mem_univ w
+  -- (a)'s no-op: the parent clear fixes the child-cleared, stepped point.
+  have hfix : ∀ u, couplingClear d p (stepMap d ed (couplingClear d (p.extend ed) u))
+      = stepMap d ed (couplingClear d (p.extend ed) u) :=
+    fun u ↦ couplingClear_parent_fixes_stepMap_child d ed hbranch u
+  -- the three child↔parent identities at the transport point `stepMap (couplingClear child u)`.
+  have hG : ∀ u, clearedFoldG d (p.extend ed) u
+      = clearedFoldG d p (stepMap d ed (couplingClear d (p.extend ed) u)) := by
+    intro u
+    show foldG d (canonFlatten d) p (stepMap d ed (couplingClear d (p.extend ed) u))
+      = foldG d (canonFlatten d) p (couplingClear d p (stepMap d ed (couplingClear d (p.extend ed) u)))
+    rw [hfix u]
+  have hB : ∀ u, clearedFoldB d (p.extend ed) u
+      = clearedFoldB d p (stepMap d ed (couplingClear d (p.extend ed) u)) := by
+    intro u
+    show foldB d (canonFlatten d) (p.extend ed) (couplingClear d (p.extend ed) u)
+      = foldB d (canonFlatten d) p (couplingClear d p (stepMap d ed (couplingClear d (p.extend ed) u)))
+    rw [hfix u, foldB_extend_eq, hδ]; simp
+  have hR : ∀ (j : Fin (foldNR d (p.extend ed))) u,
+      sourceClearedResid d (p.extend ed) j u
+        = sourceClearedResid d p (Fin.cast hcast j) (stepMap d ed (couplingClear d (p.extend ed) u)) := by
+    intro j u
+    rw [sourceClearedResid_extend_delta0 d ed hlt hδ j u]
+    show foldResid d (canonFlatten d) p (Fin.cast hcast j) (stepMap d ed (couplingClear d (p.extend ed) u))
+      = foldResid d (canonFlatten d) p (Fin.cast hcast j)
+          (couplingClear d p (stepMap d ed (couplingClear d (p.extend ed) u)))
+    rw [hfix u]
+  refine ⟨fun i j' u ↦ q i (Fin.cast hcast j') (stepMap d ed (couplingClear d (p.extend ed) u)),
+    ?_, ?_, ?_⟩
+  · -- continuity: q i · continuous, composed with the (continuous) transport map.
+    intro i j'
+    have hc : Continuous (q i (Fin.cast hcast j')) :=
+      continuousOn_univ.mp (by rw [← foldRegion_eq_univ (canonFlatten d) p]; exact hqc i (Fin.cast hcast j'))
+    exact (hc.comp ((continuous_stepMap d ed).comp (continuous_couplingClear d (p.extend ed)))).continuousOn
+  · -- value at 0
+    intro i
+    show coreGen d (canonFlatten d) i (clearedFoldG d (p.extend ed) 0) = 0
+    rw [hG 0, couplingClear_zero, stepMap_zero]
+    exact hq0 i
+  · -- divisibility
+    intro u _ i
+    show coreGen d (canonFlatten d) i (clearedFoldG d (p.extend ed) u) = _
+    rw [hG u,
+      show coreGen d (canonFlatten d) i
+          (clearedFoldG d p (stepMap d ed (couplingClear d (p.extend ed) u)))
+        = (coreGen d (canonFlatten d) i ∘ clearedFoldG d p)
+          (stepMap d ed (couplingClear d (p.extend ed) u)) from rfl,
+      hqd (stepMap d ed (couplingClear d (p.extend ed) u)) (hmem _) i]
+    refine (Equiv.sum_comp (finCongr hcast)
+      (fun j ↦ q i j (stepMap d ed (couplingClear d (p.extend ed) u))
+        * (clearedFoldB d p (stepMap d ed (couplingClear d (p.extend ed) u))
+          * sourceClearedResid d p j (stepMap d ed (couplingClear d (p.extend ed) u))))).symm.trans ?_
+    refine Finset.sum_congr rfl (fun j' _ ↦ ?_)
+    simp only [finCongr_apply]
+    rw [hB u, hR j' u]
 
 /-- **Conjunct-A δ=1 APPEND branch, cleared** — the `sourceClearedResid` analogue of
 `Case1Wire.stepInv_child_delta1_append`. Consumes CAPR's `sourceClearedResid_stepMap_eq_pivot_mul`
