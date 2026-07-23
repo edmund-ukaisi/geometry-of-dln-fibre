@@ -19307,3 +19307,21 @@ what μ actually accumulates); INV's redefine+containment render PAUSED (hN/ROOT
 proceed); GM fully unblocked under (i) (statements def-independent; last gate = pnp's locus-core
 verify, GO'd — pnp did not know the revision was complete); CAPF's kill unblocked under (i)
 post-SPECIFY. 22/22 pre-render.
+
+## 2026-07-23 (~16:05 UTC) — CAPF SPECIFY delivered (8c0ace5ef, 6 sigs green): B1 = the known red
+site (unblock via GM's standalone deletion + controller cherry-pick); the KILL route consult queued
+
+CAPF's SPECIFY: CapDescent.lean skeleton green, 6 statements risk-graded honestly — the
+continuity helper (with the right reason: the strict transform is a PROJECTION, not a division),
+the continuity-tracking decomposition bridge (self-contained — GO to bank immediately), the layer
+separation, the raw UNCAPPED descent (deliberately layerCoords — capped-raw is FALSE wide), THE
+KILL as IgnoresCoords on the escaped set (high-risk, the genuinely new content), and the primed
+(b)-twin (claimed byte-identical — elder verifies the claim). TWO BLOCKERS: B2 crossed (the
+(i)-verdict was already relayed); B1 = the KNOWN knowingly-red Case1Wire:401 in its proof-phase
+import closure — RESOLVED BY RE-SEQUENCING: GM applies its fully-approved Case1Wire deletion NOW
+as a PURE standalone commit (an edit, not a proof — its locus-verify hold untouched), and the
+controller cherry-picks that one commit onto CAPF's branch (lane-clean mediation). THE KILL
+consult queued with pnp BEHIND the locus verify, with the sharp discriminator framed: does ONLY
+the immediately-preceding layer's recoord write the escaped columns (CAPF's route (b) exact) or
+do deeper ancestors compose in (route (a) induction)? Elder queue now: #84 → CAPF's 6-statement
+delta. CAPF's close-phase reviewer request approved-in-principle (spawn via controller).
