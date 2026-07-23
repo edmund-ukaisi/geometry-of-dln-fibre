@@ -18170,3 +18170,19 @@ against the exact rendered defs (foldResid/supportAt/the 3-branch shear), anchor
 D_J dimension bound, canonFlatten-pinned, with the restate gate + a statement-false STOP rule
 (no certificate-around; elder territory). Independent of pnp-transport's capstone certificate —
 the two critical-path elaborations now run in parallel. Elder's ψ_gen-split confirm still queued.
+
+## 2026-07-24 (~15:20) — THE CERTIFICATE DELIVERED + BANKED (0cf748516); seat-CAPR SPAWNED
+same-tick — the capstone render begins
+
+pnp's capstone-invariant-certificate.md (184 lines, f4db705a4 → canonical): §0 object /
+§1 obstruction-why / §2 the Q₁-lift RLCT bridge (verified ALL witnesses incl. wide+intermediate)
+/ §3 B1-cited-B2-verified-B3-tied / §4 the per-edge induction on the concrete recursion with
+exact Lean refs / §5 consumer facts / §6 KILLED-BY-e / §7 the turn-key render map — every
+exact-algebra fact tied to an exit-0 script + Codex records, attribution honest (paper content
+vs elder validation vs its own verification). pnp's obstruction-arc contribution COMPLETE
+(obstruction → object → bridge → certificate) — an exemplary pen-and-paper arc. seat-CAPR
+(lean-formaliser, lane -CAPR) spawned with the strictly-sequenced brief: restate gate → SPECIFY
+(object def + statements, elder delta before proofs; the old lemma → SUPERSEDED-BY fossil; the
+new one NAMED FOR THE OBJECT) → the certificated induction (tripwire: any certificate-vs-def
+mismatch = STOP, statement-class) → gates. L4D/pnp as routed consults. The expedition's last
+hard proof is now in a seat's hands with the math fully fixed in advance.
