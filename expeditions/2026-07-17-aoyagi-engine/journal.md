@@ -17279,3 +17279,18 @@ arch-C-4 rendered the elder's frozen per-chart sentence at both corner-gauge sit
 the raw diff (8 lines, both hunks docstring/comment prose, zero code tokens) and committed+pushed
 REBAKE2 @ 8b0c33476. Render items ALL CLOSED. The merge now waits on exactly one gate: pnp's
 all-rows battery (#44/#51). Merge target = REBAKE2 @ 8b0c33476 (1a113e4db + the docstring).
+
+## 2026-07-23 (~17:10) — pnp BATTERY GREEN (gate 3/3, controller re-ran the committed script exit-0); one row-3 doc-precision item to elder
+
+pnp's authoritative battery @ 2908bb3b0 (branch L4C lane): 5 rows PASS on the verbatim rendered
+3-branch canonNormalizationOf (MonumentAtlas:906-966, no hand model) — det-1 recursion CoV (all
+witnesses incl S=1), boostReady multilinearity, polynomiality (no A₁⁻¹), corner S=0 ((iii) vacuous),
+interior S=1 ((iii) ACTIVE, writes layer-0 row-b coords). Controller re-ran the COMMITTED script:
+exit 0 (the label-swap lesson, applied). Two record-corrections from pnp: (a) StepInv
+(PrincipalInv:82) is CONTINUOUS-quotient divisibility, not polynomial ideal-equality — det-1 CoV is
+the right row-1 criterion; (b) ROW-3 NUANCE: the rendered branch-(ii) docstring's "unscoped gives
+u₀₀₁²" is a CLEAR-MODEL fact — on the render's shears-only fold deg_u₀₀₁ ≤ 1 scoped AND unscoped;
+the scope's true ground is her Q₂'⁻¹ semantics / E_J-col-0 fidelity. Scope correctly KEPT either
+way; def untouched. Routed to elder for a frozen replacement sentence (item-9 pattern) + a possible
+§9 one-line erratum. ALL THREE GATES GREEN (elder/L4D/pnp); merge target REBAKE2 @ 8b0c33476;
+merging right after the row-3 sentence lands.
