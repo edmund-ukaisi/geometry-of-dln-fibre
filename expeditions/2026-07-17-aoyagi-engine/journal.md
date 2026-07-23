@@ -17804,3 +17804,18 @@ pnp (the invariant certificate), elder (C9 + predicate-fidelity), L4D (the turn-
 pending) all active within two minutes. LL/L3T3 parked as designed. Nothing owed; next events:
 L4D's swap push (→ my merge, then its stand-down), pnp's certificate (→ spawn the fresh
 formaliser), elder's C9 report.
+
+## 2026-07-24 (~06:50) — the MergeBoostSplit predicate VALIDATED at the source (elder, pp.15-18
+image-read); the b-ledger steer relayed to pnp's certificate
+
+Elder's verdict FAITHFUL on all three questions: (a) single-e₂ per case11 edge is her Case 1(1)
+exactly (the whole equal-run block factors through ONE u_{s,k}; multiplicity = the accumulated
+ledger's HISTORY, not the per-step reuse — a deep merge is a sequence of single steps); (b)
+center-ignoring = her b-ratio structure (β = (b_i/b_1)·clean-d'; the hex guard is the necessary
+matching condition); (c) E_J/D_J delivers degree-1-in-pivot (no e₂²). HONEST CHARACTERIZATION
+banked: the predicate = the continuous CONSUMER INTERFACE; the exact-monomial b-ledger
+(b_i = ∏u accumulation; single-factoring per step) is the CONTENT lemma's job — relayed to pnp
+as the certificate steer: the invariant carries the exact ledger so the case11 induction step is
+a CALCULATION. The capstone target's shape is now validated end-to-end BEFORE the render — the
+wrong-statement risk on the last hard lemma is retired. C9 remaining: Case 2 (pp.19-22) + the
+M_{s,k} read-off.
