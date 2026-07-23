@@ -49,6 +49,26 @@ theorem ignoresCoords_of_subset {D : ℕ} {c : (Fin D → ℝ) → ℝ} {S S' : 
     IgnoresCoords c S' V :=
   fun w hw m hm t => h w hw m (hsub hm) t
 
+/-- **`blockCoords d 0 = layerCoords d 0`** (elder's ROOT-cap dissolution): at layer 0 every coord has
+`col < d 0` by `tupIdx` type, and `widthMinUpto d 0 = d 0` (running-min over `{0}`), so the running-min
+col-cap is vacuous. Powers ROOT — `supportAt(root) = blockCoords d 0` is the full layer-0 block that
+`coreGen` decomposes over (`coreGen_layerHomogeneous'` on `layerCoords d 0`). Candidate MonumentAtlas-lift
+(local until a second consumer). -/
+theorem blockCoords_zero_eq_layerCoords (d : Fin (N + 1) → ℕ) :
+    blockCoords d 0 = layerCoords d 0 := by
+  have hge : d 0 ≤ widthMinUpto d 0 := by
+    unfold widthMinUpto
+    refine Finset.le_inf' _ _ (fun i hi => ?_)
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Nat.le_zero] at hi
+    exact le_of_eq (congrArg d (Fin.ext hi).symm)
+  unfold blockCoords layerCoords
+  congr 1
+  ext q
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  refine ⟨fun h => h.1, fun h1 => ⟨h1, ?_⟩⟩
+  have hcast : d q.1.1.castSucc = d 0 := congrArg d (Fin.ext (by rw [Fin.coe_castSucc]; exact h1))
+  exact lt_of_lt_of_le (hcast ▸ q.2.isLt) hge
+
 /-- **The below-pivot entries of a case2/case12 cleared column** (the ancestor coupling coords of one
 edge). Decoding `pivot` to `(layer, a, b)` via `tupIdxEquiv`, this is the flat block
 `{(layer, r, b) : a < r}` — the entries of the cleared column `b` strictly below the pivot row `a`
