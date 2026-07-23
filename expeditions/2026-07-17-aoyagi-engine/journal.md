@@ -17706,3 +17706,11 @@ fossil sweep prunes the whole retired Engine wholesale (gateable as one unit). E
 ledger to note the disposition at its next touch. LL parked on #38 (its whole remaining lane).
 BOARD PICTURE: the wall's content lemma (L4D) is the single-threaded bottleneck by design —
 correct shape for this phase; everything else is banked, parked, or C9.
+
+## 2026-07-24 (~03:30, heartbeat tick) — the wall grinds (assembly stmt hardened @ 1398758dc, live
+build); LL parked; elder on C9 (41-min quiet, within image-read range — threshold check next tick)
+
+Liveness: L4D + LL active within the minute; L4D's lane shows the assembly-statement hardening
+(+hex : extra = supportAt ∖ center — the set-difference form per the steer) and a live lake build.
+L3T3 parked-quiet. Elder 41 min quiet on C9 (pp.15-22 image reads = long turns; not yet the 2-poll
+threshold). Memo wait-state refreshed to the single-threaded-wall position. No actions owed.

@@ -54,7 +54,22 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
   ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
   REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~23:30): THE IDIOM RULING GATES THREE LANES. Since the F₂
+- CURRENT WAIT-STATE (2026-07-24 ~03:30): THE WALL'S CONTENT LEMMA SINGLE-THREADS THE PHASE.
+  The idiom ruling LANDED (threads/idiom-ruling.md: PIN where born + the invoking spine;
+  transports general-e; he-after-e convention ratified) and everything downstream is dispatched:
+  L4D renders the atomic pinned spine (Case1Wire #1-3 + case1'' threading + MonumentAssembly
+  he0/he_lin→he) AND grinds foldResid_case11_mergeBoostSplit_canon — the content lemma now has
+  FOUR consumers and a BANKED render contract (threads/L4-case1-core/split-consumers-needed-
+  facts.md: born-unit = case12/2 pivot-coeff origin-non-vanishing; conjunct-2 = per-slot
+  pivot-XOR-free disjunction; shaping fork case-generic-vs-sibling = L4D's call). LL: conjA
+  FULLY WIRED (case11 consumes the wall at S=L, no interior guard, reachability confirmed);
+  its 2 remaining holes ride the content lemma; #66 resolved-as-quarantined; PARKED. L3T3:
+  review standby (case1'' hunk) + Case1Wire fossil line (after #38+pin). Elder: C9 recursion
+  prose-intent (the LAST audit chunk; pp.15-22 image reads — long turns expected). MERGE ORDER:
+  L4D's atomic spine unit first, then LL's lane. STALE-TIP WARNING: L3T3's 65e14acf2 = dead
+  (crossing artifact, do not merge). The registered-vs-primed cone map: the swap improved the
+  PRIMED B' driver; the registered summit never consumed :1350 (CaseStepAssembly docstrings +
+  AxCheck comments carry this). Since the F₂
   merge (a5295bcb8): the L3T3 lane MERGED + aggregator-wired (8c2b5253e; descent slot +
   primed twins on canonical; build 9012); the Gap-B "swap" re-scoped (the twins were
   CONSUMER-LESS — L3T3's DAG catch; Option A CaseStepAssembly GO'd, step-only, case2'' now /
