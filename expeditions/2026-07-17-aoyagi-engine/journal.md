@@ -19768,3 +19768,14 @@ child-cleared input; RHS-as-parent-sourceClearedResid coincides via cert (i)'s n
 verified ALL edges. GM applies the fix (folded-pass delta noted to the elder); then its map
 runs: (a) via cert (i) → corrected S2 → appends → conjA, all mechanical. pnp has moved to
 #86(C) — the labeled-jac decider in production. Catches 25/25 pre-render.
+
+## 2026-07-23 (~19:30 UTC) — CAPR confirms the child-path carrier (the nudge worked); GM's unit
+now fully determined
+
+CAPR's def-owner confirm: `hcanon : CanonicalPivots d (p.extend ed)` on appends/conjA/preserves
+(the step arm unfolds to ancestors-canonical ∧ current-edge-pin — ONE destructure hands the IH
+plus the case2-needed birth pin; the case11 arm trivially True); plain parent form only on
+no-current-edge statements. Relayed to GM. GM's remaining unit is now FULLY DETERMINED with no
+open questions: fix the S2 pair (cert (ii)'s corrected form) → thread the carrier (on INV's def
+push) → keystone (a) via cert (i) → S2 proofs → appends → conjA → CAPF-dependent conjB →
+re-points → the full-green worktree gate. Every ingredient is delivered, verified, and specified.
