@@ -18495,3 +18495,17 @@ cover width-invariance) while the residual's DEPENDENCE on them is coupling·rem
 transfers; completeness stays the named Tier-1 frontier). The carried obligation restated
 identically by both of us: the C→F bridge. All lanes grinding: CAPR (#72 the induction), L4D
 (2 re-points + the bridge), LL (1 re-point).
+
+## 2026-07-24 (~22:10) — CAPR's obligation-(b) statement added (dadf4716b, a crossing with the GO);
+two substantive shape calls to the elder; the induction grinds regardless
+
+CAPR rendered §12.2's obligation (b) directly from the ruling (full Deg1SupportedSlot of
+sourceClearedResid over blockCoords at a fresh child; blockCoords = supportAt definitionally under
+hfresh, so the consumer's expression is unchanged — the L4D re-point stays object-only). Its four
+shape decisions to the elder as a small delta: FULL-slot vs conjunct-1 (my read: full is right —
+conjunct-2 descends under coord-zeroing); THE SELECTOR (the substantive one: hfresh-only covers
+case11-δ=1 children of fresh parents beyond §12.2's rollover — faithful-narrow vs
+general-with-witness, pnp on-call); the literal + the mirrors (fine). Obligation (a)'s e-pin
+confirmed as my raw-only MonumentAtlas edit. Census: net-new 4 tracked, all named, two proofs
+clean. STEP-3 grinds NOW (the crossing resolved — the (b)-statement never gated the induction;
+a ruled shape change = a signature line on a sorried statement, zero proof impact).
