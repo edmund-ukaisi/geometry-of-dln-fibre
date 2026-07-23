@@ -20204,3 +20204,17 @@ held named-frontiers; residual risk = only the rebase-onto-BAKE destructure re-v
 BAKE's own consumer sweep enumerated). Placement/cron/liveness all green (CX/BAKE/CFF < 2 min).
 No teammate action — the finding is favorable and forward (a merge-time de-risk, not a live
 blocker).
+
+## 2026-07-23 (~17:35 UTC) — BAKE sweep count RECONCILED (15 = 14 verbatim + 1 fix); the elder's
+record item closed; BAKE at the build gate
+
+BAKE resolved the elder's count-flag: TRUE total = 15 distinct IsRealBranch destructures (the
+"12" header was wrong; the earlier 16 double-counted MultiAffineHomogWire:443/:520 as separate
+destructures when they're USE-sites of the single :241 obtain). Breakdown: 9 pin-discarded + 3
+outer-only-never-opens-∃ + 2 bind-pin-used-only-in-untouched-case11/rollover-arm = 14 VERBATIM;
+1 FIX (the :241 obtain's case12/case2 use at :297 gets `.1`). realBranch_cover (:1203 post-edit)
+is in the discard-verbatim class AND reads canonCenterOf directly — the tripwire preserved by
+construction, confirmed in the recount. The sweep is now internally consistent for the record.
+BAKE at the build gate (throttled behind concurrent seat builds); report with the axiom diff +
+printouts follows on green — then the merge-order (0): BAKE lands first per #73's derived
+topology.
