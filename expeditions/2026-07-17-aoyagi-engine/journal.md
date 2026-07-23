@@ -16592,3 +16592,22 @@ The render target is now final in every detail: DEF-EDIT-1 + 3(b) (green) + r4Cl
 matches the validated model) + the bridge (proven-or-honestly-frontier per the shape-check) +
 the two consumer re-threads. The delta-read checklist = the three decomposition conditions +
 the bridge 4-check + the standing items. Nothing left to rule; the render completes.
+
+## 2026-07-23 (~07:30) — the render's ground-truth pass: blast radius CONFIRMED EMPIRICALLY (exactly the 2 forecast helpers); green hold-state; the M-form bridge proposed (possible derivable upside)
+
+arch-C-3 executed the highest-grade version of the render's last step: wired r4Clear into
+foldResid, re-proved the extend equations by rfl, EMPIRICALLY confirmed the blast radius is
+exactly the two forecast StepInv helpers (delta0 + delta1_append — the child divisibility
+witness q'=q∘stepMap no longer closes; the child reads the CLEARED residual, the parent gives
+the uncleared one) and NO wider — then REVERTED those wiring hunks to a green hold-state
+(Case1Wire 8450 jobs, 0 errors; DEF-EDIT-1 + 3(b) + the r4Clear def all kept green) rather
+than bake a possibly-false correctness bridge blind. "Never leaving the build broken."
+
+THE PROPOSED BRIDGE (handed to seat-L4D for the §0-iv correctness confirm): re-express the
+UNCLEARED parent residual as a continuous combination M of the CLEARED one (Q₁/Q₂ invertible,
+rides g1_unimodularity) so q' = q·M closes both consumers. Controller note (relayed): the
+M-form may fall on the elder's DERIVABLE side — unimodular Q's make each uncleared entry a
+polynomial combination of cleared entries (the banked det-1 facts), which smells provable ⟹
+census 0, the best outcome; if right-but-open, the sanctioned +1 frontier. On seat-L4D's
+confirm: one green-modulo-bridge transaction → gates → push → the verbatim handoff to the
+battery. Everything else is done and green; ONE confirm from the complete render.
