@@ -17393,3 +17393,14 @@ transcript ⟹ re-shape to pen-and-paper certificate + fresh render. Paper ancho
 her separated normal form at the case-1(1) merge (worked.tex:562-577 + council Q2 — complementary
 rows acquire the reused exceptional via the external b-ledger; in the render that information
 lives in coreGen at the merge, edgeShear=id). Lane: expedition/aoyagi-engine-L4D-wall.
+
+## 2026-07-23 (~19:50) — L4D restate on the wall VERIFIED (6-for-6); holding on background Codex
+
+L4D's own-words restate is faithful on all four load-bearing points: (1) produce Deg1SupportedOn
+from the residual's CONCRETE structure; (2) the clear = frame object inside the proof only (fold
+untouched); (3) witness split = partialBlock direct from clean D_J vs extraBlock through the reused
+e₂ (her b-ledger, now in coreGen at the merge, edgeShear=id); (4) hslot-alone routes re-derive the
+FALSE ∀e statement (β-death). Codex on the L2 route fires in BACKGROUND (xhigh; foreground 2-min
+cap preempted). WATCH-ITEM: the seat idles awaiting its own background task — same lost-wake class;
+if its transcript is frozen well past the Codex runtime next tick, nudge with the check-your-
+background-output pattern.
