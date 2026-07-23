@@ -16611,3 +16611,27 @@ polynomial combination of cleared entries (the banked det-1 facts), which smells
 census 0, the best outcome; if right-but-open, the sanctioned +1 frontier. On seat-L4D's
 confirm: one green-modulo-bridge transaction → gates → push → the verbatim handoff to the
 battery. Everything else is done and green; ONE confirm from the complete render.
+
+## 2026-07-23 (~07:45) — the bridge verdict: SPLIT (plumbing PROVE / core +1 JUSTIFIED); the render's last input delivered
+
+seat-L4D's PROVE-vs-FRONTIER verdict (to arch-C-3 directly, cc controller):
+- SHAPE: the bridge is a RegionRepresents relation (the banked IdealInvariance:84 API), NOT an
+  equality — `RegionRepresents (foldResid_p ∘ M) (foldResid_p ∘ r4Clear∘M) V`, parametrized by
+  the read-arg map M so BOTH consumers instantiate (delta0: M = stepMap; delta1_append:
+  M = blockBlowupCoordQuot∘edgeShear); consumes the parent Deg1SupportedOn (the :36 analogy).
+- DERIVABILITY SPLIT: PLUMBING → PROVE, census 0 (the banked refl/trans/mono/of_eqOn API
+  :508-555 makes the StepInv re-thread mechanical; both helpers re-thread PROVEN). CORE → +1
+  FRONTIER JUSTIFIED: the specific RegionRepresents needs the R4 cofactor matrix
+  (Q₁⁻¹·diag(1,e₂)·Q₂⁻¹) — genuinely open: R4clear changes COEFFICIENTS not a scalar (the
+  strict-transform crux pulled a clean u_pivot scalar from the Deg1 witness; this cannot),
+  and G1 unimodularity is SYMPY-ONLY, not a Lean lemma — the cofactor construction +
+  continuity + coreGen-threading is substantive new work. THE DISCRIMINATOR left LIVE: the
+  core flips to PROVE iff a banked constructor (RegionRepresents-from-unimodular) exists —
+  grepped IdealInvariance, none (compose-not-create); arch-C-3 re-confirms as it renders.
+- One verify item: pivot-cross ⊂ blow-up spectators (disjoint from ed.center). NOT §7.
+
+Census delta = EXACTLY +1, the honest number. Post-merge frontier list therefore: the core
+RegionRepresents (the R4 cofactor lemma — well-scoped detail-at-scale, a proof seat's
+discharge; the Lean-side det-1/cofactor substrate partially exists in Core's WeightedCofactor/
+Schur machinery) + the canonical appendResidDescent cap. arch-C-3 has everything; the render
+completes as the single green-modulo-bridge transaction next.
