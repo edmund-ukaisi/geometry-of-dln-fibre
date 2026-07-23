@@ -98,6 +98,8 @@ theorem case2_conjA
 /-- **L3 — a case-2 edge preserves the foldState invariant** (primed; statement-identical to
 `MonumentAtlas.case2_preserves_stepInv`). Conjunct A is `case2_conjA` (closed, axiom-clean); conjunct B
 is CLOSED via the step-form `realBranch_multiAffine_step` (RULING B, re-wired sorry-free). -/
+-- SUPERSEDED-BY case2_preserves_stepInv'' (CaseStepAssembly, step routed to the proved twin);
+-- off primed-variant-driver cone
 theorem case2_preserves_stepInv'
     {N : ℕ} (d : Fin (N + 1) → ℕ) (hN : 0 < N) (hpos : ∀ k, 0 < d k)
     (e : (Fin (flatDim d) → ℝ) ≃ₜ Tuple (k := ℝ) d)

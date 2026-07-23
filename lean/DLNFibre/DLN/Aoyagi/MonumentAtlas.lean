@@ -1346,6 +1346,8 @@ ROOT anchoring (`coreGen` degree-1-per-layer, which needs `e` LINEAR) lives ONLY
 node-form, whose root case silently required `he_lin` (counterexample `e u = u³` at `d=(1,1)`). The wall's
 conjunct-2 and `Case2Wire`'s conjB consume this with their carried `hinv` (the case11-δ=1 branch of the
 proof draws its center source from boost-readiness — a separate stub, unaffected here). -/
+-- SUPERSEDED-BY realBranch_multiAffine_step' (MultiAffineStepWire) via case{1,2}_preserves_stepInv''
+-- (CaseStepAssembly); off summit cone; retained for statement provenance
 @[blueprint]
 theorem realBranch_multiAffine_step {N : ℕ} {d : Fin (N + 1) → ℕ}
     (hpos : ∀ k, 0 < d k)
@@ -1404,6 +1406,8 @@ per-layer degree is preserved) — a seat-L3T2 proof concern; the statement is u
 guard `¬ N ≤ p.conState.layer` + `ℓ < N`. `hpos` (elder rider, sibling-consistent with
 `realBranch_multiAffine_step` / `realBranch_appendResidDescent`): the recoord's per-layer degree bound uses
 the pivot-below-threshold mechanism, which a zero-dim layer (`d=![1,0,1,1]`) defeats — needs `d k ≥ 1`. -/
+-- SUPERSEDED-BY foldResid_layerHomogeneous' (MultiAffineHomogWire); already consumer-less;
+-- retained for statement provenance
 @[blueprint]
 theorem foldResid_layerHomogeneous {N : ℕ} (d : Fin (N + 1) → ℕ) (hpos : ∀ k, 0 < d k)
     (p : TreePath d) (hnonterm : ¬ N ≤ p.conState.layer)

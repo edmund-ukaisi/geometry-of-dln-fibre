@@ -165,6 +165,7 @@ import DLNFibre.Core.Aoyagi.MonomialRLCT
 import DLNFibre.DLN.Aoyagi.LearningCoefficient
 import DLNFibre.DLN.Aoyagi.GeometricAtlasD12
 import DLNFibre.DLN.Aoyagi.MonumentAtlas
+import DLNFibre.DLN.Aoyagi.CaseStepAssembly
 import DLNFibre.Core.Aoyagi.BlowupResolution
 import DLNFibre.Core.Aoyagi.ResolutionInhabited
 import DLNFibre.DLN.Aoyagi.OrderBinding
@@ -1404,6 +1405,13 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- in ℕ-clothing) and DISSOLVED into the per-path monomial law already in Case1Preservation;
 -- PivotOrderingK0 was trivially true. Neither is owed.)
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution_via_monument
+-- CaseStepAssembly (Option A, 2026-07-24): the primed-variant case leaves route conjunct-B through
+-- the PROVED step twin (realBranch_multiAffine_step', MultiAffineStepWire). Expected footprints:
+-- case2'' sorryAx SOLELY via realBranch_appendResidDescent (case2_conjA is closed); case1'' sorryAx
+-- via {case1_conjA = the wall #38, realBranch_appendResidDescent}. The unprimed MonumentAtlas step
+-- (:1350) is OFF the primed-variant-driver cone (the registered summit above never consumed it).
+#print axioms DLNFibre.DLN.Aoyagi.case1_preserves_stepInv''
+#print axioms DLNFibre.DLN.Aoyagi.case2_preserves_stepInv''
 
 -- Payoff DELIVERABLES — individual clean-three footprints preserved (also asserted in the
 -- batch above). Each must print `[propext, Classical.choice, Quot.sound]`.
