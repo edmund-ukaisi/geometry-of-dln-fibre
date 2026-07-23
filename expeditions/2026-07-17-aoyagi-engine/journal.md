@@ -19229,3 +19229,20 @@ its folded confirming pass deliberately sequenced behind THREE events (#82 verdi
 twin addendum, pnp's locus-core verify) to read the FINAL settled def once — flag it when all
 three land. Elder's case2-twin note: the raw case2 StepInv likely holds (no merge coupling), so
 the cleared twin is a clean precompose transport — GM's easy case as expected.
+
+## 2026-07-23 (~15:40 actual) — #83 RESOLVED in GM's delta-SPECIFY (d2179efe7): the no-twin
+simplification; one crossing caught (case2 twin still due)
+
+GM scoped the last-layer cleared route with a genuine simplification: NO separate cleared
+case_child_stepInv_divisibility twin — stepInv_child_delta1_append_cleared carries the SAME
+(ed.nextState.layer < N) guard and IS the twin; the last-layer consumes it directly (one route,
+two consumers). Added: LastLayerInv_cleared (the ClearedFold mirror of LastLayerInv on the
+cleared trio) + the lastLayer conjA/preserves cleared re-point scoping (honestly noted BIGGER
+than the original ":145 one-line" — the elder's 1-bis was right). Root cause stated exactly: the
+last-layer case11 branch fed the boost-center (D) on RAW foldResid — false at case11 children,
+the same master gate as the interior. One open sub-point → pnp's revision check: the vanishing
+feeder (controller read: dissolves — sourceClearedResid j 0 = foldResid j 0 via couplingClear
+0 = 0; pnp confirms). The 3 false laws confirmed GONE from the revised list. CROSSING CAUGHT:
+the case2_preserves_cleared addition (sent ~15:25) is not in d2179efe7 — reminded; it is the
+LAST statement item and event (2) of the elder's three-event folded-pass trigger. GM holds for
+#82 + the pnp revision check; grind will run interior + last-layer together.
