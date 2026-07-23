@@ -16512,3 +16512,21 @@ THE §7 TRIPWIRE named precisely: if the Q₂/row-clear genuinely needs a thread
 touching stepMap/foldG, THAT is the §7 obstruction — report, never improvise (seat-L4D's read:
 it won't hit). Gates unchanged: the render report → pnp two-row + L4D def-read battery →
 elder delta-read → merge.
+
+## 2026-07-23 (~06:45) — the placement variants CONVERGE to one design; arch-C-3 renders it
+
+seat-L4D corrected its own FYI and aligned to arch-C-3's elder-accepted decomposition — the
+FINAL PLACEMENT, now jointly held by both seats: canonNormalizationOf KEEPS branch-(i) (det-1
+interior Schur — owns the interior e₂) AND branch-(ii) (det-1 recoord, −γ direction, i≥cleared
+scope); R4 = ONLY the disjoint pivot-cross clear (φ_{(a,c)} = −u_{(a,c)}, rank-reducing),
+hosted in foldResid's coreGen-READ ARGUMENT (the MonumentAtlas:453-454 slot where
+blockBlowupCoordQuot already performs a rank-reducing coordinate-vector normalization) — NOT
+in foldG (the separate stepMapRaw/Jacobian accumulator). Disjoint ownership ⟹ no double-count.
+seat-L4D also resolved arch-C-3's residual concern as a misread: the clearing needs no
+pre-product foldG action; it is a read-slot normalization — foldG/stepMap/blockShear/hshear
+all untouched. BOUNDED, not §7; the tripwire stays named (if the clear can't be a
+coordinate-vector normalization → report).
+
+Every design decision is now closed: ONE placement, elder-conditioned (diag(1,e₂-classical)
+exactly once; Lemma-2-faithful justification; scoped reads on both components), precedent-
+hosted, tripwired. arch-C-3 renders; the battery + delta-read + merge follow.
