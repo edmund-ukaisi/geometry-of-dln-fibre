@@ -18446,3 +18446,17 @@ wire + the docstring/e-pin batch — NO def edit (§12.2 = zero def churn; the "
 history). Sequence: elder delta → L4D/LL stage re-points → the merge → STEP-3 GO (CAPR pre-stages
 the induction skeleton meanwhile). The expedition's last hard proof is one delta-read from its
 grind.
+
+## 2026-07-24 (~21:15) — the §12.2 verification layer COMPLETE (pnp queue empty); everything
+converges on the elder's SPECIFY delta-read
+
+pnp-transport's three checks green (13c8bd553): (1) the coverage run never assumed the widen (the
+capped def was operative throughout); (2) B1 width-invariance at three cap-bite witnesses via the
+spectator argument (the escaped columns are disjoint from center AND couplings — the chart cover
+is width-independent; the fan certificate transfers; honestly scoped: L7's genuine completeness
+stays L7's, only its INPUT's width-invariance is witnessed); (3) the ruled case12/2-cleared-Deg1
+claim has its witness (confined + linear ⟹ Deg1 directly, the same coupling mechanism). Every
+§12.2 claim is witness-backed; the elder confirmed the width-gating decline with the degeneration
+argument (on non-wide layers the source-clear is trivial — one statement, both regimes). BOARD:
+one gate left before the integration merge + STEP-3 — the elder's six-item delta-read of CAPR's
+SPECIFY (queued in its inbox).
