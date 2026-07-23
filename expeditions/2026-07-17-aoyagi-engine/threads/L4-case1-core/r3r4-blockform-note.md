@@ -81,6 +81,29 @@ ADOPTED exactly this** — branch-(ii) is now scoped to `i ≥ cleared` in the f
 So the raw `u₀₀₁²` is a BENIGN frame artifact (the elder's caveat-2): **chart-frame boostReady holds
 inter-edge, on both witnesses.** R3+R4 reaches her multilinear clean block. **NO re-open.**
 
+## HARMONIZED BATTERY (team-lead) — PRIMARY (scoped raw) + CROSS-CHECK (chart) both PASS
+`verify/r3r4_scoped_blockform.py` (exit 0), both wide witnesses + canonical:
+
+| witness | UNSCOPED (current, all `i≠a`) | SCOPED (§8(m), `cleared≤i`) |
+|---|---|---|
+| (2,2,2,2) | `u₀₀₁`-deg 2 (u₀₀₁²) | `u₀₀₁`-deg 1, `u₀₁₀`-deg 1 — MULTILINEAR |
+| (2,3,2)   | `u₀₀₁`-deg 2 | `u₀₀₁`-deg 1, `u₀₁₀`-deg 1 — MULTILINEAR |
+| (2,3,2,2) | `u₀₀₁`-deg 2 | `u₀₀₁`-deg 1, `u₀₁₀`-deg 1 — MULTILINEAR |
+
+- **PRIMARY row (raw block-form on the SCOPED formula):** the multilinear clean block IS reached — `u₀₀₁²`
+  dissolves on ALL witnesses incl. the non-degenerate wide ones (where the scoped sum keeps its `i ≥ cleared`
+  terms and drops only the outer-cleared-row `i=0` term). Stricter mechanical test, PASS.
+- **CROSS-CHECK row (chart-frame inter-edge boostReady, `r3r4_chartframe_boostready.py`):** PASS even on the
+  UNSCOPED formula (the raw `u₀₀₁²` is the benign `e₂·(extra coord)` expansion). Closes the
+  single-step-vs-inter-edge gap in seat-L4D's `boost_center` evidence.
+- **seat-L4D's Q2 (col-1 slot = D_J?):** the col-1 slots carry `e₂` (the residual block), so they are D_J
+  entries — but under the scope they are degree-1, so even as D_J they satisfy `Deg1SupportedOn`; the Q2
+  fork ("D_J ⟹ fail") is neutralized by the scope (the raw `u₀₀₁²` source is dropped), independent of the
+  E_J/D_J partition. Both frames agree the D_J is clean under §8(m).
+
+Escalation map (team-lead): rendered all-`i≠a` → re-open; rendered scoped but battery dirty → elder's
+fold-order branch; **scoped + both rows clean → merge** (← this is where we are, pending the exact render).
+
 ## Two independent resolutions concur
 1. Chart frame (unscoped recoord): the raw `u₀₀₁²` collapses to chart-degree-1 via `e₂`'s entanglement —
    boostReady holds as-is.
