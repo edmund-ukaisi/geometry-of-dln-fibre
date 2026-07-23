@@ -15730,3 +15730,27 @@ literal block form (simpler). The elder's council consult re-primed: R3-vs-R4 + 
 sign + the invariant shape, worked.tex leading; G1/G2 unchanged. NOTHING BAKES until the
 council rules. seat-L4D banks the Codex artifact + sign-test script (bank to canonical when
 the ref arrives).
+
+## 2026-07-23 (~01:25) — def-feasibility: BOTH R3 and R4 CONTAINED; the skeleton lane closes on every branch; the fork narrows to the INVARIANT SHAPE
+
+seat-L4D's determination (accepted; artifacts banked from 2de0b5b7a incl. the Codex R0/fork
+answer + the sign-flip script, controller re-ran exit-0):
+
+THE FORM-vs-IDEAL SPLIT (read from the defs — the load-bearing finding): StepInv
+(PrincipalInv:82-87) consumes resid's IDEAL (divisibility, existential ContinuousOn q; foldG a
+SEPARATE argument); only the FIELD and PerLayerDeg1From consume resid's exact FORM. Against the
+elder's criterion: R4's Q-mult is generator-side (not a coordinate map — hshear untouched; the
+F1 point confirmed at the def; q re-threads absorbing Q'⁻¹; StepInv's meaning unchanged); R3's
+sign flip is a branch-(ii) edit, manifestly unipotent. Value path + axiom footprint ride the
+ideal (G1). VERDICT: CONTAINED, both candidates — the skeleton lane is DEAD on every live
+branch; the operator-escalation path closes. G1 corner-pivot ✓ (det 1 over ℝ[u]); general-pivot
+check GO (both candidates); G2 pinned-in-statements under either.
+
+THE FORK NARROWS: R3 vs R4 is NOT containment — they produce DIFFERENT foldResid forms (R3:
+extras CLEAN; R4/honest_clear: extras carry e₂ = m_k·β), i.e. DIFFERENT carried invariants.
+caveat-1 evidence (gathered, not adjudicated): worked.tex's diag(b)·[E_J|D_J] carries the b's
+OUTSIDE the block — the literal reading favors extras-CLEAN (R3's form) and suggests the ruled
+m_k·β field was fitted to the broken def's symptom. MISSING DATUM: the reuse-node raw forms
+(deeper than ed1) on the wide witnesses — pnp's harness producing them side-by-side. The
+elder's council rules when they land: invariant shape (= DEF EDIT 2's final form), the R3/R4
+choice it implies, the branch-(i) sign.
