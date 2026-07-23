@@ -20571,3 +20571,48 @@ the calibrated-sensor rule to MERGED artifacts: a merged def-edit's sufficiency 
 properties checked at merge; a NEW consumer (the KILL) re-opens the sufficiency question for ITS
 property. Verified via capstone_kill_rowfan.py (7f305c305, re-ran exit 0) + the CanonicalPivots
 full-diagonal read (SourceClearedResid.lean:414-415).
+
+## 2026-07-23 (~19:55 UTC) — #95 RULED: (i) hcanon-thread (elder §9.11 + pnp paper-first, both controller-re-derived); (ii) #87-re-open REJECTED on a row≠col asymmetry; the ONE open piece = a thread-reaches probe routed to seat-KILL
+
+pnp and the elder both returned decisively and converged on **(i) hcanon-thread**; the elder
+recorded §9.11 (committed f5f840b65 — controller verified the diff was §9.11 only).
+
+**The ruling.** (i) The cap-support (the KILL) is claimed on the CANONICAL full-diagonal sub-family
+(CanonicalPivots, INV:409-415, cornerToFlat(layer,cleared)=(layer,cleared,cleared)); the hcanon
+carrier threads onto sourceClearedResid_capped + the KILL + realBranch_appendResidDescent (the SAME
+carrier §9.10 uses); #87 UNTOUCHED. On the full-diagonal scope belowPivotCol is nonempty at every
+non-terminal clear (row=cleared<last until the terminal M'=1 unit, where cap-support is vacuous), so
+the KILL holds. (V3) is trivial termwise there.
+
+**The sharp part — (ii) #87-re-open is REJECTED, not merely unneeded (elder).** The row is NOT
+symmetric to the column. Every off-diagonal COL is a phantom (§9.8 completeness), BUT off-diagonal
+ROWS split: row-REPEATS are phantoms, while NON-repeat off-diagonal rows are GENUINE cover charts
+(distinct rows, valid resolution reaching a leaf, transport via σ = the row permutation, #86B). A
+tree-level row=cleared pin would kill those genuine charts — the EXACT #85 error (an
+IsRealBranch-strengthening killing the fan cover the charter keeps). So the row stays FREE at the
+tree level; the cap-support is chain-scoped (hcanon); genuine row-fans transport; row-REPEATS strand
+as phantoms. The roadmapped (1)-full oracle fix at close excludes row-REPEATS only (re-use of a gone
+row), NOT all row-off-diagonal.
+
+**Paper-first (both, decisive).** Lemma 2 (worked.tex:404-457): Q₁AQ₂=[[A₁,O],[O,C₄]], C₄ the Schur
+complement on the (h₁−r)×(h₂−r) complement — removes r ROWS AND r COLS. So D_J excludes the pivot's
+row AND column; a row-repeat re-uses a gone row = a phantom, exact mirror of the col-phantom. pnp
+retracted its earlier σ-transport worry (nothing to transport — row-repeats are phantoms, not
+orbits).
+
+**The ONE open piece — the thread-reaches cross-check (elder, controller-re-derived on the
+integration branch).** realBranch_appendResidDescent is consumed in MultiAffineStepWire.lean at :446
+(descent_delta0), :508 (descent_delta1_case11), :794 (descent_delta1_append) → realBranch_multiAffine_step'
+(:805) → the summit; ALL take hbranch:IsRealBranch, NO CanonicalPivots/hcanon anywhere in the file
+(re-derived, exact line-match to the elder's refs). So the thread is not-yet-there: option (i) is
+clean IFF adding hcanon to realBranch_appendResidDescent propagates cleanly UP to the summit's §9.4
+canonical scope. If a ∀-IsRealBranch consumer between obligation-b and the summit blocks it, the
+escalation is NOT (ii)-row-pin (which kills genuine charts) — it's finding where the chain fails to
+be canonical-scoped and fixing THAT. ROUTED to seat-KILL as a report-only probe AFTER its diagonal
+KILL (the compiler is the definitive test): thread hcanon, report reaches-vs-blocks-and-where, STOP
+if blocked. The escalation ruling (if any) comes back to the elder.
+
+**Status.** #95 → in_progress (was pending); ruling committed; seat-KILL owns the diagonal KILL (GO)
++ the thread-reaches probe; pnp rested as decorrelated-consult (next wake = the escalation read if
+the probe blocks, or #73). The 29th catch is now a well-scoped render task with a named
+compiler-decidable cross-check, not an open design question.
