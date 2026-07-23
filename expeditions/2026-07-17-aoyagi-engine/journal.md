@@ -18416,3 +18416,17 @@ DISPATCHED: CAPR fully unfrozen (partition stands as drafted; the (b)-home archi
 pnp re-scoped (extent-check superseded; remaining: the no-widen-assumption confirm + B1-wide +
 the NEW case12/2-cleared-confinement witness for the now-RULED claim). The 17th catch: three
 rulings, zero def churn, zero wasted renders, every proven theorem intact.
+
+## 2026-07-24 (~20:30) — the extent verdict BACKS §12.2 (a productive crossing); width-gating
+DECLINED; check 3 discharged by the same run
+
+pnp-transport's §12.1 check (f27c0a309), in flight when §12.2 landed: case12/2's raw residual
+EXCEEDS ⟨ed.center⟩ on WIDE layers (3 witnesses; the mechanism REFINED — a width phenomenon, not
+reuse-vs-fresh: the ancestor coupling reaches the wide layer's cap-escaped remnant cols regardless
+of the current pivot's freshness; non-wide layers don't escape; my hypothesis held only off-wide);
+sourceClearedResid confined at ALL checked nodes — the uniform fix verified. So the ruled full-§7
+extension is now WITNESS-BACKED. Width-gating declined (uniform architecture > a width-gated
+split; the conditionality = documentation). Bookkeeping: the (2)-result IS the re-scoped check 3
+(done); pnp's remaining queue = the no-widen confirm one-liner + B1-wide. The elder notified (no
+re-open). Board: CAPR finalizing the SPECIFY; pnp two small checks from an empty queue; the 17th
+catch closed and now doubly-verified.
