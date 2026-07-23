@@ -17344,3 +17344,16 @@ Merged-tree spot checks: census 18/2/1 = baseline; erratum clauses present; bran
 support + CanonicalSchurStep. Merge-time gates: full build running (background); then cordon-all +
 forced payoff axioms; PUSH ONLY AFTER GATES. Then: GO seat-L4D on THE WALL (#38) + L3T3 rebase
 directive (#52, 2 one-line hCSchild sites at MultiAffineStepWire :364-365/:689-690).
+
+## 2026-07-23 (~18:35) — MERGE COMPLETE AND PUSHED: canonical carries the F₂ PROPERTY-HOME render
+
+All merge-time gates re-derived by the controller ON THE MERGED TREE: full build exit-0 (9008
+jobs; first background launch died empty — transient, retried clean); census 18/2/1 = baseline;
+cordon-all BOTH halves exit-0; forced `#print axioms` — two_mul_rlctAt_eq_divisorMin +
+aoyagi_learning_coefficient_L1/L2/gen/gen_le = CLEAN THREE [propext, Classical.choice, Quot.sound];
+engine roots (exists_coreResolution, _via_monument) = [propext, sorryAx, Classical.choice,
+Quot.sound] unchanged (tracked frontier). Canonical @ a5295bcb8 (merge) now carries: the 3-branch
+compensator canonNormalizationOf, the 3-disjunct support + CanonicalSchurStep, r4Clear as the
+boostReady FORM device (recursion untouched), DEF-EDIT-1 supportAt widen, the §11 scope-fidelity
+erratum, item-9 per-chart line. #44/#51 CLOSED. NEXT (dispatched this tick): seat-L4D → THE WALL
+(#38, realBranch_boostReady_case11); seat-L3T3 → the rebase (#52, 2 one-line hCSchild sites).
