@@ -48,6 +48,14 @@ Every seat branch's tip SHA is recorded here so deletion loses NOTHING (recover 
 - **-PROTO 05c35eb8a** — the corank-2 cast-tax prototype (`Corank2Proto.lean`); reference for the builders'
   corank-2 Lean shape. Keep as reference.
 - **report/aoyagi-engine-landscape d7aa1c46b** — a report branch; keep.
+- **-L7cover 646bcdcdb — MERGED to expedition trunk c36ff259e (2026-07-24, build-go).** `LeafCoverTiling`
+  now in trunk as the L7 reuse point.
+- **`formalise/geometric-atlas` 5de9dcf38 (07-21, PRIOR session) — KEEP: reusable L6 blow-up infra.**
+  Clean-three (per commits): `Core/Aoyagi/OriginBlowup.lean` (general-`Fin D` origin blow-up as a genuine
+  `Resolution` + Jacobian det), `BlowupResolution.lean`, `ResolutionInhabited.lean`,
+  `DLN/Aoyagi/GeometricAtlasD12.lean` (D=1,2 atlas). Surfaced by the 2026-07-24 drift-glance; handed to
+  builder `geo-atlas-c2` as a reuse candidate for the L6 `det Dβ = monomial` (verify builds + clean-three +
+  applicability first — it's geometric-fold era). NOT a stray/duplicate.
 
 ## Disposition (COMPLETE, 2026-07-24)
 - MERGED (28): DELETED (safe; in-trunk).
