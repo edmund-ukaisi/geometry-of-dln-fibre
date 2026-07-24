@@ -54,6 +54,48 @@ plumbing are L6/L7 (L7 engine landed).
 
 ---
 
+## MID-RENDER FINDING (checkpoint — reshapes the close-out; surfaced to operator 2026-07-24)
+
+Rendering L-B against `§resolution`'s actual per-step algebra (worked.tex:609–765) — not a witness —
+separates two things the instance-cert framing had fused:
+
+**(1) The VALUE is general-`L` and needs NO full atlas.** `rlct_core = ½·min_t Mval(t)`, and
+`Mval(t) = codim S(t)` exactly (thread-03, proven general-`L`). The derivation is: each branch's peel is
+a *unit transform* (L-A, general) ⟹ that chart contributes `½·Mval(branch)` by ideal-preservation
+(Lemma 1); plus a **structural cover lower bound** (no branch ratio `< ½·min`: α-divisor `≥ ½Mval(0)`,
+ρ-divisor `= ½Mval(branch)`, recursive divisors `≥ ½min` by induction). worked.tex:717–720 states
+outright: *"no full atlas needed."* This value path uses only L-A (general) + the exponent formula
+(general) + the lower bound (structural induction).
+
+**(2) The full single-chain terminal-principality ATLAS has a flagged OPEN END.** The
+`⟨∏C⟩ = ⟨b₁⟩`-principal-at-terminal invariant is **instance-verified** on genuinely-coupled deep cases
+`(3,3,4)`, `(4,4,4) t=(2,0)`, `(3,3,3,2,2) t=(2,2,1,0)` (Gröbner ideal-equality, no counterexample
+found), but the *general* proof is an **open obligation** (worked.tex:651–664, thread-28: "deeper mixed
+instances"). *Intermediate* charts can be non-principal; principality is a *terminal-chart* invariant
+restored by the corner-join. `exists_coreResolution` as-wired consumes this atlas.
+
+**The coupled corank≥2 recursion is the genuine hard part — and it is SHARED by both routes.** The
+`§8` one-shot single-blow-up is *refuted* for `L≥3` (order-4 witness `(2,2,2,2) t=(1,0,0)`); the real
+recursion is a **depth-recursion** (peel one layer per (incidence+blow-up)). For partial rank `c₁>0`
+(corank≥2) the residual **does not factor** — it continues as a coupled core `diag(b)·free` sharing the
+deeper layers (worked.tex:724–759). This is Aoyagi's actual mathematics, not an encoding artifact — so
+the deep-coupled general proof is open *whichever* encoding we use. The ideal route still wins on the
+CLEAN cases (rank-1, `c₁=0` — trivial unit transforms) and dissolves the *encoding* scaffolding
+(degree-1/support-tracking/#95/#98), but it does **not** make the genuine coupled hard part disappear.
+
+**Consequence for the close-out (the honest re-frame).** My prior "re-architect fully de-risked" was
+overstated: it rested on instance certs, and the general deep-coupled resolution is open-in-source. The
+two candidate close-outs are now:
+- **(V) the value path** — prove `2·rlct = cCodim` general-`L` directly (branchwise `½Mval` by L-A +
+  cover lower bound), re-routing the value engine to consume the *branch value* rather than a full
+  single-chain atlas. Possibly avoids the open-end entirely (the paper's "no full atlas needed").
+  Cost: restructures Object B's consumer (currently a `Resolution`).
+- **(P) the principality-atlas path** — prove the terminal single-chain principality for all `d`
+  (closes the flagged open end). Genuine open mathematics at deep mixed coupled instances; hardest.
+This is the fork to decide with the operator BEFORE rendering L-B further. L-A stands regardless.
+
+---
+
 ## L-A — the Schur-clearing ideal identity (COMPLETE, general)
 
 **Setup.** Let `R` be the ring of real-analytic germs at a point `w*` (a local ring; a germ is *regular*
