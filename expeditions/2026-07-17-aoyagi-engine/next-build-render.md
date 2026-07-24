@@ -115,3 +115,37 @@ ideal-identity invariant, building the general-`d` matrix-identity `hideal` (ren
 option (b)'s path — do NOT "swap" them. The elder gate is unchanged (the corank-2 prototype now = the
 matrix-identity `hideal` step, two-sided dom-wide; + the `hcover` probe). rev-render is auditing this
 corrected verdict.
+
+## 7. rev-render audit — §6 CONFIRMED (decorrelated + Codex); three sharpenings; scope SETTLED
+rev-render (own Lean read + fresh Codex on the wiring files) CONFIRMS §6: the "bypass" via
+`stepInv_delta1_shear_child` was an ENCODING conflation (Encoding-S substitution, not the render's ideal
+route); `appendResidDescent` is the degree-1-support/substitution frontier, NOT render-bounded L-B.
+Sharpenings (all strengthen §6):
+- **(a) The substitution atoms are UN-WIRED + fidelity-fragile — do NOT build Encoding-I on them.**
+  `stepInv_delta1_shear_child` has NO consumer in the repo (the wired concrete route is
+  `foldResid_stepMap_eq_pivot_mul` + `stepInv_child_delta1_append`, Case1Wire:37), AND it needs a MISSING
+  concrete-residual bridge (`c(σu)=c(q_u)`; plain `hsupp` doesn't give it — its residual is manufactured,
+  not the actual `foldResid` child). So the clean atoms are Encoding-S plumbing, not an Encoding-I brick.
+- **(b) Q2 CONFIRMED false: `appendResidDescent` asserts MORE than L-B.** L-B = an IDEAL equality (b-chain,
+  invariant under generator changes). `appendResidDescent` = an EXACT POINTWISE decomposition over a PINNED
+  coordinate set `supportAt(child)` with continuous coefficients — NOT generator-invariant, fidelity-fragile
+  (the cap-escape repair to full `layerCoords(S+1)` is unverified). So "render-bounded" on B2 was genuinely
+  false. (Not a concern under Encoding-I, which never owes it.)
+- **(c) Q1: B3 `foldResid_case11` is a DISTINCT Encoding-S frontier** (Case-1(1) merge re-factoring; shares
+  the refuted-as-stated history) — drops ONLY under Encoding-I. Confirms §6.
+- **(d) Q3/B5: the coupled `hcover` risk is the FAITHFUL MULTI-TERM shear** (`canonNormalizationOf` = Schur
+  cross-term + Aoyagi's layer-(S±1) recoords); `GeneralGeoAtlas`'s single-term box-geometry does NOT apply.
+  (hcover-probe redirected to the multi-term shear.)
+- **(e) Circularity: NONE** — clean DAG (`appendResidDescent` takes no child-StepInv hypothesis).
+
+**SETTLED SCOPE — option (b) = Encoding-I (the ideal-route re-type), ranked residual:**
+1. **[High] the general-`d` matrix-identity `hideal`** = `regionRepresents_of_matrix_mul` composed over
+   `buildTree` from `canonNormalizationOf` (`Q1·C1·Q2=diag(1,Δ)`), dom-wide = the render's L-A/L-B
+   (rev-render-verified sound). Corank-2 core exists sorry-free on `-PROTO` (`Corank2Proto.Q1_C1_Q2_eq_diag`)
+   → render-bounded; general-`d` is the genuine build. Do NOT route through the substitution B2.
+2. **[High] B5 coupled `hcover`** — the faithful MULTI-TERM-shear cover, un-probed (SEAM-2), encoding-
+   independent. hcover-probe in flight; probe-before-commit (elder gate ii).
+3. **[Medium] the re-typed fold-induction** (B1) + root anchor (inside the sorried L5 fold body).
+4. **[none] circularity.**
+The clean `StepInv`/`Deg1SupportedSlot` atoms are Encoding-S — NOT Encoding-I bricks. Pipeline (L6′/L8′/L1,
+`chart_of_collapse`) is encoding-agnostic → survives the re-type unchanged.
