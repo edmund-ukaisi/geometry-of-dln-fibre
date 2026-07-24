@@ -10,14 +10,19 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
 ## Memo (controller-edited, ≤10 lines — keep current)
 - **⚠ NEW PHASE (2026-07-24) — COUPLED-B BUILD PREP. The phase/LANES text BELOW is STALE (retired
   geometric-fold; do NOT act on it).** Current truth: the RE-ARCHITECT is committed (operator go, V →
-  coupled-B). The math RENDER is COMPLETE (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`):
-  the close-out is reproduce Aoyagi's Cases-1/2 (S,J) recursion IDEAL-LEVEL (⟨∏C⟩=⟨diag(b)⟩ → rlct=½cCodim);
-  all cruxes resolved general (L-A; L-B via the b-chain; KC-2; Theorem 4 landed; Mval=cCodim landed) —
-  render-assessed BOUNDED-AND-BUILDABLE, reproduce-and-verify (not open math). NEW 3-LEVEL MODE (operator):
-  controller owns PROCESS + MATH(render); decorrelated advisory math seats (rev-render review-only,
-  scout-code, scout-proj); Lean OUTSOURCED to builders via detailed briefs. PLAN = `execution-plan-coupledB.md`.
-  PREP phase now (operational center + house-cleaning); the Lean BUILD fires ONLY on the operator's explicit go.
-  The geometric fold (MonumentAtlas/KILL/#95/#98/couplingClear) is RETIRED-superseded (not refuted).
+  coupled-B). Close-out = reproduce Aoyagi's Cases-1/2 (S,J) recursion IDEAL-LEVEL (⟨∏C⟩=⟨diag(b)⟩ →
+  rlct=½cCodim). RENDER ARC (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`): (1) rendered;
+  (2) rev-render's decorrelated audit REOPENED it — the SPINE (L-A/L-B/Thm-4) verified sound+general, but
+  the GEOMETRIC HALF (L6/L7/L8) was OVER-CLAIMED "bounded" without being rendered (2nd optimism-on-scope
+  error, caught); (3) RE-RENDERED general — L6 dom-wide Jacobian EXACT (unit≡1); L7 obl-1 via
+  one-pivot-per-step (uniform deg-2 shears, -L7cover engine); L7 obl-2 exhaustive fan; L8(ii) via EXHAUSTIVE
+  tree + Object D (my greedy=global worry was over-caution, source-resolved); totality via the b-chain.
+  EARNED re-verdict: NO open math; residual = the Lean geometric build (exists_coreResolution fields) + wiring.
+  **CURRENT GATE: rev-render's RE-AUDIT of L6/L7/L8 (in flight) = the LAST prep gate.** When it holds →
+  checkpoint the operator build-ready. NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
+  seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
+  `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
+  (MonumentAtlas/KILL/#95/#98) RETIRED-superseded (not refuted).
 - **READ `charter.md` FIRST, every wake** — it is the fixed invariant core (goals = Aoyagi's machinery
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
