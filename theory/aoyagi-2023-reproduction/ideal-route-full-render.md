@@ -497,3 +497,26 @@ once the T-F totality is dropped (our correction), cases exhaustive/terminating,
 (b) Theorem 4 general Mathlib-feasibility; (c) the reproduction labour (Cases 1/2 + the (S,J) induction +
 exponent ledger — large but combinatorial, not a missing analytic monument). The frontier the expedition
 circled is a REPRODUCE-AND-VERIFY, not open mathematics.
+
+### PHASE-3 (a) — the maintenance ideal equality: RESOLVED, general (the L-B crux closed). 2026-07-24
+The one careful sub-point of the maintenance — is the block-elim compatible with the non-unit left factor
+`diag(b')`? — resolves cleanly **as an IDEAL equality** (never a matrix identity, so no `1/monomial`):
+- The invariant's `D`-block generators are `{ b'ᵢ · (D''_J C')ᵢ : i = J+1..M(S) }`. Block-eliminate with the
+  UNIT pivot at row `J+1` (its `b'_{J+1}` is the SMALLEST in the chain): row `i` becomes
+  `(D''_J C')ᵢ − cᵢ·(D''_J C')_{J+1}`, `cᵢ = (D''_J)_{i,J+1}`.
+- The only new term is `b'ᵢ·cᵢ·(D''_J C')_{J+1} = (cᵢ·b'ᵢ/b'_{J+1})·[ b'_{J+1}·(D''_J C')_{J+1} ]`. Since
+  `b'_{J+1} | b'ᵢ` (chain, `J+1 ≤ i`), `b'ᵢ/b'_{J+1}` is a MONOMIAL ⟹ the coefficient is POLYNOMIAL ⟹ the
+  term lies in `⟨ b'_{J+1}·(D''_J C')_{J+1} ⟩ ⊆` the ideal. Symmetric via `Q₁⁻¹`. So the row-clear PRESERVES
+  the ideal: `⟨diag(b')·D''_J·C'⟩ = ⟨diag(b')·(Q₁ D''_J)·C'⟩`.
+- The column-clear `Q₂` and the layer transform ABSORB into the deeper product `∏_{s>S}C` (regular
+  transforms, Lemma 1). Hence `⟨diag(b')·D''_J·C'⟩ = ⟨diag(b')·diag(1,D_{J+1})·C'⟩` — invariant maintained,
+  GENERAL, no instances.
+- **Load-bearing structural fact:** the `b`-CHAIN divisibility (`b'_{J+1}` minimal, dividing all `b'ᵢ`) is
+  exactly what absorbs the block-elim cross-terms into the ideal. So the `b`-chain is load-bearing for BOTH
+  the maintenance (L-B) AND the read-off (Object C). Aoyagi's `u`-factor-then-block-elim is now a rigorous
+  general ideal argument.
+
+**L-B STATUS: maintenance RESOLVED general.** With finding #2 (cases exhaustive/terminating; totality
+dropped), the invariant is maintained through every step for all `v`. Remaining for the full close-out:
+Theorem 4 general feasibility (Phase-3 (b)) + the reproduction labour + the `M_{s,k}=Mval` read-off
+(Object C/D, landed).
