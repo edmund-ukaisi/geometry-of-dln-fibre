@@ -308,26 +308,44 @@ verified. Elder condition on the COMMIT: the controller's gate-2 Lean prototype 
 must measure the Lean tax as manageable — the paper's one-line ideal argument + polynomial-cofactor Q,P must
 render without a hidden Mathlib ideal-membership tax. Green-enough prototype → commit the swap. This is the
 rising-sea move: fill the layer with the RIGHT (her) construction, not grind a local-min on sunk cost.
+UPDATE (2026-07-24 checkpoint): rev-render LANDED (4+ rounds) — the SPINE is verified sound+general; the
+gate-2 Lean prototype (corank-2 dom-wide `hideal` via L-A/L-B) + the corank≥2 `hcover` probe remain the
+pre-commit gate (elder). The Lean tax is un-measured; render-bounded ≠ built.
 
-## THE COUPLED-B BUILD PHASE (2026-07-24 — operator GO on the re-architect; the new mode)
+## THE COUPLED-B BUILD PHASE — PHASE CHECKPOINT (2026-07-24: rev-render landed + scope-correction)
+**V-MIRAGE RETRACTED; the committed route is coupled-B, the matrix-ideal Schur-clearing** = Aoyagi's own
+Cases-1/2 (S,J) recursion (charter §1-B, §3). Nothing in the fold was REFUTED — the encoding drifted;
+SUPERSEDED, kept as history.
 
-**V-MIRAGE RETRACTED.** The coordinate-substitution FOLD route ("V" — the geometric via-the-fold
-construction) is retracted as the LOCAL-MIN the pricing exposed (treadmill: ~489→495 census over 260
-commits; the ~29 catches all in the fold's support-tracking). The committed route is **coupled-B, the
-matrix-ideal Schur-clearing** = Aoyagi's own Cases-1/2 (S,J) recursion (compass "THE PIVOTAL FORK —
-RESOLVED"; charter §1-B, §3). Nothing in the fold was REFUTED — the encoding drifted; SUPERSEDED, kept as
-history.
+**THE RENDER + 4 REV-RENDER ROUNDS: the SPINE is verified, the RENDER IS NOT COMPLETE.** The ideal SPINE
+(L-A block-elim ideal identity any corank / L-B (S,J)-maintenance via the b-chain / Thm-4) is VERIFIED
+sound+general (rev-render #3 + Codex) — the coupled-corank≥2 MAINTENANCE wall was a substitution-encoding
+artifact, DISSOLVED at the math level. The combinatorial value half (hlb+hattain) is PROVED sorry-free
+clean-three (controller #print-axioms-verified: `o5_core_realized`/`tStar_realized`/
+`clearable_of_minimizer`/`hlb_hattain_of_atlasRealizesExponents`). **The earlier "the only remaining
+content is bounded combinatorial reproduce-and-verify" was OVER-CLAIMED (rev-render #1, the 2nd
+optimism-on-scope error) — the per-chart ideal identity is NECESSARY-NOT-SUFFICIENT.**
 
-**THE MATH RENDER (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`) is COMPLETE and
-render-assesses the close-out as BOUNDED-AND-BUILDABLE** — reproduce Aoyagi's Cases-1/2 (S,J) recursion,
-ideal-level, `⟨∏C⟩=⟨diag(b)⟩ → rlct=½·cCodim`. Cruxes resolved GENERAL: L-A (block-elim ideal identity);
-L-B maintenance (the non-unit `diag(b)` step is an ideal equality via the b-CHAIN divisibility absorbing
-the block-elim cross-terms); KC-2 (Cases exhaustive + terminating — Aoyagi's totality over-claim droppable,
-partial order + b-chain); Theorem 4 (all-var homogeneity) landed+wired; Mval=cCodim landed. **HONEST STATUS:
-render-assessed bounded-and-buildable; the decorrelated review (rev-render) is IN FLIGHT — NOT overclaimed
-as done/verified before the review lands.** The value engine (A→B-CoV→C→D) is done and ideal-level; the
-sole construction is the per-step N1 (`chartStep_idealIdentity`) + the N2 path-fold
-(`rearchitecture-blueprint.md` §1), reproducing the (S,J) recursion.
+**THE SCOPE-CORRECTION (geo-atlas-wire, controller-verified against the Lean).** `exists_coreResolution:311`
+needs `∃ res : Resolution (coreGen d e) 0`; the `Chart` record (`ProductResolution.lean:112-116`) mandates
+`hideal_fwd`/`hideal_bwd` — the DOM-WIDE ideal identity. The render's FINAL scope-calibration
+(ideal-route-full-render.md) listed the residual as `hg_analytic`/`hg_inj`/`hjac`/`hcover` and OMITTED
+`hideal` — conflating "hideal math-verified" with "hideal Lean-inhabited." CORRECTION: the coupled `hideal`
+is the DEEP monument, UNBUILT in Lean (still the sorried fold `foldResid_case11`). The box-geometry (L6
+Jacobian, L7 cover — MECHANISMS built clean-three only for a SIMPLER single-term-shear object, three seams
+to faithful) is NECESSARY-NOT-SUFFICIENT — it does NOT touch the `hideal`. The coupled hardness MIGRATED
+from the (dissolved) maintenance wall to L7's coupled `hcover` at corank≥2 — UN-PROBED, the highest residual
+risk. So the residual to :311 = coupled `hideal` build (L-A/L-B Schur-clearing, RENDERED, UNBUILT) + the
+box-geometry seams + the coupled-`hcover` probe. render-bounded ≠ review-landed ≠ built.
+
+**OPTION (b) — operator-chosen 2026-07-24: build the coupled `hideal` via L-A/L-B, retiring the fold.**
+The ELDER GATE before the full build fires: (i) a corank-2 chart's dom-wide `hideal_fwd`/`hideal_bwd` BUILT
+in Lean via L-A/L-B (the gate-2 prototype; `Corank2Proto` §4 `Q1_C1_Q2_eq_diag` on
+`expedition/aoyagi-engine-PROTO` is a starting brick; cast-tax measured); (ii) a decorrelated corank≥2
+`hcover` probe. Green-BOTH → commit the full reproduction; green-one → re-scope. The germ→dom-wide bridge
+(pivot≡1 ⟹ unipotent-polynomial `Q`, no rational inverse; L6 render) makes the Lean build a REPRODUCTION
+of the (S,J) recursion over `buildTree`, not a port of L-A — "bounded in principle" but LARGE, the
+under-priced axis of this expedition.
 
 **THE NEW 3-LEVEL OPERATING MODE (operator, 2026-07-24).** (1) controller owns PROCESS + MATH (the render);
 (2) decorrelated ADVISORY math-level seats — a review-only pen-and-paper (rev-render) auditing the render, a
@@ -382,7 +400,8 @@ traversal table + witness bank; b-leaf2-blowup-atlas → absorbed into the Core-
 - **aoyagi-summit / kill-cite** — the destination as one node: `aoyagi_learning_coefficient`
   cite-free; the summit IS the kill (merged — they were never two things).
 - **Object A** (landed) — the ideal-invariance workhorse every transport rides.
-- **Object B** (LIVE — the monument: the eight leaves, THE WALL at case-1) — where the expedition is.
+- **Object B** (LIVE — the coupled `hideal` monument via L-A/L-B Schur-clearing; the box-geometry is
+  necessary-not-sufficient; L7 coupled `hcover` UN-PROBED) — where the expedition is.
 - **Object C** (landed) — the guarded boxed rule the wall's output feeds.
 - **Object D** (banked) — the divisorMin → qipMin → cCodim bridge.
 - **b-value-cov** (landed) — the atlas min-over-charts CoV equality: the engine's analytic heart, O1 closed.
