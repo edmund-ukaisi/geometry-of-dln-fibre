@@ -467,3 +467,33 @@ fold). **Two named de-risks (KC-2 / Thm-4):** (KC-2) does the uniform induction 
 papers)? (Thm-4) is the homogeneity comparison Mathlib-feasible in general? These are the pivotal checks
 before committing the build. **Next work:** verify KC-2 against the primary PDF's induction-closure
 argument (myself), and assess Theorem 4's general feasibility.
+
+### PHASE-2 FINDING #2 (primary source, KC-2 VERIFIED — largely POSITIVE). 2026-07-24
+Read Aoyagi's actual induction (primary text lines 860–1260): the inductive invariant is exactly
+`⟨∏C⟩ = ⟨diag(b)·[[E_J,O],[O,D_J]]·∏_{s>S}C⟩` (lines 891–904), and the cases are EXHAUSTIVE and TERMINATE:
+- **Case 1** (partial equal `b`-run) splits into **1(1)** (`D`-block divisible by an EXISTING `u_{s,k}` —
+  re-factor, decrement that divisor's count) and **1(2)** (introduce a NEW `u_{S,J+1}`, block-elim to
+  `diag(1,D_{J+1})`, advance `J`); these are the two CHARTS of the blow-up along `{d=0, u=0}` — exhaustive.
+  **Case 2** (full run). The `(S,J)` induction advances (`J→J+1`, or `S→S+1` when `J+1>M(S+1)`, lines
+  1246–1258) and terminates fully-diagonal. The uniform induction DOES cover all `v` and closes.
+- **KC-2's real content (the deep-coupled gap), located + resolved:** Aoyagi's inductive statement CARRIES
+  a totality over-claim `T_{s,k} ≤ T_{s',k'} or ≥` (line 956) and USES it in Case-1 divisor selection
+  (line 964) — but that totality is FALSE in general (T-F: `(2,2,1,1)` incomparable profiles), so her
+  LITERAL induction (re-derives totality each step, 1011–1013) fails at incomparable instances. **FIX (our
+  digest already made it): DROP the totality — NOT load-bearing.** Case-1 selection needs only a MINIMAL
+  element of the profile PARTIAL order (exists, finite poset); and the RLCT read-off uses the `b`-chain
+  `b₁|b₂|…`, TOTALLY ordered *by construction* (`bᵢ=∏u·bᵢ₋₁`), independent of the `T_{s,k}` order. Totality
+  dropped ⟹ invariant maintained ⟹ induction closes for all `v`.
+- **Maintenance algebra (resolves L-B's non-unit-`diag(b)` crux), Aoyagi's actual step (1220–1258):**
+  `P·diag(b_{J+1..})·D_J·C = u_{S,J+1}·diag(b')·D'''_J·C'` — factor `u` FIRST (`u·diag(b)=diag(b')`, chain
+  updated), THEN block-elim `D''_J→diag(1,D_{J+1})`. My candidate (b) [u-factor-first] is Aoyagi's actual
+  method. ONE sub-point to verify (not assume): `diag(b')⁻¹·P·diag(b')` polynomial — triangular structure
+  + `b`-chain divisibility should give it.
+
+**VERDICT (L-lower generality, now firm).** V falls back to coupled-B (finding #1), AND coupled-B is
+**bounded-and-buildable, NOT a wall** (finding #2): Aoyagi's uniform Cases-1/2 induction closes for all `v`
+once the T-F totality is dropped (our correction), cases exhaustive/terminating, maintenance = her explicit
+`u`-factor-then-block-elim. Remaining bounded work: (a) verify the `diag(b')`-conjugation polynomiality;
+(b) Theorem 4 general Mathlib-feasibility; (c) the reproduction labour (Cases 1/2 + the (S,J) induction +
+exponent ledger — large but combinatorial, not a missing analytic monument). The frontier the expedition
+circled is a REPRODUCE-AND-VERIFY, not open mathematics.
