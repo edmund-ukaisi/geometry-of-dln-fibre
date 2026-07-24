@@ -1024,3 +1024,17 @@ anchor-tracking.
   geometric half — lemma (ii) is one corrected render + its general proof away from done, NOT done. **Do NOT
   call the close-out build-ready.** (The audit working as designed: I flagged the non-monotone sub-point
   rather than asserting it, and it did diverge — the flag, not an over-claim.)
+
+**Recast seam (rev-render forward pointer — aim the recast render here).** The divisor-born recast
+(`hattain = ∃ divisor with ratio = ½cCodim`) is NOT obviously cheaper, because the clean identity
+`ratio = (h+1)/(2m) = M/2` is established only for TERMINAL binding divisors (`~t=0`, `k≡1`, `h=M−1`,
+`m=1`). An INTERMEDIATE divisor (`~t>0`) has its own Jacobian order `h` and loss-vanishing order `m` that
+are NOT obviously `M−1` and `1`, so its ratio may differ from `½M`. So the recast must show the chosen
+minimizing divisor is genuinely TERMINAL-binding (ratio `= ½cCodim`) — at `(2,2,3,2)`, check whether the
+`(1,1,0)`-divisor in the "wrong" leaf is terminal (ratio `= ½·3`) or intermediate (needs its exact
+`(h,m)`). If terminal, the recast is clean and dissolves the anchor-tracking; if intermediate, the recast
+inherits the intermediate-divisor-ratio obligation, which is the SAME obligation as `hlb` (every divisor's
+ratio `≥ ½cCodim`, intermediate ones included). **Net: the recast likely reduces to "birth `t*` as a
+terminal `~t=0` divisor via Case-1(2)-inherited" = the corrected steering, NOT a dissolution.** Render it
+with this check up front (terminal-vs-intermediate at `(2,2,3,2)` as the illustration); do NOT assume the
+intermediate ratio is `½M`.
