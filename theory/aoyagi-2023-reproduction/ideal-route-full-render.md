@@ -1107,3 +1107,32 @@ thing the repo already had; the render's job here was to FIND and VERIFY it, whi
 `hlb_hattain_of_atlasRealizesExponents` with the SAME `buildTree`/`conOracle` that `o5_core_realized` is
 stated over (the RecursionAdapter is DLN-`d`-shaped and sorry-free, so the seam is the adapter's — check it
 binds to the ideal-route `d`), and that `AtlasRealizesExponents` is the L6/L7 object the render describes.
+
+### SEAM-CHECK VERIFIED (controller read RecursionAdapter + exists_coreResolution, 2026-07-24)
+
+Both of rev-render's seam-check points hold — the entire close-out reduces to ONE `sorry`:
+- **Same `buildTree` (point 2):** `AtlasRealizesExponents d res` (RecursionAdapter:55) is defined over
+  `buildTree d (conOracle d) conRoot`; `hlb_hattain_of_atlasRealizesExponents` (:96-97) obtains o5's leaf
+  via `o5_core_realized d …` (instantiates o5's `M := d`, `L := N` — no separate reduction) and feeds it
+  into `hrealize l hl k hk`, so `hrealize` fires on EXACTLY o5's leaf, same tree. Verified in the
+  sorry-free proof.
+- **Reduced-core `d` (point 1):** `exists_coreResolution` is instantiated at `D = flatDim d, F = coreGen d e`
+  (the core, post-Theorem-3), so the adapter's `d` IS the reduced widths o5 is stated over — the reduction
+  is identity at the adapter.
+- **The single residual:** `exists_coreResolution` (LearningCoefficient:292) does
+  `refine exists_hlb_hattain_of_exists_atlasRealizesExponents d … ?_` (:308, sorry-free adapter) and its
+  ONLY `sorry` (:311) is `hgeo : ∃ res, AtlasRealizesExponents d res` — "the coupled monument + `hcover`
+  BUILD" (charter §1.B). Everything upstream (spine, hlb, hattain, the wiring) is sorry-free + clean-three.
+- **Cite-free:** the payoff cone is `{propext, sorryAx, Classical.choice, Quot.sound}` (LearningCoefficient
+  :319-320) — NO `cited_aoyagi`/`cited_watanabe`. So closing :311 yields the charter's cite-free goal.
+- **The residual's exact shape (weaker than feared):** `AtlasRealizesExponents` is a match of ℕ-valued
+  exponent VALUE-supports ONLY (RecursionAdapter:45-54) — NOT a structural chart↔leaf correspondence (no
+  coordinate/multiplicity map). So the geometric build must supply a `Resolution res` whose per-chart
+  binding-axis exponents `jac a + 1` (i) all lie in the tree's terminal exponents and (ii) hit `minAdm d`
+  on some chart — i.e. L6 (chart maps + Jacobian giving those exponents) + L7 (cover) + the exponent-value
+  match to the (already-proved) combinatorial tree. This is the sole residual `exists_atlasRealizesExponents`.
+
+**NET (verified, whole close-out): ONE Lean `sorry` remains — `exists_coreResolution:311` = the geometric
+atlas `∃ res, AtlasRealizesExponents d res` (L6/L7 + exponent-value match). Spine, combinatorial value
+(hlb+hattain), and the adapter wiring are sorry-free + clean-three; the payoff is cite-free. The geometric
+atlas is the operator-gated build.**
