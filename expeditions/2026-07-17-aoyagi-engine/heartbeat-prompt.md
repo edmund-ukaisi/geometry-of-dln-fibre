@@ -18,14 +18,18 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-pivot-per-step (uniform deg-2 shears, -L7cover engine); L7 obl-2 exhaustive fan; L8(ii) via EXHAUSTIVE
   tree + Object D (my greedy=global worry was over-caution, source-resolved); totality via the b-chain.
   EARNED re-verdict: NO open math; residual = the Lean geometric build (exists_coreResolution fields) + wiring.
-  **CURRENT STATE (post 5 rev-render audit rounds): SPINE (L-A/L-B/Thm-4) + teeth (L6/L7) VERIFIED/rendered;
-  the value UPPER bound is the ONE medium residual.** rev-render caught 4 scope-optimism errors (route-A
-  greedy, exhaustive-tree, Object-D-attainment, backwards case-roles). Value upper bound now a CLEAN reduction
-  (∃ terminal-binding divisor at a minimizer t* ⟸ t*∈T_reach); clearability (i) established; PRECISE RESIDUAL
-  = `minimizer ⟹ reachable-as-terminal` (minimality essential — clearable⊋reachable). CURRENT GATE:
-  rev-render auditing that reduction + the kill-test "is any minimizer stranded?" (fresh Codex). NOT
-  build-ready; render the residual PROOF only after the statement survives. NEW 3-LEVEL MODE: controller owns
-  PROCESS + MATH(render); decorrelated
+  **CURRENT STATE (post 5 rev-render audit rounds + controller #print-axioms verification): the value's
+  COMBINATORIAL half is DONE clean-three; the SOLE residual is the GEOMETRIC atlas (L6/L7 Lean build).**
+  SPINE (L-A/L-B/Thm-4) + teeth (L6/L7 math) VERIFIED/rendered. rev-render caught 4 scope-optimism errors
+  (route-A greedy, exhaustive-tree, Object-D-attainment, backwards case-roles) THEN surfaced the ground truth:
+  the minimizer-realization I kept re-deriving is ALREADY PROVED sorry-free in the retired-but-salvaged Engine
+  — I VERIFIED clean-three myself (o5_core_realized / tStar_realized / clearable_of_minimizer /
+  hlb_hattain_of_atlasRealizesExponents all `[propext, Classical.choice, Quot.sound]`; R7 sorry NOT in cone).
+  KILL-TEST PASSED (no stranded minimizer, 19,525 vectors + proof; value SAFE). So the ENTIRE close-out =
+  [spine verified] + [combinatorial value DONE clean-three] + [geometric atlas AtlasRealizesExponents = L6/L7,
+  math-rendered, Lean build = exists_atlasRealizesExponents (MonumentAtlas sorry) = the ONE residual,
+  operator-gated]. Remaining verify: the ideal-route consumes hlb_hattain via the same buildTree/conOracle
+  (RecursionAdapter seam). NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
   (MonumentAtlas/KILL/#95/#98) RETIRED-superseded (not refuted).

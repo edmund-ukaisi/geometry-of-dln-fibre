@@ -1069,3 +1069,41 @@ using minimality (not clearability), NOT yet proved general.** This is the preci
 lemma (ii); it supersedes the "exhaustive" and "clearable⟹reachable" framings (both false). Next: render
 `minimizer ⟹ reachable` from the transition system — carefully, with rev-render's audit, given my error
 history on exactly this combinatorics.
+
+## AXIOM VERIFICATION (controller re-derived the gate, 2026-07-24) — the combinatorial value half is DONE; do NOT re-render
+
+**I do NOT need to render `minimizer ⟹ reachable` — it is ALREADY PROVED sorry-free in the repo, and I
+verified it clean-three myself** (rev-render surfaced it from the retired-but-salvaged Engine; per
+calibrate-the-sensor I re-ran `#print axioms` on the cached oleans rather than trust the docstring). Result:
+
+    o5_core_realized              [propext, Classical.choice, Quot.sound]
+    tStar_realized                [propext, Classical.choice, Quot.sound]
+    clearable_of_minimizer        [propext, Classical.choice, Quot.sound]
+    hlb_hattain_of_atlasRealizesExponents  [propext, Classical.choice, Quot.sound]
+
+NO `sorryAx`, no category-false chart axiom, no cited-Aoyagi. The R7 `sorry` in the retired
+`ClearableReify` (the STRONGER both-directions `realizedProfiles_eq_clearableAdm`) is NOT in o5's cone —
+o5 uses only the ⊇-at-`tStar` direction (`clearable_of_minimizer` + `realize_aux`). Confirmed clean-three.
+
+**These theorems are exactly the residual I was rendering:**
+- `clearable_of_minimizer` = my (i) minimizer⟹clearable (the envelope-splice / FIX-2), PROVED.
+- `tStar_realized` = `Clearable ⟹ realized as a ~t=0 leaf divProfile` (the 3-phase `SteerInv` WF-induction
+  steering) = my `minimizer ⟹ reachable`, PROVED (applied to `tStar` = the minimizer).
+- `o5_core_realized` = `∃ leaf with divExp = minAdm M = cCodim` = literally `hattain`, PROVED.
+- `hlb_hattain_of_atlasRealizesExponents` (RecursionAdapter, DLN-`d` shaped) WIRES it: GIVEN the geometric
+  atlas `AtlasRealizesExponents d res`, BOTH `hlb` (rides `minAdm_le_terminalExponents`) AND `hattain` (rides
+  `o5_core_realized`) follow, sorry-free.
+
+**RE-SCOPE (verified, not optimism): the SOLE residual for the entire value (both bounds) is the geometric
+atlas `AtlasRealizesExponents` = chart↔leaf realization + cover = L6/L7.** Its MATH is rendered here (L6 =
+exact monomial·1 Jacobian; L7 = obligation-1 one-pivot-per-step + obligation-2 fan-completeness); its LEAN
+is `exists_atlasRealizesExponents` (sorried in MonumentAtlas) = the geometric build, operator-gated. The
+kill-test PASSED (rev-render + Codex: no stranded minimizer, across 19,525 width vectors + a proof), so the
+value is SAFE. **The close-out = [spine VERIFIED] + [combinatorial value DONE, clean-three] + [geometric
+atlas L6/L7: math-rendered, Lean build = the one residual].** My four re-render errors were re-deriving a
+thing the repo already had; the render's job here was to FIND and VERIFY it, which is now done.
+
+**Remaining verification (before build-ready checkpoint):** confirm the ideal-route close-out consumes
+`hlb_hattain_of_atlasRealizesExponents` with the SAME `buildTree`/`conOracle` that `o5_core_realized` is
+stated over (the RecursionAdapter is DLN-`d`-shaped and sorry-free, so the seam is the adapter's — check it
+binds to the ideal-route `d`), and that `AtlasRealizesExponents` is the L6/L7 object the render describes.
