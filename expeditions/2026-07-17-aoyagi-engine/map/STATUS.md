@@ -1,6 +1,10 @@
 # STATUS — 2026-07-17-aoyagi-engine
 
-updated: 2026-07-23 (carto restart-pass — census re-derived 36 = 11 on-cone + 25 fossil; b-boostready/object-e/L7 de-staled)
+updated: 2026-07-24 (PHASE CHECKPOINT — census 42 = 17 on-cone + 25 fossil [carto-phase recount]. The
+17 on-cone = the geometric-fold monument (MonumentAtlas 11 / MonumentAssembly 1 / MergeBoostSplit 1 /
+CanonShear 1 / LastLayerWire 2 / LearningCoefficient exists_coreResolution 1), SUPERSEDED by the ideal-route
+hideal (option b) → retire wholesale. Legibility snapshot: BUILD-STATE.md. Charter/compass refreshed.)
+prior: 2026-07-23 (carto restart-pass — 36 = 11 on-cone + 25 fossil)
 
 ## landmarks
   ★ aoyagi-summit [stated] summit: rlctGlobal(lossDLN d 0) = cCodim/2, via the engine (corollary/test)
