@@ -23,6 +23,42 @@ open Matrix
 
 namespace DLNFibre.Core.Aoyagi.Corank2Proto
 
+/-! ## §1 [g] — the blow-up chart map `g = sh ∘ blockBlowupMap` (fixed-ambient)
+
+`g : ℝᴰ → ℝᴰ` stays fixed-ambient: the pivot-block blow-up (banked, `Core.Aoyagi.BlockBlowup`)
+post-composed with the unipotent Schur shear `sh` (linear, hence analytic). This measures the
+analyticity/`g 0 = 0` tax of the certificate's `[g]` item; it is banked infrastructure, so it is cheap
+(no cast tax) — recorded here for completeness of the step. -/
+
+open DLNFibre.Core.Aoyagi
+
+section ChartMap
+variable {D : ℕ}
+
+/-- The step chart map `g = sh ∘ blockBlowupMap S pivot` (fixed-ambient `ℝᴰ → ℝᴰ`); `sh` is the
+unipotent Schur shear (a continuous linear automorphism). -/
+def chartG (S : Finset (Fin D)) (pivot : Fin D) (sh : (Fin D → ℝ) →L[ℝ] (Fin D → ℝ)) :
+    (Fin D → ℝ) → (Fin D → ℝ) :=
+  sh ∘ blockBlowupMap S pivot
+
+/-- `g 0 = 0` (both the blow-up and the linear shear fix the origin). -/
+theorem chartG_zero (S : Finset (Fin D)) (pivot : Fin D)
+    (sh : (Fin D → ℝ) →L[ℝ] (Fin D → ℝ)) : chartG S pivot sh 0 = 0 := by
+  simp [chartG, blockBlowupMap_zero]
+
+/-- `g` is continuous. -/
+theorem continuous_chartG (S : Finset (Fin D)) (pivot : Fin D)
+    (sh : (Fin D → ℝ) →L[ℝ] (Fin D → ℝ)) : Continuous (chartG S pivot sh) :=
+  sh.continuous.comp (continuous_blockBlowupMap S pivot)
+
+/-- `g` is analytic on the whole space (analytic blow-up ∘ analytic linear shear). -/
+theorem analyticOnNhd_chartG (S : Finset (Fin D)) (pivot : Fin D)
+    (sh : (Fin D → ℝ) →L[ℝ] (Fin D → ℝ)) :
+    AnalyticOnNhd ℝ (chartG S pivot sh) Set.univ :=
+  (sh.analyticOnNhd Set.univ).comp (analyticOnNhd_blockBlowupMap S pivot) (Set.mapsTo_univ _ _)
+
+end ChartMap
+
 /-! ## §2 [QP] — the unipotent-polynomial Schur cofactors (symbolic, over a general comm ring)
 
 The chart coordinates enter as FREE ring elements, so `Q1·C1·Q2 = diag(1,Δ)` is the genuine symbolic
@@ -156,5 +192,93 @@ theorem peeled_eq_Q1_Pmat (c12a c12b c21a c21b m11 m12 m21 m22 : R)
   rw [peeled, Pmat, ← Q1_C1_Q2_eq_diag c12a c12b c21a c21b m11 m12 m21 m22]
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (Q2 c12a c12b) (Q2inv c12a c12b) C2, Q2_mul_Q2inv, Matrix.one_mul]
+
+/-! ## §4 [I⇒][I⇐] — the `RegionRepresents` bridge (the flatten tax)
+
+The certificate's ideal directions are `RegionRepresents` statements with EXPLICIT POLYNOMIAL cofactors
+(entries of `Q1⁻¹`/`Q1`) — NOT Mathlib `Ideal.span` membership. The bridge below turns a matrix
+identity `M = A·N` over the ambient function ring into `RegionRepresents` of the column-flattened
+generators, with the block-diagonal cofactor `a (i,col) (j,col') = [col=col']·A i j`. This measures the
+`Fin (p·c) ↔ Fin p × Fin c` flatten/reindex tax — the interface glue between matrix products and the
+`Chart.hideal_*` fields. It is NOT ideal-membership machinery. -/
+
+open DLNFibre.Core.Aoyagi
+
+variable {n : ℕ}
+
+/-- Flatten a `p×c` matrix of ambient functions to a `Fin (p·c)`-indexed generator family (the
+`Chart.hideal_*` interface flat-indexes the product entries). -/
+def flat {p c : ℕ} (M : Matrix (Fin p) (Fin c) ((Fin n → ℝ) → ℝ)) :
+    Fin (p * c) → (Fin n → ℝ) → ℝ :=
+  fun k ↦ M (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2
+
+/-- **The matrix→`RegionRepresents` bridge.** A matrix identity `M = A·N` over the ambient function
+ring, with cofactor entries `A i j` continuous on `V`, gives `RegionRepresents (flat M) (flat N) V`
+with the block-diagonal cofactor. Elementary: `Finset` reindex + the `if col=col'` collapse — no ideal
+machinery. -/
+lemma regionRepresents_of_matrix_mul {p q c : ℕ}
+    (M : Matrix (Fin p) (Fin c) ((Fin n → ℝ) → ℝ))
+    (A : Matrix (Fin p) (Fin q) ((Fin n → ℝ) → ℝ))
+    (N : Matrix (Fin q) (Fin c) ((Fin n → ℝ) → ℝ))
+    {V : Set (Fin n → ℝ)}
+    (hA : ∀ i j, ContinuousOn (A i j) V) (hM : M = A * N) :
+    RegionRepresents (flat M) (flat N) V := by
+  classical
+  refine ⟨fun k l ↦ if (finProdFinEquiv.symm k).2 = (finProdFinEquiv.symm l).2
+      then A (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm l).1 else 0, ?_, ?_⟩
+  · intro k l
+    dsimp only
+    split_ifs with h
+    · exact hA _ _
+    · exact continuousOn_const
+  · intro u _ k
+    simp only [flat]
+    rw [hM, Matrix.mul_apply, Finset.sum_apply]
+    rw [← Equiv.sum_comp finProdFinEquiv
+      (fun l ↦ (if (finProdFinEquiv.symm k).2 = (finProdFinEquiv.symm l).2
+        then A (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm l).1 else 0) u
+        * N (finProdFinEquiv.symm l).1 (finProdFinEquiv.symm l).2 u)]
+    simp only [Equiv.symm_apply_apply, Pi.mul_apply, apply_ite (f := fun g : (Fin n → ℝ) → ℝ ↦ g u),
+      Pi.zero_apply, Fintype.sum_prod_type, ite_mul, zero_mul]
+    refine Finset.sum_congr rfl (fun j _ ↦ ?_)
+    rw [Finset.sum_ite_eq Finset.univ (finProdFinEquiv.symm k).2
+      (fun cl ↦ A (finProdFinEquiv.symm k).1 j u * N j cl u)]
+    simp
+
+/-- **[I⇒] the forward ideal direction** `⟨P⟩ ⊆ ⟨peeled⟩` as `RegionRepresents`, cofactors the
+polynomial entries of `Q1⁻¹`. Instantiates the bridge with the §3 forward matrix identity. -/
+theorem regionRepresents_P_peeled
+    (c12a c12b c21a c21b m11 m12 m21 m22 : (Fin n → ℝ) → ℝ)
+    (C2 : Matrix (Fin 3) (Fin 4) ((Fin n → ℝ) → ℝ)) {V : Set (Fin n → ℝ)}
+    (hc21a : ContinuousOn c21a V) (hc21b : ContinuousOn c21b V) :
+    RegionRepresents
+      (flat (Pmat c12a c12b c21a c21b m11 m12 m21 m22 C2))
+      (flat (peeled c12a c12b c21a c21b m11 m12 m21 m22 C2)) V := by
+  refine regionRepresents_of_matrix_mul _ (Q1inv c21a c21b) _ ?_
+    (Pmat_eq_Q1inv_peeled c12a c12b c21a c21b m11 m12 m21 m22 C2)
+  intro i j
+  fin_cases i <;> fin_cases j <;> simp only [Q1inv] <;>
+    first
+      | exact continuousOn_const
+      | exact hc21a
+      | exact hc21b
+
+/-- **[I⇐] the backward ideal direction** `⟨peeled⟩ ⊆ ⟨P⟩` as `RegionRepresents`, cofactors the
+polynomial entries of `Q1`. Instantiates the bridge with the §3 backward matrix identity. -/
+theorem regionRepresents_peeled_P
+    (c12a c12b c21a c21b m11 m12 m21 m22 : (Fin n → ℝ) → ℝ)
+    (C2 : Matrix (Fin 3) (Fin 4) ((Fin n → ℝ) → ℝ)) {V : Set (Fin n → ℝ)}
+    (hc21a : ContinuousOn c21a V) (hc21b : ContinuousOn c21b V) :
+    RegionRepresents
+      (flat (peeled c12a c12b c21a c21b m11 m12 m21 m22 C2))
+      (flat (Pmat c12a c12b c21a c21b m11 m12 m21 m22 C2)) V := by
+  refine regionRepresents_of_matrix_mul _ (Q1 c21a c21b) _ ?_
+    (peeled_eq_Q1_Pmat c12a c12b c21a c21b m11 m12 m21 m22 C2)
+  intro i j
+  fin_cases i <;> fin_cases j <;> simp only [Q1] <;>
+    first
+      | exact continuousOn_const
+      | exact hc21a.neg
+      | exact hc21b.neg
 
 end DLNFibre.Core.Aoyagi.Corank2Proto
