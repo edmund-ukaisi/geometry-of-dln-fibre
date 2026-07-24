@@ -1663,8 +1663,8 @@ import DLNFibre.Core.SubmultComp
 -- (FanTree / Covers / covers_subset fold + qtree/cexTree acceptance witnesses) — the L7 reuse point
 -- for the geometric-atlas build. Now aggregator-wired (was on -L7cover, merged to trunk c36ff259e).
 import DLNFibre.DLN.Aoyagi.LeafCoverTiling
--- [expedition aoyagi-engine 2026-07-24] Corank2GeoAtlas: the CORANK-2 geometric go/no-go first unit.
--- L6 dom-wide hjac (|det Dg| = blow-up monomial · unit≡1, via jacDet_comp ∘ jacDet_blockShear=1 ∘
--- jacDet_blockBlowupMap) + L7 hcover (coShear coupled per-edge box-containment closes Covers f · 1
--- through the LeafCoverTiling fan). Both inhabit CLEANLY at corank-2: GO (clean-three).
+-- [expedition aoyagi-engine 2026-07-24] Corank2GeoAtlas: the CORANK-2 geometric go/no-go first
+-- unit. L6 dom-wide hjac (|det Dg| = blow-up monomial · unit≡1, via jacDet_comp ∘ jacDet_blockShear
+-- =1 ∘ jacDet_blockBlowupMap) + L7 hcover (coShear coupled per-edge box-containment closes Covers
+-- f · 1 through the LeafCoverTiling fan). Both inhabit CLEANLY at corank-2: GO (clean-three).
 import DLNFibre.DLN.Aoyagi.Corank2GeoAtlas
