@@ -50,13 +50,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   cover; CENTERS discharged GENERALLY (fderiv outerDisp 0=0 + global quad bound at every radius). NO
   block/pivot/depth/center obstruction surfaced. My #print axioms (fresh build): 8 key roots clean-three;
   15-root batch green; full scripts/lb DLNFibre GREEN (no clash). Merged d1f94693d.
-  CURRENT: builder `geo-atlas-wire` (C, #115) = the LAST MILE → discharge exists_coreResolution:311:
-  (1) hideal (per-chart ideal identity, trunk Schur + ConjResolution template + Corank2Proto §4 bridge);
-  (2) value-match (chart jac = tree divExp); (3) leaf-enumeration bridge (FanTree↔buildTree.leaves via
-  paramsEquivFlat = rev-render's real-tree-correspondence flag, C is the probe); (4) Resolution +
-  AtlasRealizesExponents → :311. rev-render fidelity-auditing the mechanisms in parallel. Gate C on my own
-  #print axioms (payoff root aoyagi_learning_coefficient_via_engine MUST be clean-three cite-free). If C
-  hits a real-tree-correspondence obstruction → that's a genuine finding, stop+report.
+  ⚠ MISREAD CORRECTED (builder geo-atlas-wire STOPPED+reported, controller-verified, 2026-07-24):
+  exists_coreResolution:311 is NOT last-mile wiring. The `res` (Resolution) MANDATES each chart's hideal
+  (ideal identity ⟨coreGen∘g⟩=⟨diag b⟩) = the deep StepInv-fold MONUMENT: THE WALL
+  (foldResid_case11_mergeBoostSplit_canon, MergeBoostSplit.lean:108, REFUTED-AS-STATED on raw foldResid,
+  pending #69 elder object re-shape) + realBranch_appendResidDescent (cap) + leaf_stepInv_of_path' (L5) +
+  leafPath_compactCover (L7) + lastLayer_clear_preserves. The box-GEOMETRY (GeneralGeoAtlas/Corank2GeoAtlas
+  hjac/hcover, VERIFIED clean-three) is HALF the res — it does NOT touch hideal. The ideal-route hideal
+  (L-A/L-B, RENDERED-bounded) is UNBUILT in Lean (Lean still has the geometric-fold WALL). Pieces 2/3/4
+  (value-match/leaf-enum/AtlasRealizesExponents assembly) are ALREADY sorry-free (MonumentAssembly). Payoff
+  aoyagi_learning_coefficient_via_engine = cite-free but sorryAx-via-exists_coreResolution (NOT closed;
+  AxCheck.lean:1390-1414 confirms). My "geometry is the last mile" checkpoints OVER-CLAIMED (5th scope-optimism).
+  BLOCKED on the operator's DEFINITION-OF-DONE decision (wait-for-explicit-go): (a) land :311 tracked-open
+  LIVE frontier [honest payoff wording, no Lean edit] OR (b) build the ideal-route hideal [the monument:
+  #69 re-shape + fold/cover/cap]. Do NOT launch more :311 builders pre-decision.
   NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
