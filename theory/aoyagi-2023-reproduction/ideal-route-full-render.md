@@ -681,3 +681,32 @@ escape?"; the answer here: yes — each step is a uniform degree-2 1×1-pivot sh
 (ii) obligation-2 (fan-completeness / no-omitted-direction) is still bookkeeping-transfer, un-done. NOT yet
 "L7 bounded" as a whole — that needs obligation-2 + the re-audit.** Next: L6 (dom-wide composite Jacobian,
 tooth 2), then obligation-2, then L8/totality.
+
+## L6 — chart geometry + dom-wide composite Jacobian (RENDER; general)
+
+**Obligation.** Per leaf chart: `g_c` analytic on `nbhd`; a.e.-injective (`hg_inj`/`hexcep_null`); and the
+DOM-WIDE Jacobian `Chart.hjac : |det Dg_c| = jacWeight jac_c · unit`, `unit` nonvanishing on ALL of `nbhd`
+(the D1 note: germ-only is insufficient — a chart covers far regions where a germ identity can fail).
+
+**Render (the Jacobian is EXACT, defusing the germ-only trap).** `g_c = ∘_j (β_j ∘ σ_j)` (blow-up ∘ shear
+along the branch). By the chain rule `det Dg_c = ∏_j [det Dβ_j ∘ (later maps)] · ∏_j [det Dσ_j ∘ …]`.
+- **`det Dσ_j ≡ 1` EXACTLY, region-wide.** `σ_j` relabels the layer entries `C' = Q_j⁻¹ C` with the exposed
+  `u`'s as UNCHANGED parameters. In coords `(u, c)` the differential is block-triangular
+  `[[I, 0], [∂c'/∂u, Q_j⁻¹]]`, so `det Dσ_j = det(Q_j⁻¹) = 1` (`Q_j` unipotent, L-A). This is an EXACT `1`,
+  not a power-series unit — the shear contributes NO vanishing factor anywhere on `nbhd`.
+- **`det Dβ_j` = an EXACT monomial** in the exceptional coord(s) (`u^{k}`, the standard blow-up chart
+  Jacobian). By the chain rule the composite `det Dg_c` is an EXACT MONOMIAL in the exceptional coords
+  (product of the per-blow-up monomials, re-expressed through the later maps — still a monomial because the
+  intervening shears have det 1 and map monomials to monomials up to the unchanged `u`'s).
+- **Therefore `|det Dg_c| = (that monomial) · 1`** — `jacWeight jac_c := ` the monomial, `unit := 1`
+  (nonvanishing on ALL of `nbhd`, trivially). **The germ-only trap does NOT bite**: it requires a
+  genuine power-series `unit` that can vanish off the origin; here `unit ≡ 1` identically because the shear
+  dets are exactly 1 and the blow-up dets are exact monomials.
+- **a.e.-injectivity.** Each `β_j` is injective off its exceptional divisor (null); each `σ_j` is a bijection
+  (unipotent, polynomial inverse). So `g_c` is injective off the (null) union of exceptional divisors ⟹
+  `hg_inj`/`hexcep_null`. Analyticity: `g_c` is polynomial (blow-up charts + unipotent relabels).
+
+**L6 STATUS: rendered general, EXACT (no germ-only gap). Residual: rev-render audits tooth 2** (its stated
+concern — "monomial·nonvanishing-unit on ALL of nbhd, the germ-only trap"; the answer here: the unit is
+*identically* 1, so the concern is structurally void). Next: obligation-2 (fan-completeness), then
+L8/totality.
