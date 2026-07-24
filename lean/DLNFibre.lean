@@ -1668,3 +1668,8 @@ import DLNFibre.DLN.Aoyagi.LeafCoverTiling
 -- =1 ∘ jacDet_blockBlowupMap) + L7 hcover (coShear coupled per-edge box-containment closes Covers
 -- f · 1 through the LeafCoverTiling fan). Both inhabit CLEANLY at corank-2: GO (clean-three).
 import DLNFibre.DLN.Aoyagi.Corank2GeoAtlas
+-- General-d geometric-atlas MECHANISMS (geo-atlas-gd): L6 dom-wide unit≡1 Jacobian per-step + multi-step
+-- branch composite (general Fin D/S/pivot); L7 per-edge box-containment for ALL block sizes/pivots
+-- (blockShear_covers_of_norm_bound) + general-depth varying-center fan cover (fanOfSteps) + CENTERS
+-- discharged generally (fderiv outerDisp 0 = 0). No block/pivot/depth/center obstruction. 15 roots clean-three.
+import DLNFibre.DLN.Aoyagi.GeneralGeoAtlas
