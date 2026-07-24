@@ -38,11 +38,17 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   (`rlctAt/wrlctAt_sumSqFam_eq_of_germ_eq`, `Core.Aoyagi.IdealInvariance`), junk-0-guarded
   (`LocallyNullZeros`; Lean's `rpow 0^(−c)=0` demands it — guards dischargeable for
   polynomial/analytic families, `Waypoint`).
-- **B. The product-ideal resolution** `⟨∏C⟩ = ⟨diag(b₁,…,b_M)⟩` (Aoyagi Cases 1&2, *regular* Q,P). The
-  geometric heart. TWO regimes: **clean** (width ≤ 2 — telescopes; verified exact at (2,2,2,2), incl.
-  depth-3) and **COUPLED corank ≥ 2** (width ≥ 3 — the b_i share divisors; **the frontier this project
-  has dodged for multiple expeditions**). STATUS: clean verified; coupled UNBUILT. **NOT OPTIONAL — the
-  case fidelity to Aoyagi's mechanism requires; never scoped out, never a footnote.**
+- **B. The product-ideal resolution** `⟨∏C⟩ = ⟨diag(b₁,…,b_M)⟩` — Aoyagi's Cases-1/2 (S,J) recursion,
+  **IDEAL-LEVEL** (unimodular Schur-clearing `Q,P` maintain the ideal identity `⟨A⟩=⟨diag(1,Δ)⟩` with
+  polynomial cofactors; the `b_i` accumulate; the block-elim cross-term drops as a product of generators —
+  **NO coordinate substitution, NO degree-1 support-tracking**). The geometric heart, corank≥2 the SAME
+  step iterated (coupling in the residual `Δ`). STATUS (2026-07-24, operator GO on the re-architect): the
+  coordinate-FOLD route DRIFTED from this and is RETIRED (§3); the ideal-route render
+  (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`) assesses coupled-B as **BOUNDED
+  reproduce-and-verify, NOT open math** — cruxes L-A (block-elim identity) / L-B (b-chain maintenance) /
+  KC-2 (exhaustion+termination) resolved general; decorrelated review (rev-render) IN FLIGHT (not yet
+  overclaimed). **NOT OPTIONAL, and no longer "the dodged frontier" — a buildable reproduction of HER
+  recursion; still never scoped out, never a footnote.**
 - **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: LANDED sorry-free (wave 1) —
   the S2 boxed rule is a THEOREM under Aoyagi's own divisibility chain (`DivChain` guard excludes
   the coupled counterexample; `Measurable unit` delta), `Core.Aoyagi.MonomialRLCT`. The coupled
@@ -69,11 +75,23 @@ discharges **no** §1 object is **NOT progress** — it is motion. The controlle
 category before reporting progress; the elder gates every route and every progress-claim against §0–§3.
 
 ## §3  Standing math-warnings (the drift, named — the highest-suspicion classes)
-- **The recurring category error (killed us twice — the PROOF the ideal route is forced):** no
+> **RETIRED-AS-SUPERSEDED (2026-07-24, operator GO on the re-architect): the geometric-substitution-fold
+> drift class.** The coordinate FOLD (`FoldStepInvAt`, `blockBlowupCoordQuot` divide-by-pivot, degree-1
+> support-tracking, `couplingClear`, `canonCenterOf`, the WALL/KILL/#95/#98) is RETIRED — it was the drift,
+> not the object. Its warnings below are marked SUPERSEDED; the IDEAL-level discipline they were groping
+> toward is KEPT + VINDICATED (see the first bullet). SUPERSEDED ≠ REFUTED: those invariants were true
+> where they held; the ENCODING drifted.
+- **The recurring category error (KEPT + VINDICATED — the PROOF the ideal route is forced):** no
   det-1 / a.e.-injective chart diagonalises the loss on an open set (each `(∏C)ᵢⱼ` is a nonzero poly,
   ≢0 on a dense open; exact diagonalisation forces ≡0, a non-open det-0 projection). The value LOWER
-  bound is therefore **not** a chart change-of-variables — it is IDEAL-level. A value-computing chart
-  passes det/cover/measure gates and fails only at the value consumer, late.
+  bound is therefore **not** a chart change-of-variables — it is IDEAL-level. **STATE THE RESOLUTION FOR
+  THE OBJECT** — the ideal identity `⟨A⟩=⟨diag(b)⟩` (polynomial cofactors), NEVER a coordinate-support
+  predicate; the 2026-07-24 re-architect IS this discipline realized (the fold's support-tracking was the
+  drift away from it). A value-computing chart passes det/cover/measure gates and fails at the consumer, late.
+- **The b-chain is LOAD-BEARING for the MAINTENANCE, not only the read-off.** `b₁|b₂|…|b_M` (worked.tex:484)
+  is what makes the non-unit `diag(b)` step an IDEAL EQUALITY — the divisibility absorbs the block-elim
+  cross-terms (L-B). Do NOT treat the b-chain as mere read-off bookkeeping; it carries the coupled Cases-1/2
+  step. (This is why corank≥2 dissolves to the SAME step: the chain accumulates automatically.)
 - **Reuse RESULTS; the ideal route replaces the chart route.** The retired α-atlas chart Engine
   (`Engine/`, RETIRED.md, un-wired/un-built) has category-false holes — **DO NOT FILL THEM**. Salvage
   correct kernel-checked tree/det pieces into Object B by re-importing the specific module, never by
@@ -87,13 +105,15 @@ category before reporting progress; the elder gates every route and every progre
 - **Reuse dev's determinantal-geometry RESULTS for D (proved, cite-free); do NOT adopt L&R's
   quiver-representation THEORY** (Gabriel / orbit-closures / Ext-codim / the (C,θ) fibre-geometry) as a
   subject to build — the paper's OTHER programme, outside the RLCT-value scope.
-- **The gnote antidote** (worked.tex:191): the *per-layer recursion is the drift*; the reading is
-  IDEAL-level (`rlct = ½·min_t codim S(t)`; regular Q,P preserve the ideal), never a diffeomorphism of
-  the loss. Route D2 (mild-singularity dissolve) is DROPPED; D1 (the codimension object) stays.
+- **The gnote antidote** (worked.tex:191): the per-layer recursion AS A LOSS-DIFFEOMORPHISM is the drift;
+  the reading is IDEAL-level (`rlct = ½·min_t codim S(t)`; regular Q,P preserve the ideal), never a
+  diffeomorphism of the loss. Aoyagi's IDEAL-level (S,J) recursion via regular Q,P IS the route (reproduce
+  it — B). Route D2 (mild-singularity dissolve) DROPPED; D1 (the codimension object) stays.
 - **NO minimum-viable-ing a named hard part** (esp. coupled-B). "Toric-trivial / no extra blow-ups /
-  elementary" clean headlines about an unbuilt object are UNVERIFIED until probed with decorrelated
-  exact-algebra at the KNOWN failure cases (coupled corank≥2). The tractability probe is a CHECK on a
-  committed build, never a gate that scopes the object down.
+  elementary" clean headlines are UNVERIFIED until probed with decorrelated exact-algebra at the KNOWN
+  failure cases (coupled corank≥2). NOW: coupled-B is render-assessed BOUNDED (review in flight) — but
+  "render-bounded" ≠ "review-landed" ≠ "built"; the build is a FULL reproduce, never MVP'd, and the
+  tractability probe is a CHECK on a committed build, never a gate that scopes the object down.
 - **The source-fidelity discipline (fidelity arc, 2026-07-23 — the deepest drift; ~2 days + 4
   escalations). Two composed gates: def-fidelity at BAKE time, paper-first at DEFECT time.**
   *BAKE:* a spine DEFINITION bakes only behind a source-fidelity certificate — the source construction and
@@ -112,16 +132,10 @@ category before reporting progress; the elder gates every route and every progre
   missing b-chain = her `diag(b)`), and the source is the cheapest, most decisive instrument. Only then
   commission elaboration (traces, candidate designs, decorrelated consults) — which then VERIFY her answer
   and serve as the acceptance battery, never as de-novo design of an object the source already has.
-- **The `canonCenterOf` full-block tripwire (fired 3×, each pre-render: 16th `supportAt`-widen / P2
-  root-widen / 26th phantom-fix center-edit).** `canonCenterOf`'s FULL `widthMinUpto`-capped-block shape is
-  LOAD-BEARING: `realBranch_cover` proves `supportAt ⊆ ed.center` BY the exact coincidence
-  `canonCenterOf = blockCoords = supportAt` at δ=1 case12/case2. So ANY edit that shrinks or widens the
-  CENTER's shape falsifies a proven consumer — **NEVER edit `canonCenterOf`'s shape.** Chart-choice / fan
-  restrictions go to the PIVOT surface (`IsRealBranch` rule-(b) / `canonPivotOf`), which `IsRealBranch` pins
-  SEPARATELY from the center, so the pivot edit leaves `realBranch_cover` + the Deg1 bounds untouched.
-  Generalises: a green SPECIFY framing is NOT sufficient for a def-edit (statement gates never catch a wrong
-  def — cf. the source-fidelity bullet); every def-edit bless runs the known-tripwire checklist (this
-  coincidence = item #1) FIRST.
+- **[SUPERSEDED — retired with the fold] the `canonCenterOf` full-block tripwire** (fired 3×: 16th
+  `supportAt`-widen / P2 root-widen / 26th center-edit) retires with the coordinate fold. Its GENERAL lesson
+  STANDS (ideal-level discipline): a green SPECIFY framing is NOT sufficient for a def-edit — statement gates
+  never catch a wrong def (cf. source-fidelity); enumerate ALL consumers + directions before a def-edit bless.
 
 ## §4  Durability
 Read first, every cycle, by every role. Elder is sole author (holds the abstract-object frame; gates

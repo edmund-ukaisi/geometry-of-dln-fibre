@@ -309,6 +309,34 @@ must measure the Lean tax as manageable — the paper's one-line ideal argument 
 render without a hidden Mathlib ideal-membership tax. Green-enough prototype → commit the swap. This is the
 rising-sea move: fill the layer with the RIGHT (her) construction, not grind a local-min on sunk cost.
 
+## THE COUPLED-B BUILD PHASE (2026-07-24 — operator GO on the re-architect; the new mode)
+
+**V-MIRAGE RETRACTED.** The coordinate-substitution FOLD route ("V" — the geometric via-the-fold
+construction) is retracted as the LOCAL-MIN the pricing exposed (treadmill: ~489→495 census over 260
+commits; the ~29 catches all in the fold's support-tracking). The committed route is **coupled-B, the
+matrix-ideal Schur-clearing** = Aoyagi's own Cases-1/2 (S,J) recursion (compass "THE PIVOTAL FORK —
+RESOLVED"; charter §1-B, §3). Nothing in the fold was REFUTED — the encoding drifted; SUPERSEDED, kept as
+history.
+
+**THE MATH RENDER (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`) is COMPLETE and
+render-assesses the close-out as BOUNDED-AND-BUILDABLE** — reproduce Aoyagi's Cases-1/2 (S,J) recursion,
+ideal-level, `⟨∏C⟩=⟨diag(b)⟩ → rlct=½·cCodim`. Cruxes resolved GENERAL: L-A (block-elim ideal identity);
+L-B maintenance (the non-unit `diag(b)` step is an ideal equality via the b-CHAIN divisibility absorbing
+the block-elim cross-terms); KC-2 (Cases exhaustive + terminating — Aoyagi's totality over-claim droppable,
+partial order + b-chain); Theorem 4 (all-var homogeneity) landed+wired; Mval=cCodim landed. **HONEST STATUS:
+render-assessed bounded-and-buildable; the decorrelated review (rev-render) is IN FLIGHT — NOT overclaimed
+as done/verified before the review lands.** The value engine (A→B-CoV→C→D) is done and ideal-level; the
+sole construction is the per-step N1 (`chartStep_idealIdentity`) + the N2 path-fold
+(`rearchitecture-blueprint.md` §1), reproducing the (S,J) recursion.
+
+**THE NEW 3-LEVEL OPERATING MODE (operator, 2026-07-24).** (1) controller owns PROCESS + MATH (the render);
+(2) decorrelated ADVISORY math-level seats — a review-only pen-and-paper (rev-render) auditing the render, a
+code-frontiers scout, a long-range code-projection scout — propose-never-act; (3) Lean OUTSOURCED to builders
+via detailed briefs. PREP phase now (operational center + house-cleaning); the Lean BUILD fires ONLY on the
+operator's explicit go. Elder role in the new mode: gate the render/SPEC against the charter (objects A-E;
+the bar); author the charter/compass; the stern voice on overclaim (hold "render-bounded" ≠ "review-landed"
+≠ "built"). Plan artifact: `execution-plan-coupledB.md` (controller).
+
 ## Standing counsel (rising-sea)
 - **THE PER-FIELD + BOUNDARY AUDIT (refined 2026-07-21, the layer-axis event):** audit each free
   field AND each field's range boundaries — a field constrained everywhere but at its range's
