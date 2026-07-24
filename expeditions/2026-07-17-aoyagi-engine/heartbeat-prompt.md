@@ -8,13 +8,16 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- **⚠ REGROUNDING IN PROGRESS (2026-07-23 ~23:00) — the phase/LANES text BELOW is STALE (pre-regrounding
-  geometric-fold framing; do NOT act on it).** Current truth = `regrounding-2026-07-23.md`: treadmill
-  confirmed; suspected LOCAL-MIN at the encoding level; PIVOTAL FORK #106 (ideal-identity Schur-clearing
-  vs geometric-substitution fold) tilting RE-ARCHITECT, pending pnp-ideal's corank≥2 exact-algebra check
-  + elder's final ruling. Value chain (Objects A/C/D) verified sorry-free + ideal-level; the open frontier
-  = proving the charts' ideal identity. All geometric-fold render (#92/#95/#98) HELD behind #106. This
-  memo gets rewritten once the fork is decided.
+- **⚠ NEW PHASE (2026-07-24) — COUPLED-B BUILD PREP. The phase/LANES text BELOW is STALE (retired
+  geometric-fold; do NOT act on it).** Current truth: the RE-ARCHITECT is committed (operator go, V →
+  coupled-B). The math RENDER is COMPLETE (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`):
+  the close-out is reproduce Aoyagi's Cases-1/2 (S,J) recursion IDEAL-LEVEL (⟨∏C⟩=⟨diag(b)⟩ → rlct=½cCodim);
+  all cruxes resolved general (L-A; L-B via the b-chain; KC-2; Theorem 4 landed; Mval=cCodim landed) —
+  render-assessed BOUNDED-AND-BUILDABLE, reproduce-and-verify (not open math). NEW 3-LEVEL MODE (operator):
+  controller owns PROCESS + MATH(render); decorrelated advisory math seats (rev-render review-only,
+  scout-code, scout-proj); Lean OUTSOURCED to builders via detailed briefs. PLAN = `execution-plan-coupledB.md`.
+  PREP phase now (operational center + house-cleaning); the Lean BUILD fires ONLY on the operator's explicit go.
+  The geometric fold (MonumentAtlas/KILL/#95/#98/couplingClear) is RETIRED-superseded (not refuted).
 - **READ `charter.md` FIRST, every wake** — it is the fixed invariant core (goals = Aoyagi's machinery
   as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
   Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
