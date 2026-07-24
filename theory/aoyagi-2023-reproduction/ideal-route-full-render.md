@@ -788,3 +788,63 @@ after rendering each geometric obligation). **Gate before build-ready: rev-rende
 must survive** (esp. its tooth-1 corank≥2 escape and the L8 exhaustiveness) — if it holds, the render is
 complete and the checkpoint to the operator is "build-ready, no open math, honest scope = the geometric
 fields Lean build."
+
+## REV-RENDER RE-AUDIT #2 (decorrelated + fresh Codex, 2026-07-24) — L8 route-A REFUTED; adopt route B
+
+The re-audit REFUTED my L8 "exhaustive-tree" correction (my THIRD scope-optimism error, caught). Teeth 1&2
+survive; L8 is the real crux and needs route B. Corrections, load-bearing first:
+
+**RETRACT the L8 "exhaustive ⟹ automatic" correction.** Two independent refutations (verified):
+- **The tree is SELECTIVE, not exhaustive.** `(2,2,1,1)`: admissible profile `(1,1,0)` (Mval 2) is
+  STRANDED — no branch peels it (at layer 3 the running-min is 1). So the min-realizer is NOT automatically
+  a divisor; my reading of worked.tex §3.4 ("every profile is a terminal divisor") was WRONG. The value
+  `min{M_{s,k}} = cCodim` holds because the MINIMIZER is reachable (steered-to), not because all profiles are.
+- **Greedy = global is FALSE (route A dead).** `Mval` is edge-additive (`(t_{j-1}−t_j)(M_{j+1}−t_j)` couples
+  adjacent levels), NOT level-separable. `M=(2,2,2)`: least profile `(0,0)→4`, minimizer `(1,0)→3` — "pick
+  the least" does not even TARGET the minimizer. `M=(1,1,3,2)`: `(1,1,0)→2` a strict local min above global
+  `(0,0,0)→1` — greedy stalls. Do NOT attempt greedy=global / level-separability.
+
+**ADOPT route B — decouple the two bounds (Codex-confirmed the single-chart upper needs NO completeness;
+the two inequalities may use DIFFERENT modifications).**
+- **Lower bound** (`rlct ≥ ½cCodim`): the greedy/Aoyagi tree's COVER — every divisor's ratio ≥ ½cCodim
+  (incl. intermediate/non-binding divisors — the L-lower "birth-exponent ≥ ½min / monotone accumulation"
+  sub-point, part of the lower bound, to re-address) + obligation-2 fan-completeness.
+- **Upper bound** (`rlct ≤ ½cCodim`) = V-upper (#110): a SEPARATE single chart along a branch STEERED to
+  the minimizer `t*`, giving `rlct ≤ ½·Mval(t*) = ½cCodim`. No exhaustiveness, no greedy optimality needed.
+
+**L8 residual under route B (rendered here) — the true minimal residual, much lighter than greedy=global:**
+- **(i) minimizer ⟹ clearable (reproduced; Codex proved).** Exchange argument: suppose the minimizer `t*`
+  violates the running-min (rank) envelope on a prefix — `t*^{(i)}` exceeds `r_{i+1}` (the layer-(i+1) rank)
+  somewhere. Replace that prefix by the envelope `t̄^{(i)} = r_{i+1}`. The touched charges
+  `(t^{(j-1)}−t^{(j)})(M^{(j+1)}−t^{(j)})` at the pinned prefix drop to 0 (the envelope makes the differences
+  vanish / the second factor minimal), so `Mval(t̄) < Mval(t*)` STRICTLY — contradicting minimality. Hence
+  every minimizer already satisfies the envelope ⟹ is clearable. (Note the sharpness: "admissible ⟹
+  clearable" is FALSE — `(1,1,0)` at `(2,2,1,1)` is admissible-but-stranded — but "minimizer ⟹ clearable"
+  holds. The strandedness lives exactly on the non-minimizers.)
+- **(ii) clearable ⟹ realized by a steered branch (THE one steering lemma — rendered structure, to build).**
+  Given a clearable `t*` (envelope-satisfying), construct one explicit branch of the recursion realizing it:
+  induct on layers `j = 1..L`; at layer `j`, the envelope condition `t*^{(j)} ≤ r_{j+1}` (with `t*^{(j)} ≤
+  t*^{(j-1)}`) makes the rank-drop to `t*^{(j)}` an ADMISSIBLE Case-1/Case-2 move (the case-split offers every
+  drop from `t*^{(j-1)}` down to the envelope floor); steer the branch to take exactly that drop. Codex's
+  phrasing: "pull each unsaturated descent while it lies below `r_s`." The terminal divisor of this steered
+  branch has profile `t*`, so its single chart gives `rlct ≤ ½Mval(t*) = ½cCodim`. **STATUS: mechanism
+  rendered (a construction following `t*`), NOT yet a from-scratch proof that the steered move is always a
+  legal Case-1/2 step — that legality-at-each-step is the genuine content to render/build (it is what
+  #110 = V-upper packages). This is the HIGHEST residual of the geometric half.**
+
+**#2a (b-chain totality) — RETRACTED as a conflation, and MOOT under route B.** My "same-`~t`-level chain
+IS the b-chain order" was wrong: `b_i = ∏_{~t_α<i} u_α` divides by SCALAR levels `~t_α` only, forgetting the
+componentwise profile order within a level — the b-divisibility order and the profile partial-order are
+different objects. Under route B no least-selection is used, so #2a need not be discharged at all.
+
+**Tooth-1 precision (accept):** the render's "uniform degree-2 inflation" is scoped PER-EDGE. The COMPOSITE
+degree grows with depth (nested one-row shears → degree 3+), but the `-L7cover` engine iterates the per-edge
+bounds `R_{j−1} ≤ R_j + C_j R_j²` (`f^[depth]` finite at finite depth), never bounding the composite by one
+quadratic — so this is harmless, provided the phrasing says PER-EDGE (not composite). Engine confirmed
+sorry-free on-branch (646bcdcdb; unmerged = "landed on-branch," not in-tree).
+
+**CORRECTED geometric-half verdict.** Teeth 1&2 sound (fears dissolved). L8: route A (greedy) FALSE; route B
+(decouple) is the honest path with ONE genuine steering lemma left — (ii) clearable⟹realized, the per-step
+Case-1/2 legality of the steered branch = V-upper #110. So the render is NOT "no open math" yet: it has ONE
+un-rendered lemma (light, sketched, but real). Render (ii) fully → then the render is complete. My "EARNED
+no-open-math" above was PREMATURE (the third optimism); this section supersedes it.
