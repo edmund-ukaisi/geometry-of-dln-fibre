@@ -146,6 +146,26 @@ branch expedition/aoyagi-engine-PROTO) to render the ONE step on the certificate
 operator blessing). Heavy hidden Mathlib ideal tax → reconsider "lighter IN LEAN". pnp-ideal on-call for
 any math (not plumbing) question. Everything else HELD; nothing retired until the prototype measures green.
 
+**UPDATE (2026-07-24 ~00:00): gate (i) FULLY GREEN — prototype rendered + CONTROLLER-fidelity-verified.**
+proto-corank2 (branch -PROTO @ 05c35eb8a, `Corank2Proto.lean`, 284 LoC) rendered all 4 contract items
+sorry-free, axiom-clean; tax = ~5 friction-cycles, each closed by a banked idiom in ~1 cycle, ZERO
+genuine dependent-dim HMul failures. **RED condition (heavy Mathlib ideal tax) DECISIVELY ABSENT** —
+`RegionRepresents` is the elementary explicit-cofactor predicate proved by matrix algebra + a
+`finProdFinEquiv` reindex, NO `Ideal.span`/`mem`/Gröbner. Controller READ the full module off the branch
+(git show): matrices = cert's exact objects over general `[CommRing R]` w/ free coords (non-vacuous);
+both ideal directions real; every proof standard tactics; hygiene clean. So the "lighter IN LEAN" verdict
+is verified by my own hand, not on report. Known residual (proto's honest note, carried forward): single
+fixed-width step; the R1 recursion aggregate tax is a BOUNDED prediction (opaque-width reassoc sampled
+clean via `mul_three_reassoc_depWidth`), not proven at scale — deterministic work, not a wall.
+
+**ALL THREE DECISION GATES GREEN** (gate i math + Lean-tax, both cross-checked by controller; gate ii
+elder-final RE-ARCHITECT). Remaining = gate (iii) OPERATOR blessing for the team-redirect (surfaced).
+The COMMIT = (1) elder authors the blueprint (charter/compass reframe + new L3/L4/L5 Schur-clearing SPEC
+statement-delta, controller-gated); (2) redirect seats to render the ideal route; (3) geometric fold stays
+HELD (retirement is downstream + git-recoverable when the ideal route lands — pruned at close like the
+RouteM fossils, no destructive now-action). Held for the operator's go (elder + controller both
+conditioned the blueprint on operator-go).
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
