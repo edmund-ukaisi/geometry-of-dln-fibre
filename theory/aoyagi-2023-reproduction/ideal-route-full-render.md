@@ -983,3 +983,44 @@ raw-width defect lives). My structural render, and the precise sub-point I flag 
   steered Case-1(2)→Case-2 branch realize `t*`'s earlier coordinates, or does the raw-width head-reset
   divert it?** This is the last open sub-point of steering (a); the envelope/range part is structurally
   sound above.
+
+### REV-RENDER RE-AUDIT #4 (focused, non-monotone, 2026-07-24) — the rendered steering is WRONG; corrected
+
+**VERDICT: the rendered mechanism DIVERGES at `(2,2,3,2)` (VERIFIED, decorrelated + Codex). I had the case
+roles BACKWARDS.** Owned. The minimizer there is `t*=(1,1,0)` (Mval 3 = cCodim). My "advance via Case-1(2),
+FINALIZE via Case-2" fires Case-2 at `(3,0)`, whose head-reset gives `(2,3,0)→6` (raw) or `(2,2,0)→4`
+(running-min) — NEITHER is `t*`, both non-binding (>3); and firing Case-2 there is not even a legal move
+(Case-1 is active). So the rendered instruction was ill-defined AND wrong exactly at the non-monotone place
+I flagged.
+
+**The correction (verified against the source T-E flag): the case roles are the REVERSE of what I wrote.**
+- **Case-1(2) INHERITS the head** — `t^{(i)}_{S,J+1} = t^{(i)}_{s,k}` (p.17, inherited from the factored
+  divisor). This is what PRESERVES the minimizer's earlier coordinates.
+- **Case-2 RAW-RESETS the head** — `t^{(i)}_{S,J+1} = M^{(i+1)}` (p.20, raw width) — the T-E defect; at
+  non-monotone widths it overshoots the running-min/minimizer head.
+So the CORRECT steering **finalizes via Case-1(2) (inherited anchor), not Case-2**: build an anchor high,
+then let Case-1(2) inherit the head while dropping the tail. Verified repair at `(2,2,3,2)` (illustration,
+not justification): `C2(1,0), C2(1,1)` → anchor `(1,1,1)`, then `C1(2)(3,0)` inherits the head, drops the
+tail → `(1,1,0) = t*`. So `t*` IS realized by a legal trace — the minimizer is NOT stranded (contrast
+`(2,2,1,1)`); my render just chose the wrong mechanism.
+
+**A likely-cheaper recast (rev-render's nuance — to explore): the upper bound wants a DIVISOR, not a
+terminal profile.** A leaf carries several divisors, and the chart threshold is the min over them; so the
+upper bound `rlct ≤ ½cCodim` holds as soon as SOME divisor anywhere in the tree has exponent `M = cCodim`
+(= `hattain` literally). Even the "wrong" branch's leaf at `(2,2,3,2)` CONTAINS the `(1,1,0)` divisor. So
+V-upper #110 may take "the min-binding divisor of a reachable leaf" instead of "a branch terminating at
+`t*`" — recasting steering (a) from "realize `t*` as a terminal profile" to the weaker "the minimizing
+divisor is BORN somewhere on a reachable branch." This is worth trying first; it may dissolve the
+anchor-tracking.
+
+**CORRECTED status of lemma (ii) / steering (a) — a MEDIUM residual, NOT done.**
+- The rendered per-step mechanism is RETRACTED (backwards).
+- The corrected direction (inherited-anchor via Case-1(2); or the divisor-born recast) is verified at the
+  binding non-monotone instance but is NOT proved general.
+- **The honest residual: the general corrected-steering / divisor-born lemma — that the inherited-anchor
+  construction (or the born-divisor recast) realizes the minimizer's exponent for ALL widths, respecting the
+  forced Case-1/Case-2 split.** Codex: finite batteries support it; not proved general; the anchor-tracking +
+  case-legality (or the born-divisor argument) is the real content. This is a MEDIUM residual of the
+  geometric half — lemma (ii) is one corrected render + its general proof away from done, NOT done. **Do NOT
+  call the close-out build-ready.** (The audit working as designed: I flagged the non-monotone sub-point
+  rather than asserting it, and it did diverge — the flag, not an over-claim.)
