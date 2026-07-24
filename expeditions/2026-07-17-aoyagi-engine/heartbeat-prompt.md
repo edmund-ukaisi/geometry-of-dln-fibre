@@ -18,8 +18,14 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   one-pivot-per-step (uniform deg-2 shears, -L7cover engine); L7 obl-2 exhaustive fan; L8(ii) via EXHAUSTIVE
   tree + Object D (my greedy=global worry was over-caution, source-resolved); totality via the b-chain.
   EARNED re-verdict: NO open math; residual = the Lean geometric build (exists_coreResolution fields) + wiring.
-  **CURRENT GATE: rev-render's RE-AUDIT of L6/L7/L8 (in flight) = the LAST prep gate.** When it holds →
-  checkpoint the operator build-ready. NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
+  **CURRENT STATE (post 5 rev-render audit rounds): SPINE (L-A/L-B/Thm-4) + teeth (L6/L7) VERIFIED/rendered;
+  the value UPPER bound is the ONE medium residual.** rev-render caught 4 scope-optimism errors (route-A
+  greedy, exhaustive-tree, Object-D-attainment, backwards case-roles). Value upper bound now a CLEAN reduction
+  (∃ terminal-binding divisor at a minimizer t* ⟸ t*∈T_reach); clearability (i) established; PRECISE RESIDUAL
+  = `minimizer ⟹ reachable-as-terminal` (minimality essential — clearable⊋reachable). CURRENT GATE:
+  rev-render auditing that reduction + the kill-test "is any minimizer stranded?" (fresh Codex). NOT
+  build-ready; render the residual PROOF only after the statement survives. NEW 3-LEVEL MODE: controller owns
+  PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
   (MonumentAtlas/KILL/#95/#98) RETIRED-superseded (not refuted).
