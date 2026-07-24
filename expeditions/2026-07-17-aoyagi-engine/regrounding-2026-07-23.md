@@ -175,6 +175,18 @@ seats, NOT retiring anything. EXECUTION (render, seat-redirect, charter-edit lan
 remains HELD for the operator's explicit go — those retire team work + disrupt the team. Controller gates the
 statement-delta when the blueprint lands. This is reversible prep that makes the eventual go instant.
 
+**UPDATE (HB6): blueprint DELIVERED + GATED.** `threads/L4-case1-core/rearchitecture-blueprint.md`
+(elder-authored, controller-committed). N1 `chartStep_idealIdentity` (supersedes L4 case1 + L3 case2),
+N2 `leafChart_idealIdentity` (supersedes L5 leaf_stepInv, output = the SAME PrincipalInv → L1/L6/L7/L8
+untouched). Controller GATE: APPROVED. (i) four-case→uniform-N1 collapse GREEN (the per-step Schur-clearing
+is case-uniform; case-distinctions are N2-fold bookkeeping = buildTree provenance, kept) + a named
+render-time confirm (N2 fold across a case11-MERGE/rollover + terminal) — de-risking NOW via pnp-ideal
+(extend multilayer.py to a merge/rollover, reversible, no execution). (ii) superseded-not-refuted GREEN
+(binding on the retirement banners; §9/F-fork history stays). Refinement: verify N1/N2 output type = L1's
+PrincipalInv at render (interface-invisible supersession). EXECUTION still HELD for operator-go. After the
+pnp-ideal merge-confirm lands, ALL reversible prep is complete — a fully-de-risked, ready-to-fire
+re-architecture awaiting only the operator's go on the render/redirect/retirement.
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
