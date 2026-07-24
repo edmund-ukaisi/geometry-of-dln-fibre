@@ -8,7 +8,18 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
-- **⚠ NEW PHASE (2026-07-24) — COUPLED-B BUILD PREP. The phase/LANES text BELOW is STALE (retired
+- **▶ GATE-2 BUILD LAUNCHED (2026-07-24, operator explicit go).** Planning phase COMPLETE (next-build-render
+  §1-§10, triply-checked: survey-inv + rev-render ×2 + hcover-probe). Settled scope = **Encoding-I** (the
+  ideal-route `hideal` via L-A/L-B Schur-clearing), NO open math obstruction; residual = a bounded-but-large
+  Lean build. hcover GREEN-on-math (route-(a) full fan; SEAM-2 box-containment cleared for the faithful
+  multi-term shear). **Builder `gate2-hideal` (lean-formaliser) running** on `expedition/aoyagi-engine-gate2`
+  off `-PROTO`: the elder gate-(i) MEASUREMENT = instantiate the -PROTO symbolic Schur spine into a concrete
+  corank-2 `Chart.hideal_fwd`/`hideal_bwd`, measure the Lean tax (TAX REPORT = deliverable). Brief =
+  `gate2-hideal-prototype-brief.md`; task #121. Green-enough → controller takes commit-the-swap to operator
+  (wait-for-explicit-go on the full general-`d` fold). Elder convenes at the gate RESULT (route-adoption joint).
+  The NEW 3-LEVEL MODE holds: controller owns PROCESS + MATH (the render); decorrelated advisory seats
+  propose-never-act; Lean OUTSOURCED to builders, fires only on operator go (now given, THIS unit).
+- **⚠ (2026-07-24) — the phase/LANES text BELOW is STALE (retired
   geometric-fold; do NOT act on it).** Current truth: the RE-ARCHITECT is committed (operator go, V →
   coupled-B). Close-out = reproduce Aoyagi's Cases-1/2 (S,J) recursion IDEAL-LEVEL (⟨∏C⟩=⟨diag(b)⟩ →
   rlct=½cCodim). RENDER ARC (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`): (1) rendered;

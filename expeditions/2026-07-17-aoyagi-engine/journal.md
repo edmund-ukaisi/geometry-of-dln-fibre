@@ -21793,3 +21793,35 @@ move. Holding my own peripheral coordination pending the re-grounding; seats con
 
 **Status.** Awaiting carto-fresh (the re-grounding). Uniform-C cleared. KILL rendering (seat-killfin).
 No structural move until the cartographer reports and I cross-check.
+
+---
+
+## 2026-07-24 — PLANNING PHASE CLOSED + GATE-2 BUILD LAUNCHED (operator explicit go)
+
+The thorough planning phase the operator commissioned is complete and its scope is settled + triply-checked
+(survey-inv kernel-verified inventory → controller re-render → rev-render decorrelated audit ×2 → a dedicated
+`hcover` probe). Output: `next-build-render.md` §1-§10.
+
+**The settled scope: Encoding-I** (the ideal-route `hideal` via L-A/L-B Schur-clearing, retiring the
+geometric fold). NO open math obstruction remains — the residual is a genuine, substantial, fidelity-sensitive
+*Lean build*, given 4 guardrails. Key de-riskings this phase: (a) rev-render confirmed the ideal route
+GENUINELY bypasses the retired substitution frontiers (`P·B=B·L`, b-chain construction-automatic,
+corank≥2-safe via successive 1×1 clears) — not the wall re-encoded; (b) the `hcover` probe returned
+GREEN-on-math (no escape obstruction; box-containment fully bounded incl. the faithful MULTI-term shear via
+the SEAM-2 clearance — `C ≤ width`, depth-INDEPENDENT), with one wire choice (route-(a) full fan, sound,
+zero new math); (c) the honest precision held: render-verified ≠ Lean-inhabited, and the terminal-principality
+open-end (open-in-source) is routed around by the value path (V), NOT silently closed.
+
+**Operator reground + go (this session):** replayed the 3-level operating mode (controller owns PROCESS +
+MATH / decorrelated advisory seats / Lean outsourced to builders) — operator confirmed. Then explicit **go**
+for the elder gate-(i): the corank-2 Encoding-I `hideal` prototype.
+
+**Launched:** builder `gate2-hideal` (lean-formaliser) on `expedition/aoyagi-engine-gate2` off `-PROTO`
+(which carries the sorry-free symbolic Schur spine `Corank2Proto`). Task #121. Brief =
+`gate2-hideal-prototype-brief.md`. It is a MEASUREMENT: instantiate the symbolic spine into a concrete
+corank-2 `Chart.hideal_fwd`/`hideal_bwd` (dom-wide, both directions), report the Lean tax. Green-enough →
+the controller takes the commit-the-swap decision to the operator (wait-for-explicit-go on the full
+general-`d` fold); the elder convenes at the gate result (route-adoption joint).
+
+**Status.** Gate-2 builder running (background). Holding for its report + tax verdict; re-derive the gate
+(`#print axioms` on a fresh build) before believing "done."
