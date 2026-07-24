@@ -1659,3 +1659,12 @@ import DLNFibre.Core.Aoyagi.BlockBlowupCover
 -- (the layer-0 decomposition's engine). Countermodel = permanent kill-battery, not scaffolding.
 import DLNFibre.DLN.Aoyagi.BaseCountermodel
 import DLNFibre.Core.SubmultComp
+-- [expedition aoyagi-engine 2026-07-24] LeafCoverTiling: the sorry-free box-inflation cover engine
+-- (FanTree / Covers / covers_subset fold + qtree/cexTree acceptance witnesses) — the L7 reuse point
+-- for the geometric-atlas build. Now aggregator-wired (was on -L7cover, merged to trunk c36ff259e).
+import DLNFibre.DLN.Aoyagi.LeafCoverTiling
+-- [expedition aoyagi-engine 2026-07-24] Corank2GeoAtlas: the CORANK-2 geometric go/no-go first unit.
+-- L6 dom-wide hjac (|det Dg| = blow-up monomial · unit≡1, via jacDet_comp ∘ jacDet_blockShear=1 ∘
+-- jacDet_blockBlowupMap) + L7 hcover (coShear coupled per-edge box-containment closes Covers f · 1
+-- through the LeafCoverTiling fan). Both inhabit CLEANLY at corank-2: GO (clean-three).
+import DLNFibre.DLN.Aoyagi.Corank2GeoAtlas
