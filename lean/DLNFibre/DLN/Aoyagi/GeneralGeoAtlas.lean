@@ -283,6 +283,68 @@ theorem outerShearBlowup_injOn (corr : Fin D → Option (Fin D × Fin D))
       (Set.univ \ {w : Fin D → ℝ | w p = 0}) :=
   centerCoordAligned_of_injective (outerShear corr) hp (injective_outerShear corr hsrc)
 
+/-! ### §3b — the PATH composite along a branch: `|jacDet|` = product of monomials, unit ≡ 1
+
+Aoyagi's leaf charts are MULTI-step composites `g_c = ∘_j (shear_j ∘ blockBlowupMap S_j p_j)` down a
+root→leaf branch. The composite `|jacDet g_c u|` is the PRODUCT of the per-step blow-up monomials
+(each evaluated at the running partial composition), with NO residual unit factor — the shears
+contribute exactly `1` at every step. So the dom-wide unit is IDENTICALLY `1` along the whole
+branch, not merely per step (the germ-only trap void, at branch scale). -/
+
+/-- One **geo step** of a resolution branch: a block-center `S ∋ p` and a unit-Jacobian shear. -/
+structure GeoStep (D : ℕ) where
+  /-- The blow-up center. -/
+  S : Finset (Fin D)
+  /-- The pivot. -/
+  p : Fin D
+  /-- The pivot is in the center. -/
+  hp : p ∈ S
+  /-- The (unipotent) shear applied after the block blow-up. -/
+  shear : (Fin D → ℝ) → (Fin D → ℝ)
+  /-- The shear is differentiable. -/
+  hshear_diff : Differentiable ℝ shear
+  /-- The shear's Jacobian is exactly `1` (the shear-pin). -/
+  hshear_jac : ∀ w, jacDet shear w = 1
+
+/-- The step's coordinate change `shear ∘ blockBlowupMap S p` (block blow-up outermost within the
+step, shear inner). -/
+def GeoStep.stepMap (g : GeoStep D) : (Fin D → ℝ) → (Fin D → ℝ) :=
+  g.shear ∘ blockBlowupMap g.S g.p
+
+/-- The step map is differentiable. -/
+theorem GeoStep.differentiable_stepMap (g : GeoStep D) : Differentiable ℝ g.stepMap :=
+  g.hshear_diff.comp (differentiable_blockBlowupMap g.S g.p)
+
+/-- **The branch Jacobian monomial** — the product, down the branch, of each step's blow-up monomial
+`|(partial composition of deeper steps)_{p}|^(|S|−1)`. Manifestly a product of monomials (no unit
+factor): this IS the "`unit ≡ 1` identically" content at branch scale. -/
+def geoPathWeight : List (GeoStep D) → (Fin D → ℝ) → ℝ
+  | [], _ => 1
+  | s :: rest, u =>
+      |(pathMap (rest.map GeoStep.stepMap) u) s.p| ^ (s.S.card - 1) * geoPathWeight rest u
+
+/-- **L6, PATH composite (unit ≡ 1 down the whole branch).** `|jacDet (pathMap branch) u| =
+geoPathWeight branch u` — the composite Jacobian is EXACTLY the product of the per-step blow-up
+monomials, with no residual unit. Cons-induction on the branch: `abs_jacDet_pathMap_cons` peels the
+head, `abs_jacDet_shear_comp_blockBlowup` turns it into the head monomial (shear det ≡ 1), the IH
+handles the tail. The general-`d`, multi-step generalization of `jacDet_coG` (a single step). -/
+theorem abs_jacDet_geoPath (steps : List (GeoStep D)) (u : Fin D → ℝ) :
+    |jacDet (pathMap (steps.map GeoStep.stepMap)) u| = geoPathWeight steps u := by
+  induction steps generalizing u with
+  | nil => simp [geoPathWeight, pathMap_nil, jacDet_id]
+  | cons s rest ih =>
+    have hdiffRest : Differentiable ℝ (pathMap (rest.map GeoStep.stepMap)) :=
+      differentiable_pathMap _ (by
+        intro σ hσ
+        obtain ⟨g, _, rfl⟩ := List.mem_map.mp hσ
+        exact g.differentiable_stepMap)
+    rw [List.map_cons,
+      abs_jacDet_pathMap_cons s.stepMap (rest.map GeoStep.stepMap) u
+        (s.differentiable_stepMap _) (hdiffRest u),
+      show s.stepMap = s.shear ∘ blockBlowupMap s.S s.p from rfl,
+      abs_jacDet_shear_comp_blockBlowup s.hp s.shear s.hshear_diff s.hshear_jac, ih]
+    rfl
+
 /-! ## §4 — L7 assembly: the general-depth, varying-center fan cover -/
 
 /-- One **fan step**: a nonempty center `S ⊆ Fin D` and a per-pivot shear family. A LIST of these is
@@ -359,7 +421,7 @@ lean/CLAUDE.md caveat). -/
 #assert_banked_clean_batch [blockShear_covers_of_norm_bound, outerDisp_norm_bound, outerDisp_zero,
   fderiv_outerDisp_zero, outerShear_covers, jacDet_outerShear, injective_outerShear,
   abs_jacDet_shear_comp_blockBlowup, shearBlowup_hjac, outerShearBlowup_hjac,
-  outerShearBlowup_injOn, covers_fanOfSteps, exists_ball_subset_fanOfSteps_leafImages,
-  exists_ball_subset_outerFan_leafImages]
+  outerShearBlowup_injOn, abs_jacDet_geoPath, covers_fanOfSteps,
+  exists_ball_subset_fanOfSteps_leafImages, exists_ball_subset_outerFan_leafImages]
 
 end DLNFibre.DLN.Aoyagi.GeneralGeoAtlas
