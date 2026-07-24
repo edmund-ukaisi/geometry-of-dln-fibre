@@ -520,3 +520,31 @@ The one careful sub-point of the maintenance — is the block-elim compatible wi
 dropped), the invariant is maintained through every step for all `v`. Remaining for the full close-out:
 Theorem 4 general feasibility (Phase-3 (b)) + the reproduction labour + the `M_{s,k}=Mval` read-off
 (Object C/D, landed).
+
+### PHASE-3 (b) — Theorem 4 for the core: LANDED + WIRED (not a residual). 2026-07-24
+The core is homogeneous in ALL variables (`r=0`, everything is a `C`-coordinate; `∏C` degree-`L`), so the
+deepest-point step needs only the ALL-variables homogeneity lemma, which is LANDED and already WIRED:
+`GlobalHomog.rlctGlobal_eq_rlctAt_zero_of_homogeneous` + `LearningCoefficient.lossDLN_zero_homogeneous`
+(the zero-product loss is homogeneous of degree `2N`) ⟹ the origin has the minimal local RLCT, wired into
+`coreReduction`. **Theorem 4's general SUB-BLOCK form is NOT needed** for the core close-out. Phase-3 (b)
+resolves positively; no new analytic atom to build.
+
+## RENDER VERDICT (Phase 1–3 essentially complete) — the close-out is BOUNDED-AND-BUILDABLE
+
+The general render is done, and every crux resolved GENERAL, no instances:
+- **L-A** (block-elim ideal identity): complete, general (any corank).
+- **L-B** (the (S,J) recursion invariant): cases exhaustive + terminating (finding #2), totality-over-claim
+  dropped (finding #2), maintenance = ideal equality via the `b`-chain divisibility (Phase-3 a). Closed
+  general, all `v`.
+- **L-lower / value**: `rlct = ½·min Mval` from the resolution (upper via `rlctAt_sumSqFam_le_chart` at the
+  minimiser; the value is Aoyagi's exact resolution value); `Mval = cCodim` (Object C/D, landed).
+- **Theorem 4** (deepest point): landed + wired for the core (Phase-3 b).
+- **Objects A, C, D + the Chart/Resolution framework + Object B CoV**: landed.
+
+**The ONLY remaining content is the Lean REPRODUCTION** of Aoyagi's Cases-1/2 `(S,J)` induction (the
+`buildTree` recursion + the exponent ledger + the per-step ideal-identity `N1`/`N2`) — large but
+COMBINATORIAL, bounded proof-engineering, NOT a missing analytic monument and NOT open mathematics. The
+coupled corank≥2 frontier the expedition circled for multiple expeditions is, per this render,
+reproduce-and-verify. **This is the execution boundary — operator-gated** (the Lean build of coupled-B,
+ideal-level, retiring the geometric fold). The render + all de-risks are the deliverable to hand the
+operator before that go.
