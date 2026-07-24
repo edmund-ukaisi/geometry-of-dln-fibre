@@ -583,3 +583,23 @@ geometric half (L6 realization, L7 coupled cover, L8 minimizer-realization) is u
 sorried, and the coupled corank≥2 COVER is un-probed. Next render work (controller-owned, GENERAL, no
 instance-as-justification): render L6/L7/L8 for the coupled corank≥2 case the way L-A/L-B were rendered —
 the coupled cover (L7) first, as the highest risk. Not build-ready until this second half is rendered.
+
+### L7/L6 RENDER TARGETS (rev-render forward pointers, 2026-07-24 — where the audit will bite)
+- **L7 tooth 1 — `hcover` = measure-zero coverage of a punctured nbhd of 0, teeth at corank≥2 =
+  properness/no-escape.** `hcover : volume(U \ ⋃_c g_c''dom_c)=0` with COMPACT `dom_c`. Individual
+  blow-up charts are NOT proper, so the coupled cover must show the finite union of compact-domain images
+  leaves only a null set uncovered. RISK (the crux, general-`d`): the charts are (blow-up ∘ shear ∘
+  blow-up …) composites; a naive `pivotDomain × univ` chart lets a direction ESCAPE (the L7 docstring's
+  `l7probe`: degenerate atlas covers only {0}). The general argument must bound the spectators (the
+  box-inflation brick #103, implemented in the kept `-L7cover` engine `LeafCoverTiling`) THROUGH the
+  shears (bounds grow) — the composition general-`d` is the crux, not any single leaf. RENDER: reduce the
+  coupled cover to the `-L7cover` engine + establish the general-`d` escape-boundedness through the shears.
+- **L7/L6 tooth 2 — dom-wide (not germ-only) Jacobian.** `Chart.hjac` on ALL of `nbhd`:
+  `|det Dg_c| = ∏(blow-up monomial)·∏(unipotent shear det = ±1)` = monomial·(nonvanishing unit)
+  region-wide (the D1 note: germ-only insufficient — a chart covers far regions where the identity fails).
+  RENDER: the shear coord-changes `C'=Q⁻¹C` (Q polynomial in already-exposed coords) compose to an
+  analytic automorphism with unit Jacobian on `nbhd`.
+- **L8 (ii) — minimizer-realization** (upper bound): SOME minimizing profile is realized by `buildTree`;
+  linked to the KC-2 local-least-selection (2a) that steers the tree. Distinct from Object D.
+- **Discipline:** render these GENERAL (no instance-as-justification); `(3,3,4) t=(1,0)` illustrates only.
+  rev-render re-audits the drafted L7/L6/L8 render (review-only).
