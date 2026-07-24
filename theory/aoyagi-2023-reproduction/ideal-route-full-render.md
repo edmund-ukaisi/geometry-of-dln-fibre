@@ -848,3 +848,68 @@ sorry-free on-branch (646bcdcdb; unmerged = "landed on-branch," not in-tree).
 Case-1/2 legality of the steered branch = V-upper #110. So the render is NOT "no open math" yet: it has ONE
 un-rendered lemma (light, sketched, but real). Render (ii) fully → then the render is complete. My "EARNED
 no-open-math" above was PREMATURE (the third optimism); this section supersedes it.
+
+### Lemma (ii) — clearable minimizer ⟹ realized by a steered branch (RENDER, from the invariant)
+
+**The single-chart upper bound (route B), stated on the invariant.** The recursion maintains, at `(S,J)`,
+`⟨∏C⟩ = ⟨diag(b_1..b_{M(S)})·[[E_J,O],[O,D_J]]·∏_{s>S}C⟩`, `D_J` the `(M(S)−J)×(M^{(S+1)}−J)` residual,
+`M(S)=min{M^{(s)}:s≤S}`. A BRANCH is a choice, at each layer, of how far to clear before incrementing `S`;
+its terminal divisor (`~t=0`, at `S=L+1`) carries a profile `t` and, by Object C (thread-03, general-`L`),
+exponent `M_{s,k}=Mval(t)`. The chart's binding ratio is `M_{terminal}/2` (worked.tex: divisor `u_{s,k}`
+gives ratio `M_{s,k}/2`), so **that single chart gives `rlct ≤ ½·Mval(t)`**. Take the branch with `t = t*`
+the minimizer: `rlct ≤ ½·Mval(t*) = ½·cCodim`. No cover/completeness/greedy needed — one chart.
+
+**So lemma (ii) = "the `t*`-branch EXISTS as a legal recursion path," and it rests on exactly three pieces:**
+1. **L-A/L-B (VERIFIED):** the block-elimination clears ANY residual block `D_J`, any corank, maintaining
+   the ideal identity — so a branch that, at each layer `S`, clears `D_J` down to leave rank `t*^{(S)}` is
+   algebraically valid *step by step*.
+2. **Clearability (i) (reproduced):** `t*` satisfies the running-min envelope `t*^{(S)} ≤ M(S+1)` and is
+   monotone `t*^{(S)} ≤ t*^{(S−1)}` — so at layer `S` the residual `D_J` (size `(M(S)−J)×(M^{(S+1)}−J)`) is
+   large enough to *leave* rank `t*^{(S)}`: the target drop fits inside the available block.
+3. **Object C (established general-`L`):** the terminal divisor's exponent is `Mval(t*)`.
+
+**The GENUINE residual gap (precise, not hand-waved):** pieces 1–3 give the algebra of each step and the
+exponent of the end — but NOT, on their own, that the *sequence of Case-1/Case-2 moves selecting exactly
+the drops `t*^{(1)},…,t*^{(L)}`* is available at each step. The recursion's move at `(S,J)` is dictated by
+the equal-run `J_1` of the current `b`-sequence (Case 1 partial vs Case 2 full); steering to `t*` means
+showing that at each layer the case-split OFFERS a move whose resulting profile-coordinate is `t*^{(S)}`.
+Codex's mechanism — "pull each unsaturated descent while it lies below `r_s`" — is: process layers in order,
+and at each layer take the partial-clear (Case 1) that stops at `t*^{(S)}` (legal because `t*^{(S)} ≤
+M(S+1)`, so the equal-run can be split there) or the full-clear (Case 2) when `t*^{(S)}` hits the envelope
+floor. **This per-step move-availability is the one thing pieces 1–3 do not already deliver, and it is the
+content to render/build (= V-upper #110).** It is LIGHT (a monotone induction over `L` layers, each step a
+"the envelope permits stopping the clear at `t*^{(S)}`" check) — but it is REAL, and I will NOT record the
+render complete until it is written from the case-move rules, nor call it "bounded" before rev-render's
+focused audit confirms the per-step availability holds general-`d` (no non-monotone-width obstruction — the
+T-E raw-width defect flag is the place to check it does not bite).
+
+**The per-step move-availability induction (RENDERED; one sub-point flagged for rev-render).**
+Induct on layers `S = 1..L`. Inductive state: layers `1..S−1` cleared to `(t*^{(1)},…,t*^{(S−1)})`, the
+invariant holding at `(S, 0)` with residual `D_0` of size `M(S)×M^{(S+1)}`. To realize `t*^{(S)}` at layer
+`S`:
+- Advance `J = 0 → t*^{(S)}` by successive **Case-1(2)** steps. Each Case-1(2) step normalizes the leading
+  pivot (introduces `u_{S,J+1}`, reduces `D_J'' → [[1,O],[O,D_{J+1}]]`), i.e. clears one unit pivot and
+  advances `J`. It is available at each `J < t*^{(S)}` because the blow-up chart-split ALWAYS includes the
+  "first-row-normalised" chart (Case 1(2)) — that is one of the exceptional-`ℙ`'s affine charts, present at
+  every blow-up. Legal since `t*^{(S)} ≤ M(S+1)` (the layer length): we never advance past the layer.
+- At `J = t*^{(S)}`, fire **Case 2** on the full remaining `(M(S)−t*^{(S)})×(M^{(S+1)}−t*^{(S)})` block,
+  finalizing the layer with `t^{(S)} = t*^{(S)}` and incrementing `S`. Legal since the remaining block is a
+  genuine (possibly empty) block; monotonicity `t*^{(S)} ≤ t*^{(S−1)}` guarantees the residual carried from
+  layer `S−1` has enough rank.
+The terminal branch (`S = L+1`) has profile `t*`; by Object C its divisor exponent is `Mval(t*) = cCodim`,
+so its single chart gives `rlct ≤ ½cCodim`. ∎ (structure)
+
+**The ONE sub-point I flag rather than assert (no 4th over-claim):** the induction assumes the Case-1(2)
+"advance one pivot" chart is available and produces profile-coordinate exactly `t*^{(S)}` UNIFORMLY, incl.
+at NON-MONOTONE widths — where the T-E raw-width defect flag lives (the Case-2 head-reset label `t^{(i)} =
+M^{(i+1)}` is raw-width, and at non-monotone widths conflicts with the p.22 formula; resolution claims the
+running-min `M(S)` governs and the defect divisor is non-binding, but that is exactly a place the steered
+branch's profile could differ from `t*`). **rev-render's focused audit should verify: for a minimizer `t*`
+(which satisfies the envelope), does the Case-1(2)-then-Case-2 steered branch produce profile-coordinate
+`t*^{(S)}` at EVERY layer, general-`d`, with no non-monotone-width divergence?** If yes, lemma (ii) —and the
+close-out render— is complete. If the non-monotone case diverges, that is a real (scoped) residual to fix.
+
+**STATUS of lemma (ii): construction + dependency structure + the per-step induction all rendered; ONE
+sub-point (uniform Case-1(2) availability / non-monotone T-E) isolated and handed to rev-render's focused
+audit.** Only when that audit confirms is the geometric half — and the whole close-out render — complete.
+I am NOT declaring it complete now (that would be the fourth optimism); it is one focused audit away.
