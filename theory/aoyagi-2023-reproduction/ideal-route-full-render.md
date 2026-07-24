@@ -710,3 +710,44 @@ along the branch). By the chain rule `det Dg_c = ∏_j [det Dβ_j ∘ (later map
 concern — "monomial·nonvanishing-unit on ALL of nbhd, the germ-only trap"; the answer here: the unit is
 *identically* 1, so the concern is structurally void). Next: obligation-2 (fan-completeness), then
 L8/totality.
+
+## L7-obligation-2 — fan-completeness (RENDER; general; bounded)
+
+**Obligation.** buildTree's leaves ↔ `FanTree` nodes, and at each node the children COVER the parent's ball
+(no omitted direction — the `l7probe` degenerate-atlas failure covers only {0} by using ONE affine chart).
+
+**Render.** The fan structure — which charts exist and how they cover — is determined by the BLOW-UPS + the
+Case-split, and is INDEPENDENT of the shears `σ_j` (which are coordinate relabels WITHIN a chart; they move
+points inside a chart, they do not add/remove charts or change which region a chart covers). So the
+ideal-route fan is the SAME fan as the geometric fold. At each blow-up of a codim-`m` center the exceptional
+is `ℙ^{m-1}`, whose `m` standard affine charts (one per pivot choice) cover it completely; the Case-split
+(1/1(1)/1(2)/2) is exhaustive (KC-2 finding, re-confirmed). So the branching is exhaustive at every node ⟹
+the leaves' charts cover the punctured nbhd. **The pnp-fan cover mechanism (banked for the geometric fold)
+transfers verbatim** — it only ever used the blow-up/Case branching, never the shear.
+**STATUS: bounded (transfer). Residual: the transfer is Lean bookkeeping, not new math.** Together with
+obligation-1 (compact-domain sizing) this gives `hcover`.
+
+## L8 — minimizer-realization = the UPPER bound (RENDER; the ONE genuine verify-point)
+
+**Obligation (`leafPath_realizesExponents` clause (ii)).** SOME leaf's exponent profile realizes the min:
+`∃ leaf, Mval(profile_leaf) = cCodim`. Then that leaf's single chart gives `rlctAt ≤ ½·Mval = ½·cCodim`
+(the easy direction — a resolution chart is an UPPER bound on rlct). DISTINCT from Object D (`cCodim = min
+over ALL admissible profiles`, purely combinatorial); L8 (ii) is that AOYAGI'S TREE hits a minimizer. Cannot
+be skipped via rlct-invariance (circular).
+
+**Render (reduces to level-separability + the least-selection).**
+- **The least-selection steers the tree.** Aoyagi's Case-1 rule picks, at each fixed `~t`-level, the LEAST
+  eligible profile. Well-defined because the same-`~t`-level profiles are totally ordered — and that total
+  order IS the `b`-chain order (`b_{J+1} | b_i`, the pivot is smallest, L-B). So minimal = least (rev-render
+  #2a repair, discharged by the b-chain, NOT a bare poset-minimal). [Totality refinement — DONE here.]
+- **Greedy = global iff `Mval` is level-separable.** `Mval(profile) = ∑_levels (level contribution)`. IF the
+  level contributions are independent (separable), the level-wise least-selection yields the GLOBAL min ⟹
+  the tree's minimizing leaf has `Mval = cCodim`. Aoyagi's Theorem 3 ASSERTS the tree realizes `cCodim`
+  (that is the content of her resolution), so separability holds in her construction.
+- **STATUS: reduces to level-separability of `Mval` (greedy = global). This is THE one geometric-half claim
+  I must VERIFY, not assume** — it is the exact analogue of the over-claim I already made once. Aoyagi's
+  Theorem 3 asserts it; the render must reproduce WHY the DLN exponent objective is level-separable (the
+  divisor-exponent sum decouples across the `(S,J)` recursion levels because each step's cleared block is
+  disjoint from the later blocks — plausible from the block structure, but to be rendered, and it is where
+  rev-render's #2b will push). If separability FAILS (greedy stalls at a local min above `cCodim`), the
+  upper bound gives `> ½cCodim` and the EQUALITY breaks → this is the residual risk of the geometric half.
