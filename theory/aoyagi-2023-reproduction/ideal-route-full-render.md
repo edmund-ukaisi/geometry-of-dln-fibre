@@ -913,3 +913,46 @@ close-out render— is complete. If the non-monotone case diverges, that is a re
 sub-point (uniform Case-1(2) availability / non-monotone T-E) isolated and handed to rev-render's focused
 audit.** Only when that audit confirms is the geometric half — and the whole close-out render — complete.
 I am NOT declaring it complete now (that would be the fourth optimism); it is one focused audit away.
+
+### REV-RENDER RE-AUDIT #3 (Lean-decisive, 2026-07-24) — two precision fixes; route B CONFIRMED
+
+A deeper decorrelated audit (fresh Codex #3 + a Lean read of `Engine.lean:45`) independently CONVERGED on
+route B / minimizer-realization (exhaustiveness FALSE, confirmed via `(2,2,1,1)`) and caught two genuine
+errors in the supporting reasoning. Both accepted; fixed here.
+
+**FIX 1 — attainment is a HYPOTHESIS, not Object-D-proved (Lean-decisive; corrects the superseded exhaustive
+section).** `Core.Aoyagi.Engine.divisorMin_eq_cCodim` (Engine.lean:45) takes TWO hypotheses — `hlb` (every
+binding divisor `≥ qipMin`) AND `hattain` (`∃` a chart whose binding divisor `= qipMin`) — and proves the
+BRIDGE `divisorMin = cCodim` given both. Its docstring: `hattain` is "discharged by the existence theorem"
+= `exists_coreResolution` (the geometric build). So: **`divisorMin` is ABSTRACT** (a min over an abstract
+`Resolution` record); **`hattain` = the minimizer-realization = the residual, NOT proved by Object D.** My
+earlier "combinatorial attainment = divisorMin=cCodim PROVED (Object D)" conflated the bridge with its
+attainment hypothesis. Object D = bridge-modulo-attainment; attainment IS lemma (ii). (This does not change
+route B — it sharpens that lemma (ii)/`hattain` is exactly the un-discharged obligation.)
+
+**FIX 2 — the minimizer⟹clearable envelope-splice needs the SATURATED-BOUNDARY condition (correctness bug).**
+My (i) render said "if `t*` exceeds the envelope on a prefix, pin to the envelope ⟹ strictly lower Mval." That
+is TOO LOOSE — "raising/repinning a prefix is free" is FALSE in general: `M=(5,5,5)`, `(1,0)→(5,0)` moves Mval
+`21→25` (raising the prefix INCREASES it). CORRECTED statement: the envelope-splice strictly lowers Mval ONLY
+at a SATURATED-DESCENT boundary — where `t^{(s-1)} = r_s > t^{(s)}` (the profile sits at the running-min
+ceiling `r_s` just before a genuine drop). The proof: a minimizer cannot have a non-envelope prefix
+*preceding such a saturated descent*, because splicing to the envelope there keeps the boundary+suffix charges
+and zeroes the prefix charges ⟹ strict decrease ⟹ contradiction. So minimizer⟹clearable HOLDS, but the proof
+carries the saturated-boundary condition (and POSITIVITY of widths — `M=(2,2,0)` breaks it: a minimizing
+clearable profile the recursion doesn't realize). Reproduce (i) WITH this condition, not the loose form.
+
+**SHARPEN — lemma (ii) residual splits into (a) combinatorial + (b) geometric.** minimizer⟹clearable (i,
+now correct) does NOT imply realized. The residual is:
+- **(a) steering lemma (combinatorial):** clearable minimizer ⟹ a realized branch of the EXACT Case-1/Case-2
+  transition system (my rendered per-step induction — the Case-1(2)-advance-then-Case-2 construction — is
+  the candidate; its per-step availability, esp. non-monotone T-E, is the open combinatorial content).
+- **(b) chart-realization bridge (geometric = L6):** the steered SYNTACTIC branch is a genuine nonempty
+  analytic chart with the asserted pullback + Jacobian exponent. This is the L6 obligation, applied to the
+  steered branch — so lemma (ii)'s geometric half IS L6 (already rendered exact), and its combinatorial half
+  IS (a). Together they discharge `hattain` = `exists_coreResolution`'s attainment field.
+
+**HONEST STATUS (reaffirmed, no over-claim).** The geometric half REDUCES to named obligations —
+`hattain` = [(a) steering + (b) chart-realization=L6], the lower-side `hlb` (every divisor ≥ qipMin incl.
+intermediate = L-lower monotone-accumulation), and L7 obligation-2 (fan-completeness) — all plausibly
+bounded/combinatorial+standard-geometry, NONE yet discharged. So it is NOT "complete/no-open-math"; it is a
+clean REDUCTION to a short obligation list. The gate survives as a REDUCTION, not as a discharge.
