@@ -88,3 +88,40 @@ The corank-2 ideal-level chart (using `-PROTO`'s shape): build ONE coupled leaf'
 `hjac` = monomial·1) at corank-2, then its `hcover` contribution via the `-L7cover` engine. If the dom-wide
 `hjac` and the per-edge box-containment inhabit cleanly at corank-2, the general-`d` build is the same step
 iterated; if `hcover` at corank-2 fights, that is the un-probed risk materialising — STOP + report.
+
+## CORANK-2 FIRST UNIT — RESULT: MECHANISM GO (builder geo-atlas-c2 + rev-render audit, 2026-07-24)
+
+`Corank2GeoAtlas.lean` (origin/expedition/aoyagi-engine-geo-c2, 1c4e33f71). Builder reports GO, clean-three;
+rev-render decorrelated audit (+ Codex) CONFIRMS the two mechanisms are GENUINE but scopes it precisely:
+
+- **The two hardest geometric MECHANISMS are de-risked (genuine, general sorry-free primitives):**
+  `coShear_covers` (coupled per-edge box-containment, `closedBall r ⊆ coShear '' closedBall (r+r²)`, the
+  genuine 4-term rank-1 Schur shear on Fin 8) and `coG_hjac` (dom-wide `|jacDet| = u_p^{|S|-1}·1`, unit ≡ 1
+  identically). Built on `PathAtoms` (`jacDet_blockShear = 1`, general φ), `BlockBlowup`
+  (`jacDet_blockBlowupMap`), `LeafCoverTiling` (`covers_subset`) — all sorry-free + general in `Fin D`/φ/S/p.
+  **This retires the "un-probed at corank≥2" hcover flag for the MECHANISMS.**
+- **C=1 (not corank·widths) is correct but rank-1 is LOAD-BEARING:** rests on (a) source/target separation
+  (φ reads {0..3}, writes {4..7} ⟹ inverse exactly quadratic), (b) rank-1 (ONE product per corrected
+  coord), (c) norm (holds in sup AND ℓ²). A rank-`q` step gives `r + q·r²` — so C=1 REQUIRES genuine
+  one-pivot-per-step at every node.
+- **NOT general-`d` — MECHANISM GO only (the builder's "stand-in" caveat is load-bearing).** `covers_coTree`
+  proves `Covers f coTree 1` for ONE hardcoded depth-2 tree reusing the SAME shear/center at both levels.
+  It does NOT establish `∀d, Covers f (buildTree d) 1`. The general-`d` hcover assembly (= the actual
+  `exists_atlasRealizesExponents` build) still needs: (1) a parameterized local-cover lemma for every block
+  size + pivot type; (2) the real `buildTree d` ↔ `FanTree` node correspondence; (3) instantiation with
+  VARYING shears / shrinking blocks / actual centers; (4) fan-completeness over the real centers (no omitted
+  strata); (5) radius bookkeeping where recentering alters constants; (6) engine-leaf ↔ atlas-chart. It is
+  bounded-buildable (general primitives + the same argument), NOT a new monument — but it is NOT done.
+- **NEW sub-point to NAIL for general-`d` — CENTERS.** The stand-in is origin-centered. At a NONZERO center
+  the Schur update gains LINEAR terms (`a·δbᵀ + δa·bᵀ + δa·δbᵀ`) → center-dependent constants that can break
+  the clean `r+r²` recurrence. Safe IFF every blow-up+shear is at its CHART origin (each blow-up at the chart
+  origin ⟹ the residual is origin-expanded ⟹ safe). Controller read: Aoyagi's construction IS chart-origin
+  centered (each blow-up is at the vanishing locus = the chart origin; the box-inflation fan covers by
+  radius inflation, not recentering) — so likely SAFE, but the origin-centered stand-in gives NO evidence;
+  CONFIRM in the general-`d` build that no fan chart needs a nonzero center.
+
+**Net:** corank-2 GO = the two hardest MECHANISMS proven genuine on general primitives (a real de-risk of the
+prior highest-risk flag). The general-`d` hcover ASSEMBLY (items 1–6 + CENTERS) + `hideal` + the
+Resolution/AtlasRealizesExponents wiring remain — the actual `exists_coreResolution:311` build. Do NOT round
+"corank-2 GO" up to "L7 done". Controller `#print axioms` gate on the module pending (confirm §6
+`#assert_banked_clean_batch` GREEN, not stale-olean).
