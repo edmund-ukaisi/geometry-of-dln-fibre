@@ -154,3 +154,17 @@ MERGED bfe4f2433.]
   - The verified spine (L-A/L-B) is the math backing; the hideal Lean = assemble these on A's charts.
 - **No separate B.** Critical path: A (geometry) → C (hideal + assembly + wiring + :311). C reuses A + the
   trunk Schur/ideal machinery. Both operator-gated build; bounded-buildable.
+
+## ELDER PRE-COMMIT GATE — green criteria (PINNED, elder-phase 2026-07-24; do not misread "green")
+Before the FULL ideal-route hideal build fires, run TWO decisive bounded probes; **green-BOTH → commit the
+full reproduction; green-one → re-scope.**
+- **(i) Corank-2 dom-wide `hideal` prototype.** GREEN ⟺ it inhabits **BOTH `hideal_fwd` AND `hideal_bwd`,
+  DOM-WIDE** (`RegionRepresents` on `nbhd`, cofactors continuous ON `nbhd`) — exercising the germ→dom-wide
+  bridge (pivot≡1 ⟹ unipotent-polynomial `Q`, NO rational `A₁⁻¹`). A germ-at-0 identity, or `hideal_fwd`
+  alone, is **YELLOW, not green** (the D1 germ-only trap the `Chart` docstring flags). The cast-tax reading
+  is a SECONDARY output (a manageable-tax measurement), **NEVER the pass/fail** — pass/fail is the two-sided
+  dom-wide inhabitation. Starting brick: `Corank2Proto §4` `Q1_C1_Q2_eq_diag` (on `-PROTO`); template:
+  `ConjResolution` (a proven Chart-with-`hideal`).
+- **(ii) Corank≥2 `hcover` probe (decorrelated).** GREEN ⟺ the finite union of **COMPACT-domain** images
+  leaves a NULL uncovered set THROUGH the COUPLED shear stack (the `l7probe` escape is the KILL-condition) —
+  NOT merely that a single blow-up chart covers its own ball.
