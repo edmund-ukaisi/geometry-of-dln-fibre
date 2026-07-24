@@ -33,10 +33,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   BUILD-PREP COMPLETE: brief = `geometric-atlas-build-brief.md` (L6 dom-wide hjac + L7 coupled hcover [the
   UN-PROBED corank≥2 piece] + the ℕ-value-match; reuse -L7cover + -PROTO; first unit = corank-2 chart
   go/no-go). BUILD-GO GIVEN (operator, 2026-07-24). LeafCoverTiling MERGED to trunk (c36ff259e, L7 reuse). corank-2
-  first unit LAUNCHED (builder `geo-atlas-c2`, own worktree, background) = the GO/NO-GO: L6 dom-wide hjac
-  (rendered exact) + L7 coupled hcover (the UN-PROBED risk). Awaiting its verdict (GO = general-d is the
-  same step iterated; NO-GO = the coupled-corank≥2 hcover risk surfaced → stop+report). Gate its "done" on
-  #print axioms (calibrate-the-sensor). Builder wakes me on completion; do NOT poll.
+  first unit = **MECHANISM GO** (builder geo-atlas-c2 + rev-render audit + Codex): Corank2GeoAtlas.lean
+  (origin/expedition/aoyagi-engine-geo-c2, 1c4e33f71) — the two hardest geometric mechanisms proven GENUINE
+  on general sorry-free primitives: coShear_covers (coupled per-edge box-containment, genuine 4-term rank-1
+  Schur shear, C=1 under f=r+r²) + coG_hjac (dom-wide unit≡1 Jacobian). RETIRES the un-probed-at-corank≥2
+  flag for the MECHANISMS. NOT general-d (covers_coTree = one hardcoded self-similar tree). General-d hcover
+  ASSEMBLY (6 items: real buildTree(d)↔FanTree correspondence, varying shears/blocks/CENTERS, fan-
+  completeness, radius bookkeeping, leaf↔chart) + hideal + Resolution/AtlasRealizesExponents wiring remain =
+  the actual exists_coreResolution:311 build. NEW risk: CENTERS (nonzero-center linear terms; likely safe as
+  Aoyagi is chart-origin-centered, confirm in build). rank-1 LOAD-BEARING (needs one-pivot-per-step).
+  PENDING: my #print axioms gate (confirm §6 assert GREEN not stale-olean, once builder full-green + I merge).
+  Do NOT round "corank-2 GO" up to "L7 done". NEXT: verify + plan general-d build.
   NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
