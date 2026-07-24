@@ -134,6 +134,90 @@ Checkpoint with operator when L-lower's generality is decided (V closes, or fall
 
 ---
 
+## L-lower — the cover lower bound `rlctAt ≥ ½·cCodim` (V's crux; IN RENDER)
+
+**This IS the kill-target.** `rlctAt(∑(∏C)ᵢⱼ²) 0 ≥ ½·cCodim d 0` is exactly `cited_aoyagi_lower_ax`
+(`½·codim ≤ rlctGlobal`, charter §3). Proving it general-`L` deletes that cite. Its partner, the upper
+`rlctAt ≤ ½·cCodim` (`cited_watanabe_upper_ax`-ish), is V-upper (`rlctAt_sumSqFam_le_chart` at the
+minimiser). Together: `rlctAt = ½·cCodim` cite-free.
+
+**Reduction (to a per-divisor bound).** By the min-over-charts CoV (`rlctAt_sumSqFam_eq_iInf_charts`,
+Object B, landed) the RLCT is the min, over the resolution's exceptional divisors `E`, of the ratio
+`(h_E + 1)/(2 m_E)` — `h_E` the log-discrepancy (Jacobian exponent) of `E`, `m_E` the order of vanishing
+of `F = ∑(∏C)²` along `E`. Hence
+```
+rlctAt ≥ ½·min_t Mval(t)   ⟺   EVERY resolution divisor E satisfies (h_E+1)/(2 m_E) ≥ ½·min_t Mval(t).
+```
+Crucially this is a **lower bound on each divisor's ratio** — it needs the divisors' discrepancies and
+`F`-multiplicities, but **NOT** the terminal single-chain principality (`⟨∏C⟩=⟨b₁⟩`) of any chart.
+That is what "no full atlas needed" (worked.tex:720) means, and why V can dodge the open end: the
+per-chart *value floor* is weaker than the per-chart *normal form*.
+
+**Ideal-level, per §3.** Each blow-up is a genuine resolution step whose ideal effect is tracked by
+Lemma 1 (L-A / ideal-preservation under regular `Q,P`); it is NOT the forbidden "det-1 chart
+diagonalising the loss on an open set." The lower bound is a statement about the resolution's divisors,
+established structurally — never a chart change-of-variables of `F`.
+
+**The structural induction (Aoyagi's depth-recursion; worked.tex:712–759).** Peel one layer per
+(incidence + one blow-up); the core recurses to a fresh depth-`(L−1)` core (clean/rank-1) or a coupled
+`diag(b)·free` core (`c₁>0`). Claim: every divisor produced has ratio `≥ ½·min`. Skeleton:
+- **α-divisor** (the layer-1 exceptional): ratio `≥ ½·Mval(0)` where `Mval(0)` = codim of the deepest
+  (all-rank-drop) stratum; `Mval(0) ≥ min_t Mval(t)` trivially.
+- **branch (ρ) divisor:** ratio `= ½·Mval(branch)` (worked.tex:719); `≥ ½·min` by definition of the min.
+- **recursive divisors:** `≥ ½·min` by the inductive hypothesis on the lower-depth core.
+
+**THE OPEN SUB-POINTS I must nail (not hand-wave — the make-or-break of V):**
+1. *The divisor-ratio computations.* PARTIALLY RESOLVED (worked): the per-divisor ratio is
+   `(h+1)/(2k) = M_{s,k}/2` (worked.tex:589–594 — `k_j≡1` loss-multiplicity on binding axes, `h_j =
+   M_{s,k}−1` Jacobian power), and the *terminal binding* exponent is `M_{s,k} = Mval(t) = codim S(t)`
+   (worked.tex:668–672, thread-03 general-`L`, Object C/D landed). ⟹ **every terminal binding divisor
+   has ratio `= ½Mval(t) ≥ ½·min` — general-`L`, from landed results.** RESIDUAL of (1): the
+   *intermediate / non-binding* divisors (born at earlier steps, `t̃>0`, exponent still smaller) must
+   also have ratio `≥ ½·min`, else one drags the overall min below the binding min. Need: the
+   accumulated exponent `M_{s,k}` of *every* divisor (not just terminal binding) is `≥ min` — plausibly
+   because the accumulation is monotone up to `Mval` and the birth exponent already `≥ min` (Case-2
+   birth `M'_{S,J+1}=(M(S)−J)(M⁽ˢ⁺¹⁾−J)` — a codim of a residual block; Case-1(1) only ADDS). Derive
+   that every birth exponent `≥ min` and accumulation is monotone.
+2. *The recursion's min-bookkeeping.* "recursive divisors `≥ ½·min` by IH" needs `min` of the
+   *sub-core* to relate correctly to `min` overall — the branch splits the problem; a deeper divisor
+   bounds by the sub-core's min, which must be `≥` the overall min (or the branch's contribution
+   accounts for the difference). Reconstruct the exact bookkeeping.
+3. *The coupled case (`c₁>0`).* The recursive core is `diag(b)·free`, sharing deeper layers, and the
+   coupling *raises* the threshold (e.g. `(3,3,2,2)`: `3/2 → 2`). Must verify the ratio bound survives
+   the coupling *in general* — this is exactly where the coupled corank≥2 hard part re-enters. If the
+   coupled recursive ratio bound is NOT general, V-lower leans on coupled-B and the escape narrows.
+
+**Lean form.** `rlctAt ≥ ½·cCodim` ⟺ every `c < ½·cCodim` is admissible (`∫|F|^{-c}` converges near 0).
+Foundation: `localAdmissibleExponents`, `rlctAt_def = sSup`; the per-divisor monomial-integral
+convergence for `c < ratio` is the analytic content (Object C's `MonomialRLCT` machinery). The
+min-ratio bound then gives convergence for `c < ½·cCodim`. Build order: derive (1) the general
+divisor ratios, (2) the min-bookkeeping, (3) the coupled survival — THEN the Lean lower bound.
+
+**THE SHARP POINT (why V-lower is not free — worked this tick).** Object C (`MonomialRLCT`, landed)
+gives `rlct(∑bᵢ²) = ½·min binding = ½·min Mval` — but *for the monomial form only*: it presupposes the
+terminal monomialisation (`⟨∏C⟩=⟨diag b⟩`, principality = the open end). So **V-lower cannot invoke
+Object C** without dragging the open end back in. V-lower must be a *direct* lower bound — `∫|F|^{-c}`
+converges near 0 for every `c < ½·cCodim` — established **without** full monomialisation. Candidate
+mechanisms to render/test (next):
+  - *(direct domination)* bound `F = ∑(∏C)²` below by a monomial (or a sum of squares) whose rlct is
+    computable and `≥ ½·min`, using only a PARTIAL resolution (enough to expose the leading behaviour,
+    not the full single chain). Ideal-level via Lemma 1.
+  - *(cover + per-chart floor)* the resolution charts cover a punctured nbhd (L-E); on each chart bound
+    the rlct-contribution below by `½·min` from that chart's divisor ratios (`= ½M_{s,k}`, and each
+    birth exponent `≥` the relevant codim), WITHOUT requiring that chart's exact single-chain form.
+  Both must be checked general-`L`, and against the coupled case (sub-point 3) where the threshold is
+  raised — the coupling must not *lower* any chart's floor below `½·min`.
+
+**Verdict so far (honest).** The *reduction* (rlct ≥ ½cCodim ⟺ every divisor ratio ≥ ½min) is clean and
+avoids the *terminal-principality* open end. The terminal-binding ratios are `= ½Mval ≥ ½min` from
+landed results (sub-point 1, done for that class). BUT the direct lower bound must sidestep Object C's
+monomialisation, and sub-points (1-residual)/(2)/(3) — the non-binding/intermediate divisors, the
+min-bookkeeping, and the coupled survival — are unrendered. Sub-point (3) (coupled) is where the genuine
+hard part could re-enter. **This is the make-or-break of V; rendering the direct lower bound generally is
+the next work.** If no general direct bound exists, V narrows back toward building coupled-B.
+
+---
+
 ## L-A — the Schur-clearing ideal identity (COMPLETE, general)
 
 **Setup.** Let `R` be the ring of real-analytic germs at a point `w*` (a local ring; a germ is *regular*
