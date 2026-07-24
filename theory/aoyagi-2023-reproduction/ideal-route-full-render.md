@@ -437,3 +437,33 @@ theorems/lemmas/steps to L-A…L-E; flag (a) any step she uses we omit, (b) any 
 *purpose* I cannot explain, (c) any substituted/weaker argument. Known items already surfaced:
 the T-F over-claim (dropped, justified), the T-E raw-width defect (sidestepped), the `[22]` homogeneity
 cite for Theorem 4 (currently a landed *instance*; general form is a named scope boundary — revisit).
+
+### PHASE-2 FINDING #1 (primary source, 2026-07-24) — V's "lighter lower bound" is a MIRAGE; the honest close-out is Aoyagi's FULL recursion.
+Cross-checked against the **primary** Aoyagi 2023 PDF via the prior expedition's decorrelated pen-and-paper
+read (`expeditions/2026-06-20-aoyagi-full/threads/genm-d1lower-aoyagi/aoyagi-lowerbound-route.md`, Codex-
+corroborated, line-cited to the PDF). Aoyagi's actual lower-bound method (Section 5):
+- **Step 2 — Theorem 4 (homogeneity):** core entries homogeneous of degree `L`; `rlct_origin ≤
+  rlct_nearby` ⟹ the origin is the WORST point ⟹ `rlct_global = rlct_origin`. The ONE extra analytic
+  lemma (NOT Morse-Bott/IFT). Currently a landed *instance* (`rlctGlobal_eq_rlctAt_zero_of_homogeneous`);
+  general form is the named atom to build/assess for Mathlib-feasibility.
+- **Step 3 — the FULL recursive monomial blow-up** (Cases 1/2, the (S,J) induction) to
+  `⟨∏C⟩=⟨diag(b)⟩` normal crossing. **The lower bound goes THROUGH this** — Aoyagi computes
+  `rlct = ½Mval` EXACTLY (both bounds at once) from the complete resolution. There is **no from-below-only
+  shortcut** in her argument (and my from-below idea itself needs the resolution to name the dominant
+  monomial). **⟹ the L-lower-coupled "value-floor" (F-lower-coupled) as a *lighter* object is RETRACTED:
+  the honest lower bound uses the full monomialisation = coupled-B (Object B), ideal-level.**
+- **Step 4 — read-off (S2/Object C, landed) + Lemma 3 (landed).**
+
+**Reframe (clarifying, and net-positive).** The close-out is **not open research** — Aoyagi *claims* the
+uniform (S,J) induction closes for **all** `v` (one induction, two cases). So it is a **bounded
+reproduce-and-verify** of her actual method, not the invention of new mathematics. The residual content
+(prior thread, assuming S2/Object C landed): (a) **Theorem 4** general (1 analytic atom — assess Mathlib-
+feasibility); (b) Lemma 2 + Theorem 3 (linear algebra ≈ L-A, general — done here); (c) **reproduce
+Aoyagi's recursive blow-up Cases 1/2 → normal crossing** (the LARGE bounded piece = coupled-B, ideal-
+level — Object B, charter §1 "NOT OPTIONAL"); (d) read-off + Lemma 3 (landed). The re-architect stands:
+Aoyagi's method IS ideal-level Cases-1/2 Schur-clearing, exactly the route we swapped TO (not the drifted
+fold). **Two named de-risks (KC-2 / Thm-4):** (KC-2) does the uniform induction genuinely close for all
+`v`, or hide a non-uniform deep-coupled case (a flagged tension with Aoyagi's case-by-case companion
+papers)? (Thm-4) is the homogeneity comparison Mathlib-feasible in general? These are the pivotal checks
+before committing the build. **Next work:** verify KC-2 against the primary PDF's induction-closure
+argument (myself), and assess Theorem 4's general feasibility.
