@@ -198,3 +198,51 @@ fold layer (R3). NO open math lemma remains for the `hideal` (given the four gua
 high risk is the coupled `hcover` (R4, multi-term shear) — the hcover-probe decides it. Commit to Encoding-I
 behind the elder gate (corank-2 matrix-identity `hideal` prototype two-sided dom-wide + the `hcover` probe,
 green-both).
+
+## 9. hcover-probe VERDICT (decorrelated exact algebra + Codex) — GREEN on the math + ONE wire condition
+The coupled corank≥2 `hcover` (R4/B5, the co-highest risk) is **GREEN on the MATH — no genuine escape
+obstruction — with one named, load-bearing WIRE condition** (charter §3's "render-bounded ≠ Lean-inhabited"
+bites here, but it is a wire choice, not open math).
+- **OBL-1 (per-edge box-containment): FULLY BOUNDED.** The faithful multi-term `canonNormalizationOf` (all
+  three supports, corank-3) is a sum of BILINEAR terms (total degree exactly 2), write/read-disjoint ⟹
+  `σ⁻¹ = id−φ` EXACT (symbolic). Box clause holds with `f(r)=r+C·r²`, `C = max #bilinear/entry ≤ layer
+  width`, **DEPTH-INDEPENDENT** (uniformity from bounded widths — rev-render's criterion (2), CONFIRMED;
+  3×10⁵ box points, max residual ≤ 0). The render's one-pivot-per-step deg-2 reset CHECKS OUT (blow-up
+  re-coords the deg-2 Schur residual `Δ=A4−A3A2` into fresh deg-1 before the next clear; per-node deg-2 even
+  as the COMPOSITE grows ~2^depth, absorbed by the engine's `f^[depth]`, never a global degree bound).
+  `f^[depth]1` is an EXACT finite rational (finite since depth ≤ L·maxwidth) — no divergence; leaf boxes
+  huge-but-COMPACT, chart maps polynomial + a.e.-injective, sizing `dom_c` that large is legitimate.
+- **OBL-2 (fan-completeness): MATH bounded, but a REAL wire gap.** The full-fan block-atom
+  `closedBall_subset_iUnion_blockBlowup_image_radius` is PROVEN `|S|`-general (verified corank |S|=2,3,4);
+  coupling only ENLARGES `S`, no new escape — so the FULL fan (all pivots `p∈S`) covers every direction.
+  BUT the current atlas is **COL-PINNED** (`IsRealBranch` rule-(b), pivot col = cleared, MonumentAtlas:1071;
+  the :1065 comment: "cover uses ROW-fan charts only; the column-orbit is the #86(B) per-step-σ transport,
+  sorried"). This is **FALSE-as-pinned** — Codex re-derived the escape: `(4,4,4)` root case-2, direction
+  `q=(layer0,row0,col1)` with `|x_q| > (M+1)·max_{col-0}|x_p|` escapes every col-0 chart (a single chart
+  escapes 66% of the box). So `leafPath_compactCover` on the col-pinned atlas is FALSE.
+- **THE RESIDUAL (the col→full-fan bridge), two routes:**
+  - **(a) [RECOMMENDED — unconditionally sound, zero new math]** emit the FULL fan directly (all pivots
+    `p∈S`, drop the col-pin for the COVER charts); the block-atom then covers.
+  - **(b) [current plan, NOT free]** `#86(B)` column-orbit σ-transport of row-fan charts. Codex caution: "an
+    inner shear cannot repair an omitted OUTER blow-up pivot" — the column-fan is an outer blow-up pivot
+    choice, so a within-chart relabel may NOT recover it; needs the GL-equivariance (`baseChange`) outer
+    symmetry + its own probe. Cheapest discriminating test: does a col-1 full-fan chart occur in the emitted
+    `gmap` family for `(4,4,4)`? If not, (b) is false-as-is and (a) is forced.
+- **NET:** the coupled `hcover` is GREEN to commit — PROVIDED the atlas realizes the FULL fan (route a), OR
+  (b) is separately probed and holds. Recommend route (a). No genuine escape obstruction; the col-pinned
+  atlas alone is insufficient (named, load-bearing — NOT a footnote).
+
+## 10. PLANNING PHASE — COMPLETE. Settled scope + recommendation.
+Triply-checked (survey-inv inventory + rev-render ×2 [§7 confirm, §8 R1–R4] + hcover-probe [§9]). **NO open
+math obstruction remains.** Option (b) = **Encoding-I** (the ideal-route fold re-type):
+- **`hideal`:** the general-`d` matrix-identity (= render's L-A/L-B, rev-render-verified; corank-2 sorry-free
+  on `-PROTO`) — render-bounded, no open lemma, given the FOUR §8 guardrails.
+- **`hcover`:** GREEN-on-math (§9); build via **route (a) full fan** (sound, zero new math) — not the
+  col-pinned atlas.
+- **contained to the fold layer** (R3); the pipeline (L6′/L8′/L1, `chart_of_collapse`) survives.
+- **residual = a genuine-but-BOUNDED Lean build** (the general-`d` matrix-identity `hideal` + the full-fan
+  cover + the fold plumbing) — fidelity-sensitive, substantial, but NO identified open mathematics.
+- **RECOMMENDATION:** commit to Encoding-I + route-(a) full fan, behind the **elder gate** (corank-2
+  matrix-identity `hideal` prototype, two-sided dom-wide, four guardrails held + the full-fan cover atom,
+  green-both) → then the full fold. First build unit = the corank-2 Encoding-I `hideal` prototype (the
+  gate-2 measurement).
