@@ -2,9 +2,9 @@
      READ THIS FIRST, every wake / every convening / every brief. Elder owns it; controller commits.
      EDIT IN PLACE, NEVER APPEND. Hard cap ~1 page. If it grows, it decays like the logs did.
      History lives in journal.md / compass.md; TRUTH lives here. Compaction distills TO this, never away.
-     Checkpoint: 2026-07-20 (fresh start after the second chart-route drift). New phase NOT yet started.
-     dev-merge DONE (5f0700e27): dev's cite-free determinantal geometry in-tree; kill-target = cited_aoyagi_lower_ax.
-     §1 FINAL — operator-confirmed 2026-07-21 ("detag permitted"); recorded in journal tick 43x+. -->
+     Checkpoint: 2026-07-24 (PHASE CHECKPOINT — rev-render landed + geo-atlas-wire scope-correction).
+     Operator GO on the ideal-route re-architect; option-(b) build (the coupled hideal) scoped, not yet fired.
+     §1 FINAL — operator-confirmed 2026-07-21 ("detag permitted"). -->
 
 # Charter — aoyagi-engine
 
@@ -39,16 +39,30 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   (`LocallyNullZeros`; Lean's `rpow 0^(−c)=0` demands it — guards dischargeable for
   polynomial/analytic families, `Waypoint`).
 - **B. The product-ideal resolution** `⟨∏C⟩ = ⟨diag(b₁,…,b_M)⟩` — Aoyagi's Cases-1/2 (S,J) recursion,
-  **IDEAL-LEVEL** (unimodular Schur-clearing `Q,P` maintain the ideal identity `⟨A⟩=⟨diag(1,Δ)⟩` with
-  polynomial cofactors; the `b_i` accumulate; the block-elim cross-term drops as a product of generators —
-  **NO coordinate substitution, NO degree-1 support-tracking**). The geometric heart, corank≥2 the SAME
-  step iterated (coupling in the residual `Δ`). STATUS (2026-07-24, operator GO on the re-architect): the
-  coordinate-FOLD route DRIFTED from this and is RETIRED (§3); the ideal-route render
-  (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`) assesses coupled-B as **BOUNDED
-  reproduce-and-verify, NOT open math** — cruxes L-A (block-elim identity) / L-B (b-chain maintenance) /
-  KC-2 (exhaustion+termination) resolved general; decorrelated review (rev-render) IN FLIGHT (not yet
-  overclaimed). **NOT OPTIONAL, and no longer "the dodged frontier" — a buildable reproduction of HER
-  recursion; still never scoped out, never a footnote.**
+  **IDEAL-LEVEL** (unimodular Schur-clearing `Q,P` maintain `⟨A⟩=⟨diag(1,Δ)⟩` with polynomial cofactors;
+  the `b_i` accumulate; the block-elim cross-term drops as a product of generators — **NO coordinate
+  substitution, NO degree-1 support-tracking**). corank≥2 = the SAME step iterated (coupling carried in `Δ`).
+  STATUS (2026-07-24, PHASE CHECKPOINT — rev-render LANDED + geo-atlas-wire scope-correction):
+  - The coordinate-FOLD route is RETIRED (§3).
+  - The ideal-route **SPINE** — L-A (block-elim ideal identity, ANY corank), L-B ((S,J)-recursion
+    maintenance via the `b`-chain divisibility), Thm-4 (deepest point) — is RENDERED
+    (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`) and **VERIFIED sound+general by 4
+    rev-render rounds + Codex**: the coupled-corank≥2 MAINTENANCE wall was a substitution-encoding
+    artifact and is DISSOLVED at the MATH level. The **combinatorial value half** (`hlb`+`hattain`:
+    `minAdm_le_terminalExponents` + `clearable_of_minimizer`/`tStar_realized`/`o5_core_realized`) is
+    PROVED sorry-free clean-three (controller `#print axioms`-verified).
+  - **BUT B IN LEAN IS UNBUILT — and the deep monument is the `hideal`, not the geometry.** The `Chart`
+    record's `hideal_fwd`/`hideal_bwd` (the DOM-WIDE ideal identity `⟨(∏C)∘g⟩=⟨diag b⟩`, both ways;
+    `ProductResolution.lean:112-116`) are MANDATORY fields. The coupled-corank≥2 chart's `hideal` in Lean
+    STILL rests on the sorried geometric-fold monument (THE WALL `foldResid_case11`, refuted-as-stated).
+    The intended replacement — the **L-A/L-B Schur-clearing `hideal`, dom-wide** (pivot≡1 ⟹ unipotent-
+    polynomial `Q`, NO rational inverse; the (S,J) recursion reproduced over `buildTree`) — is RENDERED,
+    **NOT BUILT**. The box-geometry (L6 dom-wide Jacobian, rendered exact `unit≡1`; L7 cover) is
+    NECESSARY-NOT-SUFFICIENT and its MECHANISMS are built clean-three only for a SIMPLER object
+    (single-term shear) — three seams to faithful; **it does NOT touch the `hideal`**. L7's coupled
+    `hcover` at corank≥2 is UN-PROBED (the highest residual risk). So the residual to close
+    `exists_coreResolution:311` = the coupled **hideal** build (deep) + the box-geometry seams + the
+    coupled-`hcover` probe. **NOT OPTIONAL, never a footnote; render-bounded ≠ review-landed ≠ built.**
 - **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: LANDED sorry-free (wave 1) —
   the S2 boxed rule is a THEOREM under Aoyagi's own divisibility chain (`DivChain` guard excludes
   the coupled counterexample; `Measurable unit` delta), `Core.Aoyagi.MonomialRLCT`. The coupled
@@ -65,8 +79,11 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   lacks meromorphic continuation) remains monument-class, explicitly DEFERRED: the opening is scoped,
   not total. Statements pass elder ratification before any proving.
 - Reductions R0/R1 (deepest point; product reduction → core): BUILT (bookkeeping).
-- **Corollary/test:** `aoyagi_learning_coefficient = C/2`; `hbox` is its analytic shadow, never a
-  separate goal — it falls out of A+B (or is decided false by them).
+- **Corollary/test:** `aoyagi_learning_coefficient_via_engine = C/2`. HONEST STATUS: the payoff is
+  **CITE-FREE** (NO `cited_aoyagi`/`cited_watanabe` axiom in the cone — AxCheck-verified: cone =
+  `{propext, sorryAx, Classical.choice, Quot.sound}`) **BUT carries `sorryAx` from the ONE geometric
+  monument `exists_coreResolution:311`; it is NOT CLOSED.** "Cite-free" is NEVER reported detached from
+  "sorryAx-via-monument, not closed." `hbox` is B's analytic shadow, never a separate goal.
 
 ## §2  The progress bar (what may be *called* progress)
 A progress claim is valid ONLY if it names **(a)** the §1 object it discharges AND **(b)** the legal
@@ -75,67 +92,48 @@ discharges **no** §1 object is **NOT progress** — it is motion. The controlle
 category before reporting progress; the elder gates every route and every progress-claim against §0–§3.
 
 ## §3  Standing math-warnings (the drift, named — the highest-suspicion classes)
+- **THE GEOMETRY IS NOT THE IDEAL IDENTITY — a `Resolution` needs `hideal` (the scope-correction,
+  2026-07-24, geo-atlas-wire; the NEWEST drift).** `Chart.hideal_fwd`/`hideal_bwd` (`⟨(∏C)∘g⟩=⟨diag b⟩`,
+  dom-wide) are MANDATORY fields; L6 (Jacobian) + L7 (cover) are NECESSARY-NOT-SUFFICIENT — they do NOT
+  inhabit the `hideal`. The render's final scope-calibration OMITTED `hideal` from the residual,
+  conflating "hideal math-verified (the L-A/L-B spine)" with "hideal Lean-inhabited" — that omission was
+  the drift. A progress claim on "the geometric atlas" that does not account for the coupled `hideal`
+  Lean build is motion. **RENDER-VERIFIED ≠ LEAN-INHABITED**; and the coupled hardness MIGRATED from the
+  (dissolved) maintenance wall to L7's UN-PROBED coupled `hcover` — "the wall is bypassed" does NOT mean
+  "the coupled hardness is gone." Probe corank≥2 `hcover` decorrelated BEFORE the full build.
 > **RETIRED-AS-SUPERSEDED (2026-07-24, operator GO on the re-architect): the geometric-substitution-fold
 > drift class.** The coordinate FOLD (`FoldStepInvAt`, `blockBlowupCoordQuot` divide-by-pivot, degree-1
-> support-tracking, `couplingClear`, `canonCenterOf`, the WALL/KILL/#95/#98) is RETIRED — it was the drift,
-> not the object. Its warnings below are marked SUPERSEDED; the IDEAL-level discipline they were groping
-> toward is KEPT + VINDICATED (see the first bullet). SUPERSEDED ≠ REFUTED: those invariants were true
-> where they held; the ENCODING drifted.
+> support-tracking, `couplingClear`, the WALL/KILL/#95/#98/#69) is RETIRED — the drift, not the object.
+> SUPERSEDED ≠ REFUTED: those invariants were true where they held; the ENCODING drifted. Under option
+> (b) the fold's `foldResid_case11` re-shape (#69) is MOOT — the fold is retired, not repaired.
 - **The recurring category error (KEPT + VINDICATED — the PROOF the ideal route is forced):** no
   det-1 / a.e.-injective chart diagonalises the loss on an open set (each `(∏C)ᵢⱼ` is a nonzero poly,
   ≢0 on a dense open; exact diagonalisation forces ≡0, a non-open det-0 projection). The value LOWER
   bound is therefore **not** a chart change-of-variables — it is IDEAL-level. **STATE THE RESOLUTION FOR
   THE OBJECT** — the ideal identity `⟨A⟩=⟨diag(b)⟩` (polynomial cofactors), NEVER a coordinate-support
-  predicate; the 2026-07-24 re-architect IS this discipline realized (the fold's support-tracking was the
-  drift away from it). A value-computing chart passes det/cover/measure gates and fails at the consumer, late.
-- **The b-chain is LOAD-BEARING for the MAINTENANCE, not only the read-off.** `b₁|b₂|…|b_M` (worked.tex:484)
-  is what makes the non-unit `diag(b)` step an IDEAL EQUALITY — the divisibility absorbs the block-elim
-  cross-terms (L-B). Do NOT treat the b-chain as mere read-off bookkeeping; it carries the coupled Cases-1/2
-  step. (This is why corank≥2 dissolves to the SAME step: the chain accumulates automatically.)
-- **Reuse RESULTS; the ideal route replaces the chart route.** The retired α-atlas chart Engine
-  (`Engine/`, RETIRED.md, un-wired/un-built) has category-false holes — **DO NOT FILL THEM**. Salvage
-  correct kernel-checked tree/det pieces into Object B by re-importing the specific module, never by
-  closing a chart hole.
-- **The cite is not the proof.** The one in-library kill-target is `cited_aoyagi_lower_ax`
-  (½·codim ≤ rlctGlobal(lossDLN) — the DLN lower/finiteness half). GOAL: PROVE it via A+B+C and DELETE it
-  (`rlctGlobal` is built cite-free; `codim_ℝ=codim_K` proved). Citing it — or reporting any payoff that
-  rests on it — discharges NO §1 object; it is motion. `cited_watanabe_upper_ax` = the origin DIVERGENCE
-  (banked) + R0 — a PROOF-TARGET candidate, not settled-external. `cited_local_zeta_pole`: off-path.
-  Endpoint: `aoyagi_learning_coefficient` with NO Aoyagi axiom.
+  predicate. A value-computing chart passes det/cover/measure gates and fails at the consumer, late.
+- **The b-chain is LOAD-BEARING for the MAINTENANCE, not only the read-off.** `b₁|b₂|…|b_M`
+  (worked.tex:484) is what makes the non-unit `diag(b)` step an IDEAL EQUALITY — the divisibility absorbs
+  the block-elim cross-terms (L-B, rev-render-verified). Do NOT treat the b-chain as read-off bookkeeping.
+- **The cite is not the proof.** The in-library kill-target is `cited_aoyagi_lower_ax` (½·codim ≤
+  rlctGlobal(lossDLN)). GOAL: PROVE it via A+B+C and DELETE it. Citing it — or reporting any payoff that
+  rests on it — discharges NO §1 object; it is motion. Endpoint: `aoyagi_learning_coefficient` cite-free
+  AND sorry-free (both — cite-free alone is the `via_engine` state today, not "done").
 - **Reuse dev's determinantal-geometry RESULTS for D (proved, cite-free); do NOT adopt L&R's
   quiver-representation THEORY** (Gabriel / orbit-closures / Ext-codim / the (C,θ) fibre-geometry) as a
   subject to build — the paper's OTHER programme, outside the RLCT-value scope.
-- **The gnote antidote** (worked.tex:191): the per-layer recursion AS A LOSS-DIFFEOMORPHISM is the drift;
-  the reading is IDEAL-level (`rlct = ½·min_t codim S(t)`; regular Q,P preserve the ideal), never a
-  diffeomorphism of the loss. Aoyagi's IDEAL-level (S,J) recursion via regular Q,P IS the route (reproduce
-  it — B). Route D2 (mild-singularity dissolve) DROPPED; D1 (the codimension object) stays.
-- **NO minimum-viable-ing a named hard part** (esp. coupled-B). "Toric-trivial / no extra blow-ups /
-  elementary" clean headlines are UNVERIFIED until probed with decorrelated exact-algebra at the KNOWN
-  failure cases (coupled corank≥2). NOW: coupled-B is render-assessed BOUNDED (review in flight) — but
-  "render-bounded" ≠ "review-landed" ≠ "built"; the build is a FULL reproduce, never MVP'd, and the
-  tractability probe is a CHECK on a committed build, never a gate that scopes the object down.
-- **The source-fidelity discipline (fidelity arc, 2026-07-23 — the deepest drift; ~2 days + 4
-  escalations). Two composed gates: def-fidelity at BAKE time, paper-first at DEFECT time.**
-  *BAKE:* a spine DEFINITION bakes only behind a source-fidelity certificate — the source construction and
-  the Lean def, traced on the SAME concrete witness (incl. a WIDE witness where widths diverge), then
-  DIFFED. Statement gates never catch a wrong def — every wrong object here was def-level, invisible to
-  every statement gate (the shear missing Aoyagi's deeper recoord `A_{S+1}·Q₁⁻¹`, worked.tex:445, in-repo
-  the whole time; the `∀-e` flatten admitting a layer-scrambler; `supportAt` capping the residual's raw
-  column at the running min; `Deg1SupportedSlot` continuity-only where the paper factors). A battery must
-  exercise the LEAN def, never only a hand model of the intended math — the kill-battery traced the
-  faithful HAND MODEL while the Lean def diverged, green-lighting the right MATH over a wrong ENCODING
-  (the worst failure: confirming the INTENT, not the OBJECT). A "representation not taken" docstring note
-  is a DEFERRED decision needing an owner + a re-open trigger, never a silent choice.
-  *DEFECT:* when a statement-class defect surfaces, STEP 1 is the source read at the defect's location —
-  what is HER object here, has she already resolved this? For a fidelity project the prior is strong: most
-  defects are under-transcription of paper-resolved content (the cap-escape = her raw `D_J` column; the
-  missing b-chain = her `diag(b)`), and the source is the cheapest, most decisive instrument. Only then
-  commission elaboration (traces, candidate designs, decorrelated consults) — which then VERIFY her answer
-  and serve as the acceptance battery, never as de-novo design of an object the source already has.
-- **[SUPERSEDED — retired with the fold] the `canonCenterOf` full-block tripwire** (fired 3×: 16th
-  `supportAt`-widen / P2 root-widen / 26th center-edit) retires with the coordinate fold. Its GENERAL lesson
-  STANDS (ideal-level discipline): a green SPECIFY framing is NOT sufficient for a def-edit — statement gates
-  never catch a wrong def (cf. source-fidelity); enumerate ALL consumers + directions before a def-edit bless.
+- **NO minimum-viable-ing a named hard part** (esp. coupled-B). "Toric-trivial / elementary / bounded"
+  clean headlines are UNVERIFIED until probed with decorrelated exact-algebra at the KNOWN failure cases
+  (coupled corank≥2). The build is a FULL reproduce, never MVP'd; the tractability probe is a CHECK on a
+  committed build, never a gate that scopes the object down.
+- **The source-fidelity discipline (fidelity arc, 2026-07-23 — the deepest drift). Two composed gates:
+  def-fidelity at BAKE time, paper-first at DEFECT time.** *BAKE:* a spine DEFINITION bakes only behind a
+  source-fidelity certificate — the source construction and the Lean def, traced on the SAME concrete
+  witness (incl. a WIDE witness), then DIFFED. A battery must exercise the LEAN def, never only a hand
+  model of the intended math. *DEFECT:* when a statement-class defect surfaces, STEP 1 is the source read
+  at the defect's location — has she already resolved this? For a fidelity project the prior is strong.
+  Only then commission elaboration — which VERIFIES her answer, never de-novo-designs an object the source
+  already has.
 
 ## §4  Durability
 Read first, every cycle, by every role. Elder is sole author (holds the abstract-object frame; gates
