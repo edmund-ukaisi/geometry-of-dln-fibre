@@ -131,3 +131,26 @@ prior highest-risk flag). The general-`d` hcover ASSEMBLY (items 1–6 + CENTERS
 Resolution/AtlasRealizesExponents wiring remain — the actual `exists_coreResolution:311` build. Do NOT round
 "corank-2 GO" up to "L7 done". Controller `#print axioms` gate on the module pending (confirm §6
 `#assert_banked_clean_batch` GREEN, not stale-olean).
+[UPDATE 2026-07-24: corank-2 GO VERIFIED (controller #print axioms fresh-build clean-three, all 6 roots) +
+MERGED bfe4f2433.]
+
+## GENERAL-`d` BUILD — decomposition (refined after the hideal reuse survey, 2026-07-24)
+
+- **A — general-`d` geometry (L6 charts + hjac + hg_* + L7 hcover):** builder `geo-atlas-gd` (running). The
+  chart family's GEOMETRIC fields + the cover for `buildTree(d)`. This is the corank-2 mechanisms
+  generalized (rev-render's 6-item assembly).
+- **C — hideal + full-Chart assembly + `AtlasRealizesExponents` + discharge `:311`:** after A settles the
+  chart structure. **`hideal` FOLDS INTO C, NOT a separate parallel builder** — it is a Chart FIELD on the
+  SAME chart A builds, so a parallel B would race A on the chart structure. C owns the full Chart.
+  **hideal reuse (survey — well-supported in TRUNK, do NOT rebuild):**
+  - Schur block-elim: `Core.SchurGauge` / `SchurRankZero` / `SchurProductFactor` / `ChartSchurConnect` /
+    `SchurSideNoDrop` / `SchurFibreVanishing` / `RingTheory/Determinantal/Schur`.
+  - Ideal-identity infra: `Core.Aoyagi.IdealInvariance`, `MonomialRLCT`, `PrincipalInv`.
+  - **Chart-with-hideal builders already in trunk:** `Core.Aoyagi.ConjResolution` (builds a `Chart` with
+    `hideal_fwd/bwd` PROVEN, `:= by`) — the cleanest template; `DLN.Aoyagi.LeafChartWire` /
+    `MonumentAssembly` build `Chart (coreGen d e) 0` (check live-vs-fossil; geometric-fold era).
+  - Matrix bridge: `Corank2Proto` §4 (`Q1_C1_Q2_eq_diag` = the symbolic block-elim `Q1·C1·Q2 = diag(1,Δ)`,
+    `det_Q1=det_Q2=1`, `reconstruct_C1`) — the corank-2 template for the general block-elim.
+  - The verified spine (L-A/L-B) is the math backing; the hideal Lean = assemble these on A's charts.
+- **No separate B.** Critical path: A (geometry) → C (hideal + assembly + wiring + :311). C reuses A + the
+  trunk Schur/ideal machinery. Both operator-gated build; bounded-buildable.
