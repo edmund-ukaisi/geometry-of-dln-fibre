@@ -956,3 +956,30 @@ now correct) does NOT imply realized. The residual is:
 intermediate = L-lower monotone-accumulation), and L7 obligation-2 (fan-completeness) — all plausibly
 bounded/combinatorial+standard-geometry, NONE yet discharged. So it is NOT "complete/no-open-math"; it is a
 clean REDUCTION to a short obligation list. The gate survives as a REDUCTION, not as a discharge.
+
+### Steering (a) at NON-MONOTONE widths — my render (for rev-render's decorrelated audit)
+
+The one genuinely-open combinatorial point of steering (a) is the non-monotone-width case (where the T-E
+raw-width defect lives). My structural render, and the precise sub-point I flag rather than assert:
+
+- **The envelope is STRUCTURAL, running-min-governed (sound, general).** The invariant fixes `D_J` at size
+  `(M(S)−J)×(M^{(S+1)}−J)` with `M(S) = min{M^{(s)}:s≤S}`. So the residual RANK at layer `S` is structurally
+  `≤ M(S+1) = min(M(S), M^{(S+1)})` — a rank can never exceed the running min of the widths it factors
+  through. Hence the clearable envelope `t*^{(S)} ≤ M(S+1)` is a STRUCTURAL bound (rank ≤ min-of-widths),
+  not a monotonicity assumption — it holds at non-monotone widths verbatim. The Case-1(2)-advance is bounded
+  by this running min (`J` runs `0..M(S+1)`), so the steering to `t*^{(S)} ≤ M(S+1)` stays in range at
+  non-monotone widths.
+- **The T-E raw-width defect is (my claim) a LABELING artifact, non-binding — but this is the sub-point I
+  hand to rev-render, not assert.** Case-2's head-reset prints `t^{(i)} = M^{(i+1)}` (raw width) for the
+  EARLIER coordinates `i < S`; at non-monotone widths this raw label conflicts with the running-min the
+  exponent formula uses. My render's position: the ideal-route encoding carries NO label field (only
+  `bexp`/`jac`), the exponent accumulation is running-min-governed, and the raw-width label has no formal
+  representation to corrupt — so the realized profile's binding content is running-min-based and the defect
+  divisor is non-binding. **BUT** the precise thing I cannot yet assert general-`d` is: does the Case-2
+  head-reset produce the EARLIER coordinates `t*^{(i)}` (`i<S`) that the minimizer `t*` requires, or the raw
+  `M^{(i+1)}`? If the reset overwrites earlier coords with raw widths, the steered branch's profile could
+  differ from `t*` in its head at non-monotone widths. **rev-render's focused audit should settle exactly
+  this: at a non-monotone minimizer (e.g. widths where `M^{(i+1)} ≠ M(i+1)` on a binding head), does the
+  steered Case-1(2)→Case-2 branch realize `t*`'s earlier coordinates, or does the raw-width head-reset
+  divert it?** This is the last open sub-point of steering (a); the envelope/range part is structurally
+  sound above.
