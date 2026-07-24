@@ -253,6 +253,37 @@ up to exactly `½Mval`). This is V's — and the expedition's — true remaining
 
 ---
 
+## L-lower-coupled — the isolated FRONTIER LEAF (V's true remaining crux)
+
+Per charter §0(ii): decompose until the open math is ISOLATED and NAMED a frontier leaf. Here it is.
+
+**Frontier leaf (F-lower-coupled).** *For the coupled minimising branch, the coupled resolution
+monomialises `F = ‖∏C‖²` FROM BELOW: on the chart, `F∘g ≥ b_{k₀}²·(nonvanishing unit)` near the
+exceptional locus, where `b_{k₀}` is the dominant exceptional monomial with exponent `Mval(branch)`.*
+- **Consequence (clean, general):** given F-lower-coupled, `rlct(F) ≥ rlct(b_{k₀}²·unit) = ½·Mval`
+  (the monomial RLCT, Object C, landed — for a SINGLE monomial only the from-below term is needed);
+  combined with the clean/rank-1 branches (closed above) and the min over branches ⟹ `rlctAt ≥ ½·cCodim`.
+  This deletes `cited_aoyagi_lower_ax`.
+- **Why it is strictly LIGHTER than the open end.** The open end is the two-sided `⟨∏C⟩=⟨b₁⟩` terminal
+  single-chain principality for ALL charts (deep mixed instances). F-lower-coupled asks only the
+  **one-sided from-below** direction (`F∘g ⪰ b_{k₀}²`), only on the MINIMISING branch, and the coupling
+  HELPS (the shared deeper factor raises the pullback, making `⪰ b_{k₀}²` easier not harder). No exact
+  ideal identity, no all-charts, no both-directions.
+- **Why it is NOT free (honest).** It still requires the coupled corank≥2 resolution (the blow-up tree
+  `buildTree` — combinatorially landed; its geometric charts — L6/L7) AND that the pullback's dominant
+  term is `b_{k₀}²` with `b_{k₀}` exponent `= Mval` (the combinatorial `M_{s,k}=Mval`, thread-03 landed)
+  REALISED geometrically in the coupled case. The genuine content = the coupled pullback's leading
+  behaviour is the codim-`Mval` monomial. This IS the frontier the charter (§1 B) calls NOT OPTIONAL —
+  now in its minimal honest form (a one-sided leading-term bound, not the full monument).
+
+**Candidate leverage (to attack the leaf, next):** (a) the depth-recursion — one layer-peel gives
+`F = (divisor)²·(core)`; from-below on the divisor is a monomial factor, recurse on the core; the coupled
+core's from-below by IH (base `L=2` Morse). (b) dev's cite-free determinantal geometry (§1 D) — the
+rank-drop locus's leading form. (c) Object A (ideal-invariance) to work with the block-eliminated
+generators. This is genuine research; render before any Lean.
+
+---
+
 ## L-A — the Schur-clearing ideal identity (COMPLETE, general)
 
 **Setup.** Let `R` be the ring of real-analytic germs at a point `w*` (a local ring; a germ is *regular*
