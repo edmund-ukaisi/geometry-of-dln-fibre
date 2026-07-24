@@ -744,10 +744,47 @@ be skipped via rlct-invariance (circular).
   level contributions are independent (separable), the level-wise least-selection yields the GLOBAL min ⟹
   the tree's minimizing leaf has `Mval = cCodim`. Aoyagi's Theorem 3 ASSERTS the tree realizes `cCodim`
   (that is the content of her resolution), so separability holds in her construction.
-- **STATUS: reduces to level-separability of `Mval` (greedy = global). This is THE one geometric-half claim
-  I must VERIFY, not assume** — it is the exact analogue of the over-claim I already made once. Aoyagi's
-  Theorem 3 asserts it; the render must reproduce WHY the DLN exponent objective is level-separable (the
-  divisor-exponent sum decouples across the `(S,J)` recursion levels because each step's cleared block is
-  disjoint from the later blocks — plausible from the block structure, but to be rendered, and it is where
-  rev-render's #2b will push). If separability FAILS (greedy stalls at a local min above `cCodim`), the
-  upper bound gives `> ½cCodim` and the EQUALITY breaks → this is the residual risk of the geometric half.
+- **STATUS: BOUNDED (source-resolved; my greedy=global worry was over-caution). NOT a separability
+  question.** From Aoyagi's actual value read-off (worked.tex §3.4): `rlct_core = ½ min{M_{s,k} : ~t=0}`
+  over TERMINAL divisors, each **indexed by a rank-profile `t` of its branch**, `M_{s,k} = Mval(t) =
+  codim S(t)` exactly. So the tree is **EXHAUSTIVE over rank-profiles** (each profile IS a terminal
+  divisor), and the value is a DIRECT min over ALL terminal divisors = ALL profiles — there is no
+  greedy pruning. Hence L8 (ii) decomposes into two BOUNDED halves:
+  - **Combinatorial attainment** (the min IS attained among the profiles): this is `divisorMin = qipMin =
+    cCodim`, **PROVED** (`Core.Aoyagi.Engine.divisorMin_eq_cCodim`, min-attainment form) = Object D; the
+    across-leaves attainment is salvaged kernel-checked from the retired Engine's tree (worked.tex fnote).
+  - **Geometric exponent read-off** (the concrete leaf's `F∘g = ∏u^{M_{s,k}}·unit`, exponents `= Mval(t)`):
+    this is part of the L6/L7 chart certificate (`hideal`/`hjac`) — the same monomial-and-Jacobian data L6
+    renders. Not separate open math.
+  - **The least-selection's role** (correcting my earlier framing): it well-orders the `(S,J)` STEP (which
+    1×1 pivot next, via the b-chain total order) so the recursion is deterministic and terminates — it does
+    NOT prune the profile enumeration. The tree still reaches every profile; the min is over all of them.
+  So the residual risk I feared (greedy stalls above cCodim) does NOT exist — the tree is exhaustive. **L8
+  (ii) residual = the Lean geometric build (exists_coreResolution's geometric fields) + rev-render audit,
+  NOT open math.**
+
+## GEOMETRIC-HALF RENDER — COMPLETE (assessment; EARNED "bounded", pending rev-render re-audit)
+
+The geometric half — the part my first RENDER VERDICT over-claimed as "bounded combinatorial" without
+rendering it — is now rendered general, piece by piece:
+- **L6 (chart geometry + dom-wide Jacobian):** EXACT (`|det Dg| = monomial·1`, `unit ≡ 1` identically) —
+  the germ-only trap is structurally void.
+- **L7 obligation-1 (per-edge box-containment, corank≥2):** resolved general via one-pivot-per-step
+  (uniform degree-2 shears, no rational inverse, finite-depth inflation; the `-L7cover` engine applies).
+- **L7 obligation-2 (fan-completeness):** the fan = the geometric fold's fan (shears don't change it),
+  exhaustive branching, pnp-fan transfer — bounded bookkeeping.
+- **L8 (ii) (minimizer-realization / upper bound):** bounded — the tree is exhaustive over profiles, so it
+  is the combinatorial attainment (Object D, PROVED) + the geometric exponent read-off (⊆ L6). My
+  greedy=global worry was over-caution, resolved by Aoyagi's actual value read-off.
+- **Totality / least-selection:** discharged — the same-`~t`-level chain IS the `b`-chain total order (L-B).
+
+**EARNED re-verdict.** With the ideal SPINE verified sound+general (rev-render #3) AND the geometric half
+now rendered general, there is **NO open mathematics** in the close-out: the residual is the Lean BUILD of
+the geometric fields (`exists_coreResolution`'s chart-geometry + cover — "the true remaining build" per
+worked.tex) plus the salvaged-combinatorial wiring, and rev-render's re-audit. This is a genuinely EARNED
+"bounded reproduce-and-build" — distinct from my first VERDICT, which asserted "bounded" WITHOUT rendering
+the geometric half (that was the over-claim rev-render caught; this is the same conclusion reached honestly,
+after rendering each geometric obligation). **Gate before build-ready: rev-render's re-audit of L6/L7/L8
+must survive** (esp. its tooth-1 corank≥2 escape and the L8 exhaustiveness) — if it holds, the render is
+complete and the checkpoint to the operator is "build-ready, no open math, honest scope = the geometric
+fields Lean build."
