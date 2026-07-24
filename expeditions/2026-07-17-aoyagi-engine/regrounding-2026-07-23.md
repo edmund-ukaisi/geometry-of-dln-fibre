@@ -166,6 +166,15 @@ HELD (retirement is downstream + git-recoverable when the ideal route lands — 
 RouteM fossils, no destructive now-action). Held for the operator's go (elder + controller both
 conditioned the blueprint on operator-go).
 
+**UPDATE (2026-07-24, ~heartbeat 5, sustained operator silence): PROCEEDING on the REVERSIBLE half.**
+Per the autonomy rule the re-architect is a ladder re-scope (objective unchanged → NOT wait-for-explicit-go),
+so proceed-on-silence governs. Controller over-held at HB3-4 (a self-imposed courtesy); corrected. Commissioned
+elder-standing to DRAFT the blueprint (the new L3/L4/L5 Schur-clearing SPEC statement-delta + kept/retire lists
++ a PROPOSED charter/compass reframe) as a REVIEWABLE DOC — NOT editing charter.md in place, NOT redirecting
+seats, NOT retiring anything. EXECUTION (render, seat-redirect, charter-edit landing, geometric-fold retirement)
+remains HELD for the operator's explicit go — those retire team work + disrupt the team. Controller gates the
+statement-delta when the blueprint lands. This is reversible prep that makes the eventual go instant.
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
