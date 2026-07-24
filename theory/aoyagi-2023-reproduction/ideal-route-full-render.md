@@ -548,3 +548,38 @@ coupled corank≥2 frontier the expedition circled for multiple expeditions is, 
 reproduce-and-verify. **This is the execution boundary — operator-gated** (the Lean build of coupled-B,
 ideal-level, retiring the geometric fold). The render + all de-risks are the deliverable to hand the
 operator before that go.
+
+## REV-RENDER AUDIT — CORRECTIONS (decorrelated review, 2026-07-24; SUPERSEDES the "bounded combinatorial" headline)
+
+A decorrelated review-only audit (rev-render + its own Codex, + a grep of the Lean "landed" claims)
+found the ideal-algebra SPINE sound but the RENDER VERDICT's headline OVER-CLAIMED. Controller
+cross-checked all findings — they hold. Corrections:
+
+- **The spine SURVIVES (verified decorrelated):** L-A, L-B maintenance (matches Aoyagi's actual `P`,
+  entries `−(b'ᵢ/b'_{J+1})·d''`, polynomial by the chain), Theorem 4 — all sound and general. The
+  coupled-corank≥2 *maintenance* wall genuinely was a substitution-encoding artifact, as claimed.
+- **RETRACT "the only remaining content is bounded combinatorial reproduce-and-verify."** OVER-CLAIM
+  (my second optimism-on-scope error; caught by the decorrelated review). The per-chart ideal identity is
+  NECESSARY but NOT SUFFICIENT for the RLCT; a `Resolution` also needs the GEOMETRIC half — genuine (if
+  standard) analytic geometry, currently SORRIED and UN-PROBED at coupled corank≥2:
+  - **L6 `leafPath_chartGeometry` — SORRIED** (was mislabeled "landed"): the coupled blow-up chart maps,
+    Jacobian certificate (=monomial·unit), a.e.-injectivity.
+  - **L7 `leafPath_compactCover` — SORRIED** (was mislabeled "L7 engine landed"): the measure-zero COVER.
+    **Genuinely required for the LOWER bound** (rev-render + Codex counterexample `F=x²+y⁴`: a per-chart
+    threshold does NOT lower-bound rlct if a direction is omitted). The coupled corank≥2 cover (the L7
+    tiling) is the ONE place charter §3's "probe the clean headline at the corank≥2 failure case" has NOT
+    been discharged — the highest residual risk.
+  - **L8 `leafPath_realizesExponents` clause (ii) — SORRIED**, and DISTINCT from Object D: Object D is the
+    combinatorial `min over ALL admissible profiles = cCodim`; the UPPER bound needs Aoyagi's TREE to
+    REALIZE a minimizing profile (minimizer-realization). Cannot invoke rlct-invariance to skip (circular).
+- **KC-2 totality-drop — under-argued (conclusion survives, needs the explicit argument):** the selection
+  rule picks a LEAST profile, not a bare minimal; the repair is a LOCAL same-level chain (profiles at each
+  fixed `~t`-level are totally ordered) ⟹ minimal=least. Global cross-level totality drops (correct); the
+  local least-selection is load-bearing for the value (it steers the tree to a minimizer = L8 (ii)).
+
+**HONEST RE-VERDICT.** The ideal spine (L-A/L-B/Thm-4) is verified sound and general — the re-architect
+is right and the maintenance frontier is genuinely dissolved. But the RENDER IS NOT COMPLETE: the
+geometric half (L6 realization, L7 coupled cover, L8 minimizer-realization) is un-rendered-general and
+sorried, and the coupled corank≥2 COVER is un-probed. Next render work (controller-owned, GENERAL, no
+instance-as-justification): render L6/L7/L8 for the coupled corank≥2 case the way L-A/L-B were rendered —
+the coupled cover (L7) first, as the highest risk. Not build-ready until this second half is rendered.
