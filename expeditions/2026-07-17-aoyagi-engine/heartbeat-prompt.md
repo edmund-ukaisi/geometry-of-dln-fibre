@@ -42,8 +42,13 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   completeness, radius bookkeeping, leaf↔chart) + hideal + Resolution/AtlasRealizesExponents wiring remain =
   the actual exists_coreResolution:311 build. NEW risk: CENTERS (nonzero-center linear terms; likely safe as
   Aoyagi is chart-origin-centered, confirm in build). rank-1 LOAD-BEARING (needs one-pivot-per-step).
-  PENDING: my #print axioms gate (confirm §6 assert GREEN not stale-olean, once builder full-green + I merge).
-  Do NOT round "corank-2 GO" up to "L7 done". NEXT: verify + plan general-d build.
+  VERIFIED + MERGED: my own #print axioms on a FRESH root build (forced elaboration, no stale-olean) = all 6
+  roots [propext, Classical.choice, Quot.sound]; #assert_banked_clean_batch fired GREEN in-build; MERGED to
+  trunk bfe4f2433 (full scripts/lb DLNFibre green, 8265/9017 jobs, no clash). The mechanism GO is confirmed.
+  Do NOT round "corank-2 GO" up to "L7 done". NEXT: the general-d hcover ASSEMBLY build = the actual :311
+  (real buildTree(d)↔FanTree correspondence + fan-completeness over real centers + per-node order-2 CENTERS
+  hypothesis [coPhi 0=0 ∧ fderiv coPhi 0=0] + varying blocks) + hideal (PROTO-§4 bridge) +
+  Resolution/AtlasRealizesExponents wiring. All operator-gated build; bounded-buildable, not a monument.
   NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
