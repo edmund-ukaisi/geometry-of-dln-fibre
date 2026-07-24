@@ -32,7 +32,11 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   sorry (exists_coreResolution:311 = ∃ res, AtlasRealizesExponents d res = geometric atlas); payoff cite-free.
   BUILD-PREP COMPLETE: brief = `geometric-atlas-build-brief.md` (L6 dom-wide hjac + L7 coupled hcover [the
   UN-PROBED corank≥2 piece] + the ℕ-value-match; reuse -L7cover + -PROTO; first unit = corank-2 chart
-  go/no-go). AWAITING OPERATOR BUILD-GO (geometric-atlas Lean build operator-gated; nothing more to prep).
+  go/no-go). BUILD-GO GIVEN (operator, 2026-07-24). LeafCoverTiling MERGED to trunk (c36ff259e, L7 reuse). corank-2
+  first unit LAUNCHED (builder `geo-atlas-c2`, own worktree, background) = the GO/NO-GO: L6 dom-wide hjac
+  (rendered exact) + L7 coupled hcover (the UN-PROBED risk). Awaiting its verdict (GO = general-d is the
+  same step iterated; NO-GO = the coupled-corank≥2 hcover risk surfaced → stop+report). Gate its "done" on
+  #print axioms (calibrate-the-sensor). Builder wakes me on completion; do NOT poll.
   NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
