@@ -1,5 +1,16 @@
 # The ideal-route close-out — full general mathematical render
 
+> **CURRENT STATE (read first; phase checkpoint 2026-07-24).** This doc is the RENDER (math) + its audit
+> trail (rev-render rounds #1–#7, appended below in order — history, not re-reading required). Bottom line:
+> **the SPINE (L-A Schur block-elim, L-B `b`-chain maintenance, Theorem 4) is rendered general and
+> rev-render-verified sound — the coupled-maintenance wall is dissolved at the MATH level.** The value
+> bounds + the geometric-atlas obligations are rendered (with corrections logged in the RE-AUDIT sections).
+> **What this render does NOT do: it is not the Lean build.** The Lean status, and the residual (the
+> `hideal` monument = the next build), live in `expeditions/2026-07-17-aoyagi-engine/BUILD-STATE.md` — read
+> that for "what's proved in Lean vs what's rendered vs the residual." The audit trail below records how the
+> render was corrected (route-A→route-B on the value; the geometric mechanism-GO; the fidelity seams); trust
+> the latest RE-AUDIT section over earlier ones where they conflict.
+
 **Purpose.** The complete general proof that Aoyagi's matrix-ideal (Schur-clearing) route resolves
 the reduced-width core `∑(∏ₛC⁽ˢ⁾)²` at the origin and reads off `rlct = C/2`, for **every** monotone
 positive-width `d` — closing what `via_engine` needs. Controller-owned (pen-and-paper role retired,
