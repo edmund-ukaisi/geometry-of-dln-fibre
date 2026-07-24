@@ -1038,3 +1038,34 @@ ratio `≥ ½cCodim`, intermediate ones included). **Net: the recast likely redu
 terminal `~t=0` divisor via Case-1(2)-inherited" = the corrected steering, NOT a dissolution.** Render it
 with this check up front (terminal-vs-intermediate at `(2,2,3,2)` as the illustration); do NOT assume the
 intermediate ratio is `½M`.
+
+## VALUE UPPER BOUND — consolidated status (supersedes the L8/route-B/steering trail above)
+
+**Claim:** `rlct ≤ ½cCodim`. **Clean reduction (established parts + the one residual, precisely):**
+
+1. **Reduce to a divisor:** `rlct` = min over ALL resolution divisors of the chart ratio `(h+1)/(2m)`. So
+   the upper bound holds as soon as SOME divisor has ratio `= ½cCodim`.
+2. **That divisor must be TERMINAL-binding** (`~t=0`): only for terminal binding divisors is the clean
+   `ratio = M/2` identity established (`k≡1`, `h=M−1`, worked.tex p.15). An intermediate divisor's `(h,m)`
+   are not obviously `(M−1,1)` (rev-render seam) — so the witness must be terminal.
+3. **Its profile must be a minimizer `t*`** (`Mval(t*)=cCodim`), giving ratio `= ½Mval(t*) = ½cCodim`.
+4. So the upper bound ⟸ **`t* ∈ T_reach`** (`T_reach` = the profiles realized as terminal `~t=0` divisors).
+
+**ESTABLISHED:** clearability (i) — every minimizer satisfies the running-min envelope (`t*^{(i)} ≤
+M(i+1)`, monotone), by the saturated-boundary exchange argument (with positivity). [RE-AUDIT #3, FIX 2.]
+
+**THE RESIDUAL, stated precisely — `minimizer ⟹ reachable-as-terminal`, and MINIMALITY is essential:**
+`clearable ⟹ reachable` is FALSE — `(1,1,0)` at `(2,2,1,1)` is envelope-satisfying (`1≤2, 1≤1, 0≤1`) yet
+STRANDED (rev-render), and it is a NON-minimizer (Mval 2; minimizers there are `(1,1,1)/(2,1,0)`, Mval 1).
+So `T_reach ⊊ clearable`, and the residual is NOT `clearable⟹reachable` (false) but specifically
+**`minimizer ⟹ reachable`** — the minimizer is never stranded, precisely because there is no lower-Mval
+profile to divert the recursion away from it (a stranded profile is blocked by a strictly-lower one; a
+minimizer has none). This is an EXISTENCE claim (∃ a Case-move branch terminating at `t*`), NOT a greedy
+claim (greedy least-selection does NOT reach it — refuted, `M=(2,2,2)`); the mechanism candidate is the
+corrected inherited-anchor (build `t*`'s head via Case-1(2) inheritance chains, drop the tail), verified at
+`(2,2,3,2)`. **STATUS: the reduction (1–4) is clean; clearability (i) is established; `minimizer ⟹
+reachable` is the ONE medium residual — an existence claim over the exact Case-1/Case-2 transition system,
+using minimality (not clearability), NOT yet proved general.** This is the precise, corrected statement of
+lemma (ii); it supersedes the "exhaustive" and "clearable⟹reachable" framings (both false). Next: render
+`minimizer ⟹ reachable` from the transition system — carefully, with rev-render's audit, given my error
+history on exactly this combinatorics.
