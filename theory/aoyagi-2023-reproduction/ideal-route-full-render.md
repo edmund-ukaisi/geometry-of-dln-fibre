@@ -136,11 +136,28 @@ prove in full:** the ideal identity above is *maintained* by this step — unifo
 with cofactor `I`), and the terminal. This is the induction; L-A discharges each step's block-elim, P1
 each step's `u`-factor.
 
-**Care points to discharge (NOT to hand-wave):**
-- The precise ideal bookkeeping of `⟨diag(b)·(E_J⊕D_J)·∏_{s>S}C⟩` under one step — the `E_J` block
-  carries the already-formed `bᵢ` monomials (cleared pivots are *monomials, not bare units*), `D_J` the
-  residual; show the step rewrites `(E_J⊕D_J) → (E_{J+1}⊕D_{J+1})` with the `b`-ledger updated and the
-  ideal unchanged.
+**THE IDENTIFIED CRUX of L-B (found while rendering; the open point to nail — NOT yet proved).**
+In Aoyagi's Theorem 3 the accumulated pivot `C'₁` stays *regular* (a **unit**), so the clearing `Q,P`
+conjugate freely through it (worked.tex:443–458). In the **core recursion** the cleared pivots are the
+*monomials* `bᵢ` — **non-units** — sitting as a left factor `diag(b)`, with the deeper-layer product
+`P_{>S}` on the right: `N_{S,J} = diag(b)·(E_J⊕D_J)·P_{>S}`. To clear the residual `D_J` I want L-A's
+unipotent `Q` acting on the `D`-rows, but `diag(b)` sits to its LEFT and does **not commute** with `Q`
+(and is not invertible), so L-A cannot be naively conjugated in. **This is the exact step every instance
+cert skipped** — they checked the ideal equality *held* at `(3,3,4)`, never *how the induction maintains
+it* with non-unit monomial pivots. Two candidate resolutions to test rigorously (next):
+  (a) *Separated-generators reading:* the invariant ideal is `⟨b₁,…,b_J, (residual system)⟩` — cleared
+     pivots contribute their monomials `bᵢ` as standalone generators, and the residual is cleared
+     *independently* by L-A on `D_J` alone (no `diag(b)` attached to the residual being cleared), the
+     new `1`-pivot contributing `b_{J+1}`. If the residual system is genuinely `D_J` standalone (not
+     `D_J·P_{>S}` entangled), L-A applies cleanly and the crux dissolves. Must verify the residual is
+     standalone, i.e. that clearing commutes with the deeper product `P_{>S}`.
+  (b) *`u`-factor-first reading:* the blow-up `u`-factor `⟨u·X⟩ = ⟨u⟩·⟨X⟩` is extracted before any
+     `diag(b)` interaction, and the residual `X` after `u`-extraction is what L-A clears; the `diag(b)`
+     ledger only records the accumulated `u`'s and never obstructs a live clear.
+  This must be settled by careful reconstruction of §resolution's per-step algebra (pp.15–22), not a
+  witness. It is the load-bearing rigor of the whole re-architecture — if neither (a) nor (b) closes
+  cleanly in general, the core-recursion maintenance is a genuine open problem (and the re-architect's
+  confidence, currently resting on instance certs + L-A, would be overstated for L-B).
 - Case 1 vs Case 2 differ only in *which* block is blown up and how the exponent ledger updates (L8);
   the ideal-identity step is the *same* (P1+L-A). The four-case labels are fold decisions, not distinct
   ideal identities (this is what the merge/rollover analysis must establish *generally*, replacing the
