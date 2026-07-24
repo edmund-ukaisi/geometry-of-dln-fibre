@@ -603,3 +603,51 @@ the coupled cover (L7) first, as the highest risk. Not build-ready until this se
   linked to the KC-2 local-least-selection (2a) that steers the tree. Distinct from Object D.
 - **Discipline:** render these GENERAL (no instance-as-justification); `(3,3,4) t=(1,0)` illustrates only.
   rev-render re-audits the drafted L7/L6/L8 render (review-only).
+
+## L7 — the coupled cover (RENDER; highest risk; general, no instance-as-justification)
+
+**Obligation.** `hcover : volume(U \ ⋃_c (g_c '' dom_c)) = 0`, `dom_c` COMPACT, `U ∈ 𝓝 0`. I.e. the finite
+family of compact-domain images of the leaf charts covers a punctured nbhd of 0 up to a null set (the
+exceptional locus is null, so "punctured up to null" suffices).
+
+**The chart maps (structural determination).** `g_c` = the ambient composite along the buildTree branch to
+leaf `c`: `g_c = σ_{k} ∘ β_{k} ∘ … ∘ σ_1 ∘ β_1`, where `β_j` = the `j`-th blow-up chart map
+(`c ↦ (u, u·d', spectators)`) and `σ_j` = the ambient coordinate relabel induced by the block-elim
+`Q,P` at that step (`C' = Q⁻¹C`, LINEAR in the layer's entries, coefficients POLYNOMIAL in the already-
+exposed `u`'s — unipotent, so degree bounded by the block). So `g_c` genuinely carries the shears
+(rev-render tooth 1); the cover is NOT the bare blow-up cover.
+
+**Reuse: the `-L7cover` engine (`LeafCoverTiling`, kept branch 646bcdcdb).** It PROVES abstractly: a
+`FanTree` with an `R`-dependent inflation `f` covers `closedBall 0 R` up to null, PROVIDED each node's map
+`σ` satisfies the box-containment `closedBall 0 (max R 1) ⊆ σ '' closedBall 0 (f (max R 1))` and the
+children cover `f(max R 1)`; `f^[depth] 1` finite at finite depth. (The `f = r ↦ r + C·r²` free-inflation
+repair handles the quadratic shear; two genuine depth-2 |S|=2 witnesses.) So L7 REDUCES to two general-`d`
+obligations feeding the engine.
+
+**L7-obligation-1 (the CRUX — per-edge box-containment for the COUPLED shears, general-`d`).** For each
+edge's composite `σ_edge = σ_j ∘ β_j`, show `closedBall 0 R ⊆ σ_edge '' closedBall 0 (f R)` with a UNIFORM
+`f` (widths only, depth-independent). The blow-up `β_j` is a monomial chart (standard box-containment, the
+`OriginBlowup` idiom). The shear `σ_j` (unipotent `Q⁻¹`, polynomial in exposed `u`'s, degree bounded by
+the block) inflates a box by a bounded factor. The earlier uniform-`C` finding (`canonNormalizationOf`
+monomial count ≤ `max_ℓ d_ℓ`, layer-local, depth-independent) was on the GEOMETRIC-fold shear — the
+IDEAL-route `σ_j` (= the `Q⁻¹` relabel) must be shown to have the SAME uniform bound, general-`d`,
+COUPLED corank≥2. **STATUS: UN-RENDERED, the un-probed charter-§3 risk.** The `Q` is unipotent-polynomial
+(L-A) with degree bounded by the block size (≤ widths), so a uniform box-inflation `f` PLAUSIBLY exists —
+but "plausibly" is the over-claim trap: this must be PROVED general (the `Q`'s image of a box is contained
+in a box of radius `≤ (1 + poly(widths))·R^{deg}`, uniform in the branch/depth), NOT assumed. If the
+coupled `Q`'s degree or the composition across the corank≥2 stack grows with depth (not just widths), the
+inflation `f^[depth]` diverges and the cover FAILS → genuine frontier.
+
+**L7-obligation-2 (fan-completeness, general-`d`).** buildTree's leaves ↔ the `FanTree`'s nodes, and at
+each node the children's charts (the affine charts of the blow-up's exceptional + the case-split) COVER
+the parent's ball (no direction omitted — the `l7probe` failure mode). general-`d` via the pnp-fan
+mechanism (banked for the geometric fold; must transfer to the ideal-route buildTree). Then the engine's
+`Covers` fold gives `hcover`.
+
+**HONEST ASSESSMENT (no over-claim).** L7 reduces cleanly to the two obligations + the kept engine. The
+reduction is sound. Obligation-2 (fan-completeness) is bookkeeping-transfer (plausibly bounded). Obligation-1
+(the coupled per-edge box-containment, uniform general-`d`) is THE crux and is genuinely UN-RENDERED and
+UN-PROBED at corank≥2 — it is where L7 is either bounded (uniform `f` from the `Q`'s width-bounded degree)
+or a real frontier (depth-growing inflation). NEXT: render obligation-1 general — bound the ideal-route
+`Q⁻¹`'s box-image by `(1+poly(widths))·R^{deg}` uniformly, coupled corank≥2, depth-independent; `(3,3,4)
+t=(1,0)` illustrates only. Do NOT report L7 bounded until obligation-1 is rendered general.
