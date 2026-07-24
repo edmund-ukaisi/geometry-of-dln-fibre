@@ -28,8 +28,12 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   KILL-TEST PASSED (no stranded minimizer, 19,525 vectors + proof; value SAFE). So the ENTIRE close-out =
   [spine verified] + [combinatorial value DONE clean-three] + [geometric atlas AtlasRealizesExponents = L6/L7,
   math-rendered, Lean build = exists_atlasRealizesExponents (MonumentAtlas sorry) = the ONE residual,
-  operator-gated]. Remaining verify: the ideal-route consumes hlb_hattain via the same buildTree/conOracle
-  (RecursionAdapter seam). NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
+  operator-gated]. SEAM VERIFIED (read RecursionAdapter + exists_coreResolution): whole close-out = ONE
+  sorry (exists_coreResolution:311 = ∃ res, AtlasRealizesExponents d res = geometric atlas); payoff cite-free.
+  BUILD-PREP COMPLETE: brief = `geometric-atlas-build-brief.md` (L6 dom-wide hjac + L7 coupled hcover [the
+  UN-PROBED corank≥2 piece] + the ℕ-value-match; reuse -L7cover + -PROTO; first unit = corank-2 chart
+  go/no-go). AWAITING OPERATOR BUILD-GO (geometric-atlas Lean build operator-gated; nothing more to prep).
+  NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
   (MonumentAtlas/KILL/#95/#98) RETIRED-superseded (not refuted).
