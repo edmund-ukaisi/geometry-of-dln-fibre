@@ -208,13 +208,48 @@ mechanisms to render/test (next):
   Both must be checked general-`L`, and against the coupled case (sub-point 3) where the threshold is
   raised — the coupling must not *lower* any chart's floor below `½·min`.
 
-**Verdict so far (honest).** The *reduction* (rlct ≥ ½cCodim ⟺ every divisor ratio ≥ ½min) is clean and
-avoids the *terminal-principality* open end. The terminal-binding ratios are `= ½Mval ≥ ½min` from
-landed results (sub-point 1, done for that class). BUT the direct lower bound must sidestep Object C's
-monomialisation, and sub-points (1-residual)/(2)/(3) — the non-binding/intermediate divisors, the
-min-bookkeeping, and the coupled survival — are unrendered. Sub-point (3) (coupled) is where the genuine
-hard part could re-enter. **This is the make-or-break of V; rendering the direct lower bound generally is
-the next work.** If no general direct bound exists, V narrows back toward building coupled-B.
+**STRUCTURAL ANALYSIS (worked this pulse — the shape of the lower bound is now clear).**
+- **Clean / rank-1 branches CLOSE general.** Depth-recursion peels `F = (divisors)²·(fresh INDEPENDENT
+  depth-(L−1) core)` (worked.tex:712–716, exact `L=3,4`). For independent factors,
+  `rlct(u^{2a}·G) = min(divisor-ratio, rlct(G))` (product property; independent coords ⟹ the integral
+  factors). Induction on depth — base `L=2` is a nondegenerate Morse quadratic (`rlct = ½·codim`,
+  worked.tex:709–710) — gives `rlct ≥ ½·min` for every clean/rank-1 branch, general, no instances.
+- **No free codim lunch (load-bearing).** "codim-`κ` ⟹ rlct ≥ ½κ" is FALSE at the singular point `0`
+  (a complete intersection attains `½κ` only where differentials span — a smooth point; at `0` it is
+  smaller). So the lower bound genuinely REQUIRES the resolution; it cannot be shortcut through codim.
+  This is exactly Aoyagi's non-trivial "mildly singular" content, and why L-lower is real work.
+- **The coupled case NARROWS but does not vanish.** The minimiser CAN be coupled (`(3,3,4) t=(1,0)`),
+  so V cannot dodge it. What V needs there, though, is far lighter than the open-end atlas: an
+  **INEQUALITY** `rlct(coupled branch) ≥ ½Mval(branch)`, **coupling-ASSISTED** (the shared deeper factor
+  RAISES the threshold — worked.tex:735 `(3,3,2,2): 3/2→2` — which HELPS the `≥` direction), and with
+  **NO single-chain collapse** required (a value-floor, not the exact `⟨∏C⟩=⟨b₁⟩` normal form).
+
+**The coupled floor does NOT close by elementary bounds (worked).** For `f,g ≥ 0`, `(f+g)^{-c} ≤ f^{-c}`
+gives `rlct(f+g) ≥ max(rlct f, rlct g)` — but this is the NAIVE independent estimate, which lies BELOW
+`½Mval(coupled)`. Concretely the coupling *raises* `3/2 → 2` at `(3,3,2,2)`: the true coupled value
+exceeds `max(parts)`, so the sum-bound cannot reach it. The threshold-raising is genuine JOINT coupled
+content — the coupled value-floor `rlct(coupled) ≥ ½Mval` requires the real coupled corank≥2 analysis,
+not an elementary inequality.
+
+**L-lower GENERALITY — DECIDED (the checkpoint verdict).** V is a **genuine, substantial reduction, but
+it does NOT eliminate the coupled corank≥2 frontier — it narrows it.** Precisely:
+- The flagged open end (exact terminal single-chain principality, ALL charts, deep mixed instances) is
+  **replaced** by: (i) the clean/rank-1 branches — **CLOSED general** here (depth-recursion + product
+  independence); plus (ii) a single **coupled value-floor** `rlct(coupled minimiser) ≥ ½Mval`.
+- (ii) is genuinely LIGHTER than the open end: an INEQUALITY (not the exact `⟨∏C⟩=⟨b₁⟩`), coupling-
+  ASSISTED (the raise helps `≥`), NO single-chain collapse, and needed only at the MINIMISING branch (not
+  all charts). But it is **not** free — it is real coupled corank≥2 mathematics (charter §1 B, NOT
+  OPTIONAL — confirmed: V never dodged it; the minimiser can be coupled).
+- So the honest answer to "V closes general, or falls back to coupled-B": **V falls back to coupled-B, in
+  a materially lighter form.** The clean cases + the whole degree-1/support-tracking apparatus dissolve;
+  what remains is one coupling-assisted value-floor inequality, vs the geometric route's full support-
+  tracked coupled monument. Same genuine frontier, far smaller surface.
+
+**RECOMMENDATION (to operator):** proceed with V — the reduction is real and worthwhile, and the residual
+(the coupled value-floor) is the *minimal honest form* of the frontier the charter says is NOT OPTIONAL.
+Next work = render the coupled value-floor `rlct(coupled minimiser) ≥ ½Mval` general-`L`: the depth-
+recursion inequality with the coupling-raise made rigorous (why the shared deeper factor forces the RLCT
+up to exactly `½Mval`). This is V's — and the expedition's — true remaining crux.
 
 ---
 
