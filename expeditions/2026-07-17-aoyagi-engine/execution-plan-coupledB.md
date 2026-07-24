@@ -137,3 +137,19 @@ deliverable), Skeleton is operator-gated (#94); do NOT bulk-delete.
 **Retained value stack (do not touch):** Objects A/B/C/D, `Chart`/`Resolution`, L1, `terminal_bezout`,
 `coreReduction`/`lossDLN_zero_homogeneous`/`exists_flatten`, the adapter + `AtlasRealizesExponents`,
 `buildTree`. All landed sorry-free.
+
+**RISK-D RESULT (pre-go split-cleanliness check, controller read of `leaf_stepInv_of_path` L5 body):
+the carrier splits CLEANLY — with a retire-list refinement.** `leaf_stepInv_of_path` bundles two
+separable things: (i) the CARRIER `∃ atlas, FoldProduced ∧ FoldRealizes` — built from `foldG` + `buildTree`
++ the exponent ledger + the canonical pins `canonCenterOf`/`canonPivotOf`/`IsRealBranch`, with NO
+`foldResid`/`Deg1*`/`StepInv` reference; and (ii) the per-chart `PrincipalInv` (the ideal identity, the
+3rd conjunct), carried by the StepInv fold. So `leaf_atlas_of_path` (carrier only) is provable WITHOUT the
+degree-1 apparatus — the split leaks nothing. **REFINEMENT to the retire list:** the canonical pins
+(`canonCenterOf`/`canonPivotOf`/`IsRealBranch`) + `foldG`/`GeoAtlasData`/`FoldProduced`/`FoldRealizes` are
+**KEPT** (the carrier + L7's bridge-free coverage need them, and N2's per-step block-elim dispatches on the
+SAME pins — shared interface). **RETIRE = the ideal-identity-tracking ONLY:** `foldResid`/`foldNR`/`r4Clear`,
+`StepInv`/`FoldStepInvAt`/`LastLayerInv`/`Deg1SupportedOn`/`PerLayerDeg1`, `canonNormalizationOf`/the shear
+machinery, `case1_preserves_stepInv`/`case2_preserves_stepInv`/`lastLayer_clear_preserves`/
+`terminal_edge_stepInv`, and `leaf_stepInv_of_path` itself (→ `leaf_atlas_of_path` + N2). `terminal_bezout`
+KEPT (N2 uses it). So the retire surface is the fold's IDEAL-IDENTITY half; the GEOMETRIC carrier +
+pins + L6/L7/L8 stay.
