@@ -149,3 +149,52 @@ Sharpenings (all strengthen §6):
 4. **[none] circularity.**
 The clean `StepInv`/`Deg1SupportedSlot` atoms are Encoding-S — NOT Encoding-I bricks. Pipeline (L6′/L8′/L1,
 `chart_of_collapse`) is encoding-agnostic → survives the re-type unchanged.
+
+## 8. rev-render R1–R4 audit (2nd round, decorrelated + Codex on the `bChain`/`StepData` code) — SCOPE CONFIRMED
+- **R1 VERIFIED:** `regionRepresents_of_matrix_mul` (Corank2Proto:219, sorry-free) turns `M=A·N` (continuous
+  cofactors) into `RegionRepresents` (flatten/reindex, no ideal machinery); its corank-2 instances give BOTH
+  inclusions via `Q1`/`Q1⁻¹` (from the sorry-free `Q1·C1·Q2=diag(1,Δ)`) = **L-A at one fixed width**. The
+  general-`d`, dom-wide, two-sided weighted `diag(b)` composition over `buildTree` = **L-B (render-verified
+  rev-render #3, Lean-unbuilt, NO open lemma)**.
+- **R2 VERIFIED — GENUINE bypass, not a re-encoded frontier (exact algebra):** `B=diag(b'_p..b'_m)`,
+  `b'_i=b'_p·r_i`; clean elim `L=I−∑d''_{ip}E_{ip}`, weighted `P=I−∑ r_i d''_{ip}E_{ip}` satisfy `P·B=B·L`,
+  so `P·(B D'' C')=B·(L D'')·C'` — both inclusions (`P⁻¹`=sign-flip). **No residual-support decomposition
+  appears**; the only denominator `b'_p` is killed by the b-chain (`b'_i/b'_p=r_i` a monomial). The b-chain
+  is **construction-automatic** (`b_i|b_j` for i≤j definitional, ARBITRARY ~t; ~t-correctness matters only
+  for exponent bookkeeping), covering the whole lower block, so **corank≥2 is safe via SUCCESSIVE 1×1
+  clears** (a simultaneous non-triangular block clear could fail; sequential doesn't). Encoding-S's pinned
+  coordinate-support (MonumentAtlas:575) is genuinely NOT owed by Encoding-I — different in kind.
+- **R3 VERIFIED — re-type CONTAINED to the fold layer:** zero `Deg1SupportedSlot`/`supportAt`/`FoldStepInv`
+  refs in ANY pipeline consumer (`PrincipalInv`/`LeafChartWire`/`LeafGeometryWire`/`ProductResolution`) —
+  they consume `RegionRepresents`/`PrincipalInv` (encoding-agnostic). L6′/L8′/L1 + `chart_of_collapse`
+  survive unchanged.
+- **R4 — coupled `hcover`: THE one un-probed high risk** (multi-term-shear faithful cover; GeneralGeoAtlas
+  single-term doesn't apply). Encoding-independent. hcover-probe in flight (redirected to multi-term).
+
+### THE FOUR R2 BUILD GUARDRAILS (hold these during the Encoding-I build — the bypass fails if violated)
+1. **`D_J` MUST stay a genuine RUNNING COORDINATE BLOCK** — if `D_{J+1}` is defined as an arbitrary
+   pulled-back residual ÷ u, that RECREATES Encoding-S (the divide-by-pivot). This is #1.
+2. Never a row-mix with `b'_p ∤ b'_i`, nor a simultaneous non-triangular block op (breaks the 1×1-clear
+   safety).
+3. **Derive `bExp` from the ~t-formula, NOT an assumed arbitrary chain** — the current `StepData` stores
+   `bChain` as a proof field; it should reduce to ONE scalar exponent lemma, not a branchwise support
+   invariant.
+4. Compose BOTH `RegionRepresents` directions (one-sided = one inclusion; equality needs the unipotent
+   `A_k⁻¹`, available but must be built).
+
+### RANKED RESIDUAL (option b = Encoding-I) — rev-render-final
+1. **[High, UN-PROBED — probe FIRST] coupled `hcover`** (multi-term-shear faithful cover, SEAM-2). The real
+   risk. hcover-probe deciding.
+2. **[High verification, bounded, NO open lemma] general-`d` two-sided weighted `hideal` over `buildTree`**
+   (= L-B, render-verified). Substantial fidelity-sensitive Lean; NO identified open math — given guardrails.
+3. **[Medium] the fold plumbing** (running-coordinate automorphism + case/rollover + dependent-dimension
+   pullback composition).
+4. **[Low] b-chain divisibility + corank≥2 polynomiality of `P`** — construction-automatic.
+
+**NET (planning phase, settled + doubly rev-render-verified):** the re-architect (Encoding-I, ideal route)
+is SOUND, RENDER-BOUNDED (R1: L-A verified corank-2, L-B render-verified), a GENUINE bypass of the
+substitution frontier (R2: `PB=BL` exact algebra, b-chain automatic, corank≥2-safe), and CONTAINED to the
+fold layer (R3). NO open math lemma remains for the `hideal` (given the four guardrails). The ONE un-probed
+high risk is the coupled `hcover` (R4, multi-term shear) — the hcover-probe decides it. Commit to Encoding-I
+behind the elder gate (corank-2 matrix-identity `hideal` prototype two-sided dom-wide + the `hcover` probe,
+green-both).
