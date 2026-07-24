@@ -187,6 +187,24 @@ PrincipalInv at render (interface-invisible supersession). EXECUTION still HELD 
 pnp-ideal merge-confirm lands, ALL reversible prep is complete — a fully-de-risked, ready-to-fire
 re-architecture awaiting only the operator's go on the render/redirect/retirement.
 
+**UPDATE (HB7): merge-confirm LANDED → ALL REVERSIBLE PREP COMPLETE.** pnp-ideal's
+`cert_merge_rollover.py` (controller re-ran, exit 0) closes point (i): the uniform-N1 collapse HOLDS
+across MERGE + ROLLOVER → terminal. The whole recursion = TWO ideal-level primitives — (P1)
+factor-exceptional-coord (order one), (P2) unipotent-poly Schur-clear (pivot≡1). MERGE = (P1) on a
+shared E + (P2), ⟨Dmerge⟩=⟨E⟩ Gröbner-exact, Schur-clear identical to fresh (the exponent bump is the
+L8 ledger, route-independent, NOT a new ideal-identity). ROLLOVER = identity map (no lemma). TERMINAL =
+same principal read-off as fresh. Case labels are pure FOLD decisions (buildTree oracle), none touch the
+ideal-identity — confirming the controller's gate reasoning. **Design risk CLOSED on the math side
+across ALL step kinds** (fresh/coupled = (3,3,4) cert; merge/rollover/terminal = this cert; both
+controller-re-run exit 0). Sole remaining unknown = the empirical full-`d` cast-tax scaling (prototype
+measured ~5-cycle bounded; a bounded prediction, not a wall).
+
+**STATE: reversible prep DONE.** Decision (re-architect) made + unanimous + cross-checked; blueprint
+delivered + gated; math de-risked all step kinds (re-run by controller); Lean-tax measured bounded
+(fidelity-read by controller). The re-architecture is fully designed and ready to fire. HELD only on the
+operator's go for EXECUTION (render N1/N2 + re-point + retire geometric fold + charter reframe). Nothing
+reversible remains to do; nothing executes until operator-go.
+
 ## 3. Decision framework (re-architect vs grind) — cross-check elder + pnp-ideal against §2
 
 - **RE-ARCHITECT** if: pnp-ideal confirms clean RegionRepresents via Schur-clearing on d=![1,2,1] +
