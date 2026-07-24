@@ -651,3 +651,33 @@ UN-PROBED at corank≥2 — it is where L7 is either bounded (uniform `f` from t
 or a real frontier (depth-growing inflation). NEXT: render obligation-1 general — bound the ideal-route
 `Q⁻¹`'s box-image by `(1+poly(widths))·R^{deg}` uniformly, coupled corank≥2, depth-independent; `(3,3,4)
 t=(1,0)` illustrates only. Do NOT report L7 bounded until obligation-1 is rendered general.
+
+### L7-obligation-1 — RESOLVED general (via the one-pivot-per-step structure; rev-render to audit)
+
+The crux turns on ONE structural fact about the `(S,J)` recursion, and it dissolves the "rational
+`det(A₁)⁻¹` / depth-growing degree" fear:
+
+- **The recursion clears ONE 1×1 pivot per step** (`J → J+1`), NEVER an `r×r` block at once. Corank≥2 is
+  handled as `r` SUCCESSIVE 1×1 clears (this is Aoyagi's actual induction — the same step iterated, matching
+  L-A/L-B's "corank≥2 = the step iterated"). So there is no `r×r` block inverse and hence NO rational
+  `det(A₁)⁻¹`: the only inverse is a 1×1 pivot, normalized to `1` by Case-1(2)/Case-2 (the chart is the one
+  where that pivot is a unit; "top-left 1").
+- **Therefore the shear `σ_j = Q_j⁻¹` is unipotent-POLYNOMIAL, degree-1 coefficients.** With the pivot ≡ 1,
+  `N_j = A₃·A₁⁻¹ = A₃` = the D-block entries below the pivot = degree-1 coordinates. `σ_j = I + N_j`. Its
+  box-image: `|σ_j x| ≤ R + (#entries)·R·R = R + C_j·R²`, `C_j ~ #cleared entries ~ widths` — DEGREE-2,
+  uniform in the branch/depth (depends on widths, not on how deep we are). This is exactly pnp-ideal's
+  "pivot ≡ 1, polynomial cofactors, no unit inversion" — now with the GENERAL reason (one-pivot-per-step),
+  not the instance re-run.
+- **The `-L7cover` engine's free `f = r ↦ r + C·r²` repair is built for precisely this degree-2 shear**, and
+  `f^[depth] 1` is finite at finite depth (`depth ≤ ∑_s M(s)`, finite). Uniform `C ~ widths` ⟹ a single `f`
+  serves every edge ⟹ the engine's fold applies ⟹ the compact-domain images cover up to null.
+- **Coupled corank≥2 changes only `C_j` (more entries to clear: `~ corank·widths`), NOT the degree** (still
+  2) and NOT the depth-independence. So the corank≥2 coupling — the un-probed charter-§3 fear — does not
+  break obligation-1: it is still a uniform degree-2 inflation, still finite at finite depth.
+
+**Obligation-1 STATUS: rendered general (plausibly bounded, structure-level). Residual: (i) rev-render
+audits this (its tooth 1 — "does spectator-boundedness compose across the corank≥2 shear stack without
+escape?"; the answer here: yes — each step is a uniform degree-2 1×1-pivot shear and depth is finite);
+(ii) obligation-2 (fan-completeness / no-omitted-direction) is still bookkeeping-transfer, un-done. NOT yet
+"L7 bounded" as a whole — that needs obligation-2 + the re-audit.** Next: L6 (dom-wide composite Jacobian,
+tooth 2), then obligation-2, then L8/totality.
