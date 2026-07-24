@@ -1136,3 +1136,18 @@ Both of rev-render's seam-check points hold — the entire close-out reduces to 
 atlas `∃ res, AtlasRealizesExponents d res` (L6/L7 + exponent-value match). Spine, combinatorial value
 (hlb+hattain), and the adapter wiring are sorry-free + clean-three; the payoff is cite-free. The geometric
 atlas is the operator-gated build.**
+
+**SCOPE CALIBRATION (rev-render, so "weaker-than-feared" is read right).** The ℕ-value-match bonus lightens
+the COMBINATORIAL matching burden of `AtlasRealizesExponents` (`hmem`/`hrealize` are value-supports, no
+structural map) — it does NOT lighten the GEOMETRIC burden. Closing :311 still requires exhibiting a real
+`Resolution` record for the coupled core, general-`d`:
+- `hg_analytic` (analytic chart maps `g_c`), `hg_inj`/`hexcep_null` (a.e.-injectivity off the exceptional);
+- **`hjac`** — the DOM-WIDE Jacobian certificate (unit ≡ 1; L6, rendered exact here);
+- **`hcover`** — the measure-zero cover (L7, the coupled-corank≥2 fan: per-edge box-containment composed
+  general-`d` [tooth-1] + fan-completeness [obligation-2]). **This is the one piece the audits left
+  genuinely UN-PROBED at corank≥2** — the highest residual risk in the geometric build.
+So the residual's SIZE = value-match (shrunk) + real charts (L6, rendered) + real cover (L7, coupled hcover
+un-probed). Do NOT frame the geometric atlas as "small" — it is the genuine standard-geometry build, with
+L7's coupled `hcover` the un-probed part. The build brief (and rev-render's eventual L6/L7 audit) must aim
+at: (1) does the L6 construction inhabit ALL `Chart` fields (dom-wide `hjac`) for the coupled leaves
+general-`d`; (2) does L7's `hcover` hold for the coupled fan at corank≥2.
