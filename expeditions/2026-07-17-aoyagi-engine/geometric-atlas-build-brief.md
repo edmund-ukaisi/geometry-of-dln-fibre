@@ -119,6 +119,12 @@ rev-render decorrelated audit (+ Codex) CONFIRMS the two mechanisms are GENUINE 
   centered (each blow-up is at the vanishing locus = the chart origin; the box-inflation fan covers by
   radius inflation, not recentering) — so likely SAFE, but the origin-centered stand-in gives NO evidence;
   CONFIRM in the general-`d` build that no fan chart needs a nonzero center.
+  **DISCHARGE CRITERION (rev-render — cheap check, not a re-derivation):** a node's center is safe IFF its
+  shear `coPhi` vanishes to 2ND ORDER at the chart origin — `coPhi 0 = 0` (necessary, = the general analogue
+  of `coPhi_zero`) AND `fderiv coPhi 0 = 0` (the load-bearing part: NO linear term, pure quadratic-and-up).
+  Then `|coPhi x| ≤ r²` on `‖x‖ ≤ r`, the box-bound is the clean `r+r²`, and centers never bite. The rank-1
+  Schur update `−aᵢ·bⱼ` visibly satisfies it (no affine part). So the general-`d` build carries
+  "`coPhi` vanishes to order 2 at 0" as a per-node hypothesis and CENTERS dissolves — do NOT track centers.
 
 **Net:** corank-2 GO = the two hardest MECHANISMS proven genuine on general primitives (a real de-risk of the
 prior highest-risk flag). The general-`d` hcover ASSEMBLY (items 1–6 + CENTERS) + `hideal` + the
