@@ -46,6 +46,14 @@ AxCheck batch + the geo batches), not by individual gate lines — annotate if r
   (the box-geometry); it does NOT touch the `hideal`.** Three seams to close for faithful (SEAM 1
   composition order; SEAM 2 multi-term shear w/ C-generic cover — the load-bearing one; SEAM 3 genuine
   pivot-dependent tree) — see geometric-atlas-build-brief.md.
+  - **UPDATE (hcover-probe, 2026-07-24): SEAM-2's box-containment side CLEARED head-on** on the FAITHFUL
+    three-support `canonNormalizationOf` (Schur cross-term + layer-(S±1) recoord SUMS): (i) order-2 survives
+    the recoord sums (`fderiv(coPhi)(0)=0` exact — bilinear ⟹ no linear part ⟹ centers never bite);
+    (ii) `C` = recoord-sum length `= width−cleared−1`, WIDTH-bounded and DECREASING with depth (the
+    depth-growth NO-GO does not occur) ⟹ `f=r+C·r²` degree-2, `f^[depth]1` finite. So OBL-1 holds for the
+    faithful multi-term chart, not just single-term `outerShear`. SEAM-2's C-generic-cover side = OBL-2 (the
+    full-fan residual, route-(a)). Artefact: `threads/pnp-l7coupled/probe_multiterm_order2.py`. See
+    next-build-render §9.
 
 ## RENDERED (math) — verified sound by rev-render, NOT yet Lean
 `theory/aoyagi-2023-reproduction/ideal-route-full-render.md` — the ideal-route close-out: **L-A** (Schur

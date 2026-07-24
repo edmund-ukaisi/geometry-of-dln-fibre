@@ -212,6 +212,14 @@ bites here, but it is a wire choice, not open math).
   as the COMPOSITE grows ~2^depth, absorbed by the engine's `f^[depth]`, never a global degree bound).
   `f^[depth]1` is an EXACT finite rational (finite since depth ≤ L·maxwidth) — no divergence; leaf boxes
   huge-but-COMPACT, chart maps polynomial + a.e.-injective, sizing `dom_c` that large is legitimate.
+  **SEAM-2 (fidelity) CLEARED head-on** (probe Part E, on the FAITHFUL three-support `canonNormalizationOf`
+  = Schur cross-term + the layer-(S±1) recoord SUMS, NOT the simpler single-term `outerShear`): (i) order-2
+  survives the recoord sums — `fderiv(coPhi)(0)=0` computed EXACTLY (a finite sum of bilinear terms has zero
+  Jacobian at 0 ⟹ no linear part ⟹ centers never bite; rank-q vs rank-1 irrelevant to order-2); (ii) `C` =
+  recoord-sum length `= width−cleared−1`, so `C ≤ max_ℓ d_ℓ − 1` (WIDTH bound) and it DECREASES as `cleared`
+  advances (deeper) — the NO-GO "recoord length that GROWS with depth" provably does not occur. So OBL-1
+  holds for the FAITHFUL multi-term chart, retiring BUILD-STATE §CAVEAT's load-bearing SEAM-2 (box-containment
+  side); the C-generic-cover side folds into OBL-2/route-(a).
 - **OBL-2 (fan-completeness): MATH bounded, but a REAL wire gap.** The full-fan block-atom
   `closedBall_subset_iUnion_blockBlowup_image_radius` is PROVEN `|S|`-general (verified corank |S|=2,3,4);
   coupling only ENLARGES `S`, no new escape — so the FULL fan (all pivots `p∈S`) covers every direction.
