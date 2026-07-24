@@ -45,10 +45,18 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   VERIFIED + MERGED: my own #print axioms on a FRESH root build (forced elaboration, no stale-olean) = all 6
   roots [propext, Classical.choice, Quot.sound]; #assert_banked_clean_batch fired GREEN in-build; MERGED to
   trunk bfe4f2433 (full scripts/lb DLNFibre green, 8265/9017 jobs, no clash). The mechanism GO is confirmed.
-  Do NOT round "corank-2 GO" up to "L7 done". NEXT: the general-d hcover ASSEMBLY build = the actual :311
-  (real buildTree(d)↔FanTree correspondence + fan-completeness over real centers + per-node order-2 CENTERS
-  hypothesis [coPhi 0=0 ∧ fderiv coPhi 0=0] + varying blocks) + hideal (PROTO-§4 bridge) +
-  Resolution/AtlasRealizesExponents wiring. All operator-gated build; bounded-buildable, not a monument.
+  GENERAL-d MECHANISMS DONE + VERIFIED (GeneralGeoAtlas.lean, geo-atlas-gd): L6 dom-wide unit≡1 hjac
+  per-step + multi-step branch; L7 box-containment ALL block sizes/pivots + general-depth varying-center fan
+  cover; CENTERS discharged GENERALLY (fderiv outerDisp 0=0 + global quad bound at every radius). NO
+  block/pivot/depth/center obstruction surfaced. My #print axioms (fresh build): 8 key roots clean-three;
+  15-root batch green; full scripts/lb DLNFibre GREEN (no clash). Merged d1f94693d.
+  CURRENT: builder `geo-atlas-wire` (C, #115) = the LAST MILE → discharge exists_coreResolution:311:
+  (1) hideal (per-chart ideal identity, trunk Schur + ConjResolution template + Corank2Proto §4 bridge);
+  (2) value-match (chart jac = tree divExp); (3) leaf-enumeration bridge (FanTree↔buildTree.leaves via
+  paramsEquivFlat = rev-render's real-tree-correspondence flag, C is the probe); (4) Resolution +
+  AtlasRealizesExponents → :311. rev-render fidelity-auditing the mechanisms in parallel. Gate C on my own
+  #print axioms (payoff root aoyagi_learning_coefficient_via_engine MUST be clean-three cite-free). If C
+  hits a real-tree-correspondence obstruction → that's a genuine finding, stop+report.
   NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
   seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
   `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
