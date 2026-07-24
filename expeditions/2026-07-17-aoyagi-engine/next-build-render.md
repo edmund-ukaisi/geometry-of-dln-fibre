@@ -75,3 +75,43 @@ L-B, Lean-unbuilt) + the coupled `hcover` (B5, un-probed = the real risk) + [B3 
 bounded] + the A-plumbing/import-cycle. The per-step algebra + the whole delivery pipeline are proven; the
 coupled hardness lives in B2 (render-bounded) and B5 (un-probed). The elder gate stands: prototype (B2 at
 corank-2, dom-wide two-sided `hideal`) + probe (B5 corank≥2), green-both before the full fold.
+
+## 6. CORRECTION (survey-inv bypass read) — §2's verdict conflated two ENCODINGS; supersede it
+My §2 claim "`appendResidDescent` = the render's L-B, render-bounded" is WRONG. The `#print axioms` split is
+the discriminator: `case2_conjA` (the IDEAL/divisibility half) is CLEAN; the `sorryAx` is 100% in the
+DEGREE-1-SUPPORT maintenance (`Deg1SupportedSlot` → `appendResidDescent`; and `case1_conjA`'s
+`foldResid_case11`), which exists ONLY to make the `blockBlowupCoordQuot` SUBSTITUTION (divide-by-pivot =
+strict transform) exact. That is the SUBSTITUTION fold's frontier (the RETIRED geometric-fold's) — NOT the
+render's L-B (b-chain). The clean `stepInv_delta1_shear_child` itself USES `blockBlowupCoordQuot`, so it is
+the SUBSTITUTION per-step (its `hsupp` = the center-combination is what `appendResidDescent` must supply —
+the near-circularity I mis-read as "bypass").
+
+**It is a RE-ARCHITECT CHOICE, not a free bypass — same monument, two encodings:**
+- **Encoding-S (substitution, the current typed invariant `FoldStepInvAt = StepInv ∧ Deg1SupportedSlot`,
+  `foldResid = blockBlowupCoordQuot`):** any fold with this typed invariant STRUCTURALLY owes
+  `appendResidDescent` + `foldResid_case11` (the degree-1-support descent). These are the retired
+  geometric-fold frontiers (`foldResid_case11` REFUTED-AS-STATED, #69) — NOT render-verified.
+- **Encoding-I (ideal-route = OPTION b, charter §1.B):** RE-TYPE the fold — invariant `⟨A⟩=⟨diag b⟩` with
+  POLYNOMIAL cofactors, b-chain absorbing cross-terms, NO substitution / NO degree-1-support. It never
+  divides by the pivot, so it never needs degree-1 exactness — it BYPASSES `appendResidDescent`/`foldResid_case11`
+  as such. Its price: (a) a DIFFERENT `foldResid`/invariant (drop `Deg1SupportedSlot`, carry the
+  polynomial-cofactor ideal identity); (b) DIFFERENT one-step leaves = the Schur-clearing polynomial-cofactor
+  preservation = **`regionRepresents_of_matrix_mul` general-`d`** (from `canonNormalizationOf` over
+  `buildTree`, dom-wide). (a)+(b) IS the render's **L-A/L-B (rev-render-verified sound)** in the matrix
+  encoding — render-bounded, Lean-unbuilt.
+
+**CORRECTED residual for option (b) = Encoding-I:**
+- Re-type the fold layer (L3/L4/L5 invariant + one-step leaves). **Contained to the fold** — L6′/L8′/L1 +
+  `chart_of_collapse` consume `RegionRepresents` (encoding-agnostic) and SURVIVE unchanged. The clean
+  `StepInv` children + `terminal_bezout` (divisibility half) serve either encoding.
+- Build the general-`d` matrix-identity `hideal` (`regionRepresents_of_matrix_mul` composed over `buildTree`
+  from `canonNormalizationOf`, dom-wide) = the render's L-A/L-B, verified sound → **render-bounded, the
+  genuine Lean build.** (The corank-2 step exists on `-PROTO`; general-`d` is the residual.)
+- + the re-typed fold-INDUCTION + `hcover` (B5, un-probed — unchanged, encoding-independent).
+
+**NET (corrected):** option (b) is NOT "swap the substitution twins" — it is a fold-layer RE-TYPE to the
+ideal-identity invariant, building the general-`d` matrix-identity `hideal` (render-verified L-A/L-B) +
+`hcover`. The substitution frontiers (`appendResidDescent`/`foldResid_case11`) are the OTHER encoding's, not
+option (b)'s path — do NOT "swap" them. The elder gate is unchanged (the corank-2 prototype now = the
+matrix-identity `hideal` step, two-sided dom-wide; + the `hcover` probe). rev-render is auditing this
+corrected verdict.
