@@ -279,6 +279,36 @@ assembly — bookkeeping + the L7 tiling). (2) "L5-layer transport" splits into 
 (P5's `sourceClearedInv_holds` induction step, #73) vs **the σ-chart transport** (#81's canonical→fan
 chart-permutation, the genuine-L5 provenance). Use these; do not say "the wall" or "L5 transport" unqualified.
 
+## THE PIVOTAL FORK — RESOLVED: RE-ARCHITECT to the matrix-ideal Schur-clearing (elder Q3, 2026-07-24)
+
+**Ruling: RE-ARCHITECT (the construction swap), CONFIRMED — against the encoding I served for ~29 catches.**
+Three decorrelated inputs CONVERGE: (Codex xhigh) LOCAL-MIN 85% — per-step substitution + support-tracking is
+NOT forced; A→C→D is a direct composition. (pnp-ideal + controller cross-check, 3 scripts exit 0) the
+matrix-ideal Schur-clearing is GENUINELY LIGHTER — the pivot normalizes to a CONSTANT unit ≡1, so Q,P are
+unipotent with POLYNOMIAL inverses, ⟨QAP⟩=⟨A⟩ with polynomial cofactors (NO unit inversion, NO degeneration
+on the nbhd, corank-2 included), the coupling lives in the RESIDUAL matrix never a support predicate → the
+#95 row-repeat bug class HAS NO REPRESENTATIVE. (Elder Q1) the matrix-ideal route was ADOPTED at F1/F2 and
+the fold DRIFTED from it; the refuted `SupportedOn` was the post-substitution form, a different object.
+
+**SCOPE (localized, NOT throw-out-the-atlas):** SWAP = L3/L4/L5's `FoldStepInvAt` coordinate-substitution
+proof of the per-chart ideal-identity certificate (`hideal_fwd`/`hideal_bwd` = `GermRepresents` both ways)
+→ the paper's unimodular Schur-clearing proof (Q,P unipotent, cross-term F₃F₂ ∈ ⟨F₂,F₃⟩ drops in one line,
+worked.tex:443-458/:466). KEPT = the `Chart`/`Resolution` framework + the value engine A→(Object B CoV)→C→D
+(ideal-level via `wrlctAt`, the Jacobian weight — LANDED, no foundation gap; Object A IS the Chart interface)
++ `buildTree`/provenance + L6 + L7 (the cover, my prior ruling stands — framework) + L8 + L1. RETIRES: the
+WALL, the KILL, #95, #98, `couplingClear`, degree-1 exactness — ALL artifacts of the divide-by-pivot
+substitution. corank≥2 plausibly DISSOLVES (clear J pivots one at a time, each an identical ideal-preserving
+step; the coupling accumulates; no special corank≥2 object, no `2u₀u₂` shear-rescue — that was a symptom of
+divide-by-pivot). FIDELITY WIN: the Schur-clearing IS Aoyagi's own route (Cases 1&2, Lemma 2); the fold was
+OUR invention — the ~29 catches were the accrued cost of the drift (charter §3 source-fidelity, deepest form).
+
+**CAVEAT DISCHARGED + the remaining gate:** the one risk (clean `RegionRepresents` — cofactors continuous,
+unit nonvanishing — on the chart nbhd at the RLCT-relevant points, corank≥2) is what pnp's cofactor-cleanliness
+verified. Elder condition on the COMMIT: the controller's gate-2 Lean prototype (a corank-2 minimiser step)
+must measure the Lean tax as manageable — the paper's one-line ideal argument + polynomial-cofactor Q,P must
+render without a hidden Mathlib ideal-membership tax. Green-enough prototype → commit the swap. This is the
+rising-sea move: fill the layer with the RIGHT (her) construction, not grind a local-min on sunk cost.
+
 ## Standing counsel (rising-sea)
 - **THE PER-FIELD + BOUNDARY AUDIT (refined 2026-07-21, the layer-axis event):** audit each free
   field AND each field's range boundaries — a field constrained everywhere but at its range's
