@@ -49,7 +49,22 @@ Every seat branch's tip SHA is recorded here so deletion loses NOTHING (recover 
   corank-2 Lean shape. Keep as reference.
 - **report/aoyagi-engine-landscape d7aa1c46b** — a report branch; keep.
 
-## Disposition
-- MERGED (28): DELETED this pass (safe; in-trunk).
-- UNMERGED-RETIRED (21): SHAs recorded; delete after scout-code confirms none carries unexpectedly-kept work.
-- KEEP (3): -L7cover, -PROTO, report/landscape.
+## Disposition (COMPLETE, 2026-07-24)
+- MERGED (28): DELETED (safe; in-trunk).
+- UNMERGED-RETIRED (21): DELETED after scout-code confirmed CapDescent/etc. absent + the on-branch fold
+  retire orphans them; SHAs above are the recovery record.
+- KEEP: `expedition/aoyagi-engine` (integration), `-L7cover` (kept L7 engine, 646bcdcdb — likely merge in
+  the build), `-PROTO` (corank-2 reference, 05c35eb8a), `report/aoyagi-engine-landscape`.
+- Result: 52 seat branches → 3. Branch house-cleaning DONE.
+
+## Fossil-quarantine plan (sorry-bearing off-cone modules; scout-code list — PLAN, action deferred)
+- **RouteM* / Deepest* / D1* / Case222* (~400 files, aoyagi-full chart route):** AxCheck-imported for the
+  aoyagi-full L1/L2/(2,2,2) payoff roots (a SEPARATE deliverable). DO NOT bulk-delete. Quarantine =
+  keep, mark off-this-expedition's-cone; prune only when the aoyagi-full deliverable is retired.
+- **`DLN/RLCT/Skeleton.lean` (literal-name Skeleton root):** OPERATOR-GATED (#94 — does "done" require the
+  literal-name clean-three?). Surface, do NOT act.
+- **Retired `DLN/RLCT/Engine/*` (ClearableReify/GeoAlphaGauge/GeoAtlasTransfer/CanonicalWitness224):**
+  off-cone; prune at build-close (after the fold retire), not now.
+- **The on-branch geometric fold (MonumentAtlas/MonumentAssembly/GeometricAtlasD12/Wire cluster):** retire
+  (banner superseded, delete imports+modules) ONLY AFTER N2 lands green — a stale sorry misdirects the
+  gradient (P6). Sequenced in the build, not the prep.
