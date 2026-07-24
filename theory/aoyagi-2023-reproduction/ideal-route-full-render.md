@@ -94,6 +94,44 @@ two candidate close-outs are now:
   (closes the flagged open end). Genuine open mathematics at deep mixed coupled instances; hardest.
 This is the fork to decide with the operator BEFORE rendering L-B further. L-A stands regardless.
 
+### DECISION (operator, 2026-07-24): render **(V) the value path**. + reorient/scan findings.
+
+**Charter check (does V scope out the NOT-OPTIONAL coupled Object B? — NO).** §1 B (coupled corank≥2
+`⟨∏C⟩=⟨diag(b)⟩`) is "not optional, never a footnote." V does **not** dodge it: the value's *upper*
+witness is the **minimizing branch's** chart, and the minimizer can BE a coupled corank≥2 branch — so V
+must still build coupled-B *on the minimizer*. What V avoids is terminal single-chain principality for
+**all** charts (the atlas-wide open end). Open question rendering V decides: does the minimizer's value
+`½Mval` follow from "peel is a unit transform ⟹ `½Mval`" (L-A + Lemma 1, general) *without* the full
+single-chain principality — or does it still need the open coupled single-chain? §3 also binds: the
+value **lower** bound is **ideal-level**, never a chart CoV.
+
+**Scan — the pieces V needs (located):**
+- *Upper half — EXISTS:* `rlctAt_sumSqFam_le_chart` (ProductResolution:578), the always-valid
+  single-chart `≤`. Gives `rlctAt ≤ (that chart's value)`; instantiate at the minimizing branch ⟹
+  `rlctAt ≤ ½Mval(min)`. Needs: the minimizing chart's value = `½Mval(min)` (L-A/block-elim on the
+  minimizer + the exponent = `Mval`).
+- *Lower half — THE NEW CRUX:* need `rlctAt (∑(∏C)²) 0 ≥ ½·min_t Mval(t)`. Foundation has
+  `localAdmissibleExponents`, `rlctAt_def = sSup`, `BddAbove`, `rlctGlobal_le_rlctAt` (global≤local,
+  Global:145) — but the *local lower* direction (every `c < ½min` is admissible, i.e. `∫|∑(∏C)²|^{-c}`
+  converges near 0 ⟹ `rlctAt ≥ ½min`) is UNBUILT. Must be ideal-level/structural (§3), NOT a chart CoV.
+  This is V's load-bearing render.
+- *Block-elim (L-A/Lemma 2) in Lean:* candidates `Core.SchurRankZero`, `Core.FibreNormalForm.exists_conj`
+  — AVOID the retired chart `Engine/` (§3). Locate the clean reusable one or build fresh (L-A is proved
+  here; the Lean atom is a general block-elimination + ideal-equality).
+- *`Mval = cCodim`:* LANDED (`Core.CThetaQIPConverse.cCodim_eq_qipMin`, `Engine.divisorMin_eq_cCodim`).
+
+**V render/build plan (to detail over the next planning ticks):**
+1. **L-D′ (value read-off, general):** the minimizing branch's chart value = `½Mval(min)`; `Mval=codim`
+   (landed). Upper via `rlctAt_sumSqFam_le_chart` at the minimizer.
+2. **L-lower (THE crux):** the ideal-level structural cover lower bound `rlctAt ≥ ½min`. Render the
+   general argument (the paper's "structural/inductive, no full atlas": α-divisor `≥½Mval(0)`, branch
+   divisor `=½Mval(branch)`, recursive `≥½min`). Determine if this is genuinely general/gap-free or
+   still leans on coupled single-chain (⟹ falls back toward P / coupled-B).
+3. **L-A Lean atom:** the clean block-elimination + ideal-equality (Object B's per-step, general corank).
+4. **Value-engine re-route:** `2·rlct = cCodim` from L-D′(upper) + L-lower(lower), bypassing the full
+   `Resolution`/atlas that `exists_coreResolution` consumes. Restructures Object B's consumer.
+Checkpoint with operator when L-lower's generality is decided (V closes, or falls back to coupled-B).
+
 ---
 
 ## L-A — the Schur-clearing ideal identity (COMPLETE, general)
