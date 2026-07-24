@@ -119,3 +119,22 @@ the ONLY open cost; the math is settled. If the full-`d` path-fold reveals the c
    then general block geometry. 3. Render N2 (`leafChart_idealIdentity`) path-fold. 4. Re-point L5's output
    consumer (L1/LeafChartWire) — invisible if N2's output = `PrincipalInv`. 5. Retire §3 (banners +
    quarantine). 6. Charter/compass reframe (§5). 7. Full-build green + `#print axioms` on `via_engine`.
+
+---
+
+## §7 Carried render-gate obligations (blueprint GATED/approved 2026-07-24; both flags green)
+Controller approved the statement-delta; both flagged points green (uniform-N1 as design direction;
+SUPERSEDED-not-REFUTED binding). Two obligations carried to the render (de-risking in progress):
+1. **N1-uniformity merge-confirm (render-time tripwire).** The case-distinctions are (a) divide-by-pivot
+   behavior (substitution artifact — gone) + (b) tree-structure bookkeeping (which pivot; S-increment
+   merge/rollover vs J-increment fresh), which lives in N2's FOLD = buildTree provenance (KEPT), NOT in a
+   different N1. So N1 is uniform. OBLIGATION: confirm N2's fold correctly sequences the uniform N1 across a
+   case11-MERGE/rollover + the terminal (⟨diag b⟩→⟨b₁⟩ principal) on a concrete multi-layer witness —
+   pnp-ideal's multilayer.py extended to merge/rollover+terminal (decorrelated, exact, reversible). If the
+   merge genuinely differs at the IDEAL level, N1 keeps a thin merge-vs-fresh guard; expected uniform.
+2. **Interface output-type match (render refinement).** N1/N2's output type must EXACTLY match what L1
+   (`principalInv_regionRepresents`) consumes — the current `PrincipalInv` fields — so the supersession is
+   interface-invisible (L1→hideal→Chart untouched). The prototype produced `RegionRepresents` directly; the
+   blueprint routes through `PrincipalInv` (the conservative, L1-keeping choice). Verify the `PrincipalInv`
+   type/fields match at render (a mismatch = re-point L1's consumer, still local).
+Both are RENDER-time (post-operator-go) checks; neither blocks the design. Execution held for operator-go.
