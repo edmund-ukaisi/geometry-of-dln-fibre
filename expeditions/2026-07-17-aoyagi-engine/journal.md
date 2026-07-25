@@ -22691,3 +22691,28 @@ chart = root→leaf composition of GeoStep=(shear)∘(blockBlowupMap) over build
 L-A block-elim + shear + blow-up + L-B maintenance + L-C terminal (all banked two-sided general), composed
 via regionRepresents_comp + trans (structural induction) — the general-d spine spec. #139 (depth-3 rollover
 perms, pnp-hcover) = the general-d generalisation of P (the inter-node relabelling); the two lanes connect.
+
+**DEPTH-3 GO — the stabilizer induction fully de-risked at the rollover; hyp (ii) CORRECTED (2026-07-25).**
+pnp-hcover completed the depth-3 (3,3,3,2,2) check (#139; addendum in hcover-elaboration.md ~264-312).
+Controller read the verdict: GO at the rollover, NO OBSTRUCTION.
+- Hyp (i) — equivariance-as-coord-perm at the layer-rollover (where internal gauge perms COMPOUND) HOLDS,
+  exact sympy at (3,3,3,2,2): compounding coord-perms is a coord-perm (Codex: composition of coord-perms is
+  a coord-perm) → the rollover CANNOT produce a non-isometry. gate2's sharpest point cleared.
+- HYP (ii) CORRECTED (Codex catch, precision-discipline at work): the stabilizer does NOT act as "the full
+  symmetric group on the block's ENTRIES" (over-stated). The CORRECT, weaker, TRUE hyp (ii) = the stabilizer
+  S_{d_{s-1}-1} × S_{d_s} (row/col INDEPENDENT, distinct indices, no rollover interference); the induction
+  only ever needs to place the ONE next pivot, for which per-position transitivity + residual-chart
+  equivariance suffice. Verdict UNCHANGED (GO) under the corrected hyp. Also a named lemma owed: the standard
+  residual-chart equivariance (the stabilizer preserves the residual block) — verified at base + first rollover.
+- NO OBSTRUCTION: equivariance does not fail at the rollover; the compounding is harmless. The certificate's
+  EXACT hypotheses are now pinned (weaker-true hyp (ii) + residual-chart equivariance), both verified at
+  depth-2 base AND the depth-3 first rollover.
+
+CONSEQUENCE: the hcover — the render's NAMED HIGHEST RISK — is now FULLY DE-RISKED: adjudication (4-channel
+GO) + provenance (3-channel CONDITIONAL GO) + the built 5c atom (2-channel PASS) + the stabilizer induction
+(base + first-rollover verified, exact hyps pinned, NO obstruction). The general-d cover = detail-at-scale,
+no monument, exact template + hypotheses pinned. The 5-lemma cover-transport template's orbit_covers hyp (ii)
+= the corrected weaker-true form (update the general-d cover spec on #130). CONTROLLER: the hcover hunt is
+COMPLETE — I stop reviewing it. FORWARD PATH: routeP-p1's decomposed 5b (crux-transfer funext + jacDet_comp
+Jacobian, unblocked) → 5a (realization) → the full (3,3,4) Resolution → the general-d gate → the general-d
+build (spine + charts + the cover with the pinned template). gate2 reads the depth-3 (queued, confirming).
