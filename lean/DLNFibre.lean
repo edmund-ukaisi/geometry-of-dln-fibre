@@ -1736,3 +1736,8 @@ import DLNFibre.DLN.Aoyagi.StepConstructor
 --   born-siblings' step-maps covers the node ball (given the node clearing covers the source box),
 --   via the banked argmax cover `ball_subset_iUnion_blockBlowup_comp`. The elder's owed R2 obligation.
 import DLNFibre.DLN.Aoyagi.CoverFold
+-- SurvivorFanCover (R2, cover-side): the SURVIVOR-ENTRY fan up-to-null cover atom — routes by the
+--   OUTPUT-generator argmax (probe #169); hole = commonZero = {X=0}; volume(box \ ⋃ charts)=0 + the
+--   {R=0} bridge. hnull = cheap codim-nullity (NOT #172); hchart = R3. Measure-bookkeeping layer, not
+--   the RLCT bound (which needs per-chart integrability + the recursion on top).
+import DLNFibre.DLN.Aoyagi.SurvivorFanCover
