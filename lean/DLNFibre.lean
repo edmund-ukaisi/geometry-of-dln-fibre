@@ -1720,3 +1720,7 @@ import DLNFibre.DLN.Aoyagi.Corank2AdmissibleLeaf222
 -- UnitOneDerived (R1 M1): unit ≡ 1 DERIVED on the built COUPLED (3,3,4) chart334 via the actual-jacDet
 --   hjac telescope (chart334_collapse_actual) + nbhd = univ (no terminal-shrink on the built leaf).
 import DLNFibre.DLN.Aoyagi.Corank2UnitOneDerived
+-- Corank3HjacProbe (R1 M1-wide): the corank≥3 hjac gate — the ≥3 elimination stays CLEAN UNIPOTENT
+--   blockShears (no divide-by-pivot); `jacDet_three_successive_shears` (general) + a genuine coupled
+--   corank-3 shear (trilinear) + `abs_jacDet_g3` (|jacDet| = monomial). RED-FLIP does not fire.
+import DLNFibre.DLN.Aoyagi.Corank3HjacProbe
