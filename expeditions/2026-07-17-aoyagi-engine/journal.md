@@ -24298,3 +24298,25 @@ matched-pairing fan, sandwich), escape cone (B1) dissolved (sandwich, self-simil
 WITNESS. **(A) fully-cite-free is priced SOUND; the whole remaining task is the detail-at-scale build.**
 Elder re-convened for the decorrelated stern-voice read (does WITNESS clear the bar). Surfacing to the operator
 as a landmark. R2 build (#173) underway.
+
+## 2026-07-25 (tick, cont.) — R2 build brick GREEN: SurvivorFanCover cover atom (clean-three, controller-re-verified)
+
+**reroute-R2build delivered the first R2 rung as a theorem** — `SurvivorFanCover.lean`, branch
+`expedition/aoyagi-r2build` @ `8ee1df617`, pushed (NOT merged). Sorry-free, clean-three, 9 theorems, +213 LoC.
+- **Shape (right):** fan routed by the OUTPUT-generator SURVIVOR ARGMAX (the probe #169 correction), not the
+  input radial pivot. Core `iUnion_survivorRegion`: TIGHT set equality `⋃ a, survivorRegion R gen a =
+  (commonZero gen)ᶜ` (proved =, brief asked only ⊆). Atom `volume_box_diff_charts_eq_zero`:
+  `volume(box \ ⋃ chart-images) = 0`, uncovered = exactly `{X=0}`. Plus `sumSq_residual` (kept-survivor
+  loss=monomial²·R, R(0)=1) + `witness_*` non-vacuity (hole={0} codim 2, null).
+- **TRACKED-OPEN (honest hypotheses, NOT laundered sorries):** `hnull` (volume{X=0}=0 — backed by #172
+  WITNESS: {R=0} codim≥2 + recursion terminates; detail-at-scale) + `hchart` (per-chart survivor-region cover
+  — R3's wire from the block-blow-up atoms + clearing). Both correctly scoped.
+- **CONTROLLER SENSOR RE-VERIFY (calibrate on re-derived evidence, not the seat's "done"):** force-elaborated
+  (touched source → 2413 jobs replayed, not stale-olean); `scripts/sorries` clean; `#assert_banked_clean_batch`
+  = "9 roots banked-clean … no cites in use". FORM confirmed clean-three independently. ✓
+- **INTEGRATION GATE:** my re-verify (PASSED) + decorrelated fidelity review (#174, r2build-review — the 3
+  fidelity questions + its own axiom re-run + Codex). On review clean → controller merges r2build → the
+  reroute trunk (internal integration; the operator-gated step is only the eventual PR-to-dev).
+- **DESIGN NOTE:** the atom is ABSTRACT over gen:ι→E→ℝ + charts (survivor-entry index = OUTPUT generators,
+  nonlinear, distinct from bornSiblings' INPUT-pivot index); wiring concrete PivotStep charts = R3. Next R2
+  rung = the fold (assemble atoms over buildTree) + the value side (carry the SUM-not-PRODUCT guard from #172).
