@@ -22866,3 +22866,18 @@ STATE: the (3,3,4) Resolution rungs — rung 3 (coreGen-wrap) ✓ + 5c (hcover a
 5a routed to gate2 (fidelity); 5d GO'd to routeP-p1. NOTE: the 5c atom (Corank2FaithfulHCover, abstract
 Fin-14) is on the hcover-atom lane @ 649fc7924, NOT yet on routeP — 5d specifies how it connects to the
 (3,3,4) gWrap hcover; I wire it when routeP-p1 pins the connection.
+
+**5a→5d INTERFACE HARDENED + reconciliation-note closed (2026-07-25).** routeP-p1 confound-checked (scratch,
+uncommitted) that atlasRealizesExponents_334's hypotheses are EXACTLY provable from the existing 5b/part-C
+defs — all by decide: bindingAxes(bexpWrap 0) = {(0:Fin 21),(20:Fin 21)}; jacWrap 0=7, jacWrap 20=8 (E/c11
+axes); jacWrap 1=3 (α non-binding, coord 1 ∉ bexp support). So the 5a reduction is a GENUINE 5d-consumable
+interface, NOT a false-GREEN restatement (fidelity-(c) = YES, verified). 5d instantiates with aE=(0:Fin 21),
+aC=(20:Fin 21), bexp k₀=bexpWrap 0 (k₀=0, M'=1), jac=jacWrap — all three hyps by decide/rfl. So 5d's
+remaining work is GENUINELY the Chart-record assembly (5b jac/hjac/inj/excep + part-C hideal + 5c hcover +
+hg0/hg_cont/dom/nbhd + Resolution.hcover) + the eWrap MeasurePreserving/canonFlatten transport — NOT any
+re-derivation of the realization combinatorics. Good confound-check (the reduction is real, the seam holds).
+RECONCILIATION-NOTE CLOSED: routeP-p1 confirmed its earlier note ("drop GWrapDecomp") was against decomp-5b's
+PRE-rebase self-contained ChartJac (13c6241d8) — superseded by the rebase to the two-module a38516e0f; my
+@ c712f8fef resolution (KEEP BOTH) is correct; note obsolete, nothing outstanding. 5a (1301fbaee) confirmed a
+direct child of c712f8fef; decomp-5b independently confirmed the jacWrap/bexpWrap interface matches. 5d GO is
+LIVE (@ 3a2ea913). The (3,3,4) Resolution: 4/5 rungs done; 5d (assembly, the last) in flight.
