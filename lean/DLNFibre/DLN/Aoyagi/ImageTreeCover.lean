@@ -11,7 +11,7 @@ neighbourhood of `0`. This is the "genuine new fold" the R3-derisk flagged: the 
 (no hole); `LeafCoverTiling.FanTree.covers_subset` carries a GROWING inflated radius over its
 branching but is also a FULL cover (block-blow-up baked in). R2 needs the MEASURE version: each node
 covers its box only UP-TO-NULL (the survivor-entry `{X=0}` hole), and the whole-tree uncovered set
-is the finite union of the pushed-forward per-node holes — still measure-zero.
+is contained in a finite union of the pushed-forward per-node holes — still measure-zero.
 
 ## Design (Codex-decorrelated, `r2fold-{prompt,answer}.md`)
 - A NEUTRAL abstract tree `ImageTree` (nullity lives in the PREDICATE, not the data), NOT an
