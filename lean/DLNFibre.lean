@@ -1728,3 +1728,7 @@ import DLNFibre.DLN.Aoyagi.Corank3HjacProbe
 --   reads-only-kept blockShear (`clearing_334_clean_reads_only_kept`, the shearH_eq analogue) — no
 --   clearing reads a cleared coord (the surprise); the block-structure separation is exact.
 import DLNFibre.DLN.Aoyagi.Corank2ClearingGate
+-- StepConstructor (M2, completes R1): the pivot-generic step constructor + born-siblings —
+--   guardrail-0 as a per-emitted-step DISCHARGED theorem (`CleanClearing.jacDet_shear`) + per-sibling
+--   certs (`bornSiblings_certified`), corank-2 real instance (`bornSiblings334_certified`).
+import DLNFibre.DLN.Aoyagi.StepConstructor
