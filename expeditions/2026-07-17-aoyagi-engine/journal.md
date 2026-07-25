@@ -22285,3 +22285,30 @@ checks + docstring) + (ii) part-C #131 (custom-e coreGen-wrap → ⟨c11·E⟩) 
 Tuple as CLAUDE.md-hazardous, time-boxed + STOP-report-the-tax if it resists (right). fidrev-p1 re-reviews the
 repair. Assembly ∀e-transport tracked. Holding for the fidelity repair + part-C (GREEN → coreGen-level phase-1
 → elder general-d gate; wall → objects-only). GUARD-B: ONE instance, not general-L.
+
+**PART-C WALL (pure plumbing) → phase-1 re-scoped to the DE-RISK (2026-07-25; elder ratifying).**
+routeP-p1 hit a WALL on part-C (the coreGen-wrap): the `mult`-flatten dependent-width HMul reduction
+(`dvec (Fin.succ 0)` won't reduce for instance synthesis) — the EXACT CLAUDE.md-documented trap (cost 2
+tides on the (2,2,2) chartParamsGen bridge). It is NOT math (⟨c11·E⟩ sympy-settled), NOT fidelity, NOT a
+composition-fails-late risk — LANDABLE via the documented `have`-at-⟨_,by decide⟩ + literal-width +
+multPrefix-paired idiom, just MULTI-TIDE. routeP-p1 STOPPED + reported the tax honestly (guard-4), held
+solo-churn (correct anti-rabbit-hole) — gate2's "rfl-cheap" estimate falsified by the build.
+
+CONTROLLER CALL (b, reframed): **phase-1 GREEN = the DE-RISK** — the crux + the flat(Pmat)-level two-sided
+faithful coupled monomialisation (the biggest Lean risk; banked, #print-axioms clean-three re-derived, full
+`scripts/lb DLNFibre` GREEN 9024 jobs; faithful multi-term confirmed by fidrev-p1+Codex, certificate-repair
+in flight). PRECISE HEADLINE: DE-RISK green ≠ coreGen Chart field built (render-bounded ≠ built). The coreGen
+FIELD is landable dependent-width plumbing (mult-flatten + the designed pivot-blowup → ⟨c11·E⟩ + the ∀e
+conjResolution transport [banked lemma, verified :111]) — it MOVES to the general-`d` ATLAS ASSEMBLY as a
+GENERAL mult-flatten lemma (every chart needs it; built once, not a per-(3,3,4) solo grind), properly
+resourced (a dependent-width specialist / the documented idiom), NOT routeP-p1's solo sprint. Rationale: the
+de-risk (does the faithful coupled monomialisation close two-sided in Lean) IS the phase-1 go/no-go purpose,
+and it's DONE; the mult-flatten is a general-d primitive + pure plumbing, so proper sequencing = the assembly
+(not deferral). ELDER RATIFYING (definition-of-done gate + overclaim check); routeP-p1 doing the fidelity
+repair + a handoff note, then resting.
+
+**Status.** Phase-1 DE-RISK GREEN (elder-ratifying the re-scope). routeP-p1: fidelity repair + handoff note →
+rest. Remaining (general-`d` ASSEMBLY): the general mult-flatten lemma + the pivot-blowup wrap (→ coreGen
+⟨c11·E⟩) + the ∀e conjResolution transport + the full atlas/cover + the value wiring. All landable
+detail-at-scale (per the de-risk + the banked lemmas), NONE open math. GUARD-B: one instance, not general-L.
+Holding for: the elder ratification + routeP-p1's fidelity-repair SHA (+ fidrev-p1 re-review).
