@@ -3,44 +3,35 @@ import DLNFibre.Core.Aoyagi.Corank2TerminalProto
 import DLNFibre.Core.Aoyagi.BlockBlowup
 
 /-!
-# `Core.Aoyagi.Corank2FaithfulComposite` — #112 PHASE-1 SCAFFOLD (the faithful (3,3,4) composite chart)
+# `Core.Aoyagi.Corank2FaithfulComposite` — #112 Phase-1: the faithful (3,3,4) composite chart
 
-**SCAFFOLD — laid by `gate2-hideal`; the RADIAL CRUX is a tracked `sorry` for the grind builder.**
-This is the skeleton of the END-TO-END gate (route P, #112 Phase-1): the SELF-CONTAINED faithful (3,3,4)
-`t=(1,0)` composite chart `g` + its two-sided `hideal`, composing the three PROVEN recursion mechanisms:
+The END-TO-END gate (route P, #112 Phase-1): the SELF-CONTAINED faithful (3,3,4) `t=(1,0)` composite
+chart `gFaithful` + its two-sided `hideal`, composing the three PROVEN recursion mechanisms:
 - **L-A** block-elim (`Corank2HidealProto.blockElim_step_fwd`/`_bwd`, over the genuinely coupled `Δ`),
-- **L-B** maintenance (`Corank2MaintenanceProto.maintenance_step_two_sided`, the b-chain reverse),
-- **L-C** terminal (`Corank2TerminalProto` via `terminal_bezout`, reverse `1/unit`),
+- **L-C** terminal (the radial monomialisation, here proved directly for the concrete `peeled∘gFaithful`;
+  the abstract residual-block form is `Corank2TerminalProto` via `terminal_bezout`),
 composed via the precompose primitive `Corank2CompositeProto.regionRepresents_comp` + the banked
 `RegionRepresents.trans`.
 
-## What is PINNED here (scaffold) vs the CRUX (builder)
+## What is PROVEN here (all sorry-free)
 
-- **PINNED:** the composition STRUCTURE — `gFaithful = shear ∘ radial ∘ join` (the faithful multi-term
-  shape); the chain skeleton `⟨(∏C)∘g⟩ =[L-A ∘ g]= ⟨peeled∘g⟩ =[CRUX]= ⟨monomialFam bexpE⟩`, both
-  directions, wired below; and the reverse riding `terminal_bezout` (`1/unit`, coupling-independent).
-- **THE CRUX (tracked `sorry`, `crux_radial_monomialise`):** the concrete radial factorisation of the
-  12-entry COUPLED `peeled∘g` to `⟨E⟩` — `L-C was proven on an ABSTRACT residual block
-  (`Corank2TerminalProto`); the concrete faithful application to the specific `peeled` (built by the
-  explicit faithful `g` exposing `peeled`'s entries as the monomialisable block) is Phase-1's real work.
-  **Math-GREEN** (the `#124` pivot-survival tripwire passes — see
-  `expeditions/2026-07-17-aoyagi-engine/gate3-codex/faithful_composite_tripwire.py`, run it), NOT a wall,
-  NOT free wiring.
+- **`gFaithful`** — the explicit faithful (3,3,4) composite chart `ℝ²¹ → ℝ²¹` (shear ∘ radial ∘ join folded
+  into one polynomial map; §"The faithful composite chart map"), FAITHFUL multi-term: the shear
+  coordinates `(c₀,c₁,c₂,c₃) = (u₈,u₉,u₁₀,u₁₁)` stay LIVE, so `Q₂⁻¹` genuinely acts and the Schur
+  complement `Δ∘gFaithful = u₀·u₁·D̄` is genuinely coupled — NOT the single-term `outerShear` proxy. The
+  faithfulness is witnessed by the two cancellation-free nontriviality checks `recoord_comp_nontrivial`
+  (the `C₂'=Q₂⁻¹C₂` recoord genuinely acts) and `coupling_comp_nontrivial` (the coupling cross-term
+  `c₁₂ᵦ·c₂₁ₐ` is genuinely fed) — each ≢ 0 rejects a proxy (Q₂⁻¹=I / a coupling-coordinate zeroed).
+- **`peeled_comp_gFaithful`** — THE crux: every entry of the coupled block-elim output `peeled`, pulled
+  back through `gFaithful`, is `E · quotMat` (`E = u₀`), with the pivot `(0,0)` quotient `= 1`
+  (`peeled₀₀∘g = E` exactly). The `#124` pivot-survival tripwire passes
+  (`gate3-codex/faithful_composite_tripwire.py`).
+- **`crux_radial_monomialise`** — `⟨peeled∘gFaithful⟩ = ⟨monomialFam bexpE⟩ = ⟨E⟩`, BOTH directions.
+- **`hideal_faithful_fwd`/`_bwd`** — the two-sided `hideal` at the `flat(Pmat)` product-entry level
+  (`⟨(∏C)∘g⟩ =[L-A ∘ g]= ⟨peeled∘g⟩ =[crux]= ⟨monomialFam bexpE⟩`).
 
-## Builder handoff (grind the crux)
-
-1. **Finalise `gFaithful`'s components** (`shFaithful`/`radialFaithful`/`joinFaithful` below are the typed
-   STRUCTURE with placeholder concrete values — pin them to the sympy blueprint's faithful multi-term
-   shear (Schur cross-term + `C₂'=Q₂⁻¹C₂` recoord) + the radial `T=q·(1,t2,t3,t4)` / `Δ=u·Dbar` blow-ups +
-   the join `q=E, u=E·α`). GUARD: faithful multi-term, NO single-term `outerShear` proxy (false-GREEN,
-   rev-render #7).
-2. **Prove `crux_radial_monomialise`** for the finalised `gFaithful` (+ the chart region `nbhd`): the
-   forward `E ∣ every peeled∘g entry` (polynomial quotients) + one pivot entry `= E·unit` (`unit 0 ≠ 0`);
-   the reverse is then `terminal_bezout`. Watch the `#124` tripwire. STOP + report on a genuine 21-var
-   Mathlib wall.
-3. **Connect `coreGen (3,3,4) e ∘ g`** to `flat(C1·C2)∘g` (the part-C flatten: `mult`-unfold `rfl`-cheap,
-   the flatten HMul tax has CLAUDE.md mitigations) — the scaffold states the chain at the `flat(Pmat)`
-   product-entry level (= `coreGen` content up to flatten/transpose); wrap it to `coreGen`.
+The coreGen-level wrap (`coreGen (3,3,4) e ∘ g` via the pivot block-center blow-up → `⟨c₁₁·E⟩`) is the
+separable part-C follow-on (see the expedition brief); this module delivers the `flat(Pmat)`-level content.
 -/
 
 open Matrix Set
@@ -126,16 +117,47 @@ theorem peeled_comp_gFaithful (i : Fin 3) (j : Fin 4) (u : Fin 21 → ℝ) :
       dotProduct, Fin.sum_univ_three, gFaithful] <;>
     ring
 
-/-- **Faithfulness witness (not the diagonal confound).** On the chart, the Schur complement
-`Δ ∘ gFaithful` is genuinely coupled: its off-diagonal `Δ₀₁ = m₁₂ − c₁₂ᵦ·c₂₁ₐ` pulls back to
-`u₀·u₁·u₅` (via the LIVE shear coordinates), nonzero at a point — so `gFaithful` realises the FAITHFUL
-multi-term shear (`Q₂⁻¹` non-trivial, `Δ` coupled), NOT the single-term `outerShear` proxy. -/
-theorem delta_comp_coupled :
+/-- **Non-vacuity of `Δ₀₁∘gFaithful` (ONE part — necessary, NOT a faithfulness certificate).** The
+Schur off-diagonal `Δ₀₁ = m₁₂ − c₁₂ᵦ·c₂₁ₐ` pulls back to `u₀·u₁·u₅`, nonzero at a point. NOTE: the
+coupling cross-term `c₁₂ᵦ·c₂₁ₐ` CANCELS in this value (`Δ₀₁∘g = (u₀u₁u₅ + u₉u₁₀) − u₉u₁₀ = u₀u₁u₅`), so
+a nonzero `Δ₀₁∘g` witnesses the BLOW-UP (`u₀u₁u₅`), NOT the coupling/recoord — a proxy with a coupling
+coordinate zeroed still passes it. The genuine faithfulness certificates (cancellation-free) are
+`recoord_comp_nontrivial` + `coupling_comp_nontrivial` below. -/
+theorem delta_comp_nonvacuous :
     ∃ u : Fin 21 → ℝ,
       Delta (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) 0 1 (gFaithful u) ≠ 0 := by
   refine ⟨fun k ↦ 1, ?_⟩
   simp only [Delta, cc, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, Pi.sub_apply, Pi.mul_apply, gFaithful]
+  norm_num [gFaithful, Fin.ext_iff]
+
+/-- **Faithfulness certificate (a) — the `C₂'=Q₂⁻¹C₂` recoord genuinely acts (cancellation-free).** The
+recoord delta `(Q₂⁻¹·C₂)₀₀ − (C₂)₀₀ = c₁₂ₐ·(C₂)₁₀ + c₁₂ᵦ·(C₂)₂₀` pulls back to `u₈·u₁₂ + u₉·u₁₆`,
+nonzero at a point. This is ≢ 0 iff `Q₂⁻¹` genuinely acts (`c₁₂ₐ∘g`/`c₁₂ᵦ∘g` not both killed), so it
+REJECTS the `Q₂⁻¹=I` single-term proxy — the fidelity guard the (necessary-not-sufficient)
+`delta_comp_nonvacuous` misses. -/
+theorem recoord_comp_nontrivial :
+    ∃ u : Fin 21 → ℝ,
+      ((Q2inv (cc 0) (cc 1) * C2conc) 0 0 - C2conc 0 0) (gFaithful u) ≠ 0 := by
+  refine ⟨fun _ ↦ 1, ?_⟩
+  simp only [Q2inv, C2conc, cc, Matrix.mul_apply, Fin.sum_univ_three, Matrix.cons_val',
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons,
+    Matrix.head_cons, Matrix.head_fin_const, Matrix.cons_val_fin_one, Matrix.of_apply,
+    Matrix.empty_val', Pi.sub_apply, Pi.add_apply, Pi.mul_apply, gFaithful]
+  norm_num [gFaithful, Fin.ext_iff]
+
+/-- **Faithfulness certificate (b) — the coupling cross-term `c₁₂ᵦ·c₂₁ₐ` is genuinely fed
+(cancellation-free).** `(C₂)₁₂-slot minus the Schur value `(cc 5) − Δ₀₁ = c₁₂ᵦ·c₂₁ₐ` pulls back to
+`u₉·u₁₀` (the cross-term BEFORE the Schur subtraction — the piece that cancels in
+`delta_comp_nonvacuous`), nonzero at a point. ≢ 0 iff the chart feeds BOTH coupling coordinates, so it
+REJECTS a `c₁₂ᵦ∘g=0` / `c₂₁ₐ∘g=0` coupling-zeroed proxy. Together with `recoord_comp_nontrivial`, this
+certifies `gFaithful` is the FAITHFUL multi-term shear, not a proxy. -/
+theorem coupling_comp_nontrivial :
+    ∃ u : Fin 21 → ℝ,
+      (cc 5 - Delta (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) 0 1) (gFaithful u) ≠ 0 := by
+  refine ⟨fun _ ↦ 1, ?_⟩
+  simp only [Delta, cc, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Pi.sub_apply, Pi.mul_apply, gFaithful]
   norm_num [gFaithful, Fin.ext_iff]
 
 /-- The dominant terminal exceptional monomial `b₁ = E` (here coord `0`), in `monomialFam` (`Fin 1`) form.
