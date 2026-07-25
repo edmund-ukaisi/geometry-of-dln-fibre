@@ -1,4 +1,6 @@
 import DLNFibre.Core.Aoyagi.PrincipalInv
+import DLNFibre.Core.Aoyagi.Corank2MaintenanceProto
+import DLNFibre.Core.Aoyagi.Corank2TerminalProto
 import DLNFibre.DLN.Aoyagi.LeafCoverTiling
 
 /-!
@@ -39,9 +41,18 @@ FULL `V`), or `terminal_bezout` refined to return `V' = V ∩ {unit ≠ 0}` expl
 - `terminal_region_eq_of_collapse` — under `unit ≡ 1` the shrink is vacuous: `V ∩ {unit ≠ 0} = V`.
 - `terminal_bezout_collapse` — the API-clean collapse variant: `unit ≡ 1 ⇒ PrincipalInv` on the FULL
   `V` (no shrink), consuming `StepInv`.
-- `admissible_leaf_region_222` — THE GATE at the `(2,2,2)` source dimension
+- `admissible_leaf_region_222_of_collapse` — the UNCOUPLED `(2,2,2)` instance
   (`flatDim ![2,2,2] = 8`): the terminal region contains the cover box of radius `R` AND satisfies
-  the `Covers` leaf-clause, on the same region.
+  the `Covers` leaf-clause.
+- `coupled_maintenance_region_covers` — THE REAL GATE (coupling live): the coupled row-clear's BOTH
+  ideal directions hold on the FULL space with `cᵢ` arbitrary; the region ⊇ the cover box.
+- `coupled_terminal_region_covers` — the coupled corank-2 terminal block (`Corank2TerminalProto`):
+  `PrincipalInv` on the FULL space (unit ≡ 1, coupling-independent), region ⊇ the cover box.
+
+The coupled results are the elder's R3-gate refinement (`(2,2,2)` is uncoupled; the real tension is
+a coupled phenomenon). ONE obligation is OWED to R2 (named, undischarged): the family-cover — a
+single leaf's region ⊇ its own box does not test that the UNION of leaf domains tiles the parent
+box.
 -/
 
 open Metric Set
@@ -49,6 +60,7 @@ open Metric Set
 namespace DLNFibre.DLN.Aoyagi.Corank2AdmissibleLeaf222
 
 open DLNFibre.Core.Aoyagi DLNFibre.DLN.Aoyagi.LeafCoverTiling
+open DLNFibre.Core.Aoyagi.Corank2MaintenanceProto (Gorig Gclear)
 
 variable {D : ℕ}
 
@@ -117,12 +129,68 @@ leaf, `≥ 1`), the terminal non-vanishing region `V' = V ∩ {unit ≠ 0}` **co
 AND the box satisfies the `Covers` leaf-clause — the certificate region and the tiling box conjoined
 on one region. No radius conflict: the shrink is vacuous, so any `R` with `closedBall 0 R ⊆ V`
 (including `R ≥ 1`) fits. -/
-theorem admissible_leaf_region_222
+theorem admissible_leaf_region_222_of_collapse
     (V : Set (Fin 8 → ℝ)) (unit : (Fin 8 → ℝ) → ℝ) (hcollapse : ∀ u, unit u = 1)
     (f : ℝ → ℝ) {R : ℝ} (hcover : closedBall (0 : Fin 8 → ℝ) R ⊆ V) :
     closedBall (0 : Fin 8 → ℝ) R ⊆ V ∩ {u | unit u ≠ 0} ∧
       FanTree.Covers f (FanTree.leaf (V ∩ {u | unit u ≠ 0})) R := by
   rw [terminal_region_eq_of_collapse V unit hcollapse]
   exact ⟨hcover, hcover⟩
+
+/-! ## The COUPLED corank-2 gate — the REAL terminal-shrink ⋈ cover test (elder R3-gate refinement)
+
+`admissible_leaf_region_222_of_collapse` above is the UNCOUPLED instance: at `(2,2,2)` all widths
+are `≤ 2`, the Schur complement `Δ` is trivial, so `unit ≡ 1` is automatic and the coupling is
+absent. The elder's catch: a green there is "green-while-false at the clean instance". The REAL
+gate is the COUPLED
+corank-2 leaf, where the shared b-chain divisors could — a priori — make the non-vanishing region
+shrink coupling-dependently below the cover box. It does NOT, for two structural reasons, both
+banked on the trunk and exercised below:
+
+* **Maintenance (upstream, where the coupling is LIVE):** `maintenance_step_two_sided` proves BOTH
+  ideal directions with the coupling `cᵢ` ARBITRARY — it enters only as the continuous multiplier
+  `cᵢ·rᵢ`, NEVER a denominator. The b-chain makes `rᵢ = b'ᵢ/b'_p = ∏u` an exact MONOMIAL, continuous
+  on the FULL space, so the region is `univ` — no shrink. (Were the b-chain to FAIL,
+  `rᵢ = 1/(monomial)` would be discontinuous on a hyperplane and the region WOULD shrink — the wall
+  the elder feared; the b-chain, R1's threaded conjunct, is exactly what averts it.)
+* **Terminal:** the block-center blow-up sends the coupled corank-2 residual block `Δ` to
+  `w₀·(1,w₁,w₂,w₃)`, so `unit ≡ 1` COUPLING-INDEPENDENTLY (`Corank2TerminalProto`); the collapse
+  variant gives `PrincipalInv` on the FULL `univ`.
+
+Both witnesses take the region `univ` (unshrunk, coupling live, BOTH directions), which contains the
+cover box `closedBall 0 R` for any `R`. **Owed to R2 (named, undischarged — NOT a single-leaf
+question):** the FAMILY-COVER — one leaf's region ⊇ its own box does not test that the UNION of leaf
+domains tiles the parent box (the `Covers` fold over the branching tree). -/
+
+/-- **Coupled maintenance ⋈ cover — GREEN, coupling live.** Given the b-chain (`rᵢ` continuous
+everywhere, i.e. an exact monomial) and an ARBITRARY continuous coupling `cᵢ`, the coupled
+row-clear's BOTH ideal directions hold on the FULL space `univ` (no shrink); `univ` therefore
+contains the cover box and serves as the `Covers` leaf domain, for any radius `R`. The coupling
+never obstructs it. -/
+theorem coupled_maintenance_region_covers {n : ℕ}
+    (bp : (Fin D → ℝ) → ℝ) (r c X : Fin n → (Fin D → ℝ) → ℝ) (p : Fin n)
+    (hr : ∀ i, Continuous (r i)) (hc : ∀ i, Continuous (c i))
+    (f : ℝ → ℝ) (R : ℝ) :
+    (RegionRepresents (Gclear bp r c X p) (Gorig bp r X) Set.univ ∧
+        RegionRepresents (Gorig bp r X) (Gclear bp r c X p) Set.univ) ∧
+      closedBall (0 : Fin D → ℝ) R ⊆ Set.univ ∧
+        FanTree.Covers f (FanTree.leaf (Set.univ : Set (Fin D → ℝ))) R :=
+  ⟨Corank2MaintenanceProto.maintenance_step_two_sided bp r c X p Set.univ
+      (fun i ↦ (hr i).continuousOn) (fun i ↦ (hc i).continuousOn),
+    Set.subset_univ _, Set.subset_univ _⟩
+
+/-- **Coupled terminal ⋈ cover — GREEN, unit ≡ 1 coupling-independent.** The genuinely coupled
+corank-2 residual block (`Corank2TerminalProto`, the `Δ`-slots) blown up at its centre: the collapse
+variant gives the terminal `PrincipalInv` on the FULL `univ` (unit ≡ 1), which contains the cover
+box for any `R`. -/
+theorem coupled_terminal_region_covers (f : ℝ → ℝ) (R : ℝ) :
+    PrincipalInv Corank2TerminalProto.resid Corank2TerminalProto.gBlk Corank2TerminalProto.bE
+        (fun i ↦ Corank2TerminalProto.qBlk i 0)
+        (fun i ↦ fun _ ↦ if i = (0 : Fin 4) then (1 : ℝ) else 0) Set.univ ∧
+      closedBall (0 : Fin 4 → ℝ) R ⊆ Set.univ ∧
+        FanTree.Covers f (FanTree.leaf (Set.univ : Set (Fin 4 → ℝ))) R :=
+  ⟨terminal_bezout_collapse Corank2TerminalProto.stepInv_blk 0
+      (fun u _ ↦ by simpa using Corank2TerminalProto.pivot_entry u (Set.mem_univ u)),
+    Set.subset_univ _, Set.subset_univ _⟩
 
 end DLNFibre.DLN.Aoyagi.Corank2AdmissibleLeaf222
