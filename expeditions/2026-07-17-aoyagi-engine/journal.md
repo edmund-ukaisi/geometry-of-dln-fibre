@@ -22130,6 +22130,25 @@ NOT free wiring, NOT a wall). The wiring ops themselves are clean (regionReprese
 statement) → then spawn the fresh lean-formaliser for the radial-crux grind. Guards A+B + faithful multi-term
 + #124 tripwire + STOP-on-wall→objects-only hold.
 
+**SCAFFOLD LANDED + a coordination collision resolved (2026-07-25).** gate2-hideal laid + committed + pushed
+the Phase-1 SCAFFOLD to `origin/expedition/aoyagi-engine-routeP @ c4e836075` (off the expedition tip
+a6ebf30ff): the 5 proven-mechanism protos (Corank2Proto/HidealProto/MaintenanceProto/TerminalProto/
+CompositeProto) wired into the aggregator (all sorry-free, axiom-clean, built green on the base — no API
+drift) + `Corank2FaithfulComposite.lean` (`gFaithful` = multi-term shear ∘ radial ∘ join, structure pinned /
+components placeholder; `bexpE`; the chain skeleton `hideal_faithful_fwd`/`_bwd` wiring L-A `.trans` the
+crux; the CRUX as ONE tracked sorry `crux_radial_monomialise`, `-- map: #112-phase1-radial`). COLLISION
+(controller mis-coordination, owned): I'd dispatched routeP-p1 for the WHOLE Phase-1 before gate2's scaffold
+landed, so routeP-p1 independently found routeP + was about to re-do the foundation (#126). RESOLVED:
+redirected routeP-p1 to RECONCILE onto gate2's c4e836075 (fetch+reset+clean or a fresh worktree) + grind the
+CRUX (`crux_radial_monomialise` = the concrete radial factorisation of the 12-entry coupled `peeled∘gFaithful
+→ ⟨E⟩`, both directions) + finalize gFaithful's components — NOT re-do the scaffold (no divergent fork).
+gate2-hideal = accountable coordinator (consults + fidelity review + relay the full `scripts/lb DLNFibre`
+gate when its background build lands).
+
+**Status.** routeP @ c4e836075 = gate2's scaffold (protos + Corank2FaithfulComposite, crux sorried). routeP-p1
+reconciling onto it + grinding the CRUX. Holding for: routeP-p1 confirm-on-crux, then the crux discharge
+(phase-1 green → elder general-d gate) / a wall (→ objects-only). gate2's full-build gate result pending.
+
 **PAPER-FIRST anchor + coherence tightening (pnp, 2026-07-25) — fold into the elder's #123 charter finalize.**
 Paper-first (charter §3 DEFECT gate): AOYAGI RESOLVES the realization (her two-sided (S,J) maintenance
 Cases 1&2 → terminal normal crossing, general-L per her abstract); the worked.tex:663 "deeper mixed open
