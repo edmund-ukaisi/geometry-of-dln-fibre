@@ -24020,3 +24020,36 @@ inferred link**, not monument-free.
 premise of the operator's GO), so surfaced async + non-blocking; proceed-on-silence keeps the probe + elder
 moving; the fork itself (esp. any move toward objects-only or a value-re-scope of the DELIVERABLE) waits for
 the operator's re-weigh.
+
+---
+
+## 2026-07-25 (tick, cont.) — elder verdict on P/V/objects-only + probe EXTENDED to adjudicate all three arms
+
+**Elder-reroute adjudication [#168, delivered]:** decisive, on a fork against a 3×-retired decision.
+- **V is NOT the retired mirage IN KIND.** The mirage was value-level forward-only info-loss (killed by the
+  ⟨δx,δy⟩ over-vanishing witness). V is an IDEAL-level ONE-SIDED containment `⟨b_{k₀}⟩ ⊆ ⟨(∏C)∘g⟩` riding
+  Object A monotonicity — the "weak reverse" the charter itself says the lower bound needs; genuinely
+  LIGHTER than the full two-sided principality; coupling-assist has the right sign. Codex concurs on the
+  kind-distinction.
+- **BUT V is not yet ESTABLISHED.** The charter's bar (a decorrelated probe EXHIBITING the lighter
+  per-divisor bound at coupled corank≥2) is UNMET — the de-risk ARGUED the kind-distinction, did not EXHIBIT
+  the bound. Adopting on argument is exactly how the mirage got proposed 3×. P8 highest burden of proof
+  (mirage-adjacent), but rides a LANDED general theorem (Object A) so not disqualified as "the mirage."
+- **Gate on the EXTENDED probe.** Three outcomes: V exhibits (monument-free, best) / only P's two-sided
+  equality holds (cite the smaller two-sided principality) / neither clean (objects-only #94 floor).
+- Elder re-convene triggers: the extended probe result; and — if V adopted — its first coupled-corank≥2
+  value-floor build. Resting.
+
+**PROBE EXTENDED [#167]:** reroute-R3derisk now tests, at the same deeper-mixed instance, BOTH
+(P) I=⟨b_{k₀}⟩ exactly (two-sided) AND (V) ⟨b_{k₀}⟩ ⊆ I (one-sided containment only, value-floor's actual
+need, coupling-assisted) — plus det Dg=±monomial + corner-join localization. One probe adjudicates all three
+arms. Persist → `deeper-mixed-probe.md`.
+
+**CONTROLLER CALIBRATION (idle-slot, grounded my own operator-surface; strategy/calibration-ledger.md):**
+read `ProductResolution.lean` + `Corank2UpperBound334.lean` — HIT + sharpening. The P-fallback cite is a
+CLEAN field-level boundary (`Chart.hideal_bwd` is a named field; the atlas builds cite-free around a cited
+reverse-inclusion). SHARPENING: the UPPER bound is ALREADY principality-free
+(`rlctAt_coreGen334_le_four_forward` uses only `hideal_fwd` + a weak null-guard); the monument lives ENTIRELY
+in the LOWER direction (`hideal_bwd`). The three fork arms line up on ONE axis — the reverse inclusion at the
+minimising branch: V (single-divisor, one-sided) ⊂ P (two-sided equality, all leaves) ⊂ objects-only. Records
+a HIT against the prior economy-MISS (read the interface before asserting the boundary — the correction held).

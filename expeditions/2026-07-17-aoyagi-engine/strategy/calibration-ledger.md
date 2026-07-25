@@ -1171,3 +1171,37 @@ transport lemma's consumed FAMILY matches the object you claim to transport — 
 EXIST. Mechanism-existence ✓ is necessary, not sufficient; I reported "checks out" on mechanism-existence and
 inherited the operator's economy framing without probing it. The decorrelated obstruction seat is the
 sensor that caught it — fire it BEFORE reporting an architecture "grounded", not only before the build.
+
+---
+
+## 2026-07-25 — CALIBRATION (idle-slot, grounding my own operator-surface): the P-fallback cite boundary + the upper/lower asymmetry
+
+**Load-bearing question:** I surfaced to the operator "if the monument can't be closed, cite JUST the
+single-chain principality — a clean, smaller cite than objects-only." Is that P-fallback genuinely STATABLE
+at a clean interface boundary, or was it another over-read (the economy-miss recurring)?
+
+**Expectation written first (confidence):** the single-chain principality is consumed at the per-leaf
+ideal-identity, so a clean cite ought to exist at the `Chart.hideal_bwd` field granularity (one general
+axiom quantified over terminal leaves, everything else built cite-free around it). Confidence MEDIUM-HIGH
+that a field-level boundary exists; LOW-confidence on whether it's ONE axiom or a per-leaf family.
+
+**Actual (read `ProductResolution.lean:62-139` + `Corank2UpperBound334.lean:55-77`):** HIT, and sharper.
+- `Chart` carries `hideal_fwd` (⟨(∏C)∘g⟩ ⊆ ⟨diag b⟩) and `hideal_bwd` (⟨diag b⟩ ⊆ ⟨(∏C)∘g⟩) as SEPARATE
+  named fields. The P-fallback = provide `hideal_bwd` (or the single-chain principality it derives from) as
+  a cited general lemma at terminal leaves; `hideal_fwd`, `jac`, `unit`, the cover, and the fold are all
+  cite-free around it. Clean field-level boundary — CONFIRMED.
+- SHARPENING I did not expect: the UPPER bound is ALREADY principality-free. `rlctAt_coreGen334_le_four_forward`
+  proves `rlct ≤ ½·minAdm` consuming ONLY `hideal_fwd` (one-directional Object A) + Object C + a WEAK
+  null-guard `lossNull_of_hideal_bwd` (strictly weaker than the reverse inclusion). So the monument lives
+  ENTIRELY in the LOWER direction (`hideal_bwd`, reverse inclusion) — matching memory [[rlct-runway-target]]
+  (smooth locus → upper bound; singular-locus lower bound is the hard kill-condition).
+- DOVETAIL with the elder verdict (same tick): the elder's V = `⟨b_{k₀}⟩ ⊆ ⟨(∏C)∘g⟩` is precisely a
+  SINGLE-DIVISOR, one-sided weakening of `hideal_bwd`. So the three arms line up on ONE axis — the reverse
+  inclusion at the minimising branch: V (single-divisor containment, coupling-assisted) ⊂ P (full two-sided
+  equality every leaf) ⊂ objects-only (the whole `cited_aoyagi_lower_ax`). The probe now tests the two
+  weaker points on that axis.
+
+**What it changes:** the operator-surface recommendation is GROUNDED, not another economy-over-read — this
+time I read the interface before asserting the boundary. The P-fallback is a strictly narrower cite than
+objects-only (a per-leaf reverse-inclusion lemma, not the whole rlct=½codim). Records a HIT against the prior
+economy-MISS: the correction (read the code before reporting an architecture grounded) held here.

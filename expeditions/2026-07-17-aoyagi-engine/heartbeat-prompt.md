@@ -40,20 +40,27 @@ fold AS-SCOPED CONSUMES the **general-d terminal single-chain principality = the
 Gröbner, no counterexample, NOT proven; worked.tex:651-664). The reroute LOCALIZES the ideal conjunct's
 dependence on the monument; it does NOT eliminate it. So the "cite-free lower" is cite-free MODULO this link.
 
-**THE FORK (in flight — the current decision):**
-- (P) build route-P; rests on the monument. Fully cite-free ⟹ prove it general (open); else cite JUST the
-  single-chain principality (smaller cite than objects-only, atlas built). ← controller lean.
-- (V) value-floor re-scope (rlct ≥ ½Mval, minimising branch, coupling-assisted, claims monument-free) —
-  mirage-adjacent (V-lower retired ×3, #146); elder adjudicates genuine-vs-mirage.
-- (objects-only) cite the whole resolution (STOP-fallback, charter-faithful #94, `cited_aoyagi_lower_ax`).
+**THE FORK — the three arms line up on ONE axis (the reverse ideal inclusion at the minimising branch;
+calibration 2026-07-25 grounded in `ProductResolution.lean` + `Corank2UpperBound334.lean`):** the UPPER
+bound rlct ≤ ½C is ALREADY principality-free (uses `hideal_fwd` + a weak null-guard); the monument lives
+ENTIRELY in the LOWER direction (`hideal_bwd`, reverse inclusion). So:
+- (V) `⟨b_{k₀}⟩ ⊆ ⟨(∏C)∘g⟩` — SINGLE-divisor, ONE-SIDED containment at the minimising branch + Object A
+  monotonicity, coupling-assisted. Elder ruling: NOT the retired mirage IN KIND (mirage = value-level
+  forward info-loss; V = ideal-level one-sided + a landed general theorem) — but must be EXHIBITED not
+  argued (P8 highest burden). Monument-free if it exhibits. ← best.
+- (P) full two-sided equality `⟨coreGen∘g⟩=⟨diag b⟩` every leaf = the monument. Fully cite-free ⟹ prove it
+  general (open); else cite JUST the two-sided principality (a clean `Chart.hideal_bwd`-field cite, atlas
+  built cite-free around it — strictly narrower than objects-only). ← middle.
+- (objects-only) cite the whole resolution `cited_aoyagi_lower_ax` (STOP-fallback, charter-faithful #94).
 
-**IN FLIGHT (decorrelated decision inputs — act on results when they land):**
-1. **Deeper-mixed Gröbner probe** → reroute-R3derisk [#167]: a deeper instance (≥3 shared factors), compute
-   SIMULTANEOUSLY I_terminal=⟨b_k₀⟩ / det Dg=±monomial / corner-join localization-free. CLEAN ⟹ monument
-   verified one rung, P-confident. BITES ⟹ V/objects-only. Persist → `deeper-mixed-probe.md`.
-2. **Elder adjudication** → elder-reroute [#168]: P-vs-V-vs-objects-only + the decisive V-genuine-vs-mirage.
-3. **Operator surfaced** — the recalibration bears on the "cite-free" premise of their GO; non-blocking; the
-   one steer that flips the default = "strictly-cite-free-or-nothing".
+**IN FLIGHT (decision inputs):**
+1. **EXTENDED Gröbner probe** → reroute-R3derisk [#167]: at one deeper-mixed instance, tests BOTH
+   (P) I=⟨b_k₀⟩ exactly AND (V) ⟨b_k₀⟩⊆I one-sided + coupling sign; plus det Dg=±monomial + corner-join
+   localization. One probe adjudicates all three arms. Persist → `deeper-mixed-probe.md`.
+2. **Elder adjudication** → elder-reroute [#168] DONE (verdict banked journal + above; re-convenes at the
+   probe result, and — if V adopted — its first coupled-corank≥2 value-floor build).
+3. **Operator surfaced** — the recalibration bears on the "cite-free" premise of their GO; non-blocking;
+   the one steer that flips the default = "strictly-cite-free-or-nothing".
 
 **HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
 
