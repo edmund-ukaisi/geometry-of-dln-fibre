@@ -1,12 +1,39 @@
-# Statement card — RUNG 5d crux (B): the generic `transportChart` core + `permOf` calculus
+# Statement card — RUNG 5d crux (B): `transportChart` core + `permOf` calculus + `coreGen` K-equivariance
 
-- **Status.** sorry-free, clean-three (force-elab verified). Route-agnostic reusable core. The (3,3,4)
-  leaf-Chart FAMILY / wiring is HELD pending the sector-count θ adjudication (per controller).
-- **Module.** `lean/DLNFibre/DLN/Aoyagi/ChartTransport.lean` (new, ~270 LoC).
+- **Status.** sorry-free, clean-three (force-elab verified). Two route-AGNOSTIC reusable modules,
+  BANKED. The flat-(3,3,4)-fan transport APPLICATION is DEAD (sector-count exact: monomialization ⊥
+  coverage — see below); both modules are banked for a **recursive-resolution route (#112)**, moot for
+  the θ=1 bypass (#111) or the dead flat fan.
+- **Modules.**
+  - `lean/DLNFibre/DLN/Aoyagi/ChartTransport.lean` (~275 LoC, commit `2d8330538`) — generic transport.
+  - `lean/DLNFibre/DLN/Aoyagi/Corank2CoreGenEquivar.lean` (commit `68385c86d`) — `coreGen` K-equivariance.
 - **Lane branch.** `expedition/aoyagi-engine-5d-transport` (base `594b009c8`).
 - **Axioms.** `#print axioms` (force-elab, olean deleted) = `[propext, Classical.choice, Quot.sound]`
-  on `transportChart`, `permOf`, `measurePreserving_permOf`, `jacWeight_permOf`,
-  `bindingAxes_comp_symm` — clean-three, no `sorryAx`.
+  on `transportChart`, `permOf`, `measurePreserving_permOf`, `jacWeight_permOf`, `bindingAxes_comp_symm`,
+  and `coreGen_permOf_kSigma`, `coreGen_comp_permOf_kSigma`, `kSigma`, `kTau`, `coreGen_eq_A1A0` —
+  clean-three, no `sorryAx`.
+
+## The `coreGen` K-equivariance (the rigorous gate)
+
+`coreGen_permOf_kSigma` / `coreGen_comp_permOf_kSigma` — `coreGen dvec eWrap` is
+equivariant-up-to-index-perm under `K = S₄(rows i) × S₃(cols j) × S₃(middle m)`, |K| = 864:
+`coreGen k (permOf (kSigma α β ρ) u) = coreGen (kTau α β k) u`, with `kTau α β : (i,j) ↦ (α i, β j)`
+(middle `ρ` = pure gauge, `π = id`). The `hequiv` that `transportChart` consumes. Built via the
+transposed-product entry form `coreGen_eq_A1A0` + the layout equiv `kLayout` (`Equiv.ofBijective`,
+`by decide`) + the product reindexing (shared `ρ` cancels in the contraction). Confirms sector-count's
+tripwire: `kSigma` genuinely mixes the A0/A1 blocks via the shared `ρ`.
+
+## The flat-fan death (V1 Gröbner check — decorrelated confirmation of sector-count)
+
+Independent sympy check of `⟨coreGen ∘ (blockBlowupMap{0..7,20} p1 ∘ gFaithful)⟩` (local
+monomialization = monomial-GCD in the ideal via a unit cofactor at `0`):
+`p1=20` (chart334) MONOMIALIZES to `⟨u0·u20⟩` (unit cofactor entry 0 = 1, reproduces the banked
+`⟨c11·E⟩` → harness validated); `p1=2` (distinct pivots) and `p1=0` (coinciding) do NOT monomialize
+(monomial-GCD not locally in the ideal, no unit cofactor, min total degree 4). ⟹ the flat-fan COVERING
+charts (`p1≠20`) do NOT admit chart334's principal-monomial hideal — confirms "monomialization ⊥
+coverage": the resolution is intrinsically RECURSIVE (`buildTree`), chart334 = its column-0 terminal
+branch. So the flat transport/atlas route is dead; `transportChart` + K-equivariance stay banked for the
+recursive route.
 
 ## What LANDED (buildable, banked)
 
