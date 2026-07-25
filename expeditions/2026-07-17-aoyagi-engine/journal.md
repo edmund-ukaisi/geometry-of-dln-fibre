@@ -24320,3 +24320,40 @@ as a landmark. R2 build (#173) underway.
 - **DESIGN NOTE:** the atom is ABSTRACT over gen:ι→E→ℝ + charts (survivor-entry index = OUTPUT generators,
   nonlinear, distinct from bornSiblings' INPUT-pivot index); wiring concrete PivotStep charts = R3. Next R2
   rung = the fold (assemble atoms over buildTree) + the value side (carry the SUM-not-PRODUCT guard from #172).
+
+---
+
+## 2026-07-25 (tick, cont.) — ELDER RULING: WITNESS clears the stern-voice bar → (A) priced SOUND, NO MONUMENT. The de-risk arc is COMPLETE.
+
+**Elder-reroute (re-derived from recursion-rzero-probe.md, applied the detail-at-scale-vs-monument test):
+YES — the recursion WITNESS clears the bar. Price (A) SOUND, detail-at-scale; the destination is FULLY
+PRICED, no monument.** Why it clears: termination PROVEN general (depth −1/peel, L=1 Morse bottom, ≤L steps);
+generic deep divisor ratio = ½minAdm STRUCTURAL (codim{R=0}=minAdm via Object D + Morse ⟹ k=1); no coupled
+undercut (direct-sum additivity); the decorrelated Codex red-team raised the sharpest obstruction (k=2) and it
+was correctly diagnosed + refuted (sum-vs-product) — hunt-precedes-trust working, HARDENING the finding into a
+precise buildable obligation + a banked guard.
+
+**FOUR CAVEATS (the stern line — "priced sound" is a MAP claim, not TERRITORY):**
+1. "Priced sound detail-at-scale" ≠ built ≠ proven. The general-L k=1 is INFERENCE-until-built; the reroute
+   build (R2/R3/R4/R5/R6, ~10-16 tides) is the labour ahead. Do NOT let "no monument, fully priced" travel as
+   "nearly done."
+2. **G1 SUM-not-PRODUCT** is LOAD-BEARING (banked tripwire): k=1 hinges on the kept-survivor SUM structure; a
+   product residual / no-survivor binding branch gives k≥2 and undercuts. Never read the residual as a product.
+3. The graceful fallback (B) stands (rung-gate: build toward A, fall to B if a general-L sub-step bites).
+4. **G2: VERIFY direct-sum RLCT additivity is WIREABLE** before the value build relies on it — a DISTINCT
+   theorem from Object A. **Controller dependency-check (done): NOT in-repo** (grep of Core.Analysis.RLCT +
+   DLNFibre — only rlctAt_mono / payoff / ray-scaling, no additivity). Wireable as a Fubini product-integral
+   Core build (detail-at-scale) OR a clean Watanabe/Lin cite. Scout `rlct-additivity-scope` firing to scope
+   build-vs-cite + confirm the Mathlib product-integral machinery.
+
+**COMPASS F10 updated (elder delta applied + committed).** Controller consistency-edits folded in
+(transparency, for the elder's next re-convene): (a) "#145 SPLIT + B1 OPEN" → "B1 DISSOLVED (probes 4-6)" —
+the elder's own new STANDING presupposes B1 closed; (b) my G2 additivity dependency-finding appended to the
+elder's G2 guard. Both faithful to the elder's intent; elder adjusts on re-convene if it'd frame differently.
+
+**LANDMARK (honest): the MAP is complete; the TERRITORY is the build ahead.** The "coupled monument" that
+walled this expedition for months is DISSOLVED into named, decomposable, instance-verified + red-team-hardened
+build labour — (A) fully-cite-free priced SOUND, no monument. Every gate elder-re-gated by its own #print
+axioms; the decorrelated hunts raised real obstructions that were correctly killed — the pricing is earned,
+not a headline. Remaining = the reroute build (R2 atom landed clean-three; R3 fold next) carrying the two live
+guards (G1 sum-not-product; G2 verify additivity) + the (B) fallback at every rung.

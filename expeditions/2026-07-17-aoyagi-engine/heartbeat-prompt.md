@@ -28,93 +28,42 @@ arises). Trunk = `expedition/aoyagi-engine-reroute`; worktree = gate-routeB. Run
   M1 @ `4e4619652`: unit≡1 DERIVED (not assumed) on the coupled (3,3,4) chart334 leaf (nbhd=univ, no shrink).
   corank≥3 hjac @ `4b20ffb3d`: elimination stays CLEAN UNIPOTENT at any corank (coupling-BLIND mechanism).
   clearing gate @ `fcf92db10`: on the real (3,3,4) chart the coupled clearing reads-only-kept.
-- **R2 PARTIAL** @ `9d0b0d868` — `bornSiblings_union_covers` (the fan tiles the node box). The
-  radius-parameterized real-tree cover FOLD (the genuine new fold) is owed = R2 completion [#165].
+- **R2 cover atom** @ `8ee1df617` (`SurvivorFanCover.lean`, branch -r2build) — survivor-entry/matched-pairing
+  fan up-to-null cover, clean-three, controller-re-verified [#173]; awaiting fidelity review [#174] → merge.
 
-**THE FINDING (R3 ideal-side de-risk, 2026-07-25, decorrelated pen+Codex; persisted
-`threads/reroute-R3-idealside/`) — HONEST RECALIBRATION, surfaced to operator + elder:**
-The per-step ideal MECHANISMS are all PROVEN green in-repo (composition both ways, region=univ under unit≡1,
-reads-only-kept — corank-agnostic, coupling-independent, via `Corank2AdmissibleLeaf222`). BUT route-P's unified
-fold AS-SCOPED CONSUMES the **general-d terminal single-chain principality = the tracked coupled MONUMENT**
-(⟨coreGen∘g⟩=⟨diag b⟩ two-sided every leaf; inferred-general, instance-verified (3,3,4)/(4,4,4)/(3,3,3,2,2) by
-Gröbner, no counterexample, NOT proven; worked.tex:651-664). The reroute LOCALIZES the ideal conjunct's
-dependence on the monument; it does NOT eliminate it. So the "cite-free lower" is cite-free MODULO this link.
+**STATE — DE-RISK ARC COMPLETE (2026-07-25): (A) fully-cite-free priced SOUND, NO MONUMENT. Now BUILDING.**
+Full de-risk history = compass F10 + journal; the settled result:
+- The "coupled monument" that walled this expedition is DISSOLVED. The lower bound needs the R>0 POINTWISE
+  SANDWICH (loss=(wy)²·R, kept-survivor R(0)=1) — NOT the two-sided principality (P's over-strong technique).
+  P-vs-V collapsed into one corrected R>0 route; V demoted; objects-only (C) OFF.
+- All residuals are named detail-at-scale build labour, decorrelated-verified + red-team-hardened + elder-
+  re-gated: ideal side clean one rung deeper (#167); tube B2 resolved via the survivor-entry / matched-pairing
+  fan, sandwich-only (#169 + refinement); escape cone B1 dissolved, self-similar Schur sub-loss at exactly
+  ½minAdm (#170); recursion-on-{R=0} WITNESS — terminates + every deeper ratio ≥ ½minAdm, value not undercut
+  (#172). Elder ruling: the WITNESS clears the stern-voice bar; (A) priced SOUND.
+- **The MAP is complete; the TERRITORY (the R2/R3/R4/R5/R6 build, ~10-16 tides) is the labour ahead — 'no
+  monument' ≠ 'nearly done.'** The one remaining general-L inference (kept-survivor k=1 + direct-sum
+  additivity + {R=0} termination) is INFERENCE-until-built, the same status as every other reroute piece.
 
-**PROBE RESULT [#167, VERIFIED-BUT-LOCALIZES — decorrelated exact-algebra + Gröbner + Codex, converged;
-`deeper-mixed-probe.md`]:** at a genuinely deeper-mixed instance (separated deep corank-2 + shallow,
-(3,3,3,2,2)-class) — (i) I_terminal=⟨b₁⟩ holds LOCALLY (Gröbner-exact); (ii) det Dg=±monomial EXACTLY;
-(iii) corner-join NOT localization-free — kept pivot quotient = a LOCAL UNIT ⟹ nbhd={unit≠0}⊊univ (BENIGN:
-`terminal_bezout` built for it, `hcover` already up-to-null, {unit=0} measure-zero). CORRECTION: nbhd=univ is
-single-peel-special; the (3,3,4) result STANDS, only the general-d extrapolation was over-clean.
-**THE RE-LOCATION:** the IDEAL conjunct is now CLEAN one rung deeper for BOTH arms (no denominator/cleared-
-coord wall); the true residual MOVED to R2 — a family-indexed, up-to-null `hcover` SUBORDINATE to the leaf
-unit-loci {u≠0} (the {unit≈0} tubes = the #145/#146 cover gap). Fatal 1/monomial structurally excluded
-(r≥1 ⟹ kept survivor ⟹ unit(0)≠0). Does NOT trigger objects-only; P closes up-to-null; V not necessary.
+**ELDER RANK (standing): (A) fully-cite-free LEADS (priced sound, no monument) > (B) P-with-the-narrow-cite
+(cite ONLY the one k=1 inference if the general-L induction bites — strictly narrower than objects-only) >
+(C) objects-only OFF.** Build toward (A); (B) = the graceful IN-BUILD fallback at every rung; A-vs-B is the
+operator's steer (does NOT gate the build). V-arm [#110/#111] parked.
 
-**THE FORK (the three arms line up on ONE axis — the reverse inclusion at the minimising branch; the ideal
-side is now CLEAN for all, the decision is about the R2 cover + whether to prove/cite the local principality):**
-- (V) `⟨b_{k₀}⟩ ⊆ ⟨(∏C)∘g⟩` one-sided + Object A. Elder: NOT the retired mirage in kind; exhibited LOCALLY
-  by the probe. Monument-free IFF it also AVOIDS the family-cover (open — likely shares it, rlct=min over
-  ALL divisors). ← best if it truly avoids the cover.
-- (P) local single-chain principality (VERIFIED one rung deeper, r≥1-robust) + the R2 family-cover. Fully
-  cite-free ⟹ prove the principality general (mountain); else cite the LOCAL single-chain (clean
-  `Chart.hideal_bwd`-field cite, strictly narrower than objects-only). ← middle; ideal-monument de-fanged.
-- (objects-only) cite `cited_aoyagi_lower_ax` (STOP-fallback, charter-faithful #94).
+**LIVE BUILD-GUARDS (tripwires — HONOR in the value-side build):**
+- **(G1) SUM-not-PRODUCT** — k=1 hinges on the residual being a SUM of squares with a kept survivor (join =
+  E²·unit); a product residual / no-survivor binding branch gives k≥2 and undercuts ½minAdm. Never read the
+  residual as a product (the refuted Codex #172 obstruction = the anti-pattern).
+- **(G2) direct-sum RLCT additivity must be VERIFIED WIREABLE** (rlct(f⊕g)=rlct(f)+rlct(g)) before the value
+  build relies on it — NOT in-repo (controller-checked); scout `rlct-additivity-scope` scoping Fubini-build
+  vs cite. A DISTINCT theorem from Object A.
 
-**TUBE-COVER PROBE [#169, WITNESS — detail-at-scale; `threads/reroute-R2-tubecover/tube-cover-probe.md`]:**
-objects-only (C) is OFF; destination = (A) fully-cite-free reachable / (B) P-with-small-cite. Decorrelated
-(exact-algebra + own Codex, converged; SAME (3,3,3,2,2) instance as the ideal probe ⟹ compose).
-- **Mis-scoping CORRECTION (load-bearing):** the lower bound needs the FULL residual sum-of-squares R>0
-  (R(0)=1, {R=0} CODIM-4), NOT the pivot quotient 1+pd. The {1+pd≈0} tube was a two-sided-PRINCIPALITY
-  proof-technique artifact, not a lower-bound obstacle. R>0 on a whole ball radius<1; the tube only appears
-  at box scale ≥1, where the SURVIVOR-ENTRY fan covers it 100% (common-uncovered={X=0} codim≥2, measure 0).
-- **R2 SPEC CORRECTION:** the fan must fan over the SURVIVOR ENTRY (each residual-ideal generator), NOT the
-  radial pivot alone (radial-pivot-only covers 0%). Same lesson as sector-count's route (a).
-- **OPEN CAVEAT (B1, not buried):** #145's ~2% = (B2) the tube [RESOLVED here] + (B1) the sector-count
-  ESCAPE CONE {max_W > C·max_V} [SEPARATE, still priced by sector-count, NOT closed]. Routed to the elder.
-
-**ELDER TUBE-COVER ADJUDICATION [DONE]: the R>0 correction is SOUND — P-vs-V COLLAPSES, (A) LEADS.** loss =
-(wy)²·R, R sum-of-squares with R(0)=1; the lower bound needs loss ≍ (wy)² where R>0 (pointwise sandwich, MORE
-elementary than the two-sided principality) ⟹ **the lower bound never needed P's two-sided principality**; it
-needs V's from-below content made precise. C OFF. **(A) fully-cite-free now LEADS** — reduced to ~ONE
-arbitrary-depth inference: **the recursion on {R=0} (codim 4) terminating with no new divisor ratio <
-½minAdm** (the two-sided-principality inference is DROPPED; the tube-cover is a verified-exact fan). Ranking:
-(A) > (B) P-with-small-cite (cite the recursion-ratio only if its general-L proof is a mountain) > (C) OFF.
-STERN FLAGS: (1) the monument-residual MOVED to the recursion-on-{R=0} — must be PERFORMED general-L, not
-assumed; (2) survivor-entry fan is a HARD spec (radial-pivot-only covers 0%); (3) R(0)=1 general-d = the
-kept-rank-survivor structure (r≥1), a named load-bearing inference.
-
-**BUILD PHASE STARTED (elder: "the build toward A can start now, not gated on the A/B call"; default
-proceed-on-silence = build-toward-A, fall-back-to-B-if-it-bites). Build + de-risk IN PARALLEL:**
-1. **R2 build brick** → reroute-R2build [#173, lean-formaliser, own worktree off the reroute trunk]:
-   the SURVIVOR-ENTRY-fan per-node up-to-null cover atom (uncovered ⊆ {X=0} codim≥2; verified-exact by the
-   tube probe) + the kept-survivor normal form. The R2 cover atom is independent of the two de-risks below.
-2. **B1 escape-cone probe [#170] DONE = WITNESS, B1 DISSOLVES** (detail-at-scale). The escape cone meets
-   {loss=0} but its local rlct = ½minAdm EXACTLY (self-similar Schur sub-loss, never below); bound =
-   min(covered,escape) survives; non-coverage = proof-completeness defect, not a counterexample. FIX =
-   UNIFIED with B2: a permutation-closed atlas (shear fanned WITH the pivot, applied outermost). #145's ~2%
-   FULLY reconciled at depth. Refinement in flight (does the escape charts need only the R>0 sandwich, same
-   as B2, not the ideal identity — simplifies the spec). NO MONUMENT.
-3. **Recursion-on-{R=0} [#172, rzero-probe] DONE = WITNESS** — the last kill-condition did NOT bite. The
-   {R=0} recursion TERMINATES (Aoyagi's depth-recursion, depth −1/peel, bottoms at L=1 Morse) + every deeper
-   divisor ratio ≥ ½minAdm ⟹ rlct = ½C NOT undercut. Mechanism: loss = sum-of-squares, kept-survivor
-   U(0)=1 ⟹ k=1 for the binding divisor + direct-sum additivity ⟹ rlct = ½Mval(branch) ≥ ½minAdm.
-   **BUILD-GUARD (banked):** k=1 hinges on the SUM/kept-survivor structure — the value-build must NEVER read
-   the residual as a PRODUCT (SUM→k=1, PRODUCT→k=2). General-L k=1 = named build labour (instance-verified +
-   certified-(3,3,4) + additive-identity, not closed general-L; worked.tex:717-720).
-
-**LANDMARK: THE DESTINATION IS FULLY PRICED.** No monument anywhere — ideal side clean, tube (B2) resolved,
-escape cone (B1) dissolved, recursion-on-{R=0} WITNESS. (A) fully-cite-free is SOUND; the whole remaining task
-is the detail-at-scale BUILD. Elder re-convened for the decorrelated stern-voice read (does WITNESS clear the
-bar). Sole active worker = the R2 build (#173); the value-completion rung follows (carry the SUM-not-PRODUCT
-guard). A-vs-B still the operator's steer (does not gate the build).
-4. **Elder** F10 REVISED + committed (R>0 correction, P-vs-V collapse, residual=recursion-on-{R=0}, B1 open,
-   (A) leads). Re-convenes at B1 + recursion results + operator call. Rank: (A) > (B) in-build fallback > (C off).
-5. **Operator surfaced** — (A) leads, C off, P-vs-V collapsed, ONE build-shaped inductive inference remains,
-   BUILD started toward A; A-vs-B is the operator's steer but does NOT gate the build; non-blocking; the one
-   steer that changes the default = "strictly-cite-free-or-nothing" (→ A-or-bust).
-
-**HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
+**BUILDING NOW:** R2 cover atom LANDED — `SurvivorFanCover.lean` (branch `expedition/aoyagi-r2build` @
+`8ee1df617`, clean-three, controller-re-verified; fan by the survivor-entry / matched-pairing argmax; honest
+tracked-open hnull [backed by #172] / hchart [R3 wire]) [#173]. GATE before merge → reroute trunk: fidelity
+review [#174, r2build-review] + my re-verify (PASSED). NEXT rungs: wire the fold (per-node atoms over
+buildTree) + the value side (carry G1/G2); the R3 unified fold = the biggest rung (elder decorrelated read at
+landing). Analysis seats (reroute-R3derisk, tubecover-probe, rzero-probe, elder) rest; re-convene on triggers.
 
 **STANDING GATES / DISCIPLINE:**
 - **Operator-gated (wait-for-explicit-go):** PR **merge**, `dev→main` promotion, any change to the destination
