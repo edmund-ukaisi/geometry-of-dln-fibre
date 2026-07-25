@@ -22881,3 +22881,27 @@ PRE-rebase self-contained ChartJac (13c6241d8) — superseded by the rebase to t
 @ c712f8fef resolution (KEEP BOTH) is correct; note obsolete, nothing outstanding. 5a (1301fbaee) confirmed a
 direct child of c712f8fef; decomp-5b independently confirmed the jacWrap/bexpWrap interface matches. 5d GO is
 LIVE (@ 3a2ea913). The (3,3,4) Resolution: 4/5 rungs done; 5d (assembly, the last) in flight.
+
+**5a 3-CHANNEL PASS + gate2's LOAD-BEARING 5d flag (uniform-hbind) (2026-07-25).** gate2's decorrelated 5a
+fidelity read = all 3 Qs PASS (→ 5a on 3 channels: routeP-p1 build + my kernel NO-sorryAx + gate2 fidelity):
+(a) atlasRealizesExponents_334 = FAITHFUL both-clause discharge (clause (i) ∀chart ∀binding-axis jac+1∈TE +
+minAdm_le_terminalExponents ⇒ every chart rlct ≥ ½minAdm = THE singular-locus lower bound; clause (ii) E-axis
+8=minAdm attainment ⇒ = ½minAdm=4) — the REAL RecursionAdapter predicate, not weakened. (b) 9∈TE sorry-free
+WITHOUT R7 (realize_aux on (2,0), gate2's independent battery: Adm ![3,3,4]={(0,0):9,(1,0):8,(2,0):9,(3,0):12}
+all clearable, minAdm=8, (2,0)∈Adm clearable Mval=9). (c) chart-data hyps match 5b/part-C.
+
+gate2's SHARPEST 5d FLAG (load-bearing, relayed to routeP-p1 — where the lower bound could LEAK):
+atlasRealizesExponents_334's hbind fixes ONE axis pair {aE,aC} UNIFORMLY across ALL charts; the REAL seam
+allows PER-CHART binding axes. If 5d's (3,3,4) resolution is the FULL FAN (5c is a fan of coord-permuted
+charts), binding divisors sit on DIFFERENT coords per chart → uniform-hbind FALSE. Resolution: (i) present as
+SINGLE chart + orbit-COVER (uniform holds, atlasRealizesExponents_334 as-is — PREFERRED if clean), OR (ii)
+the PER-CHART form (each chart's own binding axes carry jac+1 ∈ {8,9}). KEY: the VALUES {8,9}⊆TE are
+FAN-INVARIANT (a coord-perm/isometry preserves jac VALUES, only permutes axes → every fan chart binds at
+{8,9} ≥ minAdm=8, NO leak); gate2 confirmed the value content (mem_terminalExponents_334_{eight,nine} +
+clearableAdm_mval_...) is fan-agnostic → the per-chart generalization is clean. routeP-p1 to PIN which
+presentation 5d uses + whether the per-chart form needs a small lemma. STOP+report if not clean.
+
+TWO general-d-gate caveats (gate2, not 5a defects): (1) the seam is VALUE-SUPPORT matching — TIGHT here
+because bexp≡1 on binding axes (jac+1 = M-value); general-d with bexp>1 needs jac+1 ≥ minAdm·bexp (STRONGER
+than ∈TE) — a note on the pre-existing seam, for the general-d gate. (2) realize_aux needs hMpos (positive
+widths; supplied; false at zero width ![2,2,0]). Both recorded for the general-d gate. 5d in flight.
