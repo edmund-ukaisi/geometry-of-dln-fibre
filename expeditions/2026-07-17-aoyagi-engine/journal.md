@@ -22812,3 +22812,29 @@ DONE + the crux/hideal DONE. REMAINING: 5a (realization: AtlasRealizesExponents 
 {E:8,c11:9} ∈ tree.terminalExponents + hits minAdm=qipMin; α non-binding [not in bexp support]) + 5d
 (assembly: the Chart record + Resolution + eWrap MeasurePreserving + eWrap→canonFlatten transport). 5a
 GO'd to routeP-p1 (holds the jac/exceptional/bexp context). Then the full (3,3,4) Resolution → the general-d gate.
+
+**5b RE-INTEGRATED onto the TWO-MODULE authoritative version + gate2 fidelity PASS = 4-channel (2026-07-25).**
+A reconciliation divergence surfaced + resolved: my 6ebe99f79 executed routeP-p1's supervisor "subsumes,
+drop GWrapDecomp" call (wiring decomp-5b's SELF-CONTAINED ChartJac @ 13c6241d8), while decomp-5b — per MY
+earlier redirect ("rebase onto STAGE 1, don't re-do it") — REBASED + refactored to the TWO-MODULE form
+(@ a38516e0f: GWrapDecomp STAGE 1 [the atoms + gFaithful_decomp] + ChartJac STAGE 2/3 imports it; deleted
+its independent-atom duplicate). My redirect + routeP-p1's call were CONTRADICTORY (I created the tangle).
+RESOLVED in favor of the TWO-MODULE (a38516e0f): it's the builder's force-pushed AUTHORITATIVE latest,
+cleaner (STAGE 1 reusable for general-d), and matches the statement card. RE-INTEGRATED @ c712f8fef: restored
+GWrapDecomp + swapped ChartJac to a38516e0f + explicit two-module aggregator wire. FULL DLNFibre green (9027
+jobs, name-clash guard); abs_jacDet_gWrap/gWrap_hjac/injOn_gWrap/gFaithful_decomp force-elab #print axioms
+clean-three, NO sorryAx. (6ebe99f79's self-contained ChartJac superseded — decomp-5b's deprecated 13c6241d8.)
+
+gate2's 5b DECORRELATED FIDELITY read = clean PASS on all 5 checks (its channel = math). KEY (shearH faithful,
+NOT a proxy) DECISIVELY PASS: machine-verified the module's shearPhi EXACTLY = the H displacement gate2
+independently derived in #138 (all 21 coords, sp.expand diff 0) — the genuine 8-term faithful shear (Schur
+slots 4-7 = 1 product, recoord slots 8-11 = 2 products = C=2, write {4-11}⟂read {0-3,12-19}, degree exactly
+2), machine-identical to the 5c atom's faithfulShear (so 5c/#138/5b are ONE coherent shear across all three
+rungs). jacDet_shearH=1 genuine for the NONLINEAR shear (write⟂read ⇒ I+Dφ strictly block-triangular ⇒
+det=1). gFaithful_decomp funext = the #138 identity (GATHER permP, blow-up-inner→perm→shear-outer, against
+the REAL banked gFaithful). abs_jacDet_gWrap, hideal-unchanged, excepWrap — all PASS. No over-claim.
+
+NET: RUNG 5b DONE — 4-CHANNEL confirmed (decomp-5b build/clean-three + routeP-p1 supervisor fidelity + gate2
+decorrelated fidelity PASS + my kernel calibration). Fork #138 (B) Lean-confirmed end-to-end. The (3,3,4)
+Resolution: rung 3 ✓ + 5c ✓ + 5b ✓; REMAINING = 5a (realization, in progress, routeP-p1) + 5d (assembly)
+→ full (3,3,4) Resolution → the general-d gate.
