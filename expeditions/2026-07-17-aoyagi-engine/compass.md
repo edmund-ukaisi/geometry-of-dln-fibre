@@ -139,11 +139,14 @@ reverse (per-divisor no-over-vanishing `ord_v(I) ≤ (h_v+1)/min`). The only des
 `AtlasRealizesExponents`; the value engine rides the two-sided `Chart.hideal` (`IdealInvariance:447`), so the
 build INHABITS the weak reverse (= terminal single-monomial×unit via the retained pivot's leading 1; pnp
 radial, coranks 2,3) — it does not dodge it. Route P is faithful (inductive normal crossing flattened as a
-flat Lean `Resolution`) and subsumes V-upper. **TWO INDEPENDENT residuals:** (1) COVER (domain) — GREEN
-route-a; (2) REALIZATION / no-over-vanishing (F-order = `AtlasRealizesExponents`) — DISTINCT (`⟨δx,δy⟩`
-witness), un-probed at deep-mixed. V-lower-lighter = the F1-mirage 3rd cycle (retired, §3). TWO DE-RISKS: (a)
-corank-2 two-sided END-TO-END gate; (b) deep-mixed realization probe ((3,3,3,2,2)/L=4, PAPER-FIRST at
-worked.tex:663). RED on either → objects-only close. Witnesses: `threads/pnp-coupled/adjudication.md` (S1-S4 +
+flat Lean `Resolution`) and subsumes V-upper. **TWO residuals:** (1) the (S,J) TWO-SIDED MAINTENANCE (L-A/L-B) — INCLUDES the
+realization / no-over-vanishing as its reverse half (`hideal_bwd`=`AtlasRealizesExponents`; NOT a separate
+F-order axis); (2) COVER (domain) — GREEN route-a. Realization ⊂ maintenance, distinct from the cover
+(`⟨δx,δy⟩` witness). Realization PAPER-RESOLVED general-L (Aoyagi's method + T-F drop; :663 = expedition's
+thread-28 caveat, not hers), #124 instance-GREEN at (3,3,3,2,2)/L=4 (one instance, not general-proof);
+general-L Lean reproduction = build labour. V-lower-lighter = the F1-mirage 3rd cycle (retired, §3).
+DE-RISKS: (a) [PIVOTAL, LIVE] the corank-2 two-sided END-TO-END gate; (b) [DISCHARGED] deep-mixed
+monument-risk (paper-first + #124-GREEN). RED on (a) or a general-L build stall → objects-only close. Witnesses: `threads/pnp-coupled/adjudication.md` (S1-S4 +
 radial + weak-reverse refinement); `next-build-render.md §9` (hcover OBL-1/2 + route-a);
 `ideal-route-full-render.md` (L-A/L-B/L-C + Phase-3a); `IdealInvariance:447`, `ProductResolution:114-116`,
 `LearningCoefficient:296`, `RecursionAdapter` (`AtlasRealizesExponents`).
@@ -173,6 +176,11 @@ radial + weak-reverse refinement); `next-build-render.md §9` (hcover OBL-1/2 + 
   `g-monument-mval-instances.py`, `verify-case2-rawwidth-defect.md`,
   `threads/31-monument-construction/certificate.md` §d. Image residual CLOSED (elder pass
   2026-07-21): p.20 confirmed — raw-width head-reset printed, Case-1(2) inherits (p.17); worked.tex (T-E).
+- **worked.tex:663 "deeper-mixed open end" MIS-ATTRIBUTED — CORRECTED (paper-first, #124, 2026-07-25).** It
+  is the EXPEDITION's own thread-28 caveat, NOT an Aoyagi hedge. Her (S,J) two-sided maintenance (Cases 1&2)
+  claims general-L (abstract); closes general WITH the T-F totality drop (this ledger, above). So the coupled
+  realization is reproduce-and-verify of her method, not open-in-source. #124 instance-verified GREEN at
+  (3,3,3,2,2)/L=4.
 - **Realization "profile-set ⊇ Adm" (Engine-tree artifact; surviving kernel banked).** The paper's
   implicit stratum-completeness (the resolution realises every admissible profile) is FALSE for the
   built tree — but this was a property of the Engine's leaf-profile-set, which does NOT exist in the

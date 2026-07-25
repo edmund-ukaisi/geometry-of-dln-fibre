@@ -52,18 +52,24 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
     Spine (L-A block-elim any corank / L-B (S,J)-maintenance, b-chain absorbs the reverse cross-terms / L-C
     terminal) rev-render+Codex verified sound+general.
   - The value engine rides the TWO-SIDED form (`IdealInvariance:447`; `Resolution` mandates
-    `hideal_fwd`/`hideal_bwd`, `ProductResolution:114-116`). Route P subsumes V-upper (P's terminal identity
-    on the minimiser). **Route P has TWO INDEPENDENT residuals:** (1) the COVER (domain coverage) — GREEN
-    via route-a (hcover + pnp converge); (2) the REALIZATION / no-over-vanishing (the F-order half of
-    `hideal_bwd` = `AtlasRealizesExponents`; the weak reverse) — DISTINCT from the cover (the `⟨δx,δy⟩`
-    witness: chart present, coverage fine, F over-vanishes), UN-PROBED at deep-mixed (worked.tex:663), the
-    hypothesis "detail-at-scale (pivot order-accumulation, terminates at a retained-rank pivot)" under test.
-  - TWO DE-RISKS in parallel (render→built; render-bounded ≠ built): (a) the corank-2 TWO-SIDED END-TO-END
-    first-brick gate (`hideal_fwd`+`hideal_bwd` dom-wide + realization at (3,3,4) + full-fan cover atom,
-    green-BOTH → START the full `buildTree` build); (b) the deep-mixed REALIZATION probe (F-order side,
-    (3,3,3,2,2)/L=4, PAPER-FIRST at worked.tex:663 — the parallel kill-check). RED-flip on EITHER →
-    OBJECTS-ONLY close. Residual to `exists_coreResolution:311` = the two-sided `hideal` reproduction
-    (L-A/L-B/L-C over `buildTree`) + full-fan cover + realization. NOT OPTIONAL.
+    `hideal_fwd`/`hideal_bwd`, `ProductResolution:114-116`). Route P subsumes V-upper. **Route P has TWO
+    residuals:** (1) the (S,J) TWO-SIDED MAINTENANCE (L-A/L-B → terminal normal crossing) — INCLUDES the
+    realization / no-over-vanishing as its REVERSE half (`hideal_bwd` = `AtlasRealizesExponents`; NOT a
+    separate F-order axis); (2) the COVER (domain coverage) — GREEN via route-a (hcover + pnp converge).
+    Realization ⊂ maintenance, DISTINCT from the cover (the `⟨δx,δy⟩` witness: chart present, coverage fine,
+    F over-vanishes). The realization is PAPER-RESOLVED general-L (Aoyagi's own (S,J) two-sided maintenance,
+    Cases 1&2, per her abstract — WITH the expedition's T-F totality drop; worked.tex:663's "deeper-mixed
+    open end" is the EXPEDITION's thread-28 caveat, NOT Aoyagi's): detail-at-scale REPRODUCE-AND-VERIFY,
+    #124 instance-verified GREEN at (3,3,3,2,2)/L=4 (ONE instance — confidence-up, NOT general-proof). The
+    general-L Lean reproduction is the build labour (paper-resolved ≠ built).
+  - DE-RISKS: (a) [PIVOTAL, LIVE] the corank-2 TWO-SIDED END-TO-END first-brick gate (`hideal_fwd`+
+    `hideal_bwd` dom-wide + realization at (3,3,4) + full-fan cover atom, green-BOTH → START the full
+    `buildTree` build); (b) [DISCHARGED] the deep-mixed realization monument-risk — paper-first
+    (worked.tex:663 = expedition caveat, not Aoyagi's) + #124 instance-GREEN; the general-L reproduction
+    folds into the build labour. RED-flip on the corank-2 gate (a), or a general-L reproduction stall in the
+    build, → OBJECTS-ONLY close. Residual to `exists_coreResolution:311` = the two-sided `hideal`
+    reproduction (L-A/L-B/L-C over `buildTree`, incl. the reverse/realization) + full-fan cover. NOT
+    OPTIONAL; paper-resolved ≠ built.
 - **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: LANDED sorry-free (wave 1) —
   the S2 boxed rule is a THEOREM under Aoyagi's own divisibility chain (`DivChain` guard excludes
   the coupled counterexample; `Measurable unit` delta), `Core.Aoyagi.MonomialRLCT`. The coupled
