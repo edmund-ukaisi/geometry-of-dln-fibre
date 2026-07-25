@@ -40,25 +40,32 @@ pivot gives `R(0) = 0`, fails the sandwich `sumSq_residual`, so it fails `hchart
 member. Being abstract over `ι`, the atom is PERMUTATION-CLOSED: it extends unchanged to the
 shear-outermost reordering (the escape cone B1, `#170`) — one fan, no separate construction. The
 per-chart obligation is only the `R > 0` sandwich, NOT an ideal monomialisation. With `gen` the
-matched-pairing monomials the hole `commonZero gen ⊆ {R=0}` (`commonZero_subset_residualZero`), the
-deep stratum the recursion resolves (`#172`).
+matched-pairing monomials the hole `commonZero gen ⊆ {R=0}` (`commonZero_subset_residualZero`);
+`{R=0}` is codim ≥ 2, so this hole is measure-zero (cheap — see below).
 
-## The null input (`volume (commonZero gen) = 0`) — TRACKED-OPEN at general `L`
-The measure conclusions take the hole's nullity as an explicit hypothesis. Probe1 computed the
-hole to be `{X=0}`, codim ≥ 2 (generic `δ`: codim 4) EXACTLY at `(3,3,3,2,2)`; the general-`L`
-discharge (the recursion on `{R=0}` with the `< ½·minAdm` ratio bound) is a SEPARATE rung (scoped
-OUT of this brick, de-risked in parallel — `#172`). `volume_commonZero_eq_zero_of_single` reduces
-the input to its weakest form (ONE generator's zero-set is null — codim ≥ 1 already suffices for
-nullity, weaker than the source's codim ≥ 2). The witnesses discharge it concretely
-(`Measure.pi_hyperplane`).
+## The null input (`volume (commonZero gen) = 0`) — CHEAP codim-nullity
+The measure conclusions take the hole's nullity as an explicit hypothesis, and it is ELEMENTARY: the
+hole `{X=0}` is the zero-set of the generators, so if even ONE generator is a non-vanishing
+polynomial its zero-set is null (codim ≥ 1) and the hole `⊆` it is null —
+`volume_commonZero_eq_zero_of_single`. Probe1 computed the hole to be `{X=0}`, codim ≥ 2 (generic
+`δ`: codim 4) at `(3,3,3,2,2)`; codim ≥ 1 already suffices for nullity. The witnesses discharge it
+concretely (`Measure.pi_hyperplane`).
 
-## Scope (honest)
+This is NOT the `#172` obligation. `#172` is a DIFFERENT question on the SAME set — the
+integrability / divisor-ratio behaviour as points APPROACH `{R=0}` — owned by the VALUE rung (the
+RLCT lower bound), not this measure-bookkeeping atom. Nullity here is a set-measure fact; the
+recursion there is an analysis fact.
+
+## Scope (honest) — this is the MEASURE-BOOKKEEPING layer, NOT the RLCT lower bound
+This atom is the up-to-null COVER: the box is covered by the fan except for a measure-zero hole. It
+says NOTHING about blow-up behaviour as `R → 0`; the RLCT lower bound `rlct ≥ ½·minAdm` still needs
+the per-chart integrability + the recursion (the VALUE rung, `#172`) built ON TOP of this cover.
 - IN: the survivor-entry-fan per-node up-to-null cover atom (this file) + the sum-of-squares
   residual normal-form structural lemma (`sumSq_residual`).
-- OUT (do NOT block on; TRACKED-OPEN where a hypothesis meets them): the general-`L`
-  `{X=0}`-nullity discharge (recursion, `#172`); the sector-count escape cone (B1, `#170`); the
-  per-chart cover certificate `hchart` (each atlas chart covers its survivor region — discharged at
-  the fold/wire from the block-blow-up atoms + the clearing, R3). `hchart` is a hypothesis here.
+- OUT (do NOT block on): the per-chart cover certificate `hchart` (each atlas chart covers its
+  survivor region — discharged at the fold/wire from the block-blow-up atoms + the clearing, R3, an
+  explicit hypothesis here); the RLCT-value obligations (per-chart integrability + the `#172`
+  approach-recursion); the sector-count escape cone (B1, `#170`).
 
 ## Main results
 - `commonZero`, `survivorRegion` — the hole `{X=0}` and the per-entry survivor region.
@@ -142,11 +149,12 @@ theorem volume_commonZero_eq_zero_of_single (gen : ι → (Fin N → ℝ) → �
     volume (commonZero gen) = 0 :=
   measure_mono_null (fun _ hx => hx a0) h
 
-/-- **The hole feeds the `{R=0}` recursion locus.** When each residual entry `entry e` vanishes
-wherever ALL generators vanish (`hentry` — automatic when the entries are sums of the generator
-monomials, the matched-pairing structure), the hole is contained in the residual's zero-set
-`{x | ∑ e, (entry e x)² = 0} = {R=0}`. So the survivor-entry fan's uncovered set is ⊆ `{R=0}`, the
-deep stratum handled by the recursion (`#172`) — not a separate hole. -/
+/-- **The hole is contained in the residual's zero-set `{R=0}`.** When each residual entry `entry e`
+vanishes wherever ALL generators vanish (`hentry` — automatic when the entries are sums of the
+generator monomials, the matched-pairing structure), the hole is contained in
+`{x | ∑ e, (entry e x)² = 0} = {R=0}`. Since `{R=0}` is codim ≥ 2, this is an alternative CHEAP
+route to the hole's nullity (`volume_commonZero_eq_zero_of_residualNull`) — a set-measure fact,
+distinct from the `#172` approach-integrability the VALUE rung owns. -/
 theorem commonZero_subset_residualZero {κ : Type*} [Fintype κ]
     (gen : ι → E → ℝ) (entry : κ → E → ℝ)
     (hentry : ∀ e x, (∀ a, gen a x = 0) → entry e x = 0) :
@@ -156,9 +164,11 @@ theorem commonZero_subset_residualZero {κ : Type*} [Fintype κ]
   refine Finset.sum_eq_zero (fun e _ => ?_)
   rw [hentry e x hx]; ring
 
-/-- Nullity of the hole from the residual's `{R=0}` nullity (the `#172` deep-stratum input): if the
-matched-pairing entries vanish on the common-zero (`hentry`) and `{R=0}` is null, the hole is null —
-wiring the atom's `hnull` to the recursion locus, not the smaller `{all monomials = 0}`. -/
+/-- Nullity of the hole from the residual's `{R=0}` nullity: if the matched-pairing entries vanish
+on the common-zero (`hentry`) and `{R=0}` is null, the hole is null. An alternative to
+`volume_commonZero_eq_zero_of_single` phrased via the residual `R`; both are CHEAP codim-nullity —
+NOT the `#172` approach-integrability obligation (the value rung's, a different fact on the same
+set). -/
 theorem volume_commonZero_eq_zero_of_residualNull {κ : Type*} [Fintype κ]
     (gen : ι → (Fin N → ℝ) → ℝ) (entry : κ → (Fin N → ℝ) → ℝ)
     (hentry : ∀ e x, (∀ a, gen a x = 0) → entry e x = 0)
@@ -196,9 +206,10 @@ theorem volume_box_diff_charts_eq_zero [Finite ι] [Nonempty ι] {R : ℝ} (hR :
 
 /-- **The residual `R = ∑ (f i)²` structural input** (probe: `loss = (wy)² · R`, `R(0) = 1`). With a
 distinguished kept "1"-pivot `f i0` (value `1` at the origin `o`) and every other summand vanishing
-at `o`: `R ≥ 0` everywhere, `R(o) = 1`, and `R ≥ (kept pivot)²` everywhere. The last two make `R` a
-unit near the origin — the lower-bound sandwich's structural input, so `loss = monomial² · R` reads
-as the monomial where the monomial vanishes. -/
+at `o`: `R ≥ 0` everywhere, `R(o) = 1`, and `R ≥ (kept pivot)²` everywhere. These are the
+sum-of-squares facts the lower-bound sandwich builds on. NOTE this lemma proves only the POINTWISE
+bounds + the value at `o`; turning `R(o) = 1` into a NEIGHBOURHOOD lower bound (`R` a unit near `o`)
+needs continuity of `f i0`, which is NOT established here. -/
 theorem sumSq_residual {ι' : Type*} [Fintype ι'] (f : ι' → E → ℝ) (i0 : ι') (o : E)
     (h1 : f i0 o = 1) (h0 : ∀ i, i ≠ i0 → f i o = 0) :
     (∀ x, 0 ≤ ∑ i, (f i x) ^ 2) ∧
