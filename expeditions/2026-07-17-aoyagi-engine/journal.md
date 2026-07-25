@@ -22384,3 +22384,18 @@ working on incoming evidence, not thrash. Each flip had a decisive new reading (
 bounded-estimate + condition-4 → routeP-p1's incantation-solve). The controller move each time: resolve the
 load-bearing fact from ground truth before committing (condition-4 sympy; the #print-axioms calibration;
 the builder's own build-state). Held the DE-RISK-green banking + the general-d GATE steady throughout.
+
+**DE-RISK doubly-confirmed + team converged (2026-07-25).** gate2's DECORRELATED 5-point fidelity review
+of the crux/chain + the two cancellation-free certs = clean PASS (read origin/routeP af25db69b
+independently), concurring with my force-elaborated clean-three. So the phase-1 DE-RISK is now confirmed on
+TWO independent channels: (i) controller `#print axioms` force-elaborated (olean-deleted); (ii) gate2's
+decorrelated fidelity audit. gate2's specific confirmations: faithful multi-term no-proxy STRONG (the
+Δ01∘g→u0u1u5 cancellation-contamination caught + demoted to necessary-not-sufficient, replaced by the two
+certs isolating coupling/recoord BEFORE Schur cancellation); crux E-factorisation on the REAL coupled
+peeled (pivot quotient =1 ⟹ peeled₀₀∘g = E exactly); reverse cofactor literally 1 (not 1/unit); #124
+tripwire clean; both directions chained; gFaithful fixes coord 20. Team alignment: elder RATIFIED
+phase-1-GREEN=DE-RISK (processing my general-d gate convene next); gate2 ACCEPTED the general-d resolution
+(owned its mis-applied "fill the layer" — the general mult-flatten LEMMA is the right layer, not a (3,3,4)
+grind) + will decorrelated-review the wrap on land (bar ratified: entry-relation vs sympy, ⟨c11·E⟩
+double-count accounted, GENUINE blockBlowupMap, c11-ratio ≥ 4 RED-FLAG STOP, τ a genuine permutation [no
+dropped generator], both directions, clean-three). Holding for routeP-p1's wrap-ready ping.
