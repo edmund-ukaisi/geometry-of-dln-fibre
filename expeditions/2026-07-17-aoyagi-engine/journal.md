@@ -22171,3 +22171,21 @@ verification, same contents). NOT CONFIRMED: the FULL aggregator green-gate (the
 check) — timed out incomplete. It RIDES routeP-p1's reconciled full build off c4e836075 (the definitive
 gate), which the controller re-derives (#print axioms, fresh build) at phase-1 report. Do NOT read
 c4e836075 as "full-green" until routeP-p1's build confirms.
+
+**SCOPE CALL (2026-07-25): phase-1 GREEN = the coreGen-level (3,3,4) Chart.hideal (THROUGH coreGen), the
+coreGen-wrap INCLUDED, NOT deferred.** routeP-p1 (via gate2 coordinator) surfaced sharply: `coreGen∘g` ≠
+`flat(Pmat)∘g` literally — Pmat has the pivot `C1[0,0]≡1` (strict transform after normalization, 20 params)
+vs coreGen's 21; the pivot `c11` VANISHES at the deepest point (NOT a unit to absorb), so a DOUBLE-COUNT
+risk (the coreGen-level dominant monomial may pick up the pivot factor, differing from the scaffold's
+`bexpE`). CONTROLLER CALL: phase-1 GREEN must be the coreGen-level hideal (the elder's END-TO-END criterion
+was "through coreGen"; the actual `Chart` mandates hideal at `coreGen∘g`; the double-count is exactly the
+green-at-Pmat-fails-at-coreGen-consumer pattern, charter §3) — so the coreGen-wrap (part-C) is INSIDE phase-1,
+not a deferred follow-on. WORK ORDER fine: the crux (flat(Pmat)-level coupled monomialisation) is the hard
+part, routeP-p1 grinds it first; the coreGen-wrap lands last. DE-RISK NOW (before the crux commits to a target
+bexp): gate2 runs the sympy bexp-bookkeeping check at the COREGEN level (`coreGen (3,3,4) e ∘ gFaithful` —
+dominant = bexpE single-E, or pivot double-count?) → confirm/adjust the crux's target bexp cheaply. Fidelity
+review positive (faithful gFaithful w/ live shear coords, coupled Δ∘g, faithfulness-witness lemma).
+
+**Status.** routeP-p1 grinding the crux; gate2 running the coreGen-level sympy bexp check + coordinating.
+Holding for: the sympy bexp verdict (confirm/adjust the crux target) + the crux discharge. phase-1 GREEN =
+coreGen-level hideal → elder general-d gate; wall → objects-only.
