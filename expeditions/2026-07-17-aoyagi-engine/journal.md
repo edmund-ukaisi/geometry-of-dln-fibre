@@ -22436,3 +22436,30 @@ ACTIONS: (1) FRONT-LOAD the coupled hcover atom (corank-2 faithful, route-a full
 go/no-go, decorrelated, STOP-on-math-gap → escalate to pen-and-paper. (2) re-print #print axioms on the
 next green build (CoreGenWrap downstream). (3) fold-cluster prune = a cartographer close-phase task.
 The DE-RISK (crux + flat hideal) remains a real + doubly-confirmed win — but it is ONE rung of nine.
+
+**RUNG 3 (coreGen-wrap) CALIBRATED + WIRED + BANKED (2026-07-25).** routeP-p1 delivered the (3,3,4)
+coreGen-level two-sided hideal @ 34c23c8bb (+docstring de-stale 1d940531d). Controller re-derived on ground
+truth (calibrate-sensors): wired Corank2CoreGenWrap into the aggregator (single-writer, mine) @ d95fcc540
+(pushed); FULL `scripts/lb DLNFibre` GREEN (9025 jobs — name-clash guard passed); force-elaborated
+(olean-deleted) `#print axioms`: hideal_coreGen_fwd / hideal_coreGen_bwd = [propext, Classical.choice,
+Quot.sound] clean-three; aoyagi_learning_coefficient_via_engine = [propext, sorryAx, Classical.choice,
+Quot.sound] with NO cited_ axiom — the navigator's caveat #6 discharged (the cone is UNCHANGED, single
+sorryAx = :311, still cite-free after CoreGenWrap landed). The content: coreGen∘gWrap = c11·(Pmat∘gFaithful)
+(pivot block-center blow-up factors c11 OUT, multiply not divide), then reuse the flat-level hideal_faithful
+scaled by c11 + reindexed by the transpose τ; ⟨c11·E⟩ = bexpWrap [coord 0:1, coord 20:1]; rlct unchanged
+(c11-ratio 4.5 > 4, non-binding).
+
+HONEST FRAMING (holding the recalibration): this is RUNG 3 of 9 = the DE-RISK complete (crux + fidelity
+repair + coreGen-wrap), NOT phase-1 done, NOT general-d-gate-ready. A full (3,3,4) Resolution still needs
+5a (realization), 5b (L6: hjac/jac/analyticity/injectivity), 5c (L7: coupled hcover — the HIGHEST un-probed
+risk, front-loaded via pnp-hcover), 5d (assembly) — all UN-STARTED. The general-d gate bar = the FULL (3,3,4)
+Resolution (charter DE-RISK(a)); NOT convening it on rung 3 (corrected routeP-p1's premature gate-convene
+ask). GUARD-B: (3,3,4) landed ≠ general-d authorized.
+
+TEMPLATING NOTE banked (routeP-p1, general-d-reusable — the worked base case's value): (a) mult-flatten =
+the paired multPrefix RFL form + congrFun/congr+mul_one to peel the trailing ·1, abbrev dim vector (gate2's
+mitigation made concrete); (b) blockBlowupMap composition coreGen∘blowup = c_pivot·Pmat (jacDet O9 landed),
+e = custom transpose flatten (C1=A₀ᵀ/C2=A₁ᵀ layout-matching the cc-layout, pivot=spare slot), homeomorph
+inverses fin_cases<;>rfl, continuity via continuous_tupleEntry (fun_prop can't do Tuple→Matrix→ℝ); (c)
+⟨c_pivot·E⟩ ideal-scaling = flat hideal scaled + τ-reindexed (Equiv.sum_comp for bwd). NEXT decision gate =
+pnp-hcover's detail-vs-monument verdict (gates whether to invest 5a/5b/5c build or re-scope to cite L7).
