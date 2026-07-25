@@ -295,6 +295,60 @@ generators. This is genuine research; render before any Lean.
 
 ---
 
+## L-lower-coupled — ATTACKED: the from-below splits into forward-divisibility + leading-order (controller render, 2026-07-25)
+
+Post gate-2 (L-A green as an atom, the field is a whole-resolution object). Attacking `F-lower-coupled`
+directly. On a coupled chart with blow-up `g`, `F∘g = ∑ᵢ ((∏C)ᵢ∘g)²`. Suppose:
+- **(i) forward divisibility.** `b_{k₀} ∣ ((∏C)ᵢ∘g)` for every `i` — i.e. `(∏C)ᵢ∘g = cᵢ·b_{k₀}` for germs
+  `cᵢ`. Equivalently the one-sided inclusion `⟨(∏C)∘g⟩ ⊆ ⟨b_{k₀}⟩` (the entries vanish AT LEAST as the
+  dominant exceptional monomial).
+- **(ii) leading-order realization.** `∑ᵢ cᵢ²` is nonvanishing on the exceptional locus — i.e. `b_{k₀}` is
+  the TRUE geometric leading order of the pullback (not an under-estimate); equivalently the geometric
+  order MATCHES the combinatorial dominant exponent `Mval(branch)`.
+
+Then `F∘g = b_{k₀}²·(∑ᵢcᵢ²) ≥ b_{k₀}²·unit` near the locus, so (Object C one-sided, `b_{k₀}` exponent =
+`Mval(branch)`, landed) the chart's `rlct ≥ ½·Mval(branch)`.
+
+**Finding 1 — the reverse inclusion (= the monument) is NOT needed.** Full monomialisation/principality is
+the TWO-sided `⟨(∏C)∘g⟩ = ⟨b_{k₀}⟩`; the from-below uses only the FORWARD `⊆` (i) + leading-order (ii).
+The reverse `⟨b_{k₀}⟩ ⊆ ⟨(∏C)∘g⟩` (the exceptional monomial is RECOVERED from the loss — "no over-vanishing
+in the hard direction") is exactly the open-in-source terminal single-chain principality (worked.tex:651-664),
+and the from-below **avoids it**. This is why V is genuinely lighter than P: forward-only, not two-sided.
+
+**Finding 2 — (i)+(ii) is the one-sided form of `AtlasRealizesExponents`.** The forward divisibility (i)
+plus the leading-order realization (ii) together say: the geometric blow-up REALIZES the combinatorial
+dominant exponent `b_{k₀}` (order `= Mval(branch)`), one-sidedly. That is precisely the (forward half of the)
+exponent-realization seam that `DLN/Aoyagi/RecursionAdapter.lean` already isolates as "the geometric
+obligation the coupled monument must discharge" (`AtlasRealizesExponents`, currently a hypothesis / the sole
+residual of `exists_coreResolution`). So the render's `F-lower-coupled` frontier and the Lean seam are THE
+SAME object — the residual is coherent across the math render and the Lean wiring.
+
+**Finding 3 (PRECISION CORRECTION to §271/§279 — "minimising branch only" was imprecise).** For the LOWER
+bound `rlct ≥ ½cCodim` the resolution is FIXED (Aoyagi's `buildTree`) and `rlct = min over ITS charts`, so a
+floor `≥ ½cCodim` is required on EVERY coupled chart, not only the minimiser. Each coupled chart's from-below
+gives `≥ ½Mval(branch) ≥ ½cCodim` (since `Mval(branch) ≥ min = cCodim`). The minimiser is where the bound is
+TIGHT (`Mval = cCodim`, equality-relevant — that is V-UPPER's job); OFF the minimiser there is SLACK
+(`Mval(branch) > cCodim`), so a CRUDER monomial floor (any `b′ ∣ entries` with exponent in `[cCodim,
+Mval(branch)]`) already suffices. So "the minimiser is the hard/tight case" is right; "only the minimiser
+needs a bound" is wrong — every coupled chart needs one, the non-minimisers just tolerate a looser one.
+
+**Controller position (honest confidence — this is my error-prone axis, hence the decorrelated audit).**
+- (ii) is NOT purely definitional (it is "geometric order = combinatorial `Mval`", real content = the
+  realization seam) but it is FORWARD/one-sided and the coupling HELPS (shared deeper factors raise the
+  pullback order, easing `≥`).
+- (i) is a divisibility/ORDER bound accumulated through the blow-up recursion — each step's FORWARD
+  direction is supplied by the block-elim atom L-A (gate-2 GREEN) plus the blow-up's exceptional factor;
+  the min accumulates to `b_{k₀}`. This is the detail-at-scale shape (a monotone order-accumulation induction
+  over `buildTree`), NOT a single deep insight.
+- **Tentative verdict: V-lower is DETAIL-AT-SCALE (buildable general-`d`) via forward-divisibility (i) +
+  leading-order (ii); the MONUMENT is the AVOIDED reverse principality.** Confidence MODERATE. What would
+  move it DOWN to "monument": if (i) or (ii) secretly needs the reverse inclusion (e.g. proving the cofactors
+  `∑cᵢ²` are nonvanishing turns out to require recovering `b_{k₀}` from the loss), or if the order-accumulation
+  induction fails to close in the coupled case (the coupling breaks monotone accumulation) general-`L`. THIS
+  is the decorrelated audit target — stress the reduction, do not trust the optimism.
+
+---
+
 ## L-A — the Schur-clearing ideal identity (COMPLETE, general)
 
 **Setup.** Let `R` be the ring of real-analytic germs at a point `w*` (a local ring; a germ is *regular*
