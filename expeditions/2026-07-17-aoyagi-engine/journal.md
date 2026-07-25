@@ -23688,3 +23688,335 @@ de-risk (pen-and-paper, my added guard — hunt-precedes-trust) in parallel, the
 constructor + the (2,2,2) born-siblings de-risk = reproduce GateRouteB222 M1a from the constructor). Guardrail-0:
 NO geometry outside the step constructor (encodes this week's lesson). Elder convened to update charter §1-B +
 compass to the one-object adoption (route-P retired).
+
+## 2026-07-25 — R3-DERISK: WF-fold MECHANISM CLEARED (in-repo precedent); risk relocated to leaf CONTENT
+
+reroute-R3derisk (decorrelated pen-and-paper + Codex xhigh, convergent) — VERDICT: NO STOP; the geometry-valued
+WF fold MECHANISM composes, de-risked with IN-REPO PRECEDENT. Full elaboration:
+threads/reroute-R3derisk/geometry-invariant-elaboration.md.
+- CLEARED: the ∃-geometry Prop threads through conRel_wf — flatCube_subset_leafPathImages (a Set-valued
+  conRel_wf cover ∀-quantified over the chart-path acc) + leaves_chart_clauses + GeoInvValWalk all build green.
+  NO dependent-type obstruction UNDER the fixed-full-space design constraint (no dimension drop). Lockstep-
+  coherence DEFINITIONAL (one recursion, no chart↔leaf bridge — the one-object payoff confirmed, cf F9).
+  Per-step binv chains via the banked regionRepresents_comp+.mono+.trans+maintenance idiom (Corank2FaithfulComposite:223).
+- RISK RELOCATED (honest, not glossed) to leaf CONTENT: R1 [HIGHEST, seat+Codex] terminal-shrink ⋈ cover —
+  terminal_bezout shrinks V to a leaf-local nonvanishing nbhd; NO banked lemma says the inflated tiling box fits;
+  the ideal + cover threads must conjoin ON THE SAME charts (plan's separate binv/cover_out framing glosses).
+  R2 [HIGH] the radius-parameterized real-tree cover fold = a GENUINE new fold (not banked; plan's "cover banked"
+  = the Covers SHAPE only). R3[MED] region-nesting; R4/R5[LOW] Hchain-threaded / leaf-indexing.
+- 2 PLAN CORRECTIONS: Hchain is a THREADED conjunct (not "definitional", plan §2); the cover marriage-to-buildTree
+  is R2's real work (not banked). Design constraints folded into R1/R2 tasks: fixed-full-space (no dim drop),
+  leaf-INDEXED family, Hchain threaded.
+- THE TRUE GATE before the R3 deep build = R1's admissible-leaf-region lemma (shrunken nonvanishing nbhd ⊇ tiling
+  box at inflated radius), a (2,2,2)-leaf probe — fires once R0's merged trunk lands. R1 task #164 carries it.
+- ELDER convened (R3-gate trigger): stern read on the "cleared" reading + R1-as-gate + residual optimism.
+
+## 2026-07-25 — R0 DONE (trunk pushed) + elder R3-gate CONCUR (3 corrections) → probe re-scoped to a COUPLED leaf
+
+R0 complete: working trunk `expedition/aoyagi-engine-reroute` @ 6adf7ed15 PUSHED (9034 jobs, clean-three on
+9 roots + 2 atoms; controller-verified branch/tip/imports/target-sorry). The #110 upper + FanCover334 +
+SchurClearTwoSided were UNWIRED leaves on routeP — now in the aggregator (seat catch). Base = routeP HEAD (not
+the doc-only db3474b4b); gate2 `-s ours` (Lean-subsumed). #162 done.
+
+Elder R3-gate read (re-derived from the elaboration): CONCUR, NO STOP — mechanism-clear SOUND but NARROW
+("statable + precedent + no dep-type monument", NOT banked; labour relocated to R2's genuine-new-fold, as F9
+said). THREE corrections, all actioned:
+- SHALLOW-INSTANCE CONFOUND (sharpest): (2,2,2) is the CLEAN UNCOUPLED instance (F3, trivial Δ) → a green there
+  does NOT discharge the COUPLED shrink-radius tension (the "green-while-false at the clean instance" confound).
+  RE-SCOPED reroute-R0's probe: exercise a COUPLED corank-2/(3,3,4) leaf, OR carry 2 OWED obligations into R2
+  (coupled shrink-radius uniformity; single-leaf⊉family-union-cover). [corrected the probe I'd just fired]
+- Hchain RE-PRICED LOW→MED (same object as the F6 catch cascade — b-chain repeatedly under-transcribed); §5
+  def-fidelity harness on the LEAN maintenance def, WIDE COUPLED witness, never a hand model.
+- Both hideal directions on the coupled witness (hideal_bwd = V-lower-lighter-retired-3× slippery half); leaf-
+  indexed family pinned as a DESIGN INVARIANT; FIXED-FULL-SPACE tripwire at the probe (no per-depth dim drop,
+  the geo-atlas-wire masking class).
+Folded into #164/#165. Re-convene elder at the R1-PROBE RESULT (the true gate to the deep build).
+
+## 2026-07-25 — R1-GATE (admissible leaf region, terminal-shrink⋈cover): GREEN but unit≡1-CONDITIONAL → elder go/no-go
+
+reroute-R0 probe GREEN @ 1bb3f96fe (Corank2AdmissibleLeaf222.lean, 5 thms clean-three, 9035 jobs). Card:
+threads/reroute-R0/admissible-leaf-222-card.md. The shrink⋈cover tension DISSOLVES because unit≡1 at the leaf
+(the cleared-pivot strict transform is exactly 1 → terminal_bezout's shrink V'=V∩{unit≠0}=V is VACUOUS → the
+cover's ≥1-radius box [genuine ratio floor] fits). Exact condition: unit non-vanishing on closedBall 0 1.
+terminal_bezout_collapse (unit≡1 ⇒ PrincipalInv on FULL V) is the API-clean variant for the deep build.
+HONEST CAVEAT (seat-flagged): GREEN proved FROM unit≡1 as a HYPOTHESIS, NOT re-derived from the construction.
+CONTROLLER CALIBRATION: the seat did the UNCOUPLED (2,2,2) (elder's shallow-instance instance) + REFRAMED the
+coupled-shrink concern as "unit≡1 dissolves it coupled or not (dominant-pivot strict transform ≡1 even coupled;
+coupling in the dominated b₂,b₃∈⟨b₁⟩; cert_334 at (3,3,4))" — an argument, not a coupled Lean lemma. Family-
+union-cover unaddressed (owed R2). So NOT a clean coupled-gate GREEN — it's mechanism-GREEN + reframed-coupled +
+2 owed. Per elder trigger #3 + the R1-probe-result trigger, CONVENED the elder for the decorrelated go/no-go:
+verify the module; is unit≡1-as-hypothesis a sufficient de-risk or owe the derivation (R4 hjac?); is the coupled
+reframing sound or do we owe a coupled admissible-leaf lemma; family-cover→R2. HOLDING the R1 deep build for the
+elder's read. STOP-fallback objects-only unchanged.
+
+## 2026-07-25 — elder R1-probe read: QUALIFIED GO (3 pins) → R1 M1 fired (DERIVE unit≡1 on a built COUPLED chart)
+
+Elder re-derived from Corank2AdmissibleLeaf222.lean: QUALIFIED GO, NOT a wall. Precision catch:
+`admissible_leaf_region_222` is MIS-NAMED — proof is `rw[collapse]; exact ⟨hcover,hcover⟩`, dimension-generic,
+geometry-free, never invokes terminal_bezout, ASSUMES unit≡1. So R1 is TRANSFORMED not cleared: the probe
+resolves shrink⋈cover by ASSUMING the thing that dissolves it (unit≡1 ⟹ vacuous shrink). THREE PINS:
+1. Ledger = "R1 DISSOLVES CONDITIONAL ON unit≡1; unit≡1-at-built-leaves is THE load-bearing R1/R4 residual" —
+   NOT "R1 cleared". WHY load-bearing (necessity): the cover box floor is genuinely ≥1 (argmax lift), so the
+   continuous-unit(0)≠0 fallback needs unit non-vanishing on ALL of closedBall 0 1 = an UNBUILT bridge ⟹ unit≡1
+   nearly NECESSARY, not just convenient.
+2. DERIVE unit≡1 (not assume) on the built chart, WIDE COUPLED witness (corank-2 AND ≥3 reach); §5 harness on
+   the LEAN derivation.
+3. RED-FLIP named: unit≡1 failing to derive at any built leaf ⟹ re-scope to objects-only, NOT a soft degrade.
+Coupled reframing SOUND in outline (coupling in the dominated b₂,b₃∈⟨b₁⟩, never the unit — pnp cofactor-
+cleanliness/F8, exact-algebra corank-2) but a COUPLED Lean DERIVATION still owed. Family-union-cover CONFIRMED
+owed into R2. Elder: blocking on "unit≡1 not yet Lean-derived" = timidity-disguised-as-rigor → GO.
+ACTIONED: R1 M1 fired (reroute-R0) = the true gate: DERIVE unit≡1 on a built COUPLED (3,3,4)+≥3 chart via the
+hjac telescope + rename the mis-named thm; M2 (StageState+constructor+born-siblings) after M1+elder re-gate.
+Elder re-convenes at (i) the unit≡1-coupled derivation (the true R1 gate) + (ii) R2 family-cover. HOLDING R2/R3
+behind M1.
+
+## 2026-07-25 — R1 M1 GREEN: unit≡1 DERIVED on the built COUPLED (3,3,4) chart (RED-FLIP retired) → elder re-gate
+
+reroute-R0 @ 4e4619652 (9036 jobs, clean-three; spot-confirmed + pushed). The load-bearing R1 residual — unit≡1
+on the full composed coupled chart334 leaf — is DERIVED, not assumed. Positive-surprise: it was ALREADY banked
+on the trunk (chart334 is a COMPLETE Chart; hjac := gWrap_hjac proved via genuine jacDet_comp telescope over the
+atoms: shearH unipotent [jacDet=1], permP coord-perm [|jacDet|=1], bbA0/bbA1/sigmaPiv exact-monomial blow-ups; on
+the actual jacDet=|det fderiv|). Non-monomial factor DERIVED-≡1 (unipotent-elim det≡1 × exact-monomial). Coupling
+(shearH carries Δ=D−C·B) telescopes away because shearH is unipotent. Seat re-ran #print axioms (didn't trust the
+banked "done") + packaged the §5 harness (Corank2UnitOneDerived: chart334_collapse_actual / _unit_eq_one /
+_nbhd_univ). chart334_nbhd_univ (nbhd=univ) ⟹ NO terminal-shrink at the built leaf → the shrink⋈cover boundary
+closes as a THEOREM about the built chart. RED-FLIP RETIRED.
+ONE honest residual (seat-flagged): (3,3,4) = corank-2 only; corank≥3 is unbuilt (owed-not-banked). Controller
+read: the unit≡1 mechanism (unipotent det≡1 × exact-monomial) is CORANK-INDEPENDENT + M2's pivot-generic
+constructor is inherently general-corank ⟹ ≥3 folds INTO M2, not a separate pre-M2 tide. CONVENED the elder
+(re-gate trigger i): decorrelated read (re-run #print axioms + read abs_jacDet_gWrap's proof — derived-≡1 not
+assumed?) + GO/NO-GO on M2 + the corank≥3 call. HOLDING M2 for the elder's read.
+
+## 2026-07-25 — elder M1 re-gate: VERIFIED GREEN (corank-2), GO M2 + cheap corank≥3 hjac probe front-loaded
+
+Elder re-derived M1 from the Lean + its OWN #print axioms (not the controller spot-check, not the build exit):
+abs_jacDet_gWrap IS the genuine jacDet_comp chain rule over the atoms (shearH unipotent det=1, permP coord-perm,
+bbA0/bbA1/sigmaPiv exact-monomial); jacDet = |det fderiv| genuine; chart334 ITSELF clean-three = a real complete
+Chart; nbhd=univ ⟹ the leaf is BORN WITHOUT SHRINK (shrink⋈cover closed the strongest way). The derive-not-assume
+pin is DISCHARGED at corank-2; RED-FLIP doesn't fire. VERDICT: GO M2.
+Elder SHARPENED the controller's "≥3 folds into M2": that conflates M2-scaffolding (general-corank, fine) with the
+corank≥3 unit≡1 VERIFICATION (load-bearing — must NOT be first-exercised deep in the WF fold). RECOMMENDED (accepted):
+a CHEAP FRONT-LOADED corank≥3 hjac-ONLY probe isolating the one axis verified only at corank-2 — does the ≥3
+elimination DECOMPOSE into clean unipotent blockShears, or does clearing the 3rd+ coupled pivot resurrect the retired
+fold's divide-by-pivot (F4 accumulating coupling)? A wall there = ~1 tide (instance) not 3-6 tides deep in M2.
+ACTIONED: fired the corank≥3 hjac-ONLY probe (reroute-R0, smallest coupled corank-3 node, |jacDet g|=monomial via
+jacDet_comp; RED-FLIP if divide-by-pivot resurrects → re-scope/objects-only). HOLDING M2's constructor for it (the
+elimination step IS the ≥3 risk locus; ~1 tide sequencing avoids a wasted/reworked M2). 3 CARRIES (not "≥3 cleared"):
+M1-verified-corank-2; corank≥3-unit≡1 OWED; family-union-cover owed R2. Elder re-convenes at (i) the ≥3 probe result
+(true remaining unit≡1 gate); (ii) R2 family-cover; (iii) the M2 WF-fold landing.
+
+## 2026-07-25 — corank≥3 hjac probe GREEN: ≥3 elimination stays CLEAN UNIPOTENT (RED-FLIP retired) → elder re-gate
+
+reroute-R0 @ 4b20ffb3d (9037 jobs, clean-three; spot-confirmed + pushed). The elder's corank≥3 sub-claim (does
+clearing the 3rd+ coupled pivot resurrect divide-by-pivot?) ANSWERED NO — and via a GENERAL coupling-BLIND
+mechanism, not just an instance: jacDet_blockShear content-blind (det=1 for ANY φ) + jacDet_three_successive_shears
+(GENERAL any D: 3 clean unipotent blockShears telescope to jacDet=1) + SchurClearTwoSided (unit-pivot elim =
+unipotent, any width) + the blow-up-normalizes-pivot-to-unit fact ⟹ the 1/monomial wall is structurally precluded
+at ANY corank (fires ONLY for a non-unit pivot). Non-vacuity: a coupled corank-3 model (Fin 6, INCLUDING the
+trilinear w₀·w₁·w₂, corank3_coupled_shear_clean/abs_jacDet_g3, |jacDet|=|u₀||u₁||u₂|). Sympy pre-checked. RED-FLIP
+RETIRED. Honest scope (seat-flagged): a faithful MODEL, NOT the full (4,4,4)-chart — the corank-agnosticism rides
+the GENERAL lemma + SchurClearTwoSided (which cover the actual chart: its clearing IS a unit-pivot Schur clear),
+model = the witness. CONVENED the elder (re-gate trigger i): decorrelated read + the model-vs-full-(4,4,4) judgment
++ M2 GO/NO-GO. Controller read: general-lemma clears the general-hjac claim; full (4,4,4) telescope = belt-and-
+suspenders (Fin-32 tide), likely not needed. HOLDING M2's constructor for the elder's read.
+
+## 2026-07-25 — elder corank≥3 re-gate: mechanism CLEARED (verified general) → GO M2 (staged, first-unit acceptance gate)
+
+Elder re-ran #print axioms ITSELF on all 5 (jacDet_three_successive_shears, corank3_coupled_shear_clean,
+abs_jacDet_g3, schur_clear_two_sided(_fin)) + read the proofs: NO division, content-blind, general in D. VERDICT:
+the general-hjac MECHANISM is CLEARED (divide-by-pivot resurrection structurally precluded by GENERAL theorems —
+SchurClearTwoSided any-width + coupling-blind telescoping; wall fires only for a non-unit pivot, blow-up precludes).
+GO M2. DECLINED the standalone (4,4,4) telescope as REDUNDANT (declining ≠ timidity — M2's pivot-generic constructor
+builds the real (4,4,4) generally; a Fin-32 one-off M2 subsumes). PLACED the one non-redundant residual precisely:
+the ACTUAL general-d clearing = a clean blockShear READING-ONLY-KEPT (the shearH_eq analogue, block-structure
+separation — NOT the retired divide-by-pivot) becomes M2's FIRST-UNIT ACCEPTANCE GATE, a THEOREM not "built green";
+surprise-to-catch = a clearing that reads a CLEARED coord.
+ACTIONED: FIRED M2 (reroute-R0) staged — StageState + pivot-generic constructor + born-siblings; first-unit gate =
+the shearH_eq-analogue theorem at corank-2 (real (3,3,4)) + the general-d step form, report BEFORE the full
+constructor/fold. Design constraints unchanged. Elder re-convenes at (i) M2's first-unit result (the reads-only-kept
+blockShear theorem — a "built green" without it = stern-voice joint); (ii) R2 family-cover; (iii) the M2 WF-fold.
+The unit≡1 axis (M1) is now fully cleared (corank-2 verified + corank≥3 mechanism verified general). M2 is the
+reroute's main constructive rung; then R2/R3/R4/R5/R6.
+
+## 2026-07-25 — M2 first-unit ACCEPTANCE GATE GREEN as a THEOREM → elder re-gate (full constructor held)
+
+reroute-R0 @ fcf92db10 (9038 jobs, clean-three; spot-confirmed + pushed). The elder's first-unit acceptance gate
+(the ACTUAL clearing is a clean reads-only-kept blockShear — a THEOREM, not "built green") LANDED:
+clearing_334_clean_reads_only_kept on the REAL (3,3,4) chart = ⟨shearH_eq, shearPhiH_keep, shearPhiH_read⟩ —
+shearPhiH vanishes-on-kept (touches only residual {4..11}) + reads-only-kept (every term a pivot×connection
+product, ZERO cleared factors). The surprise (reads a CLEARED coord) does NOT occur. STRUCTURAL for ANY corank:
+block-elim clears the residual via PIVOT CONNECTIONS, disjoint from the residual (residual ↦ residual −
+connection·connection; φ reads connections/kept, never the residual). Corank-3 coupled model likewise.
+HONEST BOUNDARY (seat-flagged): gate = real corank-2 THEOREM + general jacDet_blockShear contract + corank-3
+model + the structural no-surprise argument; the general-d PER-STEP reads-only-kept = the CONSTRUCTOR's
+guardrail-0 invariant (provable per-emitted-step once the constructor exists = M2 proper). CONVENED the elder
+(re-gate trigger i): decorrelated read + GO/NO-GO on the FULL pivot-generic constructor + born-siblings. Controller
+read: gate MET (theorem on the real chart + general contract + structural argument), per-step guardrail-0 is the
+natural constructor obligation → GO. HOLDING the full constructor for the elder. Then R2 (cover fold) + R3 (WF fold).
+
+## 2026-07-25 — elder GO the full constructor → R1-completion build firing (2 hard theorem-level criteria)
+
+Elder re-ran #print axioms + read shearPhiH itself: M2 first-unit gate genuinely MET as a theorem. GO the full
+pivot-generic constructor + born-siblings (completes R1). FIRED (reroute-R0) with 2 HARD acceptance criteria
+(elder, a green build skipping either = the stern-voice joint): (1) guardrail-0 = a PER-EMITTED-STEP THEOREM
+(each emitted clearing IS a reads-only-kept blockShear, discharged from block structure INSIDE the constructor —
+NOT prose threaded as a hypothesis, NOT "built green"); (2) born-siblings = PER-SIBLING CERTIFICATES (each carries
+its own reads-only-kept theorem, NOT "N children green"; born-with-certs, never transported). Design constraints
+hard (fixed-full-space, leaf-indexed, Hchain threaded). ELDER ORIENTATION FLAG registered: all cleared so far is
+LOCAL/per-step; R3 (the geometry-valued WF fold) is the NEXT REAL MONUMENT (per-step facts thread through conRel_wf
+carrying analytic charts + both RegionRepresents + cover-inflation), decorrelated read mandatory. Elder re-convenes
+at (i) the constructor landing (per-step theorems + per-sibling certs); (ii) R2 family-cover; (iii) the R3 WF-fold.
+Rung status: M1 (unit≡1, corank-2 + corank≥3 mechanism) DONE+verified; M2 first-unit gate DONE (theorem); full
+constructor firing = R1 completion; then R2 (cover) + R3 (fold, the monument).
+
+## 2026-07-25 — R1 COMPLETE: pivot-generic constructor + born-siblings (both criteria as THEOREMS) → elder re-gate
+
+reroute-R0 @ e1e32ddf9 (StepConstructor.lean; 9039 jobs, clean-three; spot-confirmed + pushed). Both elder criteria
+met AS THEOREMS, with a strong design: (1) GUARDRAIL-0 STRUCTURAL — `structure CleanClearing` bundles φ WITH
+hkeep/hread/hdiff as record FIELDS; `CleanClearing.jacDet_shear` DISCHARGES jacDet(blockShear φ)=1 per step; `structure
+PivotStep` has `clearing : CleanClearing` as a REQUIRED FIELD → a step CANNOT be emitted without a proven-clean
+clearing (TYPE INVARIANT, not a threaded hypothesis). (2) PER-SIBLING CERTS — `bornSiblings` = one PivotStep per pivot
+p∈Z; `bornSiblings_certified` = each independently carries jacDet_shear=1 + its Jacobian cert, none transported.
+Corank-2 REAL non-vacuity: `clearing334.shear = shearH` — the constructor's geometry IS the actual (3,3,4) chart's
+clearing, not a proxy. Design constraints met (fixed-full-space, leaf-indexed; hjac cert is coupling-blind so needs no
+Hchain — the ideal-side b-chain threads in R3). HONEST BOUNDARY: the per-node clearing CONTENT is R3's (the recursion);
+the TYPE requires it arrive with its guardrail-0 cert (genuine structural separation — R3 can't build a PivotStep
+without a CleanClearing). CONVENED the elder (re-gate trigger i): soundness of the type-enforcement (genuine vs a defer
+to R3) + R2 GO/NO-GO. Controller read: genuine. HOLDING R2 (the cover fold; family-union-cover discharged there).
+RUNG STATUS: R0 ✓, R1 ✓ (M1 unit≡1 corank-2+≥3 + M2 constructor+born-siblings, all theorems); NEXT R2 (cover) → R3
+(the WF fold = the monument) → R4 (leaf→Chart) → R5 (Resolution + close :311) → R6 (summit).
+
+## 2026-07-25 — elder R1-complete re-gate: GENUINE separation (concur), GO R2 + 2 sharp addenda re-scoping R3
+
+Elder re-ran #print axioms on all 5 (clean-three): the type-enforced guardrail-0 is a GENUINE structural separation,
+NOT a hidden defer — the CleanClearing fields ARE proofs, clearing334 DISCHARGES them for the real instance, PivotStep
+is un-inhabitable without a proven CleanClearing, bornSiblings is per-pivot (none transported). GO R2.
+TWO ADDENDA (crucial honest accounting — recorded so the hjac progress is NOT over-read):
+- ADDENDUM 1: the constructor proves "GIVEN a CleanClearing, the step is certified"; it does NOT prove every
+  general-d node ADMITS one (bornSiblings TAKES c as an arg). Per-general-node EXISTENCE (reads-only-kept relative to
+  the EVOLVED kept/cleared partition at deep nodes — a deeper clearing could in principle read a shallower-cleared
+  coord) is R3's typed obligation, demonstrated only at corank-2 (clearing334) + the corank-3 model.
+- ADDENDUM 2 (the sharp one): CleanClearing is the HJAC SIDE ONLY (reads-only-kept ⟹ det=1). It does NOT capture the
+  IDEAL side (that the clearing MONOMIALISES ⟨coreGen∘g⟩=⟨diag b⟩, the binv/RegionRepresents-both-ways thread) — a φ≡0
+  CleanClearing is valid yet clears nothing. THE IDEAL-SIDE (hideal/RegionRepresents threaded through the fold,
+  two-sided, general-d) is R3's SEPARATE, HARDER, UNTOUCHED thread. **ALL gates so far — M1 unit≡1, corank≥3, M2, R1 —
+  have been HJAC-side.** R3 is the real monument, carrying BOTH addenda. Front-load an ideal-side de-risk at R3 planning.
+CONTROLLER CALIBRATION: the two cleared rungs (R0/R1) are real + verified but the EASIER (hjac) side; the ideal-side
+monomialization threading — the actual point of the resolution — is untouched, in R3. Do NOT read "R0+R1 done" as "hard
+part behind us." FIRED R2 (reroute-R0, the cover fold + family-union-cover). Elder re-convenes at (i) R2 family-cover;
+(ii) the R3 fold (a "threads green" w/o the ideal-side binv both-ways = the stern-voice joint). R1 DONE (#164); R2 firing.
+
+## 2026-07-25 — R2 PARTIAL: family-union-cover THEOREM done; the real-tree cover FOLD firing (design-consult first)
+
+reroute-R0 @ 9d0b0d868 (9040 jobs, clean-three; pushed). Honest partial: (b) the FAMILY-UNION-COVER — the elder's
+owed R2 obligation, the non-redundant thing M1 didn't test — is DELIVERED as a THEOREM: `bornSiblings_union_covers`
+(the fan of born siblings tiles the node box, marrying M2's bornSiblings to the banked argmax cover atom
+ball_subset_iUnion_blockBlowup_comp). (a) the radius-parameterized real-tree cover FOLD (the conRel_wf marriage of
+flatCube's branching + FanTree.Covers' growing radius — the genuine new fold the R3-derisk named "R2's real work")
+is NOT yet assembled — the seat STOPPED rather than rush a genuine new fold into a long tide (accuracy over speed;
+the per-node clause is the load-bearing piece + done). FIRED the tree-fold as the next focused unit (reroute-R0,
+with a local-codex-consult on the fold DESIGN first — the motive + WF-descent radius threading + shear-box
+bookkeeping — per the genuine-new-fold skill). Elder R2 re-gate folds into the tree-fold landing (incl. the
+family-cover theorem, its trigger i). Then R3 (the monument — ideal-side threading + general-node existence).
+
+## 2026-07-25 — R2 tree-fold: design-consult de-risked it + caught a leaf-domain FORK → resolved (a) inflate-boxes, fold build GO
+
+reroute-R0 fired the local-codex-consult (xhigh) on the tree-fold design (persisted threads/reroute-R2/). It
+de-risked the conRel_wf marriage (motive with R INSIDE, introduced AFTER the WF induction to keep the IH polymorphic;
+descent r:=max R 1, ih at f r, global C*=max width; precedent flatCube_subset_leafPathImages) AND caught two genuine
+issues (not a mechanical swap): (1) ∀R is FALSE at leaves with fixed-unit boxes → a DESIGN FORK on the leaf-domain
+contract; (2) bornSiblings_union_covers needs a closedBall + per-pivot-dom variant (a new atom). The seat correctly
+STOPPED at the fork (definition-of-done-adjacent, don't set silently).
+CONTROLLER RESOLUTION of the fork — (a) INFLATE THE LEAF BOXES (the banked LeafCoverTiling strategy, charter-cover-
+section-preferred), NOT the bounded-motive (b). dom := closedBall 0 (f^[depth] 1) is COMPACT (Resolution needs it),
+⊆ nbhd=univ (chart334_nbhd_univ from M1 — ideal identity holds), and gives Resolution.U := ball 0 1 (a nbhd of 0)
+covered by ⋃ g''dom = exactly hcover; doesn't touch the value. THE R4 LEAF-DOMAIN CONTRACT: Chart.dom = closedBall 0
+(f^[depth] 1); Resolution.U = ball 0 1. Judged an internal cover-architecture choice (controller-scope, charter-aligned),
+made EXPLICITLY (not silently, per the autonomy rule); elder verifies at the R2-completion re-gate.
+GO'd the fold build (reroute-R0): (ii) the new closedBall+per-pivot-dom comp atom + a family-domain closed node clause;
+(iii) the radius-parameterized conRel_wf marriage. Report = R2 COMPLETION → elder re-gate. Then R3 (the monument).
+
+## 2026-07-25 — R2 cover-side DONE + re-scope: tree-fold merges into R3's unified conRel_wf fold; R3 plan = front-load ideal-side
+
+reroute-R0 @ 9dc0becd0 (9040 jobs, clean-three; pushed). R2 cover-side atoms + node clause done:
+closedBall_subset_iUnion_blockBlowup_comp (the closedBall+per-pivot-dom comp atom, catch b) +
+bornSiblings_union_covers_closed (the family-domain CLOSED node clause — the fold's per-node cover clause). The
+elder's family-union-cover obligation is met.
+ARCHITECTURAL RE-SCOPE (seat-surfaced, controller ladder-call): R2's tree-fold-THREADING IS R3's conRel_wf
+geometry-valued fold — the R3-derisk R3Inv already has COVER as one CONJUNCT alongside geometry + ideal. A
+standalone R2 tree-fold would DUPLICATE R3's threading. So R2 = COMPLETE at the cover-side atoms + node clause;
+the tree-level fold MERGES into R3's UNIFIED conRel_wf fold. This is the one-object principle (one recursion
+threads everything) + aligns with the R3-derisk. Elder to confirm at the R2 re-gate.
+R3 = the UNIFIED fold, THREE conjuncts: (1) geometry/hjac [PivotStep+guardrail-0, DONE]; (2) COVER
+[bornSiblings_union_covers_closed, DONE]; (3) IDEAL/binv [the UNTOUCHED harder thread] + the general-node
+CleanClearing EXISTENCE (elder addendum 1). CONTROLLER R3 PLAN: FRONT-LOAD an IDEAL-SIDE de-risk (does
+binv/RegionRepresents-both-ways compose down a branch, general-d, two-sided — the gate2 protos threaded via
+regionRepresents_comp + .trans) + the general-node existence, BEFORE the unified fold — hunt-precedes-trust.
+CONVENED the elder (R2 re-gate + confirm re-scoping + concur on the R3 plan). HOLDING R3. RUNG: R0/R1/R2 ✓ (all
+hjac/cover-side, verified theorems); R3 = the monument (ideal-side untouched).
+
+## 2026-07-25 — elder R2 GO (verified) + KEY fold invariant; R3 ideal-side de-risk FIRED
+
+Elder re-ran #print axioms on the R2 cover clause (bornSiblings_union_covers_closed, sound — verified) + confirmed
+the re-scoping (R2 tree-fold merges into R3's unified conRel_wf fold, genuine de-dup: R3Inv already has cover as a
+conjunct). KEY FLAG (now the fold's DESIGN INVARIANT): the merge CONCENTRATES R1 (doesn't remove it) — in the unified
+fold the COVER-conjunct and IDEAL-conjunct MUST be discharged on the SAME `fam l`, with `D p` = the ideal-cert region
+(NOT decoupled); decoupling silently re-opens R1 (terminal-shrink vs cover). The fold build MUST keep D_p = the
+ideal-cert region.
+FIRED the R3 IDEAL-SIDE de-risk (reroute-R3derisk, decorrelated pen-and-paper + Codex — the true next gate; elder
+concur+sharpened), targeting: (a) two-sided binv/RegionRepresents composition down a general-d branch + the b-chain
+(Hchain) MAINTAINED, BOTH directions (reverse = the V-lower-mirage slippery half) on a WIDE COUPLED witness; (b) [the
+critical one, R1-HIGHEST in the unified fold] is nbhd=univ / ideal-cert-region ⊇ cover-box GENERAL or corank-2-special
+(chart334 had nbhd=univ born-without-shrink at corank-2; if general-d shrinks below univ, shrink-vs-cover RETURNS); (c)
+general-node CleanClearing existence (reads-only-kept at the EVOLVED deep partition). STOP-on-wall = re-scope/objects-only.
+HONEST RUNG STATUS: R0/R1/R2 done + verified but ALL hjac/cover-side; the IDEAL side (the actual monomialization) is
+UNTOUCHED, being de-risked NOW. Elder re-convenes at (i) the ideal-side de-risk result (true next gate); (ii) the
+unified R3 WF-fold. [TODO: consolidate the cluttered heartbeat memo at a lighter tick.]
+
+---
+
+## 2026-07-25 — R3 ideal-side de-risk landed; the MONUMENT-CONSUMPTION finding + the P/V/objects-only fork (controller checkpoint)
+
+**The pivotal calibration.** The reroute-R3derisk de-risk (pen-and-paper + decorrelated Codex, converged) is
+persisted at `threads/reroute-R3-idealside/ideal-side-elaboration.md` (+ codex-{prompt,answer}). Honest bottom line:
+
+- The per-step ideal-side **MECHANISMS are PROVEN green in-repo** — corank-agnostic, coupling-independent:
+  - composition down a general-d branch **both ways** (`regionRepresents_comp` + `.trans`),
+  - region = univ under **unit ≡ 1** (`coupled_terminal_region_covers` / `coupled_maintenance_region_covers`),
+  - shared/cleared coords are **spectators** (reads-only-kept),
+  - terminal Bézout collapse (`terminal_bezout_collapse`, `Corank2AdmissibleLeaf222`).
+- BUT the R3 unified fold **as-scoped (route-P)** — the full two-sided `hideal` Resolution atlas over
+  `buildTree` → `exists_coreResolution` — **CONSUMES the general-d terminal single-chain principality**
+  = the **tracked coupled MONUMENT** (⟨coreGen∘g⟩ = ⟨diag b⟩ two-sided at every leaf, unit ≡ 1 general-d).
+  Inferred-general: instance-verified (3,3,4)/(4,4,4)t=(2,0)/(3,3,3,2,2)t=(2,2,1,0) by Gröbner ideal-equality,
+  no counterexample, structurally expected — **NOT proven general** (Aoyagi's coupled monomialization;
+  worked.tex:651-664).
+
+**What the reroute did and did NOT do.** It did NOT eliminate the monument. It **precisely localized** the
+ideal conjunct's dependence on it — the one-object recursion dissolves the route-B/two-object WALL (siblings
+born per-pivot, ledger definitional), but the *value* the fold must attain at each terminal leaf still rests on
+single-chain principality. So the "cite-free lower" the operator went to BUILD is **cite-free modulo this one
+inferred link**, not monument-free.
+
+**THE FORK (surfaced to elder + operator):**
+- **(P)** route-P consumes the monument. Fully cite-free ⟹ prove it general (open / a mountain); else cite
+  *just the single-chain principality* — a SMALLER cite than objects-only, with the atlas built.
+- **(V)** re-scope the ideal conjunct to the **value-floor** (`ideal-route-render` §209-281): rlct ≥ ½·Mval at
+  the minimising branch only, coupling-ASSISTED, no single-chain collapse, claims monument-free — but
+  **mirage-adjacent** (V-lower retired ×3, #146). Elder adjudicates genuine-vs-mirage.
+- **(objects-only)** cite the whole resolution (STOP-fallback).
+
+**In flight (decorrelated decision inputs):**
+1. **Discriminating probe** → reroute-R3derisk: a deeper-mixed instance (≥3 shared deep factors / higher-L),
+   Gröbner-compute SIMULTANEOUSLY (i) I_terminal = ⟨b_k₀⟩ exactly, (ii) det Dg = ±monomial (unit ≡ 1),
+   (iii) corner-join localization-free?  CLEAN ⟹ monument verified one deeper rung, P-confident;
+   BITES (denominator / unavoidable localization) ⟹ V/objects-only. Persist → `deeper-mixed-probe.md`.
+2. **Elder adjudication** → elder-reroute: P-vs-V-vs-objects-only + the decisive V-genuine-vs-mirage verdict
+   (elder holds the fork-history).
+
+**HELD:** the R3 monument-consuming unified fold, pending the fork decision.
+
+**Controller stance (honest-reporting / damp-harder):** this is destination-adjacent (bears on the "cite-free"
+premise of the operator's GO), so surfaced async + non-blocking; proceed-on-silence keeps the probe + elder
+moving; the fork itself (esp. any move toward objects-only or a value-re-scope of the DELIVERABLE) waits for
+the operator's re-weigh.
