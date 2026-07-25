@@ -24152,3 +24152,14 @@ a destination adoption (A/B/C) will trigger the §1-B status edit — flag the e
 
 **Both decorrelated seats (reroute-R3derisk, elder-reroute) have delivered + are resting.** Sole in-flight
 decision input = the tube-cover probe [#169, tubecover-probe] — the true next gate that prices A vs B/C.
+
+## 2026-07-25 (tick, cont.) — B1 escape-cone probe FIRED (the last open caveat)
+
+The tubecover-probe seat volunteered the DECISIVE B1 test; fired it [#170] in parallel with the elder's
+judgment-from-sector-count-history. **Test:** does the sector-count escape cone {max_W > C·max_V} INTERSECT
+the singular locus {loss=0} at (3,3,3,2,2) t=(2,2,1,0)? LOSS-REGULAR there ⟹ escape cone needs no chart
+(finite integral) ⟹ B1 DISSOLVES (route-(a)/Cartesian-fan artifact) ⟹ destination de-risk DONE. MEETS the
+fibre ⟹ B1 REAL residual (pivot-adapted normalizations; detail-at-scale-vs-monument to adjudicate). Own
+decorrelated Codex. Persist → `threads/reroute-R2-tubecover/b1-escape-cone-probe.md`. Composes with the
+elder's read. IN FLIGHT: elder (A-vs-B ranking + does R>0 drop (A) to ONE inference + B1 interpretation) +
+the B1 probe. This is the sole remaining decision input before the destination is fully priced.
