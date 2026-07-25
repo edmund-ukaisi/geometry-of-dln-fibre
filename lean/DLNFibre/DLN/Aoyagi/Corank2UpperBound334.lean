@@ -60,4 +60,18 @@ theorem rlctAt_coreGen334_le_four :
   have hcm := chart334_chartMin_le
   linarith
 
+/-- **The (3,3,4) upper bound, FORWARD-ONLY (principality-free) — the V-UPPER validation.** The same
+`rlctAt (∑(coreGen dvec eWrap)ᵢ²) 0 ≤ 4 = ½·minAdm(3,3,4)` via the forward engine
+`Chart.rlctAt_le_chartMin_half_forward`, which consumes only `chart334`'s FORWARD ideal inclusion
+`hideal_fwd` (through one-directional Object A) + Object C — NOT the reverse `hideal_bwd`, NOT the
+single-chain principality `⟨I⟩=⟨b₁⟩`. The junk-`0` guard is discharged here from `hideal_bwd`
+(`lossNull_of_hideal_bwd`) — a strictly weaker use than the reverse ideal inclusion. This is the
+concrete witness that the upper half needs no principality: a chart with only its forward half
+proved (plus the null guard) suffices, so V-UPPER lifts to general `d` on the FORWARD atom alone. -/
+theorem rlctAt_coreGen334_le_four_forward :
+    rlctAt (sumSqFam (coreGen dvec eWrap)) (0 : Fin 21 → ℝ) ≤ 4 := by
+  have h := chart334.rlctAt_le_chartMin_half_forward chart334.lossNull_of_hideal_bwd
+  have hcm := chart334_chartMin_le
+  linarith
+
 end DLNFibre.DLN.Aoyagi

@@ -459,6 +459,96 @@ theorem Chart.mem_wLocalAdmissible_of_localAdmissible {F : Fin M → (Fin D → 
   exact ⟨s, Metric.ball_mem_nhds 0 hε, hInt_meas.aestronglyMeasurable,
     (hasFiniteIntegral_iff_ofReal (ae_of_all _ hInt_nonneg)).mpr hfin⟩
 
+/-! ### The single-chart upper bound, FORWARD-ONLY (Aoyagi's `rlct ≤ ½·codim`, principality-free)
+
+The Watanabe-style upper direction `rlctAt (∑Fᵢ²) x₀ ≤ ½·chartMin` from ONE chart uses strictly LESS
+than the two-sided value equality `two_mul_wrlctAt_eq_chartMin`: it consumes only the FORWARD ideal
+inclusion `hideal_fwd` (`(∏C)∘g ⊆ ⟨diag b⟩`, i.e. the block-elimination puts the loss INTO the
+monomial ideal) through the one-directional Object A (`wrlctAt_sumSqFam_le_of_germRepresents`) and the
+monomial value (Object C). It does **not** touch `hideal_bwd` — the reverse inclusion / no-over-vanishing
+/ single-chain principality `⟨I⟩=⟨b₁⟩`, all of which are the LOWER bound's business. The only residue of
+the reverse is the junk-`0` guard `LocallyNullZeros (∑(Fᵢ∘g)²) 0` (the pulled-back loss's zero set is
+null), taken as an explicit hypothesis strictly WEAKER than `hideal_bwd`: for a resolution chart of a
+nonzero polynomial family it is a plain non-degeneracy fact (some `(∏C)ᵢⱼ∘g ≢ 0`), and `hideal_bwd`
+discharges it (`lossNull_of_hideal_bwd`) when present. This is why V-UPPER is complete-general and
+cheap where the equality/lower bound is not. -/
+
+/-- The pulled-back loss `∑(Fᵢ∘g)²` has a locally-null zero set at the chart origin — the junk-`0`
+guard, derived from the REVERSE inclusion `hideal_bwd`: `{∑(Fᵢ∘g)²=0} ⊆ {b_{k₀}=0}` (a null monomial
+zero set). Lets an instance that carries `hideal_bwd` feed the forward-only upper bound. -/
+theorem Chart.lossNull_of_hideal_bwd {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) : LocallyNullZeros (sumSqFam (fun i ↦ F i ∘ c.g)) 0 := by
+  have hnbhd_mem : c.nbhd ∈ 𝓝 (0 : Fin D → ℝ) := c.hnbhd_open.mem_nhds (c.hdom_sub c.hdom_zero)
+  obtain ⟨a, _hacont, harep⟩ := c.hideal_bwd
+  refine ⟨c.nbhd, hnbhd_mem, measure_mono_null ?_ (volume_monomialFam_zeroSet c.bexp c.k₀)⟩
+  intro u hu
+  have hu0 : u ∈ {w | sumSqFam (fun i ↦ F i ∘ c.g) w = 0} := hu.1
+  have hall : ∀ i, (F i ∘ c.g) u = 0 :=
+    fun i ↦ sumSqFam_zeroSet_subset (fun i ↦ F i ∘ c.g) i hu0
+  change monomialFam c.bexp c.k₀ u = 0
+  rw [harep u hu.2 c.k₀]
+  refine Finset.sum_eq_zero (fun i _ ↦ ?_)
+  change a c.k₀ i u * (F i ∘ c.g) u = 0
+  rw [hall i, mul_zero]
+
+/-- **Single-chart RLCT upper bound, FORWARD-ONLY.** `rlctAt (∑Fᵢ²) x₀ ≤ ½·chartMin` from ONE chart,
+using only the FORWARD ideal inclusion `hideal_fwd` (via one-directional Object A) + Object C + the
+junk-`0` guard `hloss_null` — NOT `hideal_bwd`, NOT the single-chain principality. The
+change-of-variables `≤` leg (`mem_wLocalAdmissible_of_localAdmissible`, itself ideal-free) carries
+`localAdmissible (loss) x₀` into `wLocalAdmissible (loss∘g) 0`; the forward ideal domination pushes
+that into the monomial `Ico [0, ½·chartMin)` (`wLocalAdmissibleExponents_subset_of_eventually_le`);
+so every admissible exponent is `< ½·chartMin`, whence `sSup ≤ ½·chartMin`. -/
+theorem Chart.rlctAt_le_chartMin_half_forward {F : Fin M → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ}
+    (c : Chart F x₀) (hloss_null : LocallyNullZeros (sumSqFam (fun i ↦ F i ∘ c.g)) 0) :
+    rlctAt (sumSqFam F) x₀ ≤ c.chartMin / 2 := by
+  classical
+  have h0nbhd : (0 : Fin D → ℝ) ∈ c.nbhd := c.hdom_sub c.hdom_zero
+  obtain ⟨unit, hunit_cont, hunit0, hunitmeas, hW⟩ := c.jacWeight_form_at h0nbhd
+  have hWmeas : Measurable c.jacWeightFn := c.continuous_jacWeightFn.measurable
+  have hMmeas : ∀ j, Measurable (monomialFam c.bexp j) := by intro j; unfold monomialFam; fun_prop
+  have hMonoMeas : Measurable (sumSqFam (monomialFam c.bexp)) :=
+    Finset.measurable_sum _ (fun j _ ↦ (hMmeas j).pow_const 2)
+  have hWnn : ∀ᶠ w in 𝓝 (0 : Fin D → ℝ), 0 ≤ c.jacWeightFn w :=
+    Filter.Eventually.of_forall (fun w ↦ abs_nonneg _)
+  have hGF : GermRepresents (fun i ↦ F i ∘ c.g) (monomialFam c.bexp) 0 :=
+    c.hideal_fwd.germRepresents_of_isOpen c.hnbhd_open h0nbhd
+  -- the monomial side's weighted admissible set is the boxed `Ico`, with `½·chartMin` its top.
+  have hmonoIco : wLocalAdmissibleExponents c.jacWeightFn (sumSqFam (monomialFam c.bexp)) 0
+      = Set.Ico 0 (monomialThreshold (c.bexp c.k₀) c.jac c.hbind) :=
+    monomialSumSq_wLocalAdmissible_eq c.hchain c.hbind hunit_cont hunit0 hunitmeas hW
+  have hthr : monomialThreshold (c.bexp c.k₀) c.jac c.hbind = c.chartMin / 2 := by
+    have hwr : wrlctAt c.jacWeightFn (sumSqFam (monomialFam c.bexp)) 0
+        = monomialThreshold (c.bexp c.k₀) c.jac c.hbind :=
+      monomialSumSq_wrlctAt_eq c.hchain c.hbind hunit_cont hunit0 hunitmeas hW
+    have hval : 2 * wrlctAt c.jacWeightFn (sumSqFam (monomialFam c.bexp)) 0 = c.chartMin := by
+      rw [Chart.chartMin]
+      exact monomialSumSq_two_mul_wrlctAt_eq_min c.hchain c.hbind c.hunit_mult
+        hunit_cont hunit0 hunitmeas hW
+    rw [← hwr]; linarith
+  -- FORWARD ideal domination `∑(Fᵢ∘g)² ≤ (C+1)·∑bₖ²` ⟹ admissible-set inclusion (Object A one-sided).
+  obtain ⟨C, hC0, hCbound⟩ := eventually_sumSqFam_le_of_germRepresents hGF
+  have hC'pos : (0 : ℝ) < C + 1 := by linarith
+  have hbound' : ∀ᶠ w in 𝓝 (0 : Fin D → ℝ),
+      0 ≤ sumSqFam (fun i ↦ F i ∘ c.g) w ∧
+        sumSqFam (fun i ↦ F i ∘ c.g) w ≤ (C + 1) * sumSqFam (monomialFam c.bexp) w := by
+    filter_upwards [hCbound] with w hw
+    exact ⟨sumSqFam_nonneg _ w,
+      hw.trans (mul_le_mul_of_nonneg_right (by linarith) (sumSqFam_nonneg _ w))⟩
+  have hsub := wLocalAdmissibleExponents_subset_of_eventually_le hWmeas
+    (hMonoMeas.const_mul (C + 1)) hWnn hbound' hloss_null
+  rw [wLocalAdmissibleExponents_const_mul hC'pos] at hsub
+  -- assemble: every loss-admissible exponent lands `< ½·chartMin`, so the `sSup` is `≤ ½·chartMin`.
+  have hne : (localAdmissibleExponents (sumSqFam F) x₀).Nonempty := by
+    refine ⟨0, zero_mem_localAdmissibleExponents ?_⟩
+    exact ⟨Metric.ball x₀ 1, Metric.ball_mem_nhds x₀ one_pos,
+      integrableOn_const (μ := volume) (s := Metric.ball x₀ 1) (measure_ball_lt_top.ne)⟩
+  rw [rlctAt_def]
+  refine csSup_le hne (fun cc hcc ↦ ?_)
+  have hcc1 := c.mem_wLocalAdmissible_of_localAdmissible hcc
+  have hcc2 := hsub hcc1
+  rw [hmonoIco, Set.mem_Ico] at hcc2
+  rw [← hthr]; exact le_of_lt hcc2.2
+
 /-! ## The atlas change-of-variables (min over charts) — the landed leaf -/
 
 /-- **The atlas `≥` leg.** If `cc` is below every chart's boxed threshold, it is locally admissible
