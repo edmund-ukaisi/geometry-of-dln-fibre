@@ -22016,6 +22016,35 @@ realization[detail-at-scale, the (S,J) induction, the build tripwire pinned]. HO
 (the corank-2 two-sided Lean first-brick gate = the auto-fire trigger). Green → full build under the grant;
 RED → objects-only cite. Elder convenes at #123 with both results.
 
+---
+
+## 2026-07-25 (later) — #123 REVERSE HALF GREEN (controller-re-derived); completing the END-TO-END gate via the composite g
+
+Gate-3 (gate2-hideal, `Corank2TerminalProto`, banked -gate2 @ origin) reported + CONTROLLER-RE-DERIVED:
+**the reverse `hideal_bwd` closes CHEAPLY at coupled corank-2 — GREEN.** It proves the terminal two-sided
+`hideal` on a corank-2 residual block (both `RegionRepresents` directions, `monomialFam` form); the reverse
+is the PROVEN Core `terminal_bezout` (cofactor `1/unit`, continuous via `ContinuousOn.inv₀`,
+coupling-INDEPENDENT — the dominant `E` recovered from the cleared pivot, strict transform ≡1; the coupling
+lives in `b₂,b₃∈⟨b₁⟩`). I force-rebuilt (oleans deleted) + ran `#print axioms hideal_terminal_both` MYSELF =
+`[propext, Classical.choice, Quot.sound]`. **The pivotal risk — "does `hideal_bwd` wall at coupled corank-2"
+(the Phase-3a over-claim, the thing 6 prior mis-scopes never built two-sided) — is RETIRED GREEN.** The
+coupled block-elim both-directions is separately proven (gate-2 `Corank2HidealProto`, over the genuine `Δ`).
+
+**HONEST CAVEAT + the belt-and-braces call.** The gate proved the MECHANISMS (reverse via terminal_bezout +
+coupled block-elim), NOT the literal (3,3,4) forward COMPOSITE chart `g` (block-elim shear ∘ radial ∘ join,
+21 vars, pulled through `coreGen`) — Codex's flagged "biggest Lean risk" (detail-at-scale, NOT a wall;
+normal crossing Gröbner-banked + #124 GREEN). The elder's #123 criterion said END-TO-END, and the composite
+is the un-built END-TO-END piece. DECISION (belt-and-braces, the builder's own recommendation + my
+coupled-part base rate): COMPLETE the END-TO-END gate by pricing ONE composite `g` (the (3,3,4) minimiser
+branch's full chart + two-sided `hideal`) BEFORE auto-firing the general-d #112 — it's #112's first brick, so
+not wasted; measure the flagged-biggest-risk at one instance rather than discover it mid-general-build.
+gate2-hideal re-convened for it; tripwire = the #124 pivot-less-deepest-intersection CAS check. GREEN → the
+END-TO-END gate is complete → auto-fire #112 under the grant. WALL/tripwire-trips → objects-only re-scope.
+
+**Status.** #123 reverse-half GREEN (re-derived, banked -gate2). Completing the END-TO-END gate = the (3,3,4)
+composite g (gate2-hideal, re-convened). This is the LAST measurement before the general-d build; both other
+de-risks (cover route-a, realization #124) already GREEN. Holding for the composite-g result.
+
 **PAPER-FIRST anchor + coherence tightening (pnp, 2026-07-25) — fold into the elder's #123 charter finalize.**
 Paper-first (charter §3 DEFECT gate): AOYAGI RESOLVES the realization (her two-sided (S,J) maintenance
 Cases 1&2 → terminal normal crossing, general-L per her abstract); the worked.tex:663 "deeper mixed open
