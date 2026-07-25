@@ -24227,3 +24227,27 @@ ratio < ½minAdm [#172, in flight]. **The one remaining OPEN item is the recursi
 (loss=monomial²·R, R(0)≠0) in the escape charts (same as B2), or the full ideal identity? Post-R>0-correction
 the sandwich should suffice — a quick decorrelated confirmation to simplify the R2 unified-atlas spec.
 R2 formaliser [#173] given the unification heads-up (keep the survivor-entry fan permutation-closed/extensible).
+
+## 2026-07-25 (tick, cont.) — B1-sandwich refinement: sandwich SUFFICES; R2 spec sharpened to the matched-pairing fan; B1 fully closed
+
+**tubecover-probe [exact, probe5_sandwich_escape.py; appended to b1-escape-cone-probe.md]. VERDICT: the R>0
+SANDWICH SUFFICES** — the escape-cone fix needs only `loss = monomial²·R` with `R(0)≠0` (same as B2), NOT
+ideal-monomialisation. The seat's earlier "ideal-level build check" was STRONGER than the lower bound requires
+⟹ simplifies the R2 spec.
+- MATCHED (loss-isometric) escape chart — pivot on a MATCHED pair (e.g. C3[0,1] AND C4[1,0] together) — gives
+  R(0)=1, sandwich holds identically to canonical.
+- Sandwich holds IFF the chart monomial is a MATCHED PRODUCT TERM of the survivor
+  `X[0,0] = C3[0,0]C4[0,0] + C3[0,1]C4[1,0]` (its two terms = the two matched pairings). A MISMATCHED pairing
+  (C3[0,1]·C4[0,0]) ⟹ X[0,0]/mono = sum of two ratios ⟹ R(0)=0, sandwich FAILS.
+- BUT the mismatched sectors are NOT holes: they are exactly the {X=0}={R=0} cancellation locus (comparable
+  monomials, no dominant term) that RECURSES — the SAME deep stratum already named (#172), not a new
+  obstruction. Matched charts cover the dominant-monomial sectors (sandwich); comparable-monomial sectors
+  recurse. **Everything unifies onto the one recursion.**
+
+**R2 SPEC SHARPENED (relayed to reroute-R2build):** fan by the LOSS-ISOMETRY ORBIT = matched inner-permutation
+pairings (each chart's monomial = a product term of the survivor), NOT arbitrary independent pivots. Three
+modes: radial-pivot-only (0%, FAIL) / mismatched-independent (R(0)=0, FAIL, recurse) / matched-consistent
+(R(0)=1, sandwich, THE fan). Per-chart obligation = the R>0 sandwich only, not ideal-monomialisation.
+
+**B1 FULLY CLOSED. NO MONUMENT.** The SOLE remaining open item is the recursion-on-{R=0} (#172, rzero, in
+flight) — and the B1 mismatched-sector story now also reduces to it. tubecover-probe rests (all B1 work done).

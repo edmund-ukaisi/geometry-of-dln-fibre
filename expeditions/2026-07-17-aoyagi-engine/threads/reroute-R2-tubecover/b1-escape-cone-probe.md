@@ -99,3 +99,45 @@ permutation-closed (pivot-adapted-normalization) atlas [B1+B2 unified] + the rec
 terminating with no divisor ratio < ½·minAdm [the tube probe's #172 caveat]. No monument. NEXT: this
 was the last probe (per heartbeat "no more probes after these") — the build (R2) can start on the
 unified survivor-entry / permutation-closed fan spec.
+
+---
+
+## ADDENDUM — R>0 sandwich in the escape charts (#170 refinement, controller Q): SANDWICH SUFFICES
+(exact, `probe5_sandwich_escape.py`). The R>0-corrected framing: the lower bound needs only the
+POINTWISE SANDWICH `loss = monomial²·R` with `R(0)≠0`, NOT the full ideal identity. Does the
+pivot-adapted escape chart give it?
+
+**VERDICT: YES for the correctly-constructed (loss-isometric / matched) escape charts — the fix needs
+ONLY the sandwich; ideal-monomialisation is STRONGER than the lower bound requires.** With a sharp,
+flagged nuance about WHICH charts are fan members.
+
+- **Matched escape chart (inner-permutation image, a loss-isometry): sandwich holds, R(0)=1.** The
+  full-swap chart (pivot on C3[0,1] AND C4[1,0] — the matched inner permutation) gives
+  Ye[0,0] = c′·p′ + 1, Re(0) = 1 — IDENTICAL sandwich structure to canonical. [FACT, exact]
+- **The sandwich holds IFF the chart monomial is a MATCHED product term of X[0,0].**
+  X[0,0] = C3[0,0]·C4[0,0] + C3[0,1]·C4[1,0] (two terms = the two matched/diagonal pairings). A chart
+  whose monomial is one of these two → X[0,0]/mono = 1 + (small) → R(0)=1. A MISMATCHED monomial
+  (C3[0,1]·C4[0,0] or C3[0,0]·C4[1,0]) → X[0,0]/mono = a SUM OF TWO RATIOS → R(0)=0, sandwich FAILS.
+  [FACT, exact — the controller's flagged failure mode, found]
+- **The mismatched pairings are NOT fan members — they are the RECURSION's domain, not a hole.** A
+  mismatched sector {C3[0,1] dom & C4[0,0] dom} is exactly where X[0,0] is a SUM of two COMPARABLE
+  monomials with NO dominant term — so it is not monomialised by any single-term chart; it needs a
+  DEEPER blow-up to separate the two terms (and it contains the {X[0,0]=0} cancellation sub-locus).
+  This is the SAME detail-at-scale recursion already identified (the tube/{R=0} deep stratum), not a
+  new obstruction. The matched charts cover the dominant-monomial sectors (sandwich); the
+  comparable-monomial sectors recurse.
+
+**R2 SPEC SHARPENING (unifies the two probes' spec):** the fan must fan by the **loss-isometry orbit**
+— the MATCHED inner-permutation pairings (each chart's monomial = a product term of the survivor) —
+NOT arbitrary independent pivot choices. Three failure/success modes now pinned:
+  - radial-pivot-only (keep one survivor entry): covers 0% of the tube [tube probe]. ✗
+  - mismatched-independent pivots: R(0)=0, no kept survivor [this probe]. ✗ (not a fan member; recurse)
+  - matched-consistent (loss-isometry orbit): R(0)=1, sandwich holds. ✓ — THE fan.
+In the FULL (unweighted) DLN loss the matched structure is the loss-symmetry group (verified
+permutation-invariance, probe4); the residual's δ-weighting distinguishes the survivor row but the
+matched pairings are still exactly the two product terms of each survivor entry.
+
+**NET:** the escape-cone (and tube) fix needs only the R>0 SANDWICH — the "ideal-level build check" I
+listed is STRONGER than the lower bound requires, which SIMPLIFIES the R2 spec. The only residual is
+the recursion (comparable-monomial / {R=0} deep strata), already named as detail-at-scale (#172). No
+ideal-monomialisation needed for the lower bound; no monument.
