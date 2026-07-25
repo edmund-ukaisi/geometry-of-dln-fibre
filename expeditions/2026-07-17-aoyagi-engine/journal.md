@@ -22954,3 +22954,30 @@ STATE: the (3,3,4) Resolution's realization+assembly side is FULLY banked (rung 
 (#142, decomp-5b building the (3,3,4) gWrapFan Covers → ball-cover; routeP-p1 supervises + wires via
 resolution334_of_ballCover{,_ofValues}). When the cover lands → the full (3,3,4) Resolution = the general-d
 gate entry bar → convene the general-d gate.
+
+**COVER RECALIBRATION — the (3,3,4) cover is ~2-3 sub-builds, NOT a wire (routeP-p1, honest; 2026-07-25).**
+routeP-p1's supervision-survey corrects my optimistic "finish line = wire" prior (anti-optimism catch). The
+(3,3,4) cover (#142) has three pieces, all provenance-verified detail-at-scale (NO monument), but REAL work:
+- (A) gWrap = a fanOfSteps LEAF-COMPOSITE. gWrap = sigmaPiv∘shearH∘permP∘bbA0∘bbA1 has permP+shearH
+  INTERLEAVED, but fanOfSteps is strict (shear∘blockBlowup)∘…; the FanStep list must regroup to reproduce
+  gWrap, + outerShear (rank-1-per-coord) must match shearH (Schur BILINEAR) for some corr — derivable-or-not,
+  routeP-p1 deriving now.
+- (B) THE HEAVIER HALF — each fan leaf a FULL Chart (coreGen dvec eWrap) 0. resolution334_of_ballCover needs
+  numC>1 charts (a single gWrap chart does NOT a.e.-cover a compact dom), EACH with its own hideal/hjac/hg_inj.
+  The non-canonical leaves = K-ORBIT TRANSPORT (coord-perm conjugation) of chart334 = the #86(B) K-transport /
+  the 5-lemma cover-transport template (lossSymm_isometry, transport_chart, orbitAtlas, orbit_covers, compose)
+  from pnp-hcover's PROVENANCE addendum. Bounded (a GENERIC transport_chart lemma applied over the orbit, NOT
+  numC separate proofs) + provenance-verified (isometry carries the cover; values fan-invariant), but REAL.
+  THIS IS THE GENERAL-d COVER CORE, built at (3,3,4) → front-loads general-d (good). Currently unowned.
+- (ii) ball ⊆ leafImages — decomp-5b's Covers set-cover (on A's fanOfSteps + faithfulShear_covers).
+
+HONEST FINISH-LINE UPDATE: the (3,3,4) Resolution's realization+assembly+Chart side is banked; the COVER is
+the K-transport (#86(B) 5-lemma template) + the Covers + the gWrap=fanOfSteps bridge — a few sub-builds, not
+one wire. Still all detail-at-scale + provenance-verified (no monument). GUARD-B holds: the K-transport IS
+required for the (3,3,4) gate bar (its cover), not general-d pre-work — but it templates general-d.
+
+LANE SPLIT (routeP-p1's recommendation (a), accepted, + option): routeP-p1 owns (A) [its gWrap context] +
+(B) [the K-transport, hold the hideal/Chart context], AUTHORIZED to spin a 3rd fresh lane for (B) if its
+context strains or (B) is cleanly separable (the 5-lemma template is a self-contained spec — pnp-hcover's
+provenance addendum). decomp-5b owns (ii) [the Covers]. routeP-p1 integrates + wires. Convene the ELDER at
+the general-d gate (unchanged); no elder gate needed now (the cover is within the (3,3,4) staked boundary).
