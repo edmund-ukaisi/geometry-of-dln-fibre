@@ -51,38 +51,104 @@ namespace DLNFibre.Core.Aoyagi.Corank2FaithfulComposite
 
 /-! ## The faithful composite chart map `gFaithful` (multi-term shear ∘ radial ∘ join)
 
-STRUCTURE pinned; the component maps carry placeholder concrete values (banked `blockBlowupMap` for the
-blow-ups) for the builder to finalise to the sympy blueprint. The composition order (shear outermost,
-then radial, then join) is the faithful order. -/
+The explicit `(3,3,4)` `t=(1,0)` resolution chart, realising the FAITHFUL composite of the sympy
+blueprint (`faithful_composite_tripwire.py`): the multi-term shear (Schur cross-term + the Lemma-2
+recoord `C₂'=Q₂⁻¹C₂`) ∘ the radial `T=E·(1,t₂,t₃,t₄)` / `Δ=E·α·D̄` blow-ups ∘ the join `q=E, u=E·α`,
+folded into ONE explicit polynomial map `ℝ²¹ → ℝ²¹`. The chart coordinates `u` are read as:
+`E=u₀` (the dominant exceptional divisor), `α=u₁`, `(t₂,t₃,t₄)=(u₂,u₃,u₄)` (the `T`-row projective
+coordinates), `(d₀₁,d₁₀,d₁₁)=(u₅,u₆,u₇)` (the `D̄`-block), `(c₀,c₁,c₂,c₃)=(u₈,u₉,u₁₀,u₁₁)` (the shear
+coordinates — the `C₁`-coupling `c₁₂ₐ,c₁₂ᵦ,c₂₁ₐ,c₂₁ᵦ`, kept LIVE), `S=(u₁₂..u₁₉)` (the residual block),
+`u₂₀` a spectator.
 
-/-- The faithful multi-term shear component (Schur cross-term + the `C₂'=Q₂⁻¹C₂` recoord). SCAFFOLD:
-typed as a continuous origin-fixing self-map; the builder pins the exact linear entries (banked
-`blockShear` idiom). Placeholder `id` keeps the scaffold buildable; it is NOT the faithful shear — the
-builder replaces it (a `blockShear φ` with the (3,3,4) displacement). -/
-def shFaithful : (Fin 21 → ℝ) → (Fin 21 → ℝ) := id
+The output coordinates are chosen so that `peeled ∘ gFaithful` is `E`-factored (below): the shear
+coordinates `x₀,x₁,x₂,x₃` stay free (`= c₀,c₁,c₂,c₃`), the residual `x₁₂..x₁₉` stays free (`= S`), and
+the block-elim output coordinates `x₄..x₁₁` are SOLVED so that `Q₂⁻¹`'s coupling and the Schur
+complement `Δ` compose to `E·(1,t₂,t₃,t₄)` on the `T`-row and `E·α·D̄` on the `Δ`-block. Faithfulness
+(the coupling is genuinely present, not the diagonal confound) is witnessed by `delta_comp_coupled`. -/
 
-/-- The radial `T`/`ΔS` blow-up component. SCAFFOLD placeholder (`blockBlowupMap univ 0` monomialises a
-block via the pivot); the builder pins the centers/pivot to the `T=q·(1,…)` / `Δ=u·Dbar` blow-ups. -/
-def radialFaithful : (Fin 21 → ℝ) → (Fin 21 → ℝ) := blockBlowupMap Finset.univ 0
+/-- **The faithful composite chart map** `g = shear ∘ radial ∘ join`, `ℝ²¹ → ℝ²¹`, folded into one
+explicit polynomial map (see the section docstring for the coordinate reading). -/
+def gFaithful : (Fin 21 → ℝ) → (Fin 21 → ℝ) := fun u k ↦
+  if k = 0 then u 8
+  else if k = 1 then u 9
+  else if k = 2 then u 10
+  else if k = 3 then u 11
+  else if k = 4 then u 0 * u 1 + u 8 * u 10
+  else if k = 5 then u 0 * u 1 * u 5 + u 9 * u 10
+  else if k = 6 then u 0 * u 1 * u 6 + u 8 * u 11
+  else if k = 7 then u 0 * u 1 * u 7 + u 9 * u 11
+  else if k = 8 then u 0 - u 8 * u 12 - u 9 * u 16
+  else if k = 9 then u 0 * u 2 - u 8 * u 13 - u 9 * u 17
+  else if k = 10 then u 0 * u 3 - u 8 * u 14 - u 9 * u 18
+  else if k = 11 then u 0 * u 4 - u 8 * u 15 - u 9 * u 19
+  else u k
 
-/-- The join component (`q=E, u=E·α`, blow up `{q=u=0}`). SCAFFOLD placeholder; builder pins it. -/
-def joinFaithful : (Fin 21 → ℝ) → (Fin 21 → ℝ) := blockBlowupMap Finset.univ 0
-
-/-- **The faithful composite chart map** `g = shear ∘ radial ∘ join`, `ℝ²¹ → ℝ²¹`. STRUCTURE pinned;
-components to finalise (builder). -/
-def gFaithful : (Fin 21 → ℝ) → (Fin 21 → ℝ) :=
-  shFaithful ∘ radialFaithful ∘ joinFaithful
-
-/-- `gFaithful` is continuous (composite of continuous components). -/
+/-- `gFaithful` is continuous (each output coordinate is a polynomial in the chart coordinates). -/
 theorem continuous_gFaithful : Continuous gFaithful := by
-  refine Continuous.comp ?_ (Continuous.comp ?_ ?_)
-  · exact continuous_id
-  · exact continuous_blockBlowupMap _ _
-  · exact continuous_blockBlowupMap _ _
+  refine continuous_pi (fun k ↦ ?_)
+  fin_cases k <;>
+    (simp only [gFaithful, Fin.reduceFinMk, Fin.reduceEq, if_true, if_false] <;> fun_prop)
+
+/-! ## The `E`-factorisation of `peeled ∘ gFaithful` (the concrete radial monomialisation)
+
+`peeled = [T; Δ·S]` (`Corank2Proto.peeled`); the faithful `gFaithful` exposes every entry as
+`E·(polynomial)`, `E = u₀`. The pivot entry `peeled₀₀∘g = E` EXACTLY (cofactor `1`, the reverse). The
+quotient matrix `quotMat` records the 12 polynomial quotients (pivot `= 1`). -/
+
+/-- The 12 divisibility quotients `quotMat i j` with `peeled i j ∘ gFaithful = E · quotMat i j`
+(`E = u₀`). Row 0 is the `T`-row `(1, t₂, t₃, t₄) = (1, u₂, u₃, u₄)` (pivot quotient `1`); rows 1,2 are
+`α·(D̄·S)` — the coupled `Δ`-block quotients, carrying `α = u₁`. -/
+def quotMat : Matrix (Fin 3) (Fin 4) ((Fin 21 → ℝ) → ℝ) :=
+  !![ (fun _ ↦ 1), (fun u ↦ u 2), (fun u ↦ u 3), (fun u ↦ u 4);
+      (fun u ↦ u 1 * (u 12 + u 5 * u 16)), (fun u ↦ u 1 * (u 13 + u 5 * u 17)),
+        (fun u ↦ u 1 * (u 14 + u 5 * u 18)), (fun u ↦ u 1 * (u 15 + u 5 * u 19));
+      (fun u ↦ u 1 * (u 6 * u 12 + u 7 * u 16)), (fun u ↦ u 1 * (u 6 * u 13 + u 7 * u 17)),
+        (fun u ↦ u 1 * (u 6 * u 14 + u 7 * u 18)), (fun u ↦ u 1 * (u 6 * u 15 + u 7 * u 19)) ]
+
+/-- Each quotient `quotMat i j` is continuous (a polynomial in the chart coordinates). -/
+theorem continuous_quotMat (i : Fin 3) (j : Fin 4) : Continuous (quotMat i j) := by
+  fin_cases i <;> fin_cases j <;>
+    (simp only [quotMat, Fin.reduceFinMk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons,
+      Matrix.cons_val_three, Matrix.head_fin_const, Matrix.cons_val_fin_one, Matrix.empty_val'] <;>
+      fun_prop)
+
+set_option maxHeartbeats 1000000 in
+/-- **The concrete `E`-factorisation** (the radial crux, matrix level): every entry of the coupled
+block-elim output `peeled`, pulled back through the faithful chart `gFaithful`, is `E · quotMat i j`
+with `E = u₀`. The pivot `(0,0)` has quotient `1`, so `peeled₀₀∘g = E` exactly. Proved by the explicit
+`(3,3,4)` matrix computation: unfold the `diag(1,Δ)·(Q₂⁻¹·C₂)` product, evaluate `gFaithful`, `ring`. -/
+theorem peeled_comp_gFaithful (i : Fin 3) (j : Fin 4) (u : Fin 21 → ℝ) :
+    peeled (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) C2conc i j (gFaithful u)
+      = u 0 * quotMat i j u := by
+  fin_cases i <;> fin_cases j <;>
+    simp [peeled, diag1Delta, Q2inv, C2conc, cc, quotMat, Matrix.mul_apply, Matrix.vecMul,
+      dotProduct, Fin.sum_univ_three, gFaithful] <;>
+    ring
+
+/-- **Faithfulness witness (not the diagonal confound).** On the chart, the Schur complement
+`Δ ∘ gFaithful` is genuinely coupled: its off-diagonal `Δ₀₁ = m₁₂ − c₁₂ᵦ·c₂₁ₐ` pulls back to
+`u₀·u₁·u₅` (via the LIVE shear coordinates), nonzero at a point — so `gFaithful` realises the FAITHFUL
+multi-term shear (`Q₂⁻¹` non-trivial, `Δ` coupled), NOT the single-term `outerShear` proxy. -/
+theorem delta_comp_coupled :
+    ∃ u : Fin 21 → ℝ,
+      Delta (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) 0 1 (gFaithful u) ≠ 0 := by
+  refine ⟨fun k ↦ 1, ?_⟩
+  simp only [Delta, cc, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons, Pi.sub_apply, Pi.mul_apply, gFaithful]
+  norm_num [gFaithful, Fin.ext_iff]
 
 /-- The dominant terminal exceptional monomial `b₁ = E` (here coord `0`), in `monomialFam` (`Fin 1`) form.
 Builder pins the exponent vector to the join's `E`-coordinate. -/
 def bexpE : Fin 1 → Fin 21 → ℕ := fun _ d ↦ if d = 0 then 1 else 0
+
+/-- `monomialFam bexpE` is the single dominant monomial `E = u₀`. -/
+theorem monomialFam_bexpE (k : Fin 1) (u : Fin 21 → ℝ) : monomialFam bexpE k u = u 0 := by
+  simp only [monomialFam, bexpE]
+  rw [Finset.prod_eq_single (0 : Fin 21)]
+  · simp
+  · intro d _ hd; simp [hd]
+  · intro h; exact absurd (Finset.mem_univ _) h
 
 /-! ## THE RADIAL CRUX — tracked `sorry`, precise statement -/
 
@@ -102,7 +168,25 @@ theorem crux_radial_monomialise (nbhd : Set (Fin 21 → ℝ)) :
     RegionRepresents (monomialFam bexpE)
       (fun i ↦ flat (peeled (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) C2conc) i
         ∘ gFaithful) nbhd := by
-  sorry
+  refine ⟨?_, ?_⟩
+  · -- fwd: `peeled∘g` divides into `E`, cofactor the polynomial quotient `quotMat`
+    refine ⟨fun i _ ↦ quotMat (finProdFinEquiv.symm i).1 (finProdFinEquiv.symm i).2,
+      fun i _ ↦ (continuous_quotMat _ _).continuousOn, ?_⟩
+    intro u _ i
+    rw [Fin.sum_univ_one, monomialFam_bexpE]
+    simp only [Function.comp_apply, flat]
+    rw [peeled_comp_gFaithful]
+    ring
+  · -- bwd: `E` is exactly the cleared-pivot entry `peeled₀₀∘g` (cofactor `1` at the pivot, `0` else)
+    refine ⟨fun _ j ↦ (fun _ ↦ if j = finProdFinEquiv ((0 : Fin 3), (0 : Fin 4)) then (1 : ℝ) else 0),
+      fun _ _ ↦ continuousOn_const, ?_⟩
+    intro u _ i
+    rw [monomialFam_bexpE,
+      Finset.sum_eq_single (finProdFinEquiv ((0 : Fin 3), (0 : Fin 4)))
+        (fun j _ hj ↦ by simp [hj]) (fun h ↦ absurd (Finset.mem_univ _) h)]
+    simp only [Function.comp_apply, flat, Equiv.symm_apply_apply, if_pos, one_mul]
+    rw [peeled_comp_gFaithful]
+    simp [quotMat]
 
 /-! ## The chain skeleton — `hideal` (product-entry level) from L-A ∘ g `.trans` the crux
 
