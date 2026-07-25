@@ -1,39 +1,32 @@
-import DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap
+import DLNFibre.DLN.Aoyagi.Corank2GWrapDecomp
 import DLNFibre.DLN.Aoyagi.GeneralGeoAtlas
 import DLNFibre.DLN.Aoyagi.LeafChartWire
 
 /-!
-# `DLN.Aoyagi.Corank2ChartJac` — #112 rung 5b (L6): the DECOMPOSED (3,3,4) chart Jacobian
+# `DLN.Aoyagi.Corank2ChartJac` — #112 rung 5b, STAGE 2+3: the chart Jacobian + `Chart` L6 fields
 
-The (3,3,4) resolution chart `gWrap = sigmaPiv ∘ gFaithful` is presented as the banked-atom composite
-(chart-architecture fork #138, verdict (B) DECOMPOSED), and its `Chart` L6 fields
-(`hjac`/`jac`/`hg_analytic`/`hg_inj`/`hexcep`) are read off the per-atom Jacobians — with **NO 21×21
-determinant** and **NO crux re-proof**. The banked two-sided `hideal`
-(`Corank2CoreGenWrap.hideal_coreGen_*`) is unchanged: it is stated for the SAME `gWrap`.
+Builds ON routeP-p1's STAGE 1 (`Corank2GWrapDecomp`: `gWrap = sigmaPiv ∘ shearH ∘ permP ∘ bbA0 ∘ bbA1`,
+`gFaithful_decomp`/`gWrap_decomp`, the atom defs). Delivers:
 
-## The decomposition (sympy-exact, `verify_B_decomp.py` + `decomp_check.py`; verified here numerically)
+- **STAGE 2 — the Jacobian.** `|jacDet gWrap u| = |u₀|⁷·|u₁|³·|u₂₀|⁸`, via `jacDet_comp` over the banked
+  per-atom Jacobians (`jacDet_blockBlowupMap` (O9) for `bbA1`/`bbA0`/`sigmaPiv`; `jacDet_blockShear`
+  (shear-pin) for `shearH`; `det_permutation` for `permP`) — **NO 21×21 determinant**.
+- **STAGE 3 — the `Chart` L6 fields.** `hjac` (unit ≡ 1, `jac = [0↦7, 1↦3, 20↦8]`), `hg_analytic`,
+  `hg_inj` (a.e.-injective off `excepWrap`), `hexcep` (null + measurable).
 
-`gFaithful = shearH ∘ permP ∘ blowA0 ∘ blowA1`, so `gWrap = sigmaPiv ∘ shearH ∘ permP ∘ blowA0 ∘ blowA1`:
+The banked two-sided `hideal` (`Corank2CoreGenWrap.hideal_coreGen_*`) is UNCHANGED — stated for the same
+`gWrap`; the decomposition feeds only the Jacobian. NO crux re-proof.
 
-| atom | what | `|jacDet|` | banked as |
-|---|---|---|---|
-| `blowA1` | `blockBlowupMap {1,5,6,7} 1` | `|u₁|³` | `jacDet_blockBlowupMap` (O9) |
-| `blowA0` | `blockBlowupMap {0,…,7} 0` | `|u₀|⁷` | `jacDet_blockBlowupMap` (O9) |
-| `permP` | coordinate permutation `[8,9,10,11,1,5,6,7,0,2,3,4]` (fixed `12..20`) | `1` | `det_permutation` (`|±1|`) |
-| `shearH` | unipotent block-shear (reads kept `{0,1,2,3,12..19}`, writes `4..11`) | `1` | `jacDet_blockShear` (shear-pin) |
-| `sigmaPiv` | `blockBlowupMap {0..7,20} 20` | `|u₂₀|⁸` | `jacDet_blockBlowupMap` (O9) |
-
-So `|jacDet gWrap u| = |u₀|⁷·|u₁|³·|u₂₀|⁸` (`jacWrap = [0↦7, 1↦3, 20↦8]`, unit ≡ 1). The permutation `permP`
-is kept **explicit** (the load-bearing caveat, fork #138): omitting it / reversing the composition
-order breaks the extensional identity `gFaithful_decomp`, which is the self-gate.
-
-`abs_jacDet_permCoord` (a coordinate-permutation `|jacDet| = 1`, general `Fin D`) is reusable engine
-material; kept local pending a second use.
+`shearH` (routeP-p1's raw if-chain) is bridged to `blockShear shearPhiH` (`shearH_eq`) so the GENERAL
+shear-pin `jacDet_blockShear` (which handles a NONLINEAR φ) gives `jacDet shearH ≡ 1` directly. The
+reusable atom `abs_jacDet_permCoord` (a coordinate permutation has `|jacDet| = 1`, general `Fin D`) is
+kept local pending a second use.
 -/
 
 open MeasureTheory Set Equiv Matrix
 open DLNFibre.Core.Aoyagi DLNFibre.Core.Aoyagi.Corank2FaithfulComposite
 open DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap DLNFibre.DLN.Aoyagi.GeneralGeoAtlas
+open DLNFibre.DLN.Aoyagi.Corank2GWrapDecomp
 
 namespace DLNFibre.DLN.Aoyagi.Corank2ChartJac
 
@@ -62,34 +55,11 @@ theorem abs_jacDet_permCoord {D : ℕ} (σ : Equiv.Perm (Fin D)) (u : Fin D → 
   rw [hmat, Matrix.det_permutation]
   rcases Int.units_eq_one_or (Perm.sign σ) with h | h <;> rw [h] <;> simp
 
-/-! ## §1 — the five atoms -/
+/-! ## §1 — the shear as a `blockShear` (bridge to routeP-p1's raw `shearH`) -/
 
-/-- `blowA1 = blockBlowupMap {1,5,6,7} 1` (`|jacDet| = |u₁|³`). -/
-noncomputable def blowA1 : (Fin 21 → ℝ) → (Fin 21 → ℝ) :=
-  blockBlowupMap ({1, 5, 6, 7} : Finset (Fin 21)) 1
-
-/-- `blowA0 = blockBlowupMap {0,…,7} 0` (`|jacDet| = |u₀|⁷`). -/
-noncomputable def blowA0 : (Fin 21 → ℝ) → (Fin 21 → ℝ) :=
-  blockBlowupMap ({0, 1, 2, 3, 4, 5, 6, 7} : Finset (Fin 21)) 0
-
-/-- The coordinate-permutation table `[8,9,10,11,1,5,6,7,0,2,3,4]` on `{0..11}`, identity on `{12..20}`
-(the pull convention `z i = w (permFun i)`). -/
-def permFun : Fin 21 → Fin 21 :=
-  ![8, 9, 10, 11, 1, 5, 6, 7, 0, 2, 3, 4, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-
-/-- `permFun` is injective (checked by kernel `decide`). -/
-theorem permFun_injective : Function.Injective permFun := by decide
-
-/-- The permutation `permFun` as an `Equiv.Perm (Fin 21)` (injective + finite ⟹ bijective). -/
-noncomputable def permSigma : Equiv.Perm (Fin 21) :=
-  Equiv.ofBijective permFun ((Finite.injective_iff_bijective).mp permFun_injective)
-
-/-- The coordinate permutation `permP w = w ∘ permFun`. -/
-def permP : (Fin 21 → ℝ) → (Fin 21 → ℝ) := fun w i ↦ w (permFun i)
-
-/-- The unipotent shear displacement: writes the bilinear corrections to slots `4..11`, reading only
-the kept coordinates `{0,1,2,3,12..19}`; `0` elsewhere. -/
-def shearPhi (w : Fin 21 → ℝ) : Fin 21 → ℝ := fun i ↦
+/-- The shear displacement `shearPhiH` (`shearH = id + shearPhiH`): the bilinear corrections in slots
+`4..11`, reading only the kept coordinates `{0,1,2,3,12..19}`; `0` elsewhere. -/
+def shearPhiH (w : Fin 21 → ℝ) : Fin 21 → ℝ := fun i ↦
   if i = 4 then w 0 * w 2
   else if i = 5 then w 1 * w 2
   else if i = 6 then w 0 * w 3
@@ -101,83 +71,76 @@ def shearPhi (w : Fin 21 → ℝ) : Fin 21 → ℝ := fun i ↦
   else 0
 
 /-- The kept coordinates (fixed + read by the shear): `{0,1,2,3} ∪ {12,…,20}` = complement of `{4..11}`. -/
-def shearKeep : Fin 21 → Prop := fun i ↦ i.val < 4 ∨ 12 ≤ i.val
+def shearKeepH : Fin 21 → Prop := fun i ↦ i.val < 4 ∨ 12 ≤ i.val
 
-/-- The unipotent block-shear `shearH = id + shearPhi` (the recoord-cancelling shear of fork #138). -/
-def shearH : (Fin 21 → ℝ) → (Fin 21 → ℝ) := blockShear shearPhi
+/-- **The bridge**: routeP-p1's raw `shearH` (an if-chain) IS the unipotent block-shear
+`blockShear shearPhiH`. Lets the general shear-pin `jacDet_blockShear` apply. -/
+theorem shearH_eq : shearH = blockShear shearPhiH := by
+  funext w k
+  fin_cases k <;>
+    simp only [shearH, blockShear, shearPhiH, Pi.add_apply, Fin.reduceFinMk, Fin.reduceEq,
+      if_true, if_false] <;>
+    ring
 
-/-! ## §2 — the shear's structural facts (`hkeep`/`hread`/differentiability/`jacDet = 1`) -/
-
-/-- `shearPhi` vanishes on the kept coordinates. -/
-theorem shearPhi_keep (u : Fin 21 → ℝ) (i : Fin 21) (hi : shearKeep i) : shearPhi u i = 0 := by
+/-- `shearPhiH` vanishes on the kept coordinates. -/
+theorem shearPhiH_keep (u : Fin 21 → ℝ) (i : Fin 21) (hi : shearKeepH i) : shearPhiH u i = 0 := by
   fin_cases i <;>
     first
     | rfl
     | (exfalso; rcases hi with h | h <;> exact absurd h (by decide))
 
-/-- `shearPhi` reads only the kept coordinates. -/
-theorem shearPhi_read (u v : Fin 21 → ℝ) (h : ∀ i, shearKeep i → u i = v i) :
-    shearPhi u = shearPhi v := by
-  have e : ∀ j : Fin 21, shearKeep j → u j = v j := h
+/-- `shearPhiH` reads only the kept coordinates. -/
+theorem shearPhiH_read (u v : Fin 21 → ℝ) (h : ∀ i, shearKeepH i → u i = v i) :
+    shearPhiH u = shearPhiH v := by
+  have e : ∀ j : Fin 21, shearKeepH j → u j = v j := h
   funext i
-  simp only [shearPhi]
+  simp only [shearPhiH]
   rw [e 0 (Or.inl (by decide)), e 1 (Or.inl (by decide)), e 2 (Or.inl (by decide)),
     e 3 (Or.inl (by decide)), e 12 (Or.inr (by decide)), e 13 (Or.inr (by decide)),
     e 14 (Or.inr (by decide)), e 15 (Or.inr (by decide)), e 16 (Or.inr (by decide)),
     e 17 (Or.inr (by decide)), e 18 (Or.inr (by decide)), e 19 (Or.inr (by decide))]
 
-/-- `shearPhi` is differentiable (a polynomial map). -/
-theorem differentiable_shearPhi : Differentiable ℝ shearPhi := by
+/-- `shearPhiH` is differentiable (a polynomial map). -/
+theorem differentiable_shearPhiH : Differentiable ℝ shearPhiH := by
   refine differentiable_pi.2 (fun i ↦ ?_)
   fin_cases i <;>
-    (simp only [shearPhi, Fin.reduceFinMk, Fin.reduceEq, if_true, if_false] <;> fun_prop)
+    (simp only [shearPhiH, Fin.reduceFinMk, Fin.reduceEq, if_true, if_false] <;> fun_prop)
+
+/-- **The shear's Jacobian is exactly `1`** (shear-pin, `jacDet_blockShear` — GENERAL in the nonlinear
+`shearPhiH`). -/
+theorem jacDet_shearH (u : Fin 21 → ℝ) : jacDet shearH u = 1 := by
+  rw [shearH_eq]
+  exact jacDet_blockShear shearPhiH shearKeepH differentiable_shearPhiH
+    (fun u i hi ↦ shearPhiH_keep u i hi) (fun u v h ↦ shearPhiH_read u v h) u
+
+/-- `shearH` is injective (unipotent — a polynomial automorphism). -/
+theorem injective_shearH : Function.Injective shearH := by
+  rw [shearH_eq]
+  exact injective_blockShear shearPhiH shearKeepH (fun u i hi ↦ shearPhiH_keep u i hi)
+    (fun u v h ↦ shearPhiH_read u v h)
 
 /-- `shearH` is differentiable. -/
 theorem differentiable_shearH : Differentiable ℝ shearH := by
-  change Differentiable ℝ (fun u ↦ u + shearPhi u)
-  exact differentiable_id.add differentiable_shearPhi
+  rw [shearH_eq]
+  exact differentiable_id.add differentiable_shearPhiH
 
-/-- **The shear's Jacobian is exactly `1`** (shear-pin, `jacDet_blockShear`). -/
-theorem jacDet_shearH (u : Fin 21 → ℝ) : jacDet shearH u = 1 :=
-  jacDet_blockShear shearPhi shearKeep differentiable_shearPhi
-    (fun u i hi ↦ shearPhi_keep u i hi) (fun u v h ↦ shearPhi_read u v h) u
+/-! ## §2 — the permutation `permP`: `|jacDet| = 1` + differentiability -/
 
-/-- `shearH` is injective (unipotent — a polynomial automorphism). -/
-theorem injective_shearH : Function.Injective shearH :=
-  injective_blockShear shearPhi shearKeep (fun u i hi ↦ shearPhi_keep u i hi)
-    (fun u v h ↦ shearPhi_read u v h)
+/-- `permIdx` is injective (checked by kernel `decide`). -/
+theorem permIdx_injective : Function.Injective permIdx := by decide
 
-/-! ## §3 — the extensional decomposition identity (the self-gate) -/
+/-- `permIdx` as an `Equiv.Perm (Fin 21)` (injective + finite ⟹ bijective). -/
+noncomputable def permSigma : Equiv.Perm (Fin 21) :=
+  Equiv.ofBijective permIdx ((Finite.injective_iff_bijective).mp permIdx_injective)
 
-/-- **THE DECOMPOSITION (`-- map: #112-5b-decomp`).** The folded faithful chart `gFaithful` IS the
-banked-atom composite `shearH ∘ permP ∘ blowA0 ∘ blowA1` — proven extensionally on all 21 coordinates
-(`fin_cases` + `ring`). This is the self-gate: were the recipe (esp. the explicit permutation `permP`)
-wrong, this identity would not close. Sympy-exact + verified numerically before formalising. -/
-theorem gFaithful_decomp : gFaithful = shearH ∘ permP ∘ blowA0 ∘ blowA1 := by
-  funext u k
-  fin_cases k <;>
-    simp only [Function.comp_apply, shearH, blockShear, Pi.add_apply, permP, shearPhi, permFun,
-      blowA0, blowA1, blockBlowupMap, Matrix.cons_val, gFaithful, Fin.reduceFinMk, Fin.reduceEq,
-      Finset.mem_insert, Finset.mem_singleton, if_true, if_false] <;>
-    norm_num [Fin.ext_iff] <;> ring
+/-- **The permutation's Jacobian is `±1`** (`abs_jacDet_permCoord`, via `permSigma`). -/
+theorem abs_jacDet_permP (u : Fin 21 → ℝ) : |jacDet permP u| = 1 := by
+  have h : permP = fun w i ↦ w (permSigma i) := rfl
+  rw [h]; exact abs_jacDet_permCoord permSigma u
 
-/-- **The full (3,3,4) resolution chart as the 5-atom decomposed composite.** `gWrap = sigmaPiv ∘
-gFaithful` (its def) `= sigmaPiv ∘ shearH ∘ permP ∘ blowA0 ∘ blowA1` — the general-`d` GeoStep-chart
-template shape. The banked `hideal` (`Corank2CoreGenWrap.hideal_coreGen_*`) holds verbatim for THIS
-presentation: it is stated for the same `gWrap`; this identity only exposes the atom spine. -/
-theorem gWrap_decomp : gWrap = sigmaPiv ∘ shearH ∘ permP ∘ blowA0 ∘ blowA1 := by
-  have h : gWrap = sigmaPiv ∘ gFaithful := rfl
-  rw [h, gFaithful_decomp]
-
-/-! ## §4 — the composite Jacobian (`|jacDet gWrap| = |u₀|⁷·|u₁|³·|u₂₀|⁸`) -/
-
-theorem differentiable_blowA1 : Differentiable ℝ blowA1 := differentiable_blockBlowupMap _ _
-theorem differentiable_blowA0 : Differentiable ℝ blowA0 := differentiable_blockBlowupMap _ _
-theorem differentiable_sigmaPiv : Differentiable ℝ sigmaPiv := differentiable_blockBlowupMap _ _
-
-/-- `permP` as a continuous linear map (`w ↦ w ∘ permFun`). -/
+/-- `permP` as a continuous linear map (`w ↦ w ∘ permIdx`). -/
 def permCLM : (Fin 21 → ℝ) →L[ℝ] (Fin 21 → ℝ) :=
-  ContinuousLinearMap.pi (fun i ↦ ContinuousLinearMap.proj (permFun i))
+  ContinuousLinearMap.pi (fun i ↦ ContinuousLinearMap.proj (permIdx i))
 
 theorem permP_eq_permCLM : permP = permCLM := by funext w i; simp [permP, permCLM]
 
@@ -185,46 +148,52 @@ theorem permP_eq_permCLM : permP = permCLM := by funext w i; simp [permP, permCL
 theorem differentiable_permP : Differentiable ℝ permP := by
   rw [permP_eq_permCLM]; exact permCLM.differentiable
 
-/-- `permP` is injective (a bijection: `permFun` is bijective). -/
+/-- `permP` is analytic (a linear map). -/
+theorem analyticOnNhd_permP : AnalyticOnNhd ℝ permP Set.univ := by
+  rw [permP_eq_permCLM]; exact permCLM.analyticOnNhd _
+
+/-- `permP` is injective (a bijection: `permIdx` is bijective). -/
 theorem injective_permP : Function.Injective permP := by
-  intro a b h
+  intro a b hab
   funext j
-  obtain ⟨i, rfl⟩ := (Finite.injective_iff_surjective.mp permFun_injective) j
-  exact congrFun h i
+  obtain ⟨i, rfl⟩ := (Finite.injective_iff_surjective.mp permIdx_injective) j
+  exact congrFun hab i
+
+/-! ## §3 — atom differentiability -/
+
+theorem differentiable_bbA1 : Differentiable ℝ bbA1 := differentiable_blockBlowupMap _ _
+theorem differentiable_bbA0 : Differentiable ℝ bbA0 := differentiable_blockBlowupMap _ _
+theorem differentiable_sigmaPiv : Differentiable ℝ sigmaPiv := differentiable_blockBlowupMap _ _
+
+/-- `bbA1` fixes coordinate `0` — needed to place `bbA0`'s pivot factor. -/
+theorem bbA1_apply_0 (u : Fin 21 → ℝ) : bbA1 u 0 = u 0 :=
+  blockBlowupMap_offCenter_eq _ _ _ (by decide)
 
 /-- `gFaithful` is differentiable (the composite of the differentiable atoms). -/
 theorem differentiable_gFaithful : Differentiable ℝ gFaithful := by
   rw [gFaithful_decomp]
   exact (differentiable_shearH.comp differentiable_permP).comp
-    (differentiable_blowA0.comp differentiable_blowA1)
+    (differentiable_bbA0.comp differentiable_bbA1)
 
-/-- `permFun` fixes coordinate `0` — needed to place `blowA1`'s pivot factor. -/
-theorem blowA1_apply_0 (u : Fin 21 → ℝ) : blowA1 u 0 = u 0 :=
-  blockBlowupMap_offCenter_eq _ _ _ (by decide)
-
-/-- **The permutation's Jacobian is `±1`** (`abs_jacDet_permCoord`, via `permSigma`). -/
-theorem abs_jacDet_permP (u : Fin 21 → ℝ) : |jacDet permP u| = 1 :=
-  abs_jacDet_permCoord permSigma u
+/-! ## §4 — the composite Jacobian (`|jacDet gWrap| = |u₀|⁷·|u₁|³·|u₂₀|⁸`) -/
 
 /-- **`|jacDet gFaithful u| = |u₀|⁷·|u₁|³`** — the composite of `shearH ∘ permP` (`|jacDet| = 1`) with
-`blowA0 ∘ blowA1` (`|jacDet| = |u₀|⁷·|u₁|³`), by the chain rule over the atoms. NO 21×21 det. -/
+`bbA0 ∘ bbA1` (`|jacDet| = |u₀|⁷·|u₁|³`), by the chain rule over the atoms. NO 21×21 det. -/
 theorem abs_jacDet_gFaithful (u : Fin 21 → ℝ) :
     |jacDet gFaithful u| = |u 0| ^ 7 * |u 1| ^ 3 := by
   have hK : Differentiable ℝ (shearH ∘ permP) := differentiable_shearH.comp differentiable_permP
-  have hB : Differentiable ℝ (blowA0 ∘ blowA1) := differentiable_blowA0.comp differentiable_blowA1
-  have hdecomp : gFaithful = (shearH ∘ permP) ∘ (blowA0 ∘ blowA1) := gFaithful_decomp
+  have hB : Differentiable ℝ (bbA0 ∘ bbA1) := differentiable_bbA0.comp differentiable_bbA1
+  have hdecomp : gFaithful = (shearH ∘ permP) ∘ (bbA0 ∘ bbA1) := gFaithful_decomp
   rw [hdecomp, jacDet_comp u (hK _) (hB u), abs_mul]
-  -- `|jacDet (shearH ∘ permP) (B u)| = 1`
   have hKjac : ∀ w, |jacDet (shearH ∘ permP) w| = 1 := by
     intro w
     rw [jacDet_comp w (differentiable_shearH _) (differentiable_permP w), jacDet_shearH, one_mul,
       abs_jacDet_permP]
-  -- `|jacDet (blowA0 ∘ blowA1) u| = |u₀|⁷·|u₁|³`
-  have hBjac : |jacDet (blowA0 ∘ blowA1) u| = |u 0| ^ 7 * |u 1| ^ 3 := by
-    rw [jacDet_comp u (differentiable_blowA0 _) (differentiable_blowA1 u), abs_mul,
-      show blowA0 = blockBlowupMap ({0, 1, 2, 3, 4, 5, 6, 7} : Finset (Fin 21)) 0 from rfl,
-      jacDet_blockBlowupMap (by decide), abs_pow, blowA1_apply_0,
-      show blowA1 = blockBlowupMap ({1, 5, 6, 7} : Finset (Fin 21)) 1 from rfl,
+  have hBjac : |jacDet (bbA0 ∘ bbA1) u| = |u 0| ^ 7 * |u 1| ^ 3 := by
+    rw [jacDet_comp u (differentiable_bbA0 _) (differentiable_bbA1 u), abs_mul,
+      show bbA0 = blockBlowupMap ({0, 1, 2, 3, 4, 5, 6, 7} : Finset (Fin 21)) 0 from rfl,
+      jacDet_blockBlowupMap (by decide), abs_pow, bbA1_apply_0,
+      show bbA1 = blockBlowupMap ({1, 5, 6, 7} : Finset (Fin 21)) 1 from rfl,
       jacDet_blockBlowupMap (by decide), abs_pow,
       show ({0, 1, 2, 3, 4, 5, 6, 7} : Finset (Fin 21)).card - 1 = 7 from by decide,
       show ({1, 5, 6, 7} : Finset (Fin 21)).card - 1 = 3 from by decide]
@@ -236,8 +205,8 @@ theorem abs_jacDet_gFaithful (u : Fin 21 → ℝ) :
 theorem abs_jacDet_gWrap (u : Fin 21 → ℝ) :
     |jacDet gWrap u| = |u 0| ^ 7 * |u 1| ^ 3 * |u 20| ^ 8 := by
   have hg : gWrap = sigmaPiv ∘ gFaithful := rfl
-  rw [hg, jacDet_comp u (differentiable_sigmaPiv _) (differentiable_gFaithful u), abs_mul]
-  rw [show sigmaPiv = blockBlowupMap ({0, 1, 2, 3, 4, 5, 6, 7, 20} : Finset (Fin 21)) 20 from rfl,
+  rw [hg, jacDet_comp u (differentiable_sigmaPiv _) (differentiable_gFaithful u), abs_mul,
+    show sigmaPiv = blockBlowupMap ({0, 1, 2, 3, 4, 5, 6, 7, 20} : Finset (Fin 21)) 20 from rfl,
     jacDet_blockBlowupMap (by decide), abs_pow, gFaithful_apply_20, abs_jacDet_gFaithful,
     show ({0, 1, 2, 3, 4, 5, 6, 7, 20} : Finset (Fin 21)).card - 1 = 8 from by decide]
   ring
@@ -269,25 +238,21 @@ theorem gWrap_hjac (u : Fin 21 → ℝ) :
     |jacDet gWrap u| = jacWeight jacWrap u * |(1 : ℝ)| := by
   rw [abs_jacDet_gWrap, jacWeight_jacWrap, abs_one, mul_one]
 
-/-- `permP` is analytic (a linear map). -/
-theorem analyticOnNhd_permP : AnalyticOnNhd ℝ permP Set.univ := by
-  rw [permP_eq_permCLM]; exact permCLM.analyticOnNhd _
-
-/-- `shearPhi` is analytic (each coordinate is a polynomial in the projections). -/
-theorem analyticOnNhd_shearPhi : AnalyticOnNhd ℝ shearPhi Set.univ := by
+/-- `shearPhiH` is analytic (each coordinate is a polynomial in the projections). -/
+theorem analyticOnNhd_shearPhiH : AnalyticOnNhd ℝ shearPhiH Set.univ := by
   have hproj : ∀ k : Fin 21, AnalyticOnNhd ℝ (fun w : Fin 21 → ℝ ↦ w k) Set.univ := fun k ↦
     (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 21 ↦ ℝ) k).analyticOnNhd _
   refine AnalyticOnNhd.pi (fun i ↦ ?_)
   fin_cases i <;>
-    simp only [shearPhi, Fin.reduceFinMk, Fin.reduceEq, if_true, if_false] <;>
+    simp only [shearPhiH, Fin.reduceFinMk, Fin.reduceEq, if_true, if_false] <;>
     first
       | exact analyticOnNhd_const
       | exact (hproj _).mul (hproj _)
       | exact ((hproj _).mul (hproj _)).neg.sub ((hproj _).mul (hproj _))
 
 /-- `shearH` is analytic. -/
-theorem analyticOnNhd_shearH : AnalyticOnNhd ℝ shearH Set.univ :=
-  analyticOnNhd_blockShear shearPhi analyticOnNhd_shearPhi
+theorem analyticOnNhd_shearH : AnalyticOnNhd ℝ shearH Set.univ := by
+  rw [shearH_eq]; exact analyticOnNhd_blockShear shearPhiH analyticOnNhd_shearPhiH
 
 /-- `gFaithful` is analytic (the composite of the analytic atoms). -/
 theorem analyticOnNhd_gFaithful : AnalyticOnNhd ℝ gFaithful Set.univ := by
@@ -312,10 +277,9 @@ theorem volume_excepWrap : volume excepWrap = 0 :=
   volume_jacWeight_zeroSet jacWrap
 
 /-- **The `hg_inj` field.** `gWrap` is a.e.-injective: injective off `excepWrap`. Composition of the
-globally-injective `shearH ∘ permP` with the blow-ups `blowA0`/`blowA1`/`sigmaPiv`, each injective
-off its pivot hyperplane; on `{u₀≠0 ∧ u₁≠0 ∧ u₂₀≠0}` all pivots survive. -/
+globally-injective `shearH ∘ permP` with the blow-ups `bbA0`/`bbA1`/`sigmaPiv`, each injective off
+its pivot hyperplane; on `{u₀≠0 ∧ u₁≠0 ∧ u₂₀≠0}` all pivots survive. -/
 theorem injOn_gWrap : Set.InjOn gWrap (Set.univ \ excepWrap) := by
-  -- membership in `univ \ excepWrap` gives the three pivots nonzero.
   have hmem : ∀ x ∈ Set.univ \ excepWrap, x 0 ≠ 0 ∧ x 1 ≠ 0 ∧ x 20 ≠ 0 := by
     intro x hx
     have hj : jacWeight jacWrap x ≠ 0 := hx.2
@@ -328,20 +292,20 @@ theorem injOn_gWrap : Set.InjOn gWrap (Set.univ \ excepWrap) := by
   have hgfx20 : gFaithful x 20 ≠ 0 := by rw [gFaithful_apply_20]; exact hx20
   have hgfy20 : gFaithful y 20 ≠ 0 := by rw [gFaithful_apply_20]; exact hy20
   have hgf : gFaithful x = gFaithful y :=
-    injOn_blockBlowupMap (S := ({0,1,2,3,4,5,6,7,20} : Finset (Fin 21))) (p := 20) (by decide)
+    injOn_blockBlowupMap (S := ({0, 1, 2, 3, 4, 5, 6, 7, 20} : Finset (Fin 21))) (p := 20) (by decide)
       ⟨Set.mem_univ _, by simpa using hgfx20⟩ ⟨Set.mem_univ _, by simpa using hgfy20⟩ hxy
-  -- peel `shearH ∘ permP` (global injections) → `(blowA0 ∘ blowA1) x = (blowA0 ∘ blowA1) y`
+  -- peel `shearH ∘ permP` (global injections) → `(bbA0 ∘ bbA1) x = (bbA0 ∘ bbA1) y`
   rw [gFaithful_decomp] at hgf
-  have hB : (blowA0 ∘ blowA1) x = (blowA0 ∘ blowA1) y :=
+  have hB : (bbA0 ∘ bbA1) x = (bbA0 ∘ bbA1) y :=
     injective_permP (injective_shearH hgf)
-  -- peel `blowA0` (pivot 0): `(blowA1 ·) 0 = ·₀ ≠ 0`
-  have hbx0 : blowA1 x 0 ≠ 0 := by rw [blowA1_apply_0]; exact hx0
-  have hby0 : blowA1 y 0 ≠ 0 := by rw [blowA1_apply_0]; exact hy0
-  have hb1 : blowA1 x = blowA1 y :=
-    injOn_blockBlowupMap (S := ({0,1,2,3,4,5,6,7} : Finset (Fin 21))) (p := 0) (by decide)
+  -- peel `bbA0` (pivot 0): `(bbA1 ·) 0 = ·₀ ≠ 0`
+  have hbx0 : bbA1 x 0 ≠ 0 := by rw [bbA1_apply_0]; exact hx0
+  have hby0 : bbA1 y 0 ≠ 0 := by rw [bbA1_apply_0]; exact hy0
+  have hb1 : bbA1 x = bbA1 y :=
+    injOn_blockBlowupMap (S := ({0, 1, 2, 3, 4, 5, 6, 7} : Finset (Fin 21))) (p := 0) (by decide)
       ⟨Set.mem_univ _, by simpa using hbx0⟩ ⟨Set.mem_univ _, by simpa using hby0⟩ hB
-  -- peel `blowA1` (pivot 1)
-  exact injOn_blockBlowupMap (S := ({1,5,6,7} : Finset (Fin 21))) (p := 1) (by decide)
+  -- peel `bbA1` (pivot 1)
+  exact injOn_blockBlowupMap (S := ({1, 5, 6, 7} : Finset (Fin 21))) (p := 1) (by decide)
     ⟨Set.mem_univ _, by simpa using hx1⟩ ⟨Set.mem_univ _, by simpa using hy1⟩ hb1
 
 end DLNFibre.DLN.Aoyagi.Corank2ChartJac
