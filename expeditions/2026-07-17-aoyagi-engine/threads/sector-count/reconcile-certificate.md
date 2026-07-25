@@ -141,3 +141,58 @@ Model: `gwrap_fan_model.py` (my own sympy transcription of the atoms). Reproduce
   i); (3) whether the N_p normalization family fixes each fanned pivot (adapts) or is a single fixed shear
   (if the latter, it is drift and route (A) requires adapting it). decomp-5b's parallel overlap check
   should now come back NEGATIVE (the valid subset does not cover) — consistent with §c.
+
+---
+
+## ADDENDUM — reconciling #145 (decomp-5b "100% covers" vs my "escape cone"): BOTH RIGHT, box-size regime
+
+decomp-5b's MC inverts ball(0,1) targets into `dom = closedBall(0, 903)` and reports the valid charts
+cover at 100%. My exact analysis says the valid subset leaves an escape cone. **These are consistent —
+the disagreement is the huge box (hypothesis (b), confirmed exactly).**
+
+A valid sigmaPiv chart (pivot p ∈ V={0,1,2,3,20}) with source-box radius R covers `x` only if
+`|x_j| ≤ R·|x_p|` for all `j` in the center {0..7,20} — i.e. it tolerates a shear-slot/other-coord ratio
+up to R. With R = 903 that tolerance is enormous, so ONLY the cone `{max_{w∈W}|x_w| > 903·max_{v∈V}|x_v|}`
+(W={4,5,6,7}) escapes. That cone is scale-invariant with solid-angle fraction `~(1/903)^{|V|}` —
+**0 hits in 2,000,000 MC samples** (`reconcile_box.py`), so a finite-sample MC NEVER lands in it and
+reports a false 100%. But the cone is NON-EMPTY and positive-measure for ANY finite R (exact witness
+`x = ½·e_4 + 10⁻⁵·e_V`: ratio `x_4/x_v = 50000 > 903`, covered ONLY by the invalid pivot-4 chart;
+`covered-by-VALID = False`, verified). As R→∞ the cone's solid angle → 0 but never vanishes.
+
+**Reconciliation verdict.** The valid subset does NOT cover a full neighbourhood of 0 for ANY finite box
+(FACT — scale-invariant escape cone). decomp-5b's 100% is an MC false-negative masked by the 903-box's
+huge ratio tolerance; it is NOT a genuine bounded-sector blow-up cover, it is "trivial coverage up to a
+tiny escape cone the box tolerates." My (and the earlier column-vs-mixed) escape stands: the
+shear-slot-/transversal-dominant directions genuinely leave every valid chart.
+
+**Does the escape cone MATTER for the RLCT? — the one remaining datum.** A resolution need only dominate
+the loss on a neighbourhood of the SINGULAR locus (loss = 0); a region where the loss is regular
+(bounded away from 0) needs no chart. So route (B) survives IFF the escape cone
+`{max_W|x_w| > C·max_V|x_v|}` does NOT meet the fibre/singular locus (then it is loss-regular, droppable).
+This is the SAME missing datum as escape (i): the pulled-back loss on the escape cone. Note the box size
+is IRRELEVANT to the RLCT per chart (monomial exponents are box-independent); it only inflates the
+apparent coverage.
+
+## ROUTE VERDICT (#144 + #145 together)
+
+- **Route (a) [all 288, fixed shear]:** DEAD (128 non-normal-crossings charts).
+- **Route (b)/(B) [prune to the 160/196 valid subset, or the K-orbit column charts]:** DEAD as a
+  standalone COVER — the valid subset does not cover a neighbourhood for any finite box (scale-invariant
+  escape cone; decomp-5b's 100% is the 903-box MC artifact). It could be RESCUED only by a loss-regularity
+  argument on the escape cone (needs the loss).
+- **Route (A) [full 288 slots, pivot-ADAPTED normalizations]:** live — replace the 128 bad fixed-shear
+  maps with per-pivot shears that fix their pivots (the (pivot, normalization) pair fan; my fan-cert §1.4).
+  Cost: re-derive the hideal per adapted chart.
+- **Route (C) [θ=1 value-from-bounds, #109+#110+#111]:** STRONGLY RECOMMENDED. The RLCT lower bound
+  `rlctAt ≥ ½·min Mval` is LANDED (#109); with a single minimizing-chart upper bound (#110) and the wire
+  (#111), `2·rlct = cCodim` follows WITHOUT the full covering atlas. Given the coverage is genuinely hard
+  (valid subset doesn't cover; θ=1 means one component, so the value is set by the one minimizing branch),
+  bypassing the atlas is the pragmatic and paper-faithful route — the coverage difficulty is itself the
+  argument FOR route (C).
+
+**Recommendation to the elder+navigator council:** route (B) [K-orbit transport as a standalone cover] is
+dead; pursue route (C) [value-from-bounds, #111] as primary (bypasses the atlas), with route (A)
+[pivot-adapted-normalization full fan] as the fallback if a genuine covering atlas is required. The
+transformed-center question (are the shear-slot/coinciding branches Cartesian-fan artifacts?) + the
+escape-cone loss-regularity are the two data that would refine (A) vs a smaller genuine atlas; both need
+the pulled-back loss ideal / branch tree (route lane).
