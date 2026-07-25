@@ -22500,3 +22500,27 @@ only the math existence? (don't re-litigate settled work); (3) commission pnp's 
 (depth-2 3×3: enumerate every off-canonical pivot, verify faithful shear + state-update + next-center
 preserve the recursive residual identity AND appear as a buildTree child = full-fan REALIZATION). Then the
 full (3,3,4) Resolution build (5a/5b/5c) is clear + the general-d gate convenes on the landed Resolution.
+
+**HCOVER GO — 4-CHANNEL CONFIRMED + the residual sharpened (2026-07-25).** gate2's L7 fidelity lens (ran
+the probes, not just read pnp's prose) CONCURS: DETAIL-AT-SCALE, no monument. So the coupled-hcover
+adjudication is confirmed on FOUR decorrelated channels: pnp exact-algebra + pnp's Codex + controller
+calibration + gate2's independent probes. The 4-channel bar (highest-risk rung) is MET. gate2 probe-verified
+OBL-1 (write⊥read ⟹ no composition-degree escalation, degree exactly 2, exact inverse) + OBL-2 (col-pinned
+fan misses ε·e₂, full fan picks pivot 2, all 9 pivots valid diag(1,Δ) charts).
+
+RESIDUAL SHARPENED (gate2): conOracle/buildTree picks a CANONICAL pivot per node (col-pinned via
+IsRealBranch/canonCenterOf) → likely does NOT enumerate all pivots → route (b) (#86(B) K-symmetry col-orbit
+transport) is the REAL completion, NOT (a). gate2's added fidelity concern: the #86(B) transport must
+preserve the COVER (empty-escape), not merely the ideal identity ⟨…⟩ — the col-perm of the canonical chart
+must BE the off-canonical chart AND the orbit-union must fill ε·e₂ (probe: col-perm(0↔2)(pivot-0 chart) =
+pivot-2 chart, covers ε·e₂ — sound in principle; the Lean TODO is transporting the COVER under the symmetry).
+This is a general-d concern (NOT blocking the corank-2 atom), and the one thing that could still bite.
+
+DECISIONS: (1) STEP 2 = the corank-2 faithful hcover ATOM (5c-at-(3,3,4)) dispatched to a fresh lean-
+formaliser (pnp's template: faithfulShear_covers = coShear_covers verbatim + C by_cases + f=r+C·r²; then
+covers_coTree with coShear→faithfulShear, leaf box 6→21; engine reused, NOT re-derived). (2) 5b (L6:
+hjac/jac/injectivity at (3,3,4)) re-invoked to routeP-p1 (deepest gWrap/jacDet_blockBlowupMap context;
+STOP+escalate if a faithful-multi-term |det| subtlety like the hcover's single-term-gap appears). (3) The
+buildTree-provenance check (route-b + COVER-preservation, gate2's sharpening) STAGED: reconcile with #119
+(fan-completeness adjudication) first, then pnp-hcover for the depth-2 3×3 realization + cover-preservation
+check — a general-d-gate de-risk, before the general-d L7 cover commits. 5a (realization) follows 5b.
