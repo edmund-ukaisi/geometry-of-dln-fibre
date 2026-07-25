@@ -27,6 +27,7 @@ assembly reduced to that cover, and the module docstring's SPECIFY for the bridg
 open MeasureTheory Set Metric
 open DLNFibre.Core.Aoyagi DLNFibre.Core.Aoyagi.Corank2FaithfulComposite
 open DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap DLNFibre.DLN.Aoyagi.Corank2ChartJac
+open DLNFibre.DLN.Aoyagi.Corank2GWrapDecomp
 
 namespace DLNFibre.DLN.Aoyagi
 
@@ -83,6 +84,27 @@ theorem chart334_bindingAxes :
 
 theorem chart334_jac_E : chart334.jac (0 : Fin 21) = 7 := by rw [chart334_jac]; decide
 theorem chart334_jac_c11 : chart334.jac (20 : Fin 21) = 8 := by rw [chart334_jac]; decide
+
+/-! ## Rung-5d crux (A): `gWrap` IS a `fanOfSteps` leaf-composite -/
+
+/-- **Crux (A) — CLOSED.** `gWrap` is expressible as a `pathMap` leaf-composite of three steps, each
+of the strict per-step form `shear ∘ blockBlowupMap`:
+* step 1: `shear = id`, blow-up `sigmaPiv` (center `{0..7,20}`, pivot 20);
+* step 2: `shear = shearH ∘ permP`, blow-up `bbA0` (center `{0..7}`, pivot 0);
+* step 3: `shear = id`, blow-up `bbA1` (center `{1,5,6,7}`, pivot 1).
+The interleaved `permP` (a coordinate permutation) + `shearH` absorb into step 2's COMPOSITE shear —
+legitimate because `GeoStep.shear`/`FanStep.shear` are ARBITRARY `jacDet = 1` maps (not just
+`outerShear`/`blockShear`). Box-containment for the cover then holds per step: `id` trivially
+(`f = r`), `shearH ∘ permP` via `permP` (surjective isometry) + `shearH`'s `r + 2r²` containment. So
+`gWrap` sits as a leaf of a `fanOfSteps` — the `covers_fanOfSteps` premise — no obstruction: the
+"does `gWrap` fit `fanOfSteps` at all" gate is discharged. (The cover fan's exact branching — the
+K-orbit tiling vs `gWrap`'s large-center pivot-fan — is the separate rung-5d (ii) architecture; this
+identity is the leaf-witness either way.) -/
+theorem gWrap_eq_pathMap :
+    gWrap = pathMap [sigmaPiv, (shearH ∘ permP) ∘ bbA0, bbA1] := by
+  rw [gWrap_decomp]
+  simp only [pathMap_cons, pathMap_nil, Function.comp_id]
+  rfl
 
 /-! ## The assembly, reduced to the fan cover (rung-5d seam)
 
