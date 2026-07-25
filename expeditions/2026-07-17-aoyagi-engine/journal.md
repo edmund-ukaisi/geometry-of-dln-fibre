@@ -22097,6 +22097,22 @@ detail-at-scale; risk bounded (caught at phase-1 if it walls).
 operator-gated. Holding for phase-1: GREEN → general-d continuation; WALL → objects-only. This is the
 cite-free build commencing.
 
+**ELDER AFFIRMED the fire (NO FLAW) + two guards to hold through the build (2026-07-25):**
+- **(A) GENERAL-D CONTINUATION IS A FRESH ELDER GATE at phase-1-green — NOT auto-fired.** The elder's
+  standing clearance cleared composite-green → the build; the general-d EXPANSION (the general-L
+  reproduction of cover + realization) is its own build labour with its own risks (GUARD-B), so it earns
+  its own gate. Phase-1-green is a fresh elder decision, not a rubber-stamp. (I had already re-inserted this
+  re-convene; the elder welcomes + sharpens it.)
+- **(B) SCOPE-TIGHTENING (anti-optimism guard, hold it through the build): "reverse GREEN / 7th-over-claim
+  FALSIFIED" is AT THE PROBED INSTANCES (corank-2 gate-3 + deep-mixed #124), NOT general-L.** instance-GREEN
+  ≠ built (GUARD-B); the general-L Lean reproduction IS the build labour (phase-1 = ONE instance (3,3,4),
+  then general-d). Do NOT let "reverse green" drift into "general-L proven" — the guard that caught 6 of the
+  7 stays on, precisely now that the reverse landed green. The elder confirmed I am (correctly) being MORE
+  conservative than its literal clearance by re-inserting the general-d gate.
+
+**Status.** #112 phase-1 building (gate2-hideal, -routeP). Guards A+B recorded. Holding for phase-1: GREEN →
+FRESH elder gate for the general-d continuation; WALL → objects-only close.
+
 **PAPER-FIRST anchor + coherence tightening (pnp, 2026-07-25) — fold into the elder's #123 charter finalize.**
 Paper-first (charter §3 DEFECT gate): AOYAGI RESOLVES the realization (her two-sided (S,J) maintenance
 Cases 1&2 → terminal normal crossing, general-L per her abstract); the worked.tex:663 "deeper mixed open
