@@ -8,6 +8,16 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
+- **▶▶▶ ROUTE P ADOPTED (elder route-gate discharged, 2026-07-25); de-risk (b) #124 GREEN; holding for de-risk
+  (a) #123 = the auto-fire trigger.** Charter/compass @ 75af1cb97 (two-independent-residuals map: cover[GREEN
+  route-a] + realization[= AtlasRealizesExponents = Aoyagi's (S,J) lower-bound induction, detail-at-scale, the
+  build tripwire = per-leaf pivot-survival-at-deepest-intersection CAS check]). NO exact-principality monument
+  (lower bound needs only the WEAK reverse). #124 deep-mixed realization probe GREEN (no undershoot; binding =
+  ½minAdm general; coupling RAISES; paper-first — realization IS her (S,J) induction, we reproduce). STANDING
+  CLEARANCE: full `buildTree` build auto-fires on #123 (corank-2 two-sided first-brick gate) green-BOTH — no
+  further elder gate; RED on EITHER #123/#124 → objects-only close (cite Aoyagi lower assembly), not re-attack.
+  Build EXECUTION = controller-judgment (grant); PR merge + dev→main stay operator-gated. gate2-hideal running
+  #123; pnp/elder resting (re-convene at #123). The V-lower-lighter mirage RETIRED (F1-mirage 3rd cycle, §3).
 - **⇢ STANDING AUTONOMY GRANT (operator, 2026-07-25) — build progression is CONTROLLER-JUDGMENT, no
   wait-for-go.** (1) GREEN gate → commit the swap + run the full general-`d` fold, proceed (no operator go).
   (2) SURPRISE gate → re-scope / re-plan / explore; if the earned verdict is REASONABLE (cleared by the

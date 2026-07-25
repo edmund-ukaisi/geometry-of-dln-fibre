@@ -21984,3 +21984,34 @@ V-lower-mirage warning).
 **Status.** Route P committed (elder-aligned). Firing: V-upper builder (bank) + the corank-2 two-sided
 first-brick gate (pivotal de-risk). Signalled elder for the charter/compass commit. pnp one-liner moot-ish
 (the first-brick gate is pivotal, not the V-probe).
+
+---
+
+## 2026-07-25 (later) — ROUTE P adopted (elder route-gate discharged); de-risk (b) #124 GREEN
+
+Route P is committed + elder-cleared. Charter/compass re-finalized @ 75af1cb97 (elder-authored, controller-
+committed) with the HONEST two-independent-residuals map (elder owned + corrected its own "subsumes"
+over-claim). Standing clearance: the full `buildTree` build auto-fires on de-risk (a) #123 green-both; RED on
+EITHER #123 or #124 → objects-only close (cite Aoyagi for the lower assembly), not a re-attack.
+
+**De-risk (b) — the deep-mixed realization probe #124 — GREEN (kill did NOT trigger)** (pnp-coupled,
+paper-first at worked.tex:663, exact algebra + Codex): F1 toric divisors never undershoot (toric floor ≥
+½minAdm always; coupled-binding strictly above it); F2 binding divisor = ½minAdm general (h_E=Mval−1, a_E=1
+retained pivot; join ADDS discrepancies so coupling RAISES; corank-agnostic; L=4 coupled-binding + Gröbner
+(3,3,4)/(4,4,4) verified); F3 nothing < ½minAdm anywhere probed; F4 the Monte-Carlo undershoot is a
+sampling-bias ARTIFACT (calibration lesson: don't trust float rlct at n≈20-30). LOAD-BEARING REFINEMENT
+(Codex Q2): realization is a JOINT condition at divisor INTERSECTIONS (witness I=(x,y): order 0 along both
+coord divisors, no generator a unit at their intersection), failure mode = a pivot-less DEEPEST intersection
+(blow-up adds multiplicity faster than discrepancy); ruling it out general-d = Aoyagi's (S,J) LOWER-BOUND
+induction — PAPER-FIRST outcome (she HAS the induction; we REPRODUCE it, detail-at-scale, not a monument).
+
+**The realization = AtlasRealizesExponents = route P's THIRD obligation** (distinct from codim[landed] +
+cover[GREEN via route-a] + algebra[dissolved]); general-d = reproduce the (S,J) induction; per-instance = the
+pivot-survival-at-deepest-intersection CAS check → the BUILD TRIPWIRE (per-leaf: factor the claimed monomial,
+confirm a residual entry has nonzero constant term at each terminal intersection; watch the pivot-less
+deepest intersection). Confidence: no-undershoot HIGH; realization-detail-at-scale MEDIUM-HIGH.
+
+**Status.** De-risk (b) #124 GREEN — no route change; both live residuals now read cover[GREEN] +
+realization[detail-at-scale, the (S,J) induction, the build tripwire pinned]. HOLDING for de-risk (a) #123
+(the corank-2 two-sided Lean first-brick gate = the auto-fire trigger). Green → full build under the grant;
+RED → objects-only cite. Elder convenes at #123 with both results.
