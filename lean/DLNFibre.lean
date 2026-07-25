@@ -1698,3 +1698,7 @@ import DLNFibre.DLN.Aoyagi.Corank2ChartJac
 -- (jac aE=7,aC=8 on binding axes → AtlasRealizesExponents; {8,9} ⊆ terminalExponents via `realize_aux`
 -- on the clearable-admissible (2,0) profile — NO retired-R7 dependence) — #112 rung 5a.
 import DLNFibre.DLN.Aoyagi.Corank2Realize334
+-- Chart334 (DLN side): rung 5d part-1 — the COMPLETE concrete (3,3,4) `chart334 : Chart (coreGen dvec eWrap) 0`
+-- (all fields from 5b + part-C hideal) + `resolution334_of_ballCover` (assembly reduced to the SOLE cover
+-- obligation `ball 0 ρ ⊆ ⋃ charts.g '' dom` → the (3,3,4) instance of exists_coreResolution:311) — #112 rung 5d.
+import DLNFibre.DLN.Aoyagi.Corank2Chart334
