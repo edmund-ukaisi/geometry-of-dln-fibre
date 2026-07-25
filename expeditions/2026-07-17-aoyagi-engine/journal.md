@@ -22579,3 +22579,33 @@ fresh decomposed proof — and how hard? DECISION: commission a pen-and-paper (p
 the general-d chart-architecture template + 5b's O9-decomposed Jacobian; routeP-p1 PAUSES 5b, hands off its
 sympy (/tmp/jac_check.py) + the block-triangular reduction, stays available. 5c (hcover atom) + the
 provenance check (pnp-hcover) continue UNAFFECTED (this fork is the chart architecture, not the cover).
+
+**PROVENANCE VERDICT: CONDITIONAL GO — transport carries the cover (verified), residual = a base-verified
+stabilizer induction (2026-07-25).** pnp-hcover completed the buildTree-provenance check (#134; addendum in
+hcover-elaboration.md). Controller READ + calibrated; my read CONCURS:
+- ROUTE (b) SETTLED, (a) REFUTED: buildTree is canonical-pivot/col-pinned (IsRealBranch pins case12/case2
+  pivot col = cleared), so the full fan MUST come from the #86(B) col-orbit symmetry transport (gate2's read
+  confirmed). Route (a) full-pivot-enumeration is refuted.
+- THE KEY (gate2's cover-preservation concern) — RESOLVED, verified exact + Codex-agreed: the loss-symmetry
+  group G (row-perms(C¹) × col-perms(Cᴸ) × internal layer perms) generators are COORDINATE-PERMUTATION
+  ISOMETRIES of w-space → map closedBall 0 ρ ONTO itself → carry SET-CONTAINMENT (the cover), not merely the
+  generator set. Transported chart σ∘g_canon is a genuine resolution Chart (|det Dσ|=1, ⟨F∘σ⟩=⟨F⟩, a.e.-inj,
+  dom compact) with IDENTICAL chartMin → VALUE PRESERVED (resolves the col-pinned-value-vs-full-fan tension:
+  full-fan cover, same value). Codex concurs: "ideal invariance alone gives monomialization algebra, not
+  containment of target points" — the isometry is what carries the cover.
+- THE ONE RESIDUAL: orbit-covers-the-ball needs a full-history STABILIZER INDUCTION (after canonicalizing k
+  pivots, the stabilizer acts equivariantly on the next residual/center + as the full symmetric group on the
+  next block). BASE + FIRST STEP VERIFIED EXACT (depth-2 3×3: stabilizer of pivot-1 = S₂×S₂ acts as the full
+  fan of the deep 2×2 Δ; layered internal-perm equivariance at L=2). General-depth = the cover certificate,
+  DETAIL-AT-SCALE (clean stabilizer/equivariance induction), NOT a monument. No OBSTRUCTION flag.
+
+CONSEQUENCE: the general-d cover provenance is GO (detail-at-scale), conditional on the stabilizer induction
+(base verified). gate2's cover-preservation concern is RESOLVED. The general-d COVER build spec (the 5-lemma
+cover-transport template, recorded on #130): (1) lossSymm_isometry (G-generators = coord-perm isometries
+fixing closedBall); (2) transport_chart (σ∘c.g inhabits Chart, same jac/bexp/dom); (3) orbitAtlas (extend
+buildTree atlas to its G-orbit, numCharts × |G|, value unchanged); (4) orbit_covers (THE stabilizer
+induction: ball ⊆ ⋃_σ σ(C_can)); (5) compose with the OBL-1/engine cover of C_can → leafPath_compactCover.
+Plus the two earlier named obligations (#86(B) full-fan emission [= this transport]; hdom_ball :152
+strengthening). DEPTH-3 de-risk (pnp+Codex suggest): a depth-3 (e.g. (3,3,3,2,2)) stabilizer-induction-step
+instance check would further de-risk before the general-d cover commits — NOTED for the general-d gate.
+Routing to gate2 for its decorrelated read. Still holding for pnp-chartarch (fork) + hcover-atom (5c).
