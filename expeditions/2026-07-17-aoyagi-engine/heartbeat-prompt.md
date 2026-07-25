@@ -37,13 +37,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
     jacDet_comp over banked atoms (5b clean, NO 21×21 det); the banked hideal rewrites along the funext, NO
     re-proof; shear LOAD-BEARING (F4) = the general-d GeoStep form; GeneralGeoAtlas builds general-d L6/L7
     decomposed (reuse). CAVEAT: perm P explicit [8,9,10,11,1,5,6,7,0,2,3,4] det−1. gate2 confirming read queued.
-  FORWARD PATH (unblocked): decomp-5b (FRESH formaliser, lane expedition/aoyagi-engine-5b-decomp; routeP-p1
-  SUPERVISES — its context is long, build fully-recipe'd) building the DECOMPOSED 5b [(1) funext gFaithful =
-  H∘P∘A0∘A1 [P explicit] → rewrite banked hideal, NO re-proof; (2) jacDet_comp Jacobian u0⁷·u1³·u20⁸; (3)(4)
-  Chart fields via GeneralGeoAtlas L6. WRINKLE: H NONLINEAR → jacDet(H)=1 by a UNIT-TRIANGULAR arg, not a
-  linear-blockShear lemma — a real bounded piece] → 5a (realization) → full (3,3,4) Resolution (#130) →
-  general-d gate (elder+navigator, GUARD-B) → general-d build. HOLDING for: decomp-5b + gate2's two confirming
-  reads (fork #138, depth-3).
+  FORWARD PATH: RUNG 5b DONE — 4-CHANNEL (decomp-5b build + routeP-p1 supervisor fidelity + gate2 decorrelated
+  fidelity PASS [shearH machine-identical to #138 H + 5c faithfulShear, NOT a proxy] + my kernel). Re-integrated
+  onto the TWO-MODULE authoritative form @ c712f8fef (GWrapDecomp STAGE 1 [gFaithful_decomp funext] + ChartJac
+  STAGE 2/3 [|jacDet gWrap|=|u0|⁷|u1|³|u20|⁸ via jacDet_comp + gWrap_hjac unit≡1 + L6 Chart fields]); full
+  DLNFibre green 9027 jobs, clean-three. (Divergence resolved: my 6ebe99f79 drop-GWrapDecomp call crossed
+  decomp-5b's rebase-onto-STAGE-1; adopted the builder-authoritative two-module — cleaner, STAGE 1 reusable
+  for general-d.) The nonlinear-jacDet(H) wrinkle DISSOLVED (jacDet_blockShear general). NOW: 5a (realization —
+  AtlasRealizesExponents, jac+1 {E:8,c11:9}∈terminalExponents + hit minAdm, α non-binding; in progress,
+  routeP-p1) → 5d (assembly: Chart record + Resolution + eWrap MeasurePreserving + eWrap→canonFlatten transport)
+  → full (3,3,4) Resolution (#130) → general-d gate (elder+navigator, GUARD-B) → general-d build. HOLDING for:
+  routeP-p1's 5a + gate2's 5a review. Bonus banked: abs_jacDet_permCoord (coord-perm |jacDet|=1, general-d reuse).
 - **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
   two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
   `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
