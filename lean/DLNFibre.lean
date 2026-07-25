@@ -1717,3 +1717,6 @@ import DLNFibre.DLN.Aoyagi.Corank2CiteFree334
 --   non-vanishing region ⊇ the cover box under the real-leaf collapse (unit ≡ 1), + the API-clean
 --   `terminal_bezout_collapse` (PrincipalInv on the FULL V, no shrink) the R3 fold consumes.
 import DLNFibre.DLN.Aoyagi.Corank2AdmissibleLeaf222
+-- UnitOneDerived (R1 M1): unit ≡ 1 DERIVED on the built COUPLED (3,3,4) chart334 via the actual-jacDet
+--   hjac telescope (chart334_collapse_actual) + nbhd = univ (no terminal-shrink on the built leaf).
+import DLNFibre.DLN.Aoyagi.Corank2UnitOneDerived
