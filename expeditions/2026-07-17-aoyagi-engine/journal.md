@@ -22609,3 +22609,25 @@ Plus the two earlier named obligations (#86(B) full-fan emission [= this transpo
 strengthening). DEPTH-3 de-risk (pnp+Codex suggest): a depth-3 (e.g. (3,3,3,2,2)) stabilizer-induction-step
 instance check would further de-risk before the general-d cover commits — NOTED for the general-d gate.
 Routing to gate2 for its decorrelated read. Still holding for pnp-chartarch (fork) + hcover-atom (5c).
+
+**gate2 CONFIRMS both — provenance 3-channel + 5c atom fidelity PASS; depth-3 = the final de-risk (2026-07-25).**
+gate2 delivered its two queued decorrelated reads:
+- PROVENANCE: CONFIRM CONDITIONAL GO (3rd channel, pnp+Codex+gate2). Q1 isometry-carries-cover SOUND (coord-perm
+  = ℓ²/ℓ∞ isometry → carries SET-containment, resolves gate2's own concern; every G-generator independently
+  confirmed a genuine coord-perm incl. the internal gauge). Q2 stabilizer induction WELL-SHAPED, base
+  convincing, NOT hiding the global-σ gap (global σ = the COMPOSITE of the stabilizer chain = standard
+  flag-canonicalization; the "most likely to break" subtlety is PRECISELY what the chain resolves). gate2's
+  SHARPEST POINT: hypothesis (i) — the Schur recursion is stabilizer-equivariant AS A COORD-PERM at EVERY
+  depth, incl. layer-rollovers where internal gauge perms compound (the spot depth-2 base doesn't reach).
+- 5c ATOM: clean PASS (2nd channel, hcover-atom build + gate2 no-proxy lens). Genuinely faithful multi-term —
+  recoord slots 8,9 carry TWO products each (the real Q₂⁻¹ combine); faithfulShear_covers closes r+2·r² (NOT
+  narrowed to single-term r+r²); unipotent write⊥read, exact inverse, sorry-free. gate2 did NOT re-run #print
+  axioms (my channel at integration = 3rd). So 5c banks on: build + gate2 fidelity + my #print-axioms-at-wire.
+
+DECISION: commission the DEPTH-3 (3,3,3,2,2) stabilizer-induction-STEP check → pnp-hcover (holds the context).
+Both pnp + gate2 recommend it as the FINAL de-risk before the general-d cover build commits: it stresses
+hypothesis (i) — the equivariance at a rollover+internal-perm interaction, the exact spot the depth-2 base
+doesn't reach + gate2's sharpest point. Bounded exact-algebra; general-d-gate de-risk, NOT blocking anything
+((3,3,4) Resolution or the corank-2 atom). Hunt-precedes-trust on the general-d cover's load-bearing induction.
+STATE: hcover fully de-risked (adjudication 4-channel + provenance 3-channel + atom built + fidelity PASS);
+the depth-3 is the last hunt. PIVOTAL OPEN DECISION remains the chart-architecture fork (#138 pnp-chartarch).
