@@ -22552,3 +22552,30 @@ scope these two obligations (elder). RECONCILE-NOTE: IsRealBranch/FoldProduced l
 (navigator flagged off-cone/prune) — the route-P cover must either build its own full-fan or salvage the
 buildTree backbone WITH #86(B); the general-d gate settles which (does route P reuse FoldProduced's tree, or
 build fresh?).
+
+**5b STOP → CHART-ARCHITECTURE FORK (folded vs decomposed; 2026-07-25).** routeP-p1 STOPPED on 5b
+(correctly, per the guard) with a compute-first sympy finding: the 5b plan assumed |det D(gFaithful)|=1
+(unipotent shear), but that's FALSE — the gFaithful I had it build is the FULL chart (shear ∘ radial ∘
+join) FOLDED into one explicit polynomial (the folding made the CRUX's ideal identity clean). Its Jacobian:
+det D(gFaithful) = −u0^7·u1^3 (E^7·α^3), det D(sigmaPiv) = u20^8 (c11^8, O9 ✓), det D(gWrap) =
+−u0^7·u1^3·u20^8. NOT a wall — |det D(gWrap)| IS a clean monomial → hjac holds unit≡1, jac = [E:7,α:3,c11:8],
+rlct-consistent (E→4, c11→4.5, min=4, α non-binding). So 5b's hjac/jac are ACHIEVABLE.
+
+THE FORK (routeP-p1 flagged it's a definition-of-chart-architecture call, not mechanical): (A) compute the
+folded jacDet ±E^7·α^3 directly in Lean (block-triangular 21×21→8×8 sub-block det; substantial; keeps the
+crux; but the FOLDED chart is (3,3,4)-INSTANCE-SPECIFIC — does NOT template general-d). (B) build charts
+DECOMPOSED (shear ∘ blockBlowups, each |det|=1 or an O9 jacWeight monomial) — templates general-d cleanly,
+matches buildTree/foldG (whose charts ARE decomposed by construction), BUT "re-opens the crux" (re-prove
+peeled∘g for the decomposed form, or bridge folded=decomposed).
+
+CONTROLLER READ (to be decorrelated-checked, NOT decided from optimism): general-d charts are DECOMPOSED by
+construction (buildTree/foldG = per-node blockBlowup ∘ edgeShear = the proven L-A/L-B/L-C spine). The folded
+gFaithful was the (3,3,4) DE-RISK (proved the monomialisation CLOSES — banked, doubly-confirmed), NOT the
+general-d chart. So (B)-decomposed is the general-d architecture (it's the established route-P design); the
+folded jacDet (A) would be (3,3,4)-throwaway (the elder's Q3 anti-pattern). The one thing to settle
+precisely (crux-touching → decorrelated pen-and-paper, anti-optimism guard): does the decomposed (3,3,4)
+spine reproduce ⟨peeled∘g⟩=⟨E⟩ via the proven mechanisms (folded = de-risk, reused), or does it need a
+fresh decomposed proof — and how hard? DECISION: commission a pen-and-paper (pnp-chartarch) on the fork +
+the general-d chart-architecture template + 5b's O9-decomposed Jacobian; routeP-p1 PAUSES 5b, hands off its
+sympy (/tmp/jac_check.py) + the block-triangular reduction, stays available. 5c (hcover atom) + the
+provenance check (pnp-hcover) continue UNAFFECTED (this fork is the chart architecture, not the cover).
