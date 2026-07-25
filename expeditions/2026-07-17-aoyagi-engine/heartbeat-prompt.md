@@ -95,10 +95,19 @@ proceed-on-silence = build-toward-A, fall-back-to-B-if-it-bites). Build + de-ris
    UNIFIED with B2: a permutation-closed atlas (shear fanned WITH the pivot, applied outermost). #145's ~2%
    FULLY reconciled at depth. Refinement in flight (does the escape charts need only the R>0 sandwich, same
    as B2, not the ideal identity — simplifies the spec). NO MONUMENT.
-3. **Recursion-on-{R=0} de-risk [#172, rzero-probe] — the SOLE remaining OPEN item.** PERFORM (not assume):
-   does the {R=0} recursion terminate with all deeper divisor ratios ≥ ½minAdm? WITNESS ⟹ (A) reachable,
-   rlct=½C exactly, destination fully priced. OBSTRUCTION (a deeper ratio < ½minAdm) ⟹ rlct < ½C =
-   KILL-condition for the value. The one remaining inference.
+3. **Recursion-on-{R=0} [#172, rzero-probe] DONE = WITNESS** — the last kill-condition did NOT bite. The
+   {R=0} recursion TERMINATES (Aoyagi's depth-recursion, depth −1/peel, bottoms at L=1 Morse) + every deeper
+   divisor ratio ≥ ½minAdm ⟹ rlct = ½C NOT undercut. Mechanism: loss = sum-of-squares, kept-survivor
+   U(0)=1 ⟹ k=1 for the binding divisor + direct-sum additivity ⟹ rlct = ½Mval(branch) ≥ ½minAdm.
+   **BUILD-GUARD (banked):** k=1 hinges on the SUM/kept-survivor structure — the value-build must NEVER read
+   the residual as a PRODUCT (SUM→k=1, PRODUCT→k=2). General-L k=1 = named build labour (instance-verified +
+   certified-(3,3,4) + additive-identity, not closed general-L; worked.tex:717-720).
+
+**LANDMARK: THE DESTINATION IS FULLY PRICED.** No monument anywhere — ideal side clean, tube (B2) resolved,
+escape cone (B1) dissolved, recursion-on-{R=0} WITNESS. (A) fully-cite-free is SOUND; the whole remaining task
+is the detail-at-scale BUILD. Elder re-convened for the decorrelated stern-voice read (does WITNESS clear the
+bar). Sole active worker = the R2 build (#173); the value-completion rung follows (carry the SUM-not-PRODUCT
+guard). A-vs-B still the operator's steer (does not gate the build).
 4. **Elder** F10 REVISED + committed (R>0 correction, P-vs-V collapse, residual=recursion-on-{R=0}, B1 open,
    (A) leads). Re-convenes at B1 + recursion results + operator call. Rank: (A) > (B) in-build fallback > (C off).
 5. **Operator surfaced** — (A) leads, C off, P-vs-V collapsed, ONE build-shaped inductive inference remains,

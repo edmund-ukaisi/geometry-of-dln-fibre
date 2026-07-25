@@ -24262,3 +24262,39 @@ MECHANISM: the shear is a unipotent bijection fixing 0 with D(shear)(0)=I, so ap
 the Jacobian WITHOUT destroying R(0) (a value-at-0 of the kept survivor). Confirms: B1 fix = sandwich only, no
 ideal-monomialisation; R2 spec = fan by the loss-isometry orbit (matched pairings). B1 FULLY CLOSED; sole
 residual = recursion-on-{R=0} (#172). tubecover-probe rests (all B1 work done).
+
+---
+
+## 2026-07-25 (tick, cont.) — RECURSION-ON-{R=0} = WITNESS: the last kill-condition did NOT bite; (A) fully-cite-free is SOUND, NO MONUMENT
+
+**#172 [rzero-probe, exact algebra + decorrelated Codex (obstruction raised + REFUTED); report
+threads/reroute-recursion-rzero/recursion-rzero-probe.md]. VERDICT: WITNESS.** The {R=0} recursion TERMINATES
+and every deeper exceptional divisor has RLCT-ratio ≥ ½minAdm ⟹ the payoff rlct = ½minAdm = ½C is NOT undercut
+by the deep locus. Prices (A) fully-cite-free as SOUND. Detail-at-scale, not a monument.
+- **Termination:** the {R=0} recursion IS Aoyagi's depth-recursion (fresh depth-(L−1) core; depth −1 per peel;
+  bottoms at L=1 Morse). No regress.
+- **Ratios (exact):** generic {R=0} = codim 4 = minAdm, rank-4 Morse ⟹ deep divisor k=1, h=3, ratio = 2 =
+  ½minAdm. Deeper coupled strata: RLCT direct-sum additivity ⟹ rlct = 2 (the coupled x²y² ADDS to the
+  kept-survivor squares, doesn't replace). Certified coupled (3,3,4): join k=1, ratio 4 = ½·8 (sympy EXIT 0).
+- **MECHANISM (general-L reason):** DLN loss = sum of squares ‖T‖²+‖ΔS‖² (block-elim, Object A) with
+  kept-survivor U(0)=1 ⟹ FORCES k=1 for the binding divisor (join = E²·unit) ⟹ direct-sum additivity ⟹
+  rlct = ½·Mval(branch) ≥ ½minAdm. Combinatorial shadow = the additive identity
+  Mval(t1,s)=(M1−t1)(M2−t1)+Mval_sub(s) (machine-verified, 12 dim vectors).
+
+**BUILD-GUARD (banked, from Codex's refuted-but-valuable obstruction):** Codex claimed a k=2 divisor ratio
+2<4 at (3,3,4); DIAGNOSED as a misread of the corner as a PRODUCT (qu)². The actual structure is a SUM ⟹
+E²·unit (k=1), verified symbolically (SUM→k=1, PRODUCT→k=2). **k=1 is NOT automatic — it hinges on the
+SUM/kept-survivor structure; the value-build must NEVER let the residual be read as a product.** A named
+build invariant for the value-completion rung.
+
+**GENERAL-L STATUS (honest):** the general-L k=1 (kept-survivor SUM structure at binding branches, arbitrary
+depth) is INFERENCE — instance-verified + certified-(3,3,4) + additive-identity + 2-level telescoping + the
+SUM/PRODUCT mechanism, NOT a closed general-L proof = the named build labour (worked.tex:717-720). Lean seed:
+r≥1 kept-survivor → U(0)=1 → k=1 → ratio=½Mval, composed with RLCT direct-sum additivity.
+
+**LANDMARK — THE DESTINATION IS FULLY PRICED.** The last open question (the recursion kill-condition) came
+back WITNESS. No monument anywhere: ideal side clean (one rung deeper), tube (B2) resolved (survivor-entry /
+matched-pairing fan, sandwich), escape cone (B1) dissolved (sandwich, self-similar), recursion-on-{R=0}
+WITNESS. **(A) fully-cite-free is priced SOUND; the whole remaining task is the detail-at-scale build.**
+Elder re-convened for the decorrelated stern-voice read (does WITNESS clear the bar). Surfacing to the operator
+as a landmark. R2 build (#173) underway.
