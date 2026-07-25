@@ -22161,3 +22161,13 @@ algebra — part-(i) ⊆ the (S,J) two-sided maintenance (= `hideal_fwd`+`hideal
 part-(ii) landed. The two de-risks REINFORCE on the SAME object (`hideal_bwd`): #123 (Lean corank-2) + #124
 (paper/math) from two decorrelated sides — not independent builds. TIGHTENED residual map = (i) the (S,J)
 two-sided maintenance [incl. realization/reverse-half] + (ii) cover [GREEN route-a]; Objects A/C/D landed.
+
+**CALIBRATION (2026-07-25, gate2-hideal honest relay): the scaffold c4e836075 is NOT full-aggregator-gated
+yet.** gate2's background `scripts/lb DLNFibre` on c4e836075 TIMED OUT (SIGTERM @ 590s, throttled behind
+other sessions' builds — NOT a build error). CONFIRMED-so-far on the scaffold: all 6 modules built
+INDIVIDUALLY green (fresh, on the a6ebf30ff base, no API drift); Corank2FaithfulComposite builds with exactly
+ONE tracked sorry (the crux); targeted name-clash grep CLEAN; module `#print axioms` clean-three (from -gate2
+verification, same contents). NOT CONFIRMED: the FULL aggregator green-gate (the definitive clash/integrity
+check) — timed out incomplete. It RIDES routeP-p1's reconciled full build off c4e836075 (the definitive
+gate), which the controller re-derives (#print axioms, fresh build) at phase-1 report. Do NOT read
+c4e836075 as "full-green" until routeP-p1's build confirms.
