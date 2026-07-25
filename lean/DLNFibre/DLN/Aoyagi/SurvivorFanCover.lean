@@ -32,6 +32,17 @@ generator is always dominant with ratio `1 ≤ R`, so:
 * `volume_box_diff_survivorRegion_eq_zero` / `volume_box_diff_charts_eq_zero` — the UP-TO-NULL
   cover: `volume (box \ ⋃ charts) = 0`, given the hole is null (`volume (commonZero gen) = 0`).
 
+## Indexing — matched pairings (loss-isometry orbit), permutation-closed
+The atom is abstract over the index `ι`: the caller chooses the generators. For the DLN application
+`gen` is the LOSS-ISOMETRY ORBIT = the MATCHED inner-permutation pairings — each `gen a` a PRODUCT
+TERM of a survivor entry (e.g. `C3[0,1]·C4[1,0]`), NOT arbitrary independent pivots. A MISMATCHED
+pivot gives `R(0) = 0`, fails the sandwich `sumSq_residual`, so it fails `hchart` and is not a fan
+member. Being abstract over `ι`, the atom is PERMUTATION-CLOSED: it extends unchanged to the
+shear-outermost reordering (the escape cone B1, `#170`) — one fan, no separate construction. The
+per-chart obligation is only the `R > 0` sandwich, NOT an ideal monomialisation. With `gen` the
+matched-pairing monomials the hole `commonZero gen ⊆ {R=0}` (`commonZero_subset_residualZero`), the
+deep stratum the recursion resolves (`#172`).
+
 ## The null input (`volume (commonZero gen) = 0`) — TRACKED-OPEN at general `L`
 The measure conclusions take the hole's nullity as an explicit hypothesis. Probe1 computed the
 hole to be `{X=0}`, codim ≥ 2 (generic `δ`: codim 4) EXACTLY at `(3,3,3,2,2)`; the general-`L`
@@ -55,6 +66,8 @@ nullity, weaker than the source's codim ≥ 2). The witnesses discharge it concr
 - `box_diff_charts_subset_commonZero` — the uncovered set (chart images) is contained in `{X=0}`.
 - `volume_box_diff_survivorRegion_eq_zero` / `volume_box_diff_charts_eq_zero` — up-to-null cover.
 - `volume_commonZero_eq_zero_of_single` — nullity from one generator's null zero-set.
+- `commonZero_subset_residualZero` / `volume_commonZero_eq_zero_of_residualNull` — hole ⊆ `{R=0}`
+  bridge (matched-pairing entries), wiring `hnull` to the recursion locus `#172`.
 - `sumSq_residual` — the kept-survivor `loss = monomial² · R` structural input (`R` a sum of
   squares, `R(0) = 1`, `R ≥ (kept pivot)²`).
 - `witness_commonZero_null`, `witness_survivorRegion_cover`, `witness_chart_cover` — non-vacuity.
@@ -128,6 +141,30 @@ theorem volume_commonZero_eq_zero_of_single (gen : ι → (Fin N → ℝ) → �
     (h : volume {x : Fin N → ℝ | gen a0 x = 0} = 0) :
     volume (commonZero gen) = 0 :=
   measure_mono_null (fun _ hx => hx a0) h
+
+/-- **The hole feeds the `{R=0}` recursion locus.** When each residual entry `entry e` vanishes
+wherever ALL generators vanish (`hentry` — automatic when the entries are sums of the generator
+monomials, the matched-pairing structure), the hole is contained in the residual's zero-set
+`{x | ∑ e, (entry e x)² = 0} = {R=0}`. So the survivor-entry fan's uncovered set is ⊆ `{R=0}`, the
+deep stratum handled by the recursion (`#172`) — not a separate hole. -/
+theorem commonZero_subset_residualZero {κ : Type*} [Fintype κ]
+    (gen : ι → E → ℝ) (entry : κ → E → ℝ)
+    (hentry : ∀ e x, (∀ a, gen a x = 0) → entry e x = 0) :
+    commonZero gen ⊆ {x | ∑ e, (entry e x) ^ 2 = 0} := by
+  intro x hx
+  simp only [Set.mem_setOf_eq]
+  refine Finset.sum_eq_zero (fun e _ => ?_)
+  rw [hentry e x hx]; ring
+
+/-- Nullity of the hole from the residual's `{R=0}` nullity (the `#172` deep-stratum input): if the
+matched-pairing entries vanish on the common-zero (`hentry`) and `{R=0}` is null, the hole is null —
+wiring the atom's `hnull` to the recursion locus, not the smaller `{all monomials = 0}`. -/
+theorem volume_commonZero_eq_zero_of_residualNull {κ : Type*} [Fintype κ]
+    (gen : ι → (Fin N → ℝ) → ℝ) (entry : κ → (Fin N → ℝ) → ℝ)
+    (hentry : ∀ e x, (∀ a, gen a x = 0) → entry e x = 0)
+    (hres : volume {x : Fin N → ℝ | ∑ e, (entry e x) ^ 2 = 0} = 0) :
+    volume (commonZero gen) = 0 :=
+  measure_mono_null (commonZero_subset_residualZero gen entry hentry) hres
 
 /-- **UP-TO-NULL cover (raw survivor regions).** Given the hole is null, the box minus the union of
 the survivor regions is null: `volume (box \ ⋃ a, survivorRegion R gen a) = 0`. The tightest form —
@@ -207,7 +244,8 @@ theorem witness_chart_cover :
 -- stale-olean `exit 0` — lean/CLAUDE.md caveat).
 #assert_banked_clean_batch [iUnion_survivorRegion, box_diff_charts_subset_commonZero,
   volume_box_diff_survivorRegion_eq_zero, volume_box_diff_charts_eq_zero,
-  volume_commonZero_eq_zero_of_single, sumSq_residual, witness_commonZero_null,
+  volume_commonZero_eq_zero_of_single, commonZero_subset_residualZero,
+  volume_commonZero_eq_zero_of_residualNull, sumSq_residual, witness_commonZero_null,
   witness_survivorRegion_cover, witness_chart_cover]
 
 end DLNFibre.DLN.Aoyagi.SurvivorFanCover
