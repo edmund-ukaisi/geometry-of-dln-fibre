@@ -35,13 +35,19 @@ generator is always dominant with ratio `1 ≤ R`, so:
 ## Indexing — matched pairings (loss-isometry orbit), permutation-closed
 The atom is abstract over the index `ι`: the caller chooses the generators. For the DLN application
 `gen` is the LOSS-ISOMETRY ORBIT = the MATCHED inner-permutation pairings — each `gen a` a PRODUCT
-TERM of a survivor entry (e.g. `C3[0,1]·C4[1,0]`), NOT arbitrary independent pivots. A MISMATCHED
-pivot gives `R(0) = 0`, fails the sandwich `sumSq_residual`, so it fails `hchart` and is not a fan
-member. Being abstract over `ι`, the atom is PERMUTATION-CLOSED: it extends unchanged to the
-shear-outermost reordering (the escape cone B1, `#170`) — one fan, no separate construction. The
-per-chart obligation is only the `R > 0` sandwich, NOT an ideal monomialisation. With `gen` the
-matched-pairing monomials the hole `commonZero gen ⊆ {R=0}` (`commonZero_subset_residualZero`);
-`{R=0}` is codim ≥ 2, so this hole is measure-zero (cheap — see below).
+TERM of a survivor entry (e.g. `C3[0,1]·C4[1,0]`), NOT arbitrary independent pivots. Being abstract
+over `ι`, the atom is PERMUTATION-CLOSED: it extends unchanged to the shear-outermost reordering
+(the escape cone B1, `#170`) — one fan, no separate construction.
+
+Two obligations, kept DISTINCT: (i) `hchart` — the SET-COVER hypothesis of THIS atom (chart images
+cover their survivor regions), which ANY covering chart meets, even identity charts (cf.
+`witness_chart_cover`); (ii) the downstream `R > 0` SANDWICH (loss-normal-form, `sumSq_residual`) a
+REAL geometric chart must satisfy to be loss-regular — an R3 / caller obligation, NOT enforced
+here and NOT the same as (i). A MISMATCHED pivot gives `R(0) = 0` and fails (ii), so it is not a
+valid fan member — but that exclusion lives in (ii)'s downstream discharge, never in `hchart`.
+With `gen` the matched-pairing monomials the hole `commonZero gen ⊆ {R=0}`
+(`commonZero_subset_residualZero`); `{R=0}` is codim ≥ 2, so the hole is measure-zero (cheap — see
+below).
 
 ## The null input (`volume (commonZero gen) = 0`) — CHEAP codim-nullity
 The measure conclusions take the hole's nullity as an explicit hypothesis, and it is ELEMENTARY: the
