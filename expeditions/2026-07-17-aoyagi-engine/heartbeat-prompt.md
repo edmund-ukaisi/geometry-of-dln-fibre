@@ -59,11 +59,18 @@ operator's steer (does NOT gate the build). V-arm [#110/#111] parked.
   vs cite. A DISTINCT theorem from Object A.
 
 **BUILDING NOW:** R2 cover atom LANDED — `SurvivorFanCover.lean` (branch `expedition/aoyagi-r2build` @
-`8ee1df617`, clean-three, controller-re-verified; fan by the survivor-entry / matched-pairing argmax; honest
-tracked-open hnull [backed by #172] / hchart [R3 wire]) [#173]. GATE before merge → reroute trunk: fidelity
-review [#174, r2build-review] + my re-verify (PASSED). NEXT rungs: wire the fold (per-node atoms over
-buildTree) + the value side (carry G1/G2); the R3 unified fold = the biggest rung (elder decorrelated read at
-landing). Analysis seats (reroute-R3derisk, tubecover-probe, rzero-probe, elder) rest; re-convene on triggers.
+`dab3cb308`, clean-three, controller-re-verified 11 roots; fan by the survivor-entry / matched-pairing argmax;
+honest tracked-open hnull / hchart [R3 wire]) [#173]. **FIDELITY REVIEW [#174] = SURVIVED** (Lean bedrock —
+sound, axiom-clean independently re-verified, non-vacuous, faithful); all findings docstring/wiring, not math.
+**CALIBRATION (own it): hnull = CHEAP codim≥1 nullity, NOT #172** — the review caught that conflation (I
+propagated it). #172 is the SEPARATE value-side approach-integrability near {R=0}. And the atom is the
+MEASURE-BOOKKEEPING layer (up-to-null cover), NOT the RLCT lower bound (which needs per-chart integrability +
+#172). Pre-merge fixes routed to reroute-R2build (docstrings #1/#3 + scope caveat #2 + wire into
+aggregator/AxCheck #5) → new SHA → reviewer delta re-check → controller merges to trunk. NEXT rungs: the fold
+(per-node atoms over buildTree) + the value side (carry G1/G2); R3 unified fold = the biggest rung (elder
+decorrelated read at landing). R3 heads-up: the fan-by-ENTRY here is COARSER than the matched-pairing
+loss-isometry-orbit fan — the finer structure lands inside hchart's discharge = where the real R3 difficulty
+lives. Analysis seats rest; re-convene on triggers.
 
 **STANDING GATES / DISCIPLINE:**
 - **Operator-gated (wait-for-explicit-go):** PR **merge**, `dev→main` promotion, any change to the destination

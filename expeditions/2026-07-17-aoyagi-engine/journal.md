@@ -24369,3 +24369,31 @@ hazard. CONTROLLER RE-VERIFIED dab3cb308 (force-elab, 2413 jobs replayed, no sor
 no cites"). Repointed r2build-review to dab3cb308 (+ fidelity Qs 4-6 on the matched-pairing encoding / hole⊆{R=0}
 bridge / hnull-via-#172). MERGE → reroute trunk gated on the review clean at dab3cb308 (my re-verify already
 passed). Value-side heads-up carried: G2 (direct-sum RLCT additivity) NOT in-repo → scout scoping build-vs-cite.
+
+## 2026-07-25 (tick, cont.) — R2 fidelity review = SURVIVED (Lean bedrock); caught the hnull≠#172 framing conflation (controller calibration)
+
+**r2build-review [decorrelated + Codex xhigh, fresh /tmp worktree, force-elab]: VERDICT SURVIVED.** The R2
+SurvivorFanCover atom's Lean is bedrock — sound, non-vacuous, axiom-clean (independent #print axioms scratch on
+7 roots = [propext, Classical.choice, Quot.sound], no cite/sorryAx), faithful to probe2 (survivor-ENTRY fan
+not radial-pivot; iUnion_survivorRegion tight-equality TRUE, R≥1 correctly required; commonZero={X=0}
+faithful; hnull/hchart the right things left open). No math/soundness defects. (Reviewed 8ee1df617 — crossed
+the repoint; fixes + the 2 dab3cb308 bridge-lemmas re-checked next.)
+
+**All findings DOCSTRING/PRECISION + wiring (not Lean):**
+1. [MED] **hnull's discharge is NOT #172** — nullity of {X=0}={R=0} is CHEAP codim≥1 (volume_commonZero_eq_
+   zero_of_single); #172 is the SEPARATE approach-integrability/divisor-ratio near {R=0}. A framing conflation
+   the controller ALSO propagated — owned in the calibration-ledger. Fix the docstring + reframe
+   volume_commonZero_eq_zero_of_residualNull (sound lemma, must not claim it "consumes #172").
+2. [LOW-MED] the atom is the MEASURE-BOOKKEEPING layer, NOT the RLCT lower bound (up-to-null cover ≠ per-chart
+   integrability as R→0). Add a scope caveat; don't over-credit.
+3. [LOW] sumSq_residual "R a unit near origin" prose OVERCLAIMS (proves pointwise R≥(f i0)² + R(o)=1, not a
+   neighborhood bound); trim.
+4. [LOW→R3] hchart non-vacuous only tautologically (chart=id witness); the finer matched-pairing/comparable-
+   monomial structure lands INSIDE hchart's discharge — the fan-by-ENTRY is coarser than the loss-isometry-
+   orbit fan; that's where the real R3 difficulty lives.
+5. [LOW-MED] module ORPHANED (not in DLNFibre.lean aggregator / AxCheck roots) — wire in before integration.
+
+**INTEGRATION-READY on soundness/fidelity/axioms/non-vacuity.** Pre-merge = the docstring/scope/wire fixes
+(routed to reroute-R2build, GO given) → new SHA → reviewer delta re-check at that SHA → controller merges to
+the reroute trunk. The disposition working: green build + my form-re-verify are necessary, the decorrelated
+review is what caught the conceptual framing slop.

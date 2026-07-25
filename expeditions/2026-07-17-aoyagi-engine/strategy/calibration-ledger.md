@@ -1205,3 +1205,33 @@ that a field-level boundary exists; LOW-confidence on whether it's ONE axiom or 
 time I read the interface before asserting the boundary. The P-fallback is a strictly narrower cite than
 objects-only (a per-leaf reverse-inclusion lemma, not the whole rlct=½codim). Records a HIT against the prior
 economy-MISS: the correction (read the code before reporting an architecture grounded) held here.
+
+---
+
+## 2026-07-25 — CALIBRATION MISS (caught by the decorrelated R2 fidelity review + Codex): hnull ≠ #172
+
+**The miss:** across several ticks I framed the R2 cover atom's `hnull` (Lebesgue-nullity of {X=0}={R=0}) as
+"backed by / discharged by the #172 recursion WITNESS" — and the R2 formaliser's `volume_commonZero_eq_zero_
+of_residualNull` docstring inherited it. The fidelity reviewer (r2build-review) + a decorrelated Codex both
+flagged it: **these are two DIFFERENT obligations on the same set.**
+- `hnull` = "{R=0} is Lebesgue-null" = CHEAP, codim≥1 (one non-vanishing generator ⟹ null zero-set); captured
+  by `volume_commonZero_eq_zero_of_single`. Elementary.
+- #172 = "the loss doesn't blow up worse than ½·minAdm as points APPROACH {R=0}" = the recursion / divisor-
+  ratio = the VALUE-side integrability obligation. A different, downstream thing.
+
+**Why I missed it:** I let the shared SET ({R=0}) collapse two distinct obligations (nullity vs
+approach-integrability) into one "backed by #172" phrase — a chunking error (over-merging), exactly the
+"elementary, precisely" failure. Compounded by amplifying the seat's own docstring conflation instead of
+catching it. The Lean was sound throughout (both lemmas are true); the slop was CONCEPTUAL/framing — which a
+green build never defeats, and which the decorrelated review is precisely the sensor for.
+
+**What it changes:** (1) the R2 cover atom is the MEASURE-BOOKKEEPING layer, NOT "the cover half of the RLCT
+bound" — don't over-credit it; the RLCT lower bound still needs per-chart integrability (the R>0 sandwich
+holding) + #172-approach. (2) The value-side rung scoping: the value rung owns #172 + per-chart integrability;
+the cover atom's hnull is cheap and independent. (3) Corrected in memo + the docstrings (routed to the seat);
+compass F10 did not carry the explicit conflation (checked).
+
+**Process HIT:** the decorrelated fidelity review earned its keep — it SURVIVED the Lean (bedrock) yet caught
+conceptual framing slop the green build + my own re-verify (which only checks form/axioms) could not. Keep
+gating integration on the decorrelated review, not just the axiom re-check. (The prior economy-miss lesson
+generalizes: re-derived form ✓ is necessary, not sufficient; the content/framing needs the decorrelated seat.)
