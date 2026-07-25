@@ -22931,3 +22931,26 @@ fan-invariant via the isometry) — routeP-p1 handles that + wires. DISPATCH: de
 (ii)+(i)+(iii)+(iv); routeP-p1 supervises (gWrap/K-orbit + resolution334 seam + per-chart binding + wire).
 STATE: (3,3,4) Resolution — rung 3 ✓ + 5c-atom ✓ + 5b ✓ + 5a ✓ + 5d-part-1 (Chart+reduction) ✓; REMAINING =
 the fan cover (→ resolution334_of_ballCover → the full (3,3,4) Resolution = the general-d gate entry bar).
+
+**gate2's uniform-hbind flag RESOLVED — the per-chart (fan-invariant) realization seam @ 3551c2e43 (2026-07-25).**
+routeP-p1 built the PER-CHART VALUE form (on my 5d-part-1 wire 2e275c3c3; HEAD now 3551c2e43, full green 9029
+jobs, all new results routeP-p1 force-elab clean-three):
+- atlasRealizesExponents_334_ofValues (res)(hval)(hmin): hval = ∀c ∀a∈bindingAxes, jac a+1 = 8 ∨ = 9; hmin =
+  ∃c ∃a, jac a+1 = 8 ⟹ AtlasRealizesExponents ![3,3,4] res. Clause (i) rides {8,9}⊆TE; clause (ii) rides the
+  value-8 attainer.
+- resolution334_of_{fanCover,ballCover}_ofValues: the assembly seams feeding it.
+WHY IT DISSOLVES THE LEAK (matches gate2's analysis exactly): a coord-perm preserves jac VALUES + permutes the
+axes → EVERY fan chart binds at {8,9}, both ∈ TE, both ≥ minAdm=8 → NO lower-bound leak on any fan chart;
+the value content is fan-agnostic. The _ofValues form SUBSUMES BOTH presentations (single canonical chart =
+uniform special case; full coord-permuted fan). So the realization side is DECOUPLED from the cover-presentation
+choice — decomp-5b uses whichever fan is cleanest for hcover; the realization seam is already discharged
+(uniform resolution334_of_ballCover for single-chart, or _ofValues for the fan; both banked). Controller
+calibration: full DLNFibre green (9029 jobs); the _ofValues are small reduction-seam lemmas in already-clean
+modules (green + routeP-p1 force-elab clean-three; the load-bearing chart334/resolution334/realize I calibrated
+directly; the authoritative AxCheck batch fires when the full Resolution root lands). gate2's flag CLOSED.
+
+STATE: the (3,3,4) Resolution's realization+assembly side is FULLY banked (rung 3 ✓ + 5c-atom ✓ + 5b ✓ + 5a ✓
++ 5d-part-1 Chart ✓ + the per-chart realization seam ✓). THE SOLE OPEN OBLIGATION = the coupled fan COVER
+(#142, decomp-5b building the (3,3,4) gWrapFan Covers → ball-cover; routeP-p1 supervises + wires via
+resolution334_of_ballCover{,_ofValues}). When the cover lands → the full (3,3,4) Resolution = the general-d
+gate entry bar → convene the general-d gate.
