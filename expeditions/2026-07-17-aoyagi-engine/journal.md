@@ -22838,3 +22838,31 @@ NET: RUNG 5b DONE — 4-CHANNEL confirmed (decomp-5b build/clean-three + routeP-
 decorrelated fidelity PASS + my kernel calibration). Fork #138 (B) Lean-confirmed end-to-end. The (3,3,4)
 Resolution: rung 3 ✓ + 5c ✓ + 5b ✓; REMAINING = 5a (realization, in progress, routeP-p1) + 5d (assembly)
 → full (3,3,4) Resolution → the general-d gate.
+
+**RUNG 5a (realization) DONE — wired + CALIBRATED @ 71ab904ac (2026-07-25).** routeP-p1 discharged
+AtlasRealizesExponents for (3,3,4) (Corank2Realize334, @ 1301fbaee, on the two-module 5b c712f8fef);
+controller wired the aggregator (single-writer) @ 71ab904ac + calibrated.
+- THE FAN/ORBIT FLAG DISSOLVED (not scoped/escalated — routeP-p1's honest resolution): 9 = c11-axis (jac
+  20+1) is NOT the minimizer, so o5_core_realized does NOT bank it, and R7 (realizedProfiles_eq_clearableAdm)
+  is a RETIRED off-cone sorry (unusable). Instead: realize_aux (the cert-§4 descent invariant, GENERAL +
+  sorry-free) run on the CLEARABLE ADMISSIBLE profile (2,0) [Mval=9] directly → 9 ∈ terminalExponents, NO R7.
+  Ground truth: Adm ![3,3,4] forces T₁=0, T₀∈{0..3}, Mval={8@(1,0), 9@(0,0)&(2,0), 12@(3,0)}, minAdm=8. So
+  {8,9} ⊆ TE both genuine.
+- DELIVERABLES: clearableAdm_mval_mem_terminalExponents (GENERAL, engine-grade — every clearable-admissible
+  profile's Mval ∈ TE via realize_aux; general-d 5a consumes it); mem_terminalExponents_334_{eight,nine};
+  atlasRealizesExponents_334 (the REDUCTION: a Resolution whose charts carry bindingAxes(bexp k₀)={aE,aC},
+  jac aE=7, jac aC=8 ⟹ AtlasRealizesExponents ![3,3,4] res; GENERIC in D + axis pair).
+- CONTROLLER CALIBRATION: FULL DLNFibre green (9028 jobs, name-clash guard); SOURCE-clean (no
+  native_decide/sorry/axiom, kernel decide only); NO sorryAx (force-elab — CONFIRMS no R7-sorry leak, the key
+  fidelity point); cordon OK (native_decide=0, cites located). routeP-p1's force-elab clean-three = its channel.
+- 5a↔5d SEAM: 5a is a REDUCTION (res + chart-data hyps), NOT ∃res. 5d builds the concrete res, applies
+  atlasRealizesExponents_334, feeds RecursionAdapter.exists_hlb_hattain_of_exists_atlasRealizesExponents.
+  5d owes: the Chart record (5b jac/hjac/inj/excep + part-C hideal + the 5c hcover) + bindingAxes(bexp
+  k₀)={⟨0,_⟩,⟨20,_⟩} (by decide) + jac ⟨0,_⟩=7, jac ⟨20,_⟩=8 + the eWrap MeasurePreserving + eWrap→canonFlatten
+  transport.
+
+STATE: the (3,3,4) Resolution rungs — rung 3 (coreGen-wrap) ✓ + 5c (hcover atom) ✓ + 5b (chart Jac) ✓ + 5a
+(realization) ✓. REMAINING = 5d (assembly — the LAST rung) → the full (3,3,4) Resolution → the general-d gate.
+5a routed to gate2 (fidelity); 5d GO'd to routeP-p1. NOTE: the 5c atom (Corank2FaithfulHCover, abstract
+Fin-14) is on the hcover-atom lane @ 649fc7924, NOT yet on routeP — 5d specifies how it connects to the
+(3,3,4) gWrap hcover; I wire it when routeP-p1 pins the connection.
