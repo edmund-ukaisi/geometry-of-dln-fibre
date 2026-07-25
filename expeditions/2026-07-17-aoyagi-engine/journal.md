@@ -22348,3 +22348,39 @@ lemmas serving all charts) AND the elder's Q3 (general-not-(3,3,4)-specific). ro
 confirmed; writes the handoff note (part-C design + the 3 remaining legs + gate2's working mitigation +
 the line-175 stale-docstring nit) then rests — NOT more solo (3,3,4) grind (long-context + throwaway).
 The general-d build (task #112) is a FRESH elder gate (GUARD-B: one instance, not general-L) — convening.
+
+**RESOLUTION REVERSED (same tick): part-C is BOUNDED — completing the (3,3,4) wrap as the worked base
+case (NOT deferred). (2026-07-25)**
+The "defer the coreGen-wrap to the general-d gate" entry above was SUPERSEDED within the tick by decisive
+new evidence: routeP-p1 solved the incantations (the `dvec (Fin.succ 0)` non-reduction is real, but each
+piece has a working idiom — `mult` reduces to the PAIRED form `A1·(A0·1)` by rfl at literal widths, then
+`congr 1` + `Matrix.mul_one` bridges the dependent-vs-literal HMul; the custom transpose-e Homeomorph
+closes both inverses by `fin_cases <;> rfl`). So part-C is BOUNDED detail-at-scale, NOT a wall — gate2's
+original "bounded grind, don't defer" read was right, and my condition-4 finding (real content beyond the
+mult-flatten: the blockBlowupMap-composition + ⟨c11·E⟩ ideal-scaling legs) was right about the content but
+wrong that it made the wrap heavy (those legs reuse `hideal_faithful` + the landed `jacDet_blockBlowupMap`
+and land bounded).
+
+CONTROLLER CALL (updated, closed-loop — the third reading on new evidence): GO — complete the bounded
+(3,3,4) coreGen-wrap. The premise behind "stop/defer" (a multi-tide wall + long-context stall) is
+falsified. A COMPLETE end-to-end (3,3,4) `Chart (coreGen d334 e) 0` is a WORKED BASE CASE (validates the
+full composition end-to-end; templates the general lemmas the general-d build reads off; already caught a
+real architecture boundary — the wrap imports `coreGen` (DLN), so it's a NEW DLN module
+`DLNFibre/DLN/Aoyagi/Corank2CoreGenWrap.lean`, crux/hideal stay in Core untouched) — that is filling the
+(3,3,4) layer, NOT throwaway. This honours gate2 + the disposition (complete bounded well-scoped work) and
+serves the elder's general-d goal (a de-risked, templated base case). GUARD-4 stands: report GREEN or a
+GENUINE NEW snag (a real wall, not an incantation). The remaining: the entry-relation lemma
+`coreGen d334 e k (g_full u) = u20·(flat Pmat (τ k))(gFaithful u)` (u20 = c11, the sympy-verified
+`coreGen∘blowup = c11·Pmat`) + the two-sided chain to `⟨c11·E⟩`.
+
+GENERAL-D GATE — HELD (calibrate-sensors) until the (3,3,4) instance LANDS + is CONTROLLER-CALIBRATED
+(aggregator wired [single-writer, mine] + `#print axioms` force-elaborated on the wrap theorems + FULL
+`scripts/lb DLNFibre` green, name-clash guard). Convene the elder + navigator for the general-d gate from
+a VERIFIED complete base case, not an "about to land". Trigger = routeP-p1's "wrap ready" ping. GUARD-B
+holds: completing the (3,3,4) instance does NOT authorize the general-d build — that's still the fresh gate.
+
+Meta note (self-audit): three readings in one tick (wall → defer → complete-bounded) — the closed loop
+working on incoming evidence, not thrash. Each flip had a decisive new reading (wall-flag → gate2's
+bounded-estimate + condition-4 → routeP-p1's incantation-solve). The controller move each time: resolve the
+load-bearing fact from ground truth before committing (condition-4 sympy; the #print-axioms calibration;
+the builder's own build-state). Held the DE-RISK-green banking + the general-d GATE steady throughout.
