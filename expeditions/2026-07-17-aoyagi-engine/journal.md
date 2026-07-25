@@ -22113,6 +22113,23 @@ cite-free build commencing.
 **Status.** #112 phase-1 building (gate2-hideal, -routeP). Guards A+B recorded. Holding for phase-1: GREEN →
 FRESH elder gate for the general-d continuation; WALL → objects-only close.
 
+**Phase-1 HANDOFF-SPLIT + the named crux (2026-07-25).** gate2-hideal picked up phase-1, flagged its own long
+session (mid-build-stall risk on the large 21-var build — good self-awareness), and built a new composition
+primitive `regionRepresents_comp` (the precompose op, ABSENT from the banked API) + `blockElim_under_chart`
+(Corank2CompositeProto, sorry-free). DECISION: HANDOFF-SPLIT — gate2-hideal (deep context) lays the SCAFFOLD
+on `expedition/aoyagi-engine-routeP` (created off the CURRENT expedition tip so it carries Objects A/C/D +
+value engine + coreGen + delivery pipeline; the Corank2*Proto files brought over as new modules): the
+faithful composite `g` def + the chain skeleton wiring L-A→L-B→L-C via `regionRepresents_comp` + the RADIAL
+CRUX clearly sorried+stated; then rests. A FRESH lean-formaliser then does the large grind (fresh context).
+**Phase-1's NAMED CRUX (builder refinement, accepted):** the concrete RADIAL factorisation of the specific
+12-entry coupled `peeled∘g → ⟨E⟩` — the L-C mechanism was on an ABSTRACT residual block; applying it to the
+concrete faithful `peeled` is Phase-1's real work (Codex's biggest risk; math-GREEN via the #124 tripwire;
+NOT free wiring, NOT a wall). The wiring ops themselves are clean (regionRepresents_comp no tax).
+
+**Status.** Phase-1 handoff-split set. Holding for gate2-hideal's scaffold-ready (routeP SHA + the crux
+statement) → then spawn the fresh lean-formaliser for the radial-crux grind. Guards A+B + faithful multi-term
++ #124 tripwire + STOP-on-wall→objects-only hold.
+
 **PAPER-FIRST anchor + coherence tightening (pnp, 2026-07-25) — fold into the elder's #123 charter finalize.**
 Paper-first (charter §3 DEFECT gate): AOYAGI RESOLVES the realization (her two-sided (S,J) maintenance
 Cases 1&2 → terminal normal crossing, general-L per her abstract); the worked.tex:663 "deeper mixed open
