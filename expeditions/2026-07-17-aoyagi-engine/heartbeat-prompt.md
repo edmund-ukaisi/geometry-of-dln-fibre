@@ -89,12 +89,16 @@ proceed-on-silence = build-toward-A, fall-back-to-B-if-it-bites). Build + de-ris
 1. **R2 build brick** → reroute-R2build [#173, lean-formaliser, own worktree off the reroute trunk]:
    the SURVIVOR-ENTRY-fan per-node up-to-null cover atom (uncovered ⊆ {X=0} codim≥2; verified-exact by the
    tube probe) + the kept-survivor normal form. The R2 cover atom is independent of the two de-risks below.
-2. **B1 escape-cone probe** → tubecover-probe [#170]: escape cone ∩ {loss=0}? loss-regular ⟹ B1 dissolves
-   (artifact, elder's lean); meets fibre ⟹ real residual. Gates full-cover completeness, not the atom.
-3. **Recursion-on-{R=0} de-risk** → rzero-probe [#172]: PERFORM (not assume) — does the {R=0} recursion
-   terminate with all deeper divisor ratios ≥ ½minAdm? WITNESS ⟹ (A) reachable, rlct=½C exactly. OBSTRUCTION
-   (a deeper ratio < ½minAdm) ⟹ rlct < ½C = KILL-condition for the value. The one remaining inference. Gates
-   the value-completion, not the cover atom.
+2. **B1 escape-cone probe [#170] DONE = WITNESS, B1 DISSOLVES** (detail-at-scale). The escape cone meets
+   {loss=0} but its local rlct = ½minAdm EXACTLY (self-similar Schur sub-loss, never below); bound =
+   min(covered,escape) survives; non-coverage = proof-completeness defect, not a counterexample. FIX =
+   UNIFIED with B2: a permutation-closed atlas (shear fanned WITH the pivot, applied outermost). #145's ~2%
+   FULLY reconciled at depth. Refinement in flight (does the escape charts need only the R>0 sandwich, same
+   as B2, not the ideal identity — simplifies the spec). NO MONUMENT.
+3. **Recursion-on-{R=0} de-risk [#172, rzero-probe] — the SOLE remaining OPEN item.** PERFORM (not assume):
+   does the {R=0} recursion terminate with all deeper divisor ratios ≥ ½minAdm? WITNESS ⟹ (A) reachable,
+   rlct=½C exactly, destination fully priced. OBSTRUCTION (a deeper ratio < ½minAdm) ⟹ rlct < ½C =
+   KILL-condition for the value. The one remaining inference.
 4. **Elder** F10 REVISED + committed (R>0 correction, P-vs-V collapse, residual=recursion-on-{R=0}, B1 open,
    (A) leads). Re-convenes at B1 + recursion results + operator call. Rank: (A) > (B) in-build fallback > (C off).
 5. **Operator surfaced** — (A) leads, C off, P-vs-V collapsed, ONE build-shaped inductive inference remains,

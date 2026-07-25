@@ -24197,3 +24197,33 @@ hard part):**
 KILL-condition for the payoff value — a deeper divisor with ratio < ½minAdm ⟹ rlct < ½C). B1 probe in flight.
 R2 formaliser HELD until B1 + recursion return, then launch with the complete spec. Elder will revise F10;
 commit when it sends. Surfaced to the operator: (A) leads, C off, P-vs-V collapsed, one inference remains.
+
+---
+
+## 2026-07-25 (tick, cont.) — B1 escape-cone probe = WITNESS: B1 DISSOLVES (the last caveat closed)
+
+**#170 B1 probe [tubecover-probe, decorrelated + Codex xhigh converged (Codex corrected a sub-computation);
+report threads/reroute-R2-tubecover/b1-escape-cone-probe.md]. VERDICT: WITNESS — B1 DISSOLVES
+(detail-at-scale artifact).** Destination stays (A)/(B); (C) OFF.
+- The escape cone `{max_W > C·max_V}` DOES meet {loss=0} (not naive-loss-regular). BUT its **local rlct =
+  ½·minAdm EXACTLY** — full 21-dim, loss ~ ‖ũ‖² + ‖S·V‖² where S = Schur complement of C1; ‖S·V‖² is itself
+  a SMALLER DLN loss (S 2×2, V 2×4, rlct = ½minAdm(2,2,4) = 2) + ‖ũ‖² = 2, total 4 = ½minAdm(3,3,4).
+  SELF-SIMILAR: the escape-cone singularity is a smaller DLN product landing EXACTLY at the bound, never below.
+- rlct(loss|E) = ½minAdm exactly (E = finite union of sectors, each loss-ISOMETRIC — permutation, Jacobian
+  ±1 — to a valid dominance sector; subset-monotonicity + isometry ⟹ ≥ ½minAdm; local rlct ⟹ ≤). **Lower
+  bound SURVIVES:** vol{loss<ε} = covered + escape (no pole cancellation) ⟹ rlct = min(covered, escape),
+  both ½minAdm. Non-coverage is a PROOF-COMPLETENESS defect, NOT a counterexample.
+- **FIX (detail-at-scale, UNIFIED with B2):** a permutation-closed / pivot-adapted-normalization atlas — the
+  shear-OUTERMOST reordering makes det Dg a coordinate monomial for ALL pivots (the "128 invalid charts" are a
+  composition-ORDER artifact). B1 and B2 need the SAME R2 fix (fan the shear/normalization WITH the pivot).
+  **#145's ~2% is now FULLY reconciled at depth:** B2 tube = within-chart 1/R + survivor-entry fan; B1 escape
+  = permutation-closed atlas; deep stratum = self-similar recursion.
+
+**NET: NO MONUMENT.** All residuals are named detail-at-scale build labour: (i) the unified permutation-closed
+/ survivor-entry-fan atlas [B1+B2] — BUILDING (#173); (ii) the recursion-on-{R=0} terminating with no divisor
+ratio < ½minAdm [#172, in flight]. **The one remaining OPEN item is the recursion-on-{R=0} (rzero, #172).**
+
+**Controller refinement fired:** does the shear-outermost order need only the R>0 pointwise sandwich
+(loss=monomial²·R, R(0)≠0) in the escape charts (same as B2), or the full ideal identity? Post-R>0-correction
+the sandwich should suffice — a quick decorrelated confirmation to simplify the R2 unified-atlas spec.
+R2 formaliser [#173] given the unification heads-up (keep the survivor-entry fan permutation-closed/extensible).

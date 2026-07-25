@@ -1,0 +1,201 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.145.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-engine/gate-routeB/expeditions/2026-07-17-aoyagi-engine/threads/reroute-R2-tubecover
+model: gpt-5.6-sol
+provider: openai-aisi
+approval: on-request
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f9b33-64dc-79a2-abc7-3b4d8b0f3df9
+--------
+user
+<task>
+Independent adjudication (exact algebra + real analysis) for an RLCT (real-log-canonical-threshold)
+LOWER bound via a resolution atlas. A per-pivot blow-up "fan" of charts covers the SINGULAR locus,
+but a positive-measure "escape cone" is NOT covered by the (fixed-normalization) valid charts.
+Decide: does the escape cone BREAK the lower bound rlct >= (1/2)*minAdm, or is it benign?
+</task>
+
+<facts>
+SETTING: deep-linear-network (DLN) product map. Matrices C1 (3x3), C2 (3x4); loss = ||C1*C2||_F^2
+(squared Frobenius), RLCT taken at the origin (all entries 0). Target lower bound: rlct >= (1/2)*minAdm,
+minAdm = 8 for (3,3,4) so the bound is rlct >= 4 (for the deeper-mixed (3,3,3,2,2) instance the bound is
+rlct >= (1/2)*4 = 2 by the same mechanism). Coordinates x_0..x_20 ARE the original matrix entries
+(0..8 = C1's 9 entries, 9..20 = C2's 12 entries).
+
+THE FAN: per-pivot blow-up charts. "Valid" (normal-crossings) charts pivot on V = {0,1,2,3,20}. The
+charts that would pivot on W = {4,5,6,7} (shear-written C1 entries) are non-normal-crossings UNDER A
+FIXED shear (their Jacobian carries a polynomial, not a monomial). The valid charts' images lie in the
+cone {max_{w in W}|x_w| <= C*max_{v in V}|x_v|}. Hence the ESCAPE CONE
+      E = { max_{w in W}|x_w| > C*max_{v in V}|x_v| }
+is positive-measure, scale-invariant, and meets every ball around the origin, and is covered by NO valid
+chart. Witness direction x = t*e_4 (only C1 entry #4 nonzero, C2 = 0).
+
+EXACT FACTS I have:
+ - The Frobenius loss ||C1*C2||^2 is INVARIANT under simultaneous coordinate permutations:
+   C1 -> P*C1*Q, C2 -> Q^{-1}*C2*S for permutation matrices P,Q,S (||P M S|| = ||M||).
+ - Row/column permutations of C1 act transitively on C1's 9 entries (any entry -> any entry).
+ - At x = t*e_4 (t != 0): C1 = t*E_{4}, C2 = 0, loss = 0. Near it, loss = ||t*E_4*C2||^2 =
+   t^2 * ||(one row of C2)||^2, a nondegenerate quadratic in the 4 entries of that C2-row.
+</facts>
+
+<questions>
+Q1. Local RLCT at x = t*e_4 (t != 0 fixed): from loss ~ t^2 * ||C2-row||^2 (4 quadratic transverse
+    directions, the rest loss-regular), what is the local rlct at that point? Compare to the bound
+    (1/2)*minAdm.
+Q2. Is the escape cone E loss-ISOMETRIC to a VALID sector? Concretely: is there a coordinate
+    permutation phi (a symmetry of the loss) with phi(E) contained in the region where a valid pivot
+    (v in V) dominates? If so, what does that imply for rlct(loss restricted to E) versus
+    rlct(loss restricted to the valid region)?
+Q3. For a loss-isometry phi and A a subset of B: order rlct(loss|A) vs rlct(loss|B). Use this + Q2 to
+    bound rlct(loss|E) below. Does the (uncovered) escape cone contribute BELOW the threshold
+    (1/2)*minAdm, or AT/ABOVE it?
+Q4. LOWER-bound logic: vol{loss<eps} = vol{loss<eps, covered} + vol{loss<eps, escape}. Even if the
+    fixed-shear atlas never covers E, does rlct >= (1/2)*minAdm still hold, given the escape cone's
+    own local rlct >= (1/2)*minAdm? State precisely why (min-of-poles logic).
+Q5. Is the non-coverage a MONUMENT-ADJACENT hole (a positive-measure region dragging rlct BELOW the
+    bound) or a DETAIL-AT-SCALE artifact of using a FIXED shear/normalization instead of a
+    pivot-adapted (permutation-closed) one? If the latter, does adapting the shear WITH the pivot
+    (so the W-pivot chart becomes normal-crossings, isometric to a valid chart) close it?
+</questions>
+
+<output_contract>
+For each Q1..Q5: a direct verdict + one-paragraph exact justification. Distinguish PROVEN from
+INFERENCE. End with: is the escape cone (B1) a MONUMENT-ADJACENT positive-measure hole that breaks
+rlct >= (1/2)*minAdm, or a DETAIL-AT-SCALE artifact dissolvable by a permutation-closed
+(pivot-adapted-normalization) atlas?
+</output_contract>
+
+<grounding_rules>
+Reason from the facts. Frobenius loss permutation-invariance: ||P M S||=||M|| for permutations.
+RLCT via resolution: rlct(loss on U) = min over the singular strata in U of the local rlct; for A
+subset of B, rlct(loss|A) >= rlct(loss|B). A loss-isometry preserves local rlct. Lower bound needs
+every stratum (covered or not) to have local rlct >= the bound; loss-regular regions contribute +inf.
+Keep "covered by a chart" and "local rlct value" distinct.
+
+codex
+The escape cone does not break the bound. The apparent value \(2\) at \(t e_4\) comes from freezing \(C_1\); it is not the local RLCT in the full 21-dimensional parameter space.
+
+### Q1 — Verdict: \(\operatorname{rlct}_{t e_4}=4\) (PROVEN)
+
+After permutations, take \(C_1=tE_{11}\) and write
+\[
+C_1=\begin{pmatrix}a&r\\ c&D\end{pmatrix},\qquad
+C_2=\begin{pmatrix}u\\ V\end{pmatrix},\qquad a\neq0.
+\]
+Gaussian elimination and analytic coordinate changes give
+\[
+\|C_1C_2\|^2\asymp \|\widetilde u\|^2+\|SV\|^2,
+\quad
+S=D-ca^{-1}r,
+\]
+where \(\widetilde u\in\mathbb R^4\), \(S\in\mathbb R^{2\times2}\), and \(V\in\mathbb R^{2\times4}\). The first term contributes \(4/2=2\). A direct singular-value/Fubini calculation gives \(\operatorname{rlct}\|SV\|^2=2\), hence the total is \(2+2=4\). Thus it equals \(\tfrac12\minAdm=4\). The value \(2\) is only the RLCT of the slice obtained by fixing \(C_1=tE_4\); the remaining directions are not flat.
+
+### Q2 — Verdict: no single permutation, but a finite piecewise permutation works (PROVEN for the stated cone)
+
+No single row/column permutation sends the whole of \(E\) into the fixed valid cone: the four positions in \(W\) have row-degree pattern \((2,2)\), while their complement has row sizes \((3,1,1)\), so some \(W\)-axis must remain a \(W\)-axis. Instead partition \(E\) into four sectors \(E_w\), according to which \(w\in W\) realizes \(\max_W|x_w|\). For each \(w\), a row/column permutation can send both \(w\) and the otherwise-uncontrolled entry \(x_8\) into \(V\). Consequently, after harmlessly taking \(C\ge1\),
+\[
+\phi_w(E_w)\subseteq\{\max_W|x_w|\le C\max_V|x_v|\}.
+\]
+Thus \(E\) is not globally isometric to one valid sector, but is a finite union of pieces isometric to valid dominance sectors. Inclusion in the exact image of a particular chart additionally requires that the chart cover its declared dominance sector.
+
+### Q3 — Verdict: \(\operatorname{rlct}(\mathrm{loss}|E)=4\) (PROVEN)
+
+For \(A\subseteq B\),
+\[
+\operatorname{rlct}(f|A)\ge \operatorname{rlct}(f|B),
+\]
+because restricting the positive zeta integral cannot introduce an earlier pole. Hence, if \(R\) is the valid region with \(\operatorname{rlct}(f|R)\ge4\), then
+\[
+\operatorname{rlct}(f|E_w)
+=\operatorname{rlct}(f|\phi_w(E_w))
+\ge\operatorname{rlct}(f|R)\ge4,
+\]
+and finite-union/minimum logic gives \(\operatorname{rlct}(f|E)\ge4\). Conversely, \(E\) contains an open neighborhood of each sufficiently small \(t e_4\), whose local RLCT is \(4\), so \(\operatorname{rlct}(f|E)\le4\). Therefore it is exactly \(4\), not below the target.
+
+### Q4 — Verdict: the lower bound survives (PROVEN)
+
+The restricted zeta integrals—or equivalently the sublevel volumes—add with nonnegative coefficients:
+\[
+V(\varepsilon)=V_{\mathrm{covered}}(\varepsilon)+V_E(\varepsilon).
+\]
+There can be no cancellation of leading poles, so
+\[
+\operatorname{rlct}(f)
+=\min\!\left\{
+\operatorname{rlct}(f|{\rm covered}),
+\operatorname{rlct}(f|E)
+\right\}.
+\]
+Both terms are at least \(4\), and the escape term is exactly \(4\). Therefore noncoverage by the fixed atlas is a proof-completeness defect, not a counterexample to \(\operatorname{rlct}\ge4\).
+
+### Q5 — Verdict: DETAIL-AT-SCALE artifact (PROVEN abstractly; formula-level implementation is an INFERENCE)
+
+A \(W\)-pivot chart can be defined by transporting a valid \(V\)-pivot chart through the appropriate loss-preserving permutation. Coordinate permutations have constant Jacobian \(\pm1\), preserve the Frobenius loss, and preserve monomial Jacobians and normal crossings. Thus a pivot-adapted normalization closes the escape sectors. The inference is only that a particular rewritten “adaptive shear” formula exactly realizes this transported chart; that formula should still be checked.
+
+**Final adjudication:** B1 is a positive-measure hole in the fixed-shear atlas, but it is not MONUMENT-ADJACENT and does not break \(\operatorname{rlct}\ge\tfrac12\minAdm\). It is a DETAIL-AT-SCALE artifact dissolved by a permutation-closed, pivot-adapted-normalization atlas.
+tokens used
+31,243
+The escape cone does not break the bound. The apparent value \(2\) at \(t e_4\) comes from freezing \(C_1\); it is not the local RLCT in the full 21-dimensional parameter space.
+
+### Q1 — Verdict: \(\operatorname{rlct}_{t e_4}=4\) (PROVEN)
+
+After permutations, take \(C_1=tE_{11}\) and write
+\[
+C_1=\begin{pmatrix}a&r\\ c&D\end{pmatrix},\qquad
+C_2=\begin{pmatrix}u\\ V\end{pmatrix},\qquad a\neq0.
+\]
+Gaussian elimination and analytic coordinate changes give
+\[
+\|C_1C_2\|^2\asymp \|\widetilde u\|^2+\|SV\|^2,
+\quad
+S=D-ca^{-1}r,
+\]
+where \(\widetilde u\in\mathbb R^4\), \(S\in\mathbb R^{2\times2}\), and \(V\in\mathbb R^{2\times4}\). The first term contributes \(4/2=2\). A direct singular-value/Fubini calculation gives \(\operatorname{rlct}\|SV\|^2=2\), hence the total is \(2+2=4\). Thus it equals \(\tfrac12\minAdm=4\). The value \(2\) is only the RLCT of the slice obtained by fixing \(C_1=tE_4\); the remaining directions are not flat.
+
+### Q2 — Verdict: no single permutation, but a finite piecewise permutation works (PROVEN for the stated cone)
+
+No single row/column permutation sends the whole of \(E\) into the fixed valid cone: the four positions in \(W\) have row-degree pattern \((2,2)\), while their complement has row sizes \((3,1,1)\), so some \(W\)-axis must remain a \(W\)-axis. Instead partition \(E\) into four sectors \(E_w\), according to which \(w\in W\) realizes \(\max_W|x_w|\). For each \(w\), a row/column permutation can send both \(w\) and the otherwise-uncontrolled entry \(x_8\) into \(V\). Consequently, after harmlessly taking \(C\ge1\),
+\[
+\phi_w(E_w)\subseteq\{\max_W|x_w|\le C\max_V|x_v|\}.
+\]
+Thus \(E\) is not globally isometric to one valid sector, but is a finite union of pieces isometric to valid dominance sectors. Inclusion in the exact image of a particular chart additionally requires that the chart cover its declared dominance sector.
+
+### Q3 — Verdict: \(\operatorname{rlct}(\mathrm{loss}|E)=4\) (PROVEN)
+
+For \(A\subseteq B\),
+\[
+\operatorname{rlct}(f|A)\ge \operatorname{rlct}(f|B),
+\]
+because restricting the positive zeta integral cannot introduce an earlier pole. Hence, if \(R\) is the valid region with \(\operatorname{rlct}(f|R)\ge4\), then
+\[
+\operatorname{rlct}(f|E_w)
+=\operatorname{rlct}(f|\phi_w(E_w))
+\ge\operatorname{rlct}(f|R)\ge4,
+\]
+and finite-union/minimum logic gives \(\operatorname{rlct}(f|E)\ge4\). Conversely, \(E\) contains an open neighborhood of each sufficiently small \(t e_4\), whose local RLCT is \(4\), so \(\operatorname{rlct}(f|E)\le4\). Therefore it is exactly \(4\), not below the target.
+
+### Q4 — Verdict: the lower bound survives (PROVEN)
+
+The restricted zeta integrals—or equivalently the sublevel volumes—add with nonnegative coefficients:
+\[
+V(\varepsilon)=V_{\mathrm{covered}}(\varepsilon)+V_E(\varepsilon).
+\]
+There can be no cancellation of leading poles, so
+\[
+\operatorname{rlct}(f)
+=\min\!\left\{
+\operatorname{rlct}(f|{\rm covered}),
+\operatorname{rlct}(f|E)
+\right\}.
+\]
+Both terms are at least \(4\), and the escape term is exactly \(4\). Therefore noncoverage by the fixed atlas is a proof-completeness defect, not a counterexample to \(\operatorname{rlct}\ge4\).
+
+### Q5 — Verdict: DETAIL-AT-SCALE artifact (PROVEN abstractly; formula-level implementation is an INFERENCE)
+
+A \(W\)-pivot chart can be defined by transporting a valid \(V\)-pivot chart through the appropriate loss-preserving permutation. Coordinate permutations have constant Jacobian \(\pm1\), preserve the Frobenius loss, and preserve monomial Jacobians and normal crossings. Thus a pivot-adapted normalization closes the escape sectors. The inference is only that a particular rewritten “adaptive shear” formula exactly realizes this transported chart; that formula should still be checked.
+
+**Final adjudication:** B1 is a positive-measure hole in the fixed-shear atlas, but it is not MONUMENT-ADJACENT and does not break \(\operatorname{rlct}\ge\tfrac12\minAdm\). It is a DETAIL-AT-SCALE artifact dissolved by a permutation-closed, pivot-adapted-normalization atlas.
