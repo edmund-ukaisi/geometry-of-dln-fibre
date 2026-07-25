@@ -1694,3 +1694,7 @@ import DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap
 --   jacDet_comp; `gWrap_hjac` (unit≡1) + jac + analytic/injOn/excep — the L6 Chart fields.
 import DLNFibre.DLN.Aoyagi.Corank2GWrapDecomp
 import DLNFibre.DLN.Aoyagi.Corank2ChartJac
+-- Realize334 (DLN side): rung 5a — the (3,3,4) realization REDUCTION `atlasRealizesExponents_334`
+-- (jac aE=7,aC=8 on binding axes → AtlasRealizesExponents; {8,9} ⊆ terminalExponents via `realize_aux`
+-- on the clearable-admissible (2,0) profile — NO retired-R7 dependence) — #112 rung 5a.
+import DLNFibre.DLN.Aoyagi.Corank2Realize334
