@@ -24412,3 +24412,32 @@ zero-set hypothesis (records only vanishing; the matched-pairing decomposition s
 RELEASED (no 3rd pass; fixes non-semantic — I verify the full-aggregator build + AxCheck roots myself at merge,
 the calibrate-the-sensor duty). Routed the Q5 reword + the fix list to reroute-R2build. MERGE fires when the
 seat pushes the fixed SHA and my aggregator/AxCheck verify passes. Reviewer re-engaged for the R3 fold.
+
+---
+
+## 2026-07-25 (tick, cont.) — R2 COVER ATOM MERGED to the reroute trunk (first build rung integrated); G2 scoped
+
+**MERGED [#173/#174 done]:** `SurvivorFanCover.lean` FF-merged from -r2build @3470c1361 → reroute trunk
+@ **33b70f54e**; aggregator import wired (single-writer, controller). Controller-verified: full
+`lake build DLNFibre` GREEN (9041 jobs, NO name-clash), force-elaborated the module in the trunk worktree →
+"11 roots banked-clean, no cites" (clean-three re-derived, not on faith); scripts/sorries clean. The R2
+survivor-entry-fan up-to-null cover ATOM is on the trunk. Reviewer's docstring fixes (hnull=cheap nullity NOT
+#172; scope caveat; overclaim trim; Q5 reword) all landed. First R2 rung integrated post-pricing.
+
+**NEXT RUNG GO (reroute-R2build):** R2-COMPLETION = the radius-parameterized real-tree COVER FOLD — assemble
+the per-node atoms over buildTree into a whole-tree up-to-null cover (the R3-derisk "genuine new fold":
+flatCube folds buildTree at fixed R; FanTree.Covers carries the growing radius over a linear list; R2 needs
+BOTH). Cover-side only (ideal/charts lockstep = R3). Card → decorrelated review + re-verify → merge.
+
+**G2 SCOPED [rlct-additivity-scope, released]:** direct-sum RLCT additivity for the recursion = **BUILD,
+detail-at-scale** — SUPERADDITIVITY `rlctAt(f⊕g) ≥ rlctAt f + rlctAt g` (a.e. bound + Fubini + block-split +
+LocalMono + csSup, ~6-9 lemmas) + one new brick (multivariate "zero-set of a nonzero polynomial is
+Lebesgue-null"; Mathlib 1-var only). CORRECTION: the brief's product-integral identity `∫|f⊕g|^{-2s} =
+∏∫|f|^{-2s}` was FALSE (f⊕g is a SUM). EQUALITY not needed — subadditivity rides the CITED Watanabe ≤½codim.
+FORK: a combinatorial lnmin-additivity-under-disjoint-union route may discharge it for free (pure QIP) — my
+Core/ grep for it came up EMPTY, so the value rung builds one route or the other (confirm CThetaValue first).
+G2 is a VALUE-RUNG dependency (after the fold), NOT the immediate path. Pinned contracts in scope.md.
+
+**Build state:** R1 ✓, R2 atom ✓ (on trunk). Building: the R2 cover fold. Queued: value side (per-chart
+integrability + #172 + G2), R3 unified fold (biggest rung, elder gate). De-risk arc stays closed ((A) sound,
+no monument). Guards live: G1 SUM-not-PRODUCT; G2 verify-additivity-wireable = SCOPED (build).

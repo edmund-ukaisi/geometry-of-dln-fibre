@@ -58,19 +58,22 @@ operator's steer (does NOT gate the build). V-arm [#110/#111] parked.
   build relies on it — NOT in-repo (controller-checked); scout `rlct-additivity-scope` scoping Fubini-build
   vs cite. A DISTINCT theorem from Object A.
 
-**BUILDING NOW:** R2 cover atom LANDED — `SurvivorFanCover.lean` (branch `expedition/aoyagi-r2build` @
-`dab3cb308`, clean-three, controller-re-verified 11 roots; fan by the survivor-entry / matched-pairing argmax;
-honest tracked-open hnull / hchart [R3 wire]) [#173]. **FIDELITY REVIEW [#174] = SURVIVED** (Lean bedrock —
-sound, axiom-clean independently re-verified, non-vacuous, faithful); all findings docstring/wiring, not math.
-**CALIBRATION (own it): hnull = CHEAP codim≥1 nullity, NOT #172** — the review caught that conflation (I
-propagated it). #172 is the SEPARATE value-side approach-integrability near {R=0}. And the atom is the
-MEASURE-BOOKKEEPING layer (up-to-null cover), NOT the RLCT lower bound (which needs per-chart integrability +
-#172). Pre-merge fixes routed to reroute-R2build (docstrings #1/#3 + scope caveat #2 + wire into
-aggregator/AxCheck #5) → new SHA → reviewer delta re-check → controller merges to trunk. NEXT rungs: the fold
-(per-node atoms over buildTree) + the value side (carry G1/G2); R3 unified fold = the biggest rung (elder
-decorrelated read at landing). R3 heads-up: the fan-by-ENTRY here is COARSER than the matched-pairing
-loss-isometry-orbit fan — the finer structure lands inside hchart's discharge = where the real R3 difficulty
-lives. Analysis seats rest; re-convene on triggers.
+**BUILDING NOW:** R2 cover atom MERGED to the reroute trunk @ `33b70f54e` — `SurvivorFanCover.lean`
+(survivor-entry / matched-pairing fan, up-to-null cover; honest tracked-open hnull [cheap codim-nullity, NOT
+#172] / hchart [R3 wire]) [#173 ✓]. Fidelity review SURVIVED + all docstring fixes landed [#174 ✓];
+controller-verified (full aggregator GREEN 9041 jobs, no clash; force-elab → 11 roots clean-three, no cites).
+First R2 rung integrated.
+**NEXT RUNG (reroute-R2build, GO) [#175]:** R2-COMPLETION = the radius-parameterized real-tree COVER FOLD —
+assemble the per-node atoms over buildTree (the R3-derisk "genuine new fold": radius-parameterized conRel_wf
+cover over the real branching tree with per-node sheared box-containment). COVER-SIDE ONLY (ideal/charts = R3).
+Card → decorrelated review + re-verify → merge.
+**QUEUED (separate tracks):** the VALUE side (per-chart integrability + #172 recursion + G2). G2 = direct-sum
+RLCT SUPERADDITIVITY, SCOPED as a BUILD (~6-9 lemmas + a multivariate "zero-set of a nonzero poly is null"
+brick; NOT in Mathlib; equality NOT needed — Watanabe cites ≤; `threads/rlct-additivity/scope.md`) — a
+value-rung dependency; confirm the CThetaValue combinatorial-lnmin shortcut first (Core grep was empty).
+R3 = the unified fold (biggest rung; elder decorrelated read at landing; heads-up: the fan-by-ENTRY atom is
+COARSER than the loss-isometry-orbit fan — the finer structure lives in hchart's discharge = the real R3
+difficulty). Analysis seats rest; re-convene on triggers.
 
 **STANDING GATES / DISCIPLINE:**
 - **Operator-gated (wait-for-explicit-go):** PR **merge**, `dev→main` promotion, any change to the destination
