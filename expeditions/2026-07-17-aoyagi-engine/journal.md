@@ -22015,3 +22015,16 @@ deepest intersection). Confidence: no-undershoot HIGH; realization-detail-at-sca
 realization[detail-at-scale, the (S,J) induction, the build tripwire pinned]. HOLDING for de-risk (a) #123
 (the corank-2 two-sided Lean first-brick gate = the auto-fire trigger). Green → full build under the grant;
 RED → objects-only cite. Elder convenes at #123 with both results.
+
+**PAPER-FIRST anchor + coherence tightening (pnp, 2026-07-25) — fold into the elder's #123 charter finalize.**
+Paper-first (charter §3 DEFECT gate): AOYAGI RESOLVES the realization (her two-sided (S,J) maintenance
+Cases 1&2 → terminal normal crossing, general-L per her abstract); the worked.tex:663 "deeper mixed open
+end" is the EXPEDITION's caveat (thread-28), NOT hers — "open-in-source" was a controller mis-framing,
+retracted. Prior = reproduce-and-verify. One source defect: T-F profile-totality (false (2,2,1,1); nothing
+downstream needs it; drop — banked repair). COHERENCE (pnp): `AtlasRealizesExponents` = part-(i) per-chart
+no-over-vanishing = `hideal_bwd` EXACTLY (with `hideal_fwd`'s ≥ ⟹ ord_v equality) + part-(ii)
+minimizer-realization = LANDED (`o5_core_realized`). So realization is NOT a 3rd obligation beyond the ideal
+algebra — part-(i) ⊆ the (S,J) two-sided maintenance (= `hideal_fwd`+`hideal_bwd`, which #123 gates),
+part-(ii) landed. The two de-risks REINFORCE on the SAME object (`hideal_bwd`): #123 (Lean corank-2) + #124
+(paper/math) from two decorrelated sides — not independent builds. TIGHTENED residual map = (i) the (S,J)
+two-sided maintenance [incl. realization/reverse-half] + (ii) cover [GREEN route-a]; Objects A/C/D landed.
