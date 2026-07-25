@@ -22463,3 +22463,15 @@ e = custom transpose flatten (C1=A₀ᵀ/C2=A₁ᵀ layout-matching the cc-layou
 inverses fin_cases<;>rfl, continuity via continuous_tupleEntry (fun_prop can't do Tuple→Matrix→ℝ); (c)
 ⟨c_pivot·E⟩ ideal-scaling = flat hideal scaled + τ-reindexed (Equiv.sum_comp for bwd). NEXT decision gate =
 pnp-hcover's detail-vs-monument verdict (gates whether to invest 5a/5b/5c build or re-scope to cite L7).
+
+**Rung 3 DOUBLY-CONFIRMED + assembly-leg pinned (2026-07-25).** gate2's decorrelated fidelity review of
+the coreGen-wrap = clean PASS 6/6 (entry-relation vs sympy: coreGen∘gWrap = c11·(flat Pmat∘gFaithful),
+gFaithful_apply_20 = u20 = c11, single c11 exp 1; bexpWrap = u0·u20 no double-count; genuine blockBlowupMap
+not 1/c11 proxy; τ = finProdFinEquiv.symm∘prodComm∘finProdFinEquiv a genuine generator-permutation [the added
+check]; c11-ratio 4.5 ≥ 4 non-binding; statements two-sided at coreGen, eWrap genuine origin-fixing Homeo).
+So rung 3 confirmed on TWO decorrelated channels (controller force-elab #print axioms + gate2 fidelity),
+the load-bearing bar. gate2 kept the channels decorrelated (did NOT re-run #print axioms — grep + construction
+review only). ASSEMBLY-LEG PINNED for #130 (gate2 downstream note, non-blocking): the hideal is at eWrap;
+the payoff consumes exists_coreResolution at canonFlatten → 5d needs eWrap's MeasurePreserving (coord-reindex,
+provable) + the eWrap→canonFlatten conjResolution transport (rung-4 machinery banked/general; specific
+instantiation TODO). Still HOLDING for pnp-hcover's detail-vs-monument verdict (the next decision gate).
