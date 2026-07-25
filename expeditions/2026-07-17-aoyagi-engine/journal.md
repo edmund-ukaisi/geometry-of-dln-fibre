@@ -24541,3 +24541,36 @@ difficulty] + the cover engine APPLIED via the GENERAL glue_null [per-child doma
 fold] + binv ideal + ledger, all threaded through conRel_wf, G1 held at the wire). Elder-gated route-adoption
 joint; if the real hchart discharge proves harder than detail-at-scale → the (B)-fallback trigger. Convening
 the elder to gate R3. The value side (superadditivity G2 + per-chart integrability + #172) is a parallel track.
+
+## 2026-07-25 (tick, cont.) — ELDER R3 GATE: ADOPT + de-risk-first (hchart decompose) + first-brick = real-(3,3,4)-hchart theorem; THREE warnings (W3 sharp)
+
+**Elder R3 gate (route-adoption, mandatory convening):**
+- **Call 1 — ADOPT (sound to build).** The R3 shape (ONE conRel_wf fold threading geometry + ideal + cover
+  over the real buildTree, real charts, general glue_null per-child domains) matches the reroute plan +
+  R3-derisk (mechanism cleared) + the re-scope ruling. Three warnings the build MUST hold:
+  - **W1 — the D_p-same-chart invariant (KEY banked):** cover-conjunct + ideal-conjunct discharged on the
+    SAME `fam l` (same regions/charts). Threaded on different regions ⟹ R1 (terminal-shrink⋈cover) silently
+    RE-OPENS. The merge concentrated R1 into this fold.
+  - **W2 — G1 (survivor-ENTRY fan) at the wire** (the engine folds a WRONG fan to a vacuous cover;
+    radial-pivot-only = 0%) + G2 (verify direct-sum RLCT additivity wireable before the value side).
+  - **W3 [THE SHARP ONE, newest standing math-warning] — hchart must be discharged from each chart's OWN
+    per-pivot BORN construction (StepConstructor.bornSiblings), NOT from a sibling loss-isometry/gauge-ORBIT
+    transport.** Reaching for "sibling A = σ-image/gauge-orbit of sibling B" = the RETIRED gate-routeB O1
+    two-object transport (the WALL, compass F9) creeping back = DEAD ROUTE. The one-object route's whole
+    point (F9): siblings BORN not transported. HOLD it.
+  Plus the (B)-fallback stands (real hchart general-d a monument → the narrow cite).
+- **Call 2 — DE-RISK FIRST: YES.** Front-load a decorrelated pen-and-paper hchart de-risk BEFORE the
+  multi-tide build (every prior hard rung got one; R3 is the biggest + hchart the last unpriced content +
+  the (B)-trigger). Its FIRST job: DECOMPOSE what hchart IS — (a) the binv/ideal identity + R>0 sandwich
+  (ALREADY priced detail-at-scale ⟹ R3 = wiring, confirm the born charts satisfy it) OR (b) a SEPARATE
+  loss-isometry/matched-pairing structure (UNPRICED ⟹ price it + W3-check). FIRED [#177, hchart-derisk].
+- **Call 3 — first brick = the real (3,3,4) born charts + hchart discharged AS A THEOREM at ONE node,
+  BEFORE the fold** (isolate the hard CONTENT from the cleared fold-THREADING; analogue of M1/M2). Gate its
+  "done" on hchart being a THEOREM, not "built green". Sequence: (1) hchart de-risk (decompose+price+W3) →
+  (2) first-brick real-(3,3,4)-hchart theorem → (3) the fold (glue_null over conRel_wf + binv + ledger,
+  W1/W2/W3 held, decorrelated read).
+
+**ACTIONS:** fired the hchart de-risk [#177] — the true next gate (decides R3-is-a-build vs (B)-fallback).
+reroute-R2build RESTS (no R3 build go until the de-risk decomposes+prices hchart + we scope the first brick).
+W3 banked as the newest standing R3 math-warning (flag the elder to fold into the charter warnings). Ladder:
+R0✓ R1✓ R2-cover-infrastructure✓ → R3 (adopted; hchart de-risk in flight).
