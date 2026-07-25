@@ -1741,3 +1741,9 @@ import DLNFibre.DLN.Aoyagi.CoverFold
 --   {R=0} bridge. hnull = cheap codim-nullity (NOT #172); hchart = R3. Measure-bookkeeping layer, not
 --   the RLCT bound (which needs per-chart integrability + the recursion on top).
 import DLNFibre.DLN.Aoyagi.SurvivorFanCover
+-- ImageTreeCover (R2, cover-side): the up-to-null branching-tree cover FOLD ENGINE — glue_null (one-node
+--   measure-gluing) → coversUpToNull_volume_diff (the fold) + nullTransport_of_differentiable (null-transport
+--   from Differentiable ℝ g) + node_clause_of_survivorAtom (= the SurvivorFanCover atom). The ABSTRACT engine
+--   (R2 cover-infrastructure); the concrete buildTree instantiation + real charts + hchart is R3 (uses the
+--   GENERAL glue_null, per-child domains, not the packaged uniform fold).
+import DLNFibre.DLN.Aoyagi.ImageTreeCover
