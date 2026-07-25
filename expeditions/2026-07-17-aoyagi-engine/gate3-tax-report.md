@@ -93,3 +93,75 @@ de-risked GREEN. What remains for a literal green-BOTH end-to-end `(3,3,4)` char
 two-sided, so it is wiring/engineering, not a wall or open math. If the render + Gröbner-banked crossing +
 #124 GREEN price that as detail-at-scale, fire #112; if belt-and-braces is wanted, price one explicit
 composite-`g` `(3,3,4)` chart first. The reverse will not be the blocker.
+
+---
+
+## ADDENDUM — the literal (3,3,4) forward COMPOSITE g (controller re-convene, faithful multi-term)
+
+**Task:** the literal (3,3,4) t=(1,0) composite chart `g` = (FAITHFUL multi-term shear ∘ radial T/ΔS
+blow-ups ∘ join), 21 vars, through the ACTUAL `coreGen`, two-sided `hideal` end-to-end; fidelity guard =
+multi-term (`canonNormalizationOf`: Schur cross-term + `C'=Q⁻¹C` recoord), NOT the single-term `outerShear`
+proxy; #124 pivot-survival tripwire on top.
+
+**MATH — GREEN (decisive, cheap).** `gate3-codex/faithful_composite_tripwire.py` (sympy) builds the
+FAITHFUL multi-term composite for (3,3,4) and confirms:
+- multi-term faithfulness: the `C2` recoord `C2' = Q₂⁻¹C₂` is non-trivial (`≠ C2`) AND the Schur
+  cross-term coupling is present in `Δ` — this is the faithful chart, not a single-term proxy.
+- both directions: forward `E ∣ every` pulled-back entry `(∏C)ᵢ∘g` (all quotients polynomial); reverse
+  `E =` the pivot entry exactly (cofactor 1, cheap).
+- **#124 TRIPWIRE PASSES** — at the deepest E-divisor intersection a residual quotient has nonzero
+  constant term (the pivot, quotient 1); at the pivot-less deeper `E∩α` stratum the T-row pivot quotient
+  stays `1` independent of `α`, so **the pivot survives**. The one failure mode #124 flagged does not
+  trip.
+
+So the faithful composite does NOT wall mathematically and the tripwire does NOT trip.
+
+**LEAN — the literal end-to-end is #112, no bounded faithful brick short of it.** The FAITHFUL Lean
+composite needs the faithful-monument infra (`DLN/Aoyagi`: `canonNormalizationOf` + the radial/join +
+`coreGen` flatten), which is FRONTIER-SORRIED (`canonNormalizationOf_shearWithinCarve` sorried; **42
+sorries across `DLN/Aoyagi`**). A self-contained concrete faithful (3,3,4) composite (bypassing that infra)
+is itself the Codex-flagged biggest-risk 21-var factorisation through `mult` — a large build, not a bounded
+brick. **The only bounded Lean object short of #112 would be the single-term `outerShear` proxy — which the
+fidelity guard forbids (false-GREEN, re-commits rev-render #7).** So I did NOT build a Lean forward
+composite: there is no faithful, bounded, proxy-free brick to build. Honest status: no wall found, no proxy
+built.
+
+**VERDICT — GREEN on decision content; the Lean forward composite IS #112.** The gate's two RED conditions
+are both falsified: (i) `hideal_bwd` does not wall (GREEN across L-A/L-B/L-C); (ii) the faithful composite
+math does not wall and the #124 tripwire does not trip. The cheap belt-and-braces (the MATH of the faithful
+composite at one instance) is done and GREEN. The LEAN belt-and-braces is not cheaper than #112 — the
+faithful composite has no proxy-free sub-brick, and a proxy is forbidden. Recommendation: fire #112 on the
+strength of reverse-GREEN + faithful-composite-math-GREEN + tripwire-passes; OR, if a Lean belt-and-braces
+is still wanted, scope it AS the first #112 brick (the self-contained concrete faithful (3,3,4) forward
+factorisation), understanding it is large (Codex's biggest risk) — not a gate-sized measurement.
+
+---
+
+## ADDENDUM 2 — END-TO-END composition attempt (controller: the composite IS #112's first chart)
+
+**Built (sorry-free, axiom-clean):** `…/Core/Aoyagi/Corank2CompositeProto.lean` —
+- `regionRepresents_comp`: the precompose primitive `RegionRepresents G F V → RegionRepresents (G∘g)
+  (F∘g) (g⁻¹'V)` for continuous `g`. **This was ABSENT from the banked API** (which had `.trans`/`.mono`/
+  `.of_eqOn` but no precompose) — it is the first of the three composition ops the faithful chart needs.
+- `blockElim_under_chart`: the L-A block-elim (coupled `Δ`, gate-2) pulled back through an arbitrary
+  continuous chart `g`: `⟨(∏C)∘g⟩ = ⟨peeled∘g⟩` — demonstrating the composition primitive on the real
+  coupled block-elim under a real chart map.
+
+**COMPOSITION TAX — the mechanism is CLEAN, but there is a genuine remaining piece (refines the "just
+wiring" expectation).** The three composition ops are: (1) precompose (`regionRepresents_comp`, built,
+clean, no Mathlib fight), (2) transitivity (`RegionRepresents.trans`, banked), (3) terminal Bézout
+(`terminal_bezout`, proven). Chaining L-A∘g via (1)+(2) is clean. **BUT** the isolated mechanisms do NOT
+cover the concrete step connecting them: the **radial factorisation of the CONCRETE `peeled∘g`** —
+`⟨peeled∘g⟩ = ⟨E⟩` where `peeled = [T; ΔS]` is the specific 12-entry coupled block-elim output. The L-C
+terminal mechanism (`Corank2TerminalProto`) proves this for an ABSTRACT residual block (`resid = coords`);
+applying it to the concrete `peeled∘g` needs the explicit chart `g` that exposes `peeled`'s entries as the
+monomialisable block (the faithful multi-term shear + radial + join, 21 vars). That concrete factorisation
+is Codex's flagged biggest risk and is NOT covered by the isolated-green mechanisms — it is the genuine
+`#112` crux (math GREEN per the tripwire, but the Lean is the large 21-var build).
+
+**Honest status of the END-TO-END gate:** NOT a clean composite-g GREEN (the concrete radial factorisation
+is unbuilt) and NOT a WALL (every composition op built composes cleanly; math GREEN; tripwire passes). The
+refinement for the controller: the composition WIRING is clean (primitive built, block-elim composes), but
+"the mechanisms compose" is not the whole story — the concrete `peeled∘g → ⟨E⟩` factorisation is a real
+remaining piece (the isolated terminal mechanism was on an abstract block), and it IS the `#112` crux, not
+covered by isolated-green. No proxy built; no broken build.
