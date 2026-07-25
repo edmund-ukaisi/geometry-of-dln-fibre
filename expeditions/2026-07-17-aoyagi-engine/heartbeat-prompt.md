@@ -8,6 +8,17 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
+- **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
+  two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
+  `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
+  discharged). coreGen-wrap turned out BOUNDED (routeP-p1 solved the mult-flatten incantations; gate2 was
+  right); GO'd to complete it as the WORKED BASE CASE → new DLN module `Corank2CoreGenWrap.lean` (crux/hideal
+  stay in Core). Condition-4 ANSWERED: coreGen map = blockBlowupMap[composition sympy-verified, jacDet landed
+  O9] ∘ flat(Pmat) g[banked conjResolution] — designed-blowup-with-verified-composition. GENERAL-D GATE HELD
+  (calibrate-sensors) until the (3,3,4) instance LANDS + I calibrate (wire aggregator + `#print axioms` +
+  full `scripts/lb DLNFibre` green) → THEN convene elder+navigator (GUARD-B: completing (3,3,4) ≠ authorizing
+  general-d). TRIGGER = routeP-p1 "wrap ready" ping → wire + calibrate + convene the gate. gate2 fidelity-
+  reviews the wrap; routeP-p1 building (guard-4: green or genuine NEW snag). See journal (2026-07-25 tail).
 - **▶▶▶▶ #112 FIRED (route P, 2026-07-25) — the cite-free build commencing.** All de-risking EXHAUSTED +
   GREEN: reverse two-sided across L-A/L-B/L-C (Lean, controller-re-derived clean-three; the 7th-over-claim
   b-chain-reverse FALSIFIED) + faithful composition MATH + #124 tripwire PASSES + cover (route-a) +
