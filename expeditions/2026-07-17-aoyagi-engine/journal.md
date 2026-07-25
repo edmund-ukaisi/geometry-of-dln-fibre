@@ -22981,3 +22981,710 @@ LANE SPLIT (routeP-p1's recommendation (a), accepted, + option): routeP-p1 owns 
 context strains or (B) is cleanly separable (the 5-lemma template is a self-contained spec — pnp-hcover's
 provenance addendum). decomp-5b owns (ii) [the Covers]. routeP-p1 integrates + wires. Convene the ELDER at
 the general-d gate (unchanged); no elder gate needed now (the cover is within the (3,3,4) staked boundary).
+
+**(A) CLOSES — the pivotal cover sub-gate PASSED, Lean-verified (routeP-p1, 2026-07-25).** gWrap IS a
+fanOfSteps leaf-composite: `gWrap = pathMap [sigmaPiv, (shearH∘permP)∘bbA0, bbA1]` COMPILES
+(`rw [gWrap_decomp]; simp [pathMap_cons, pathMap_nil, comp_id]; rfl`). The mechanism that dissolves the earlier
+"interleaved permP+shearH won't regroup" worry: GeoStep/FanStep.shear is an ARBITRARY jacDet-1 map (NOT
+restricted to outerShear/blockShear), so step 2's shear = shearH∘permP, steps 1&3 = id — the interleaving
+absorbs into composite step-shears. NO obstruction; the fanOfSteps machinery is flexible enough. Controller:
+this was the pivotal "derivable-or-not" gate — deriving it FIRST (my sequencing push, over routeP-p1's initial
+"hold to avoid double-build": (A) is uniquely routeP-p1's + upstream of (ii) + the pre-mortem, so no double-build
+risk) got the GO early. Re-derive gWrap=pathMap at cover-INTEGRATION (full build + #print axioms per calibrate-sensors).
+
+**COVER-TOOLING CORRECTION — outerShear is DEAD; shearH-direct + f=r+2r² (routeP-p1 self-catch, 2026-07-25).**
+routeP-p1 retracted its own "outerShear path of least resistance" claim: shearPhiH coords 8-11 are 2-TERM sums
+(−w0·w12−w1·w16), outerShear is rank-1 (one product/coord) → CANNOT express gWrap's shear;
+exists_ball_subset_outerFan_leafImages does NOT apply. Corrected path: covers_fanOfSteps is general in the shear
+→ use shearH DIRECTLY with inflation f=r+2r² (the C=2 box-containment; the C=1 r+r² is blockShear_covers_of_norm_bound,
+a trivial constant bump). VINDICATES decomp-5b's original "re-instantiate faithfulShear at Fin-21" instinct (the
+5c faithfulShear_covers already uses r+2r² — that's WHY). Caught before decomp-5b built on it (good calibration).
+
+**ARCHITECTURE PIN — route (b) K-ORBIT tiling, NOT gWrap's full pivot-fan (controller call, 2026-07-25).**
+gWrap's blow-up CENTERS are LARGE ({0..7,20},{0..7},{1,5,6,7}); a naive covers_fanOfSteps branches over ALL
+pivots per center → a huge fan (many leaves, each a Chart = crux B at that scale). CONFIRMED (ii) = the K-ORBIT
+(coord-perm) tiling instead (orbit size ≈ θ, each an isometry-conjugate of chart334 via a GENERIC transport_chart).
+NOT a new choice — exactly what the provenance work VALIDATED (#86(B) K-symmetry coord-orbit transport, the
+5-lemma template, the stabilizer-induction GO in hcover-elaboration.md). (ii) target = "ball ⊆ ⋃ orbit images"
+over the K-orbit; crux B = transport_chart over the ORBIT (small), matching "generic transport, not numC proofs".
+KILL-CONDITION: if decomp-5b finds the orbit doesn't cover → re-opens orbit_covers (the one provenance residual)
+→ reconsider before building on it. Pinned with decomp-5b via routeP-p1. A proof-STRUCTURE call within the
+(3,3,4) staked boundary (proceed-on-silence), NOT a definition-of-done change.
+
+**(B) FRESH LANE — approved-pending-brief (2026-07-25).** routeP-p1's comparative-advantage read (its scarce
+value = the (i)/(ii)/(B) seam + integration + supervising decomp-5b + the architecture pin, NOT the templated
+transport grind) → (B) to a FRESH lean-formaliser lane. routeP-p1 writes the brief (base = chart334 + K-action
+def + pnp-hcover 5-lemma template; deliverable = generic transport_chart conjugating hideal/hjac/hg_inj + orbit
+application → the θ-sized leaf-Chart family); controller spawns on receipt. Provenance-verified detail-at-scale =
+the general-d cover core. NET this tick: (A) GO (verified) · route (b) pinned (+ orbit_covers kill-cond) · (B)
+lane approved-pending-brief · decomp-5b on (ii).
+
+**(B) LANE SPAWNED + K-action derived + the (ii)-core BANKED + an ARCHITECTURE CRUX surfaced (2026-07-25).**
+- **(B) lane live:** fresh lean-formaliser `cruxB-transport` (agent af1e2f97…) on isolated worktree, branch
+  `expedition/aoyagi-engine-5d-transport` (off routeP HEAD 594b009c8, pushed to origin). Brief @ 594b009c8
+  (threads/routeP-5d/brief-crux-B-transport-chart.md). GATE-FIRST: prove `coreGen dvec eWrap` K-equivariance
+  BEFORE the transport grind; STOP+report if it fails (the (B) analogue of (A)-first). Task #143 (blocks #142).
+- **K-action derived (routeP-p1):** K = **S4×S3×S3**, with the internal-S3 FIXING coreGen entries — the
+  transport symmetry. Controller nuance flagged: internal-S3 FIXING is STRONGER than "equivariant up-to-index-perm";
+  cruxB must establish the S4/outer part's up-to-perm equivariance for the FULL K (that's what transport_chart's
+  hideal consumes).
+- **(ii)-core BANKED (decomp-5b @ 1bbf7a4cc, Corank2FanCover334, green 8464, clean-three force-elab):**
+  `shearH_covers : closedBall 0 r ⊆ shearH '' closedBall 0 (r+2r²)` + `blockShear_covers_scaled` (the C·r²
+  generalization of GeneralGeoAtlas's C=1 atom) + `shearPhiH_norm_bound`. Confirms f=r+2r² (slots 8-11 have
+  TWO products). Honest calibration by decomp-5b: an earlier "exit 0" was a nohup-launch artifact (not a real
+  build; abs_add absent at pin → fixed → genuinely green) — caught + corrected, no overclaim. (Lesson: a
+  nohup-launched build's exit code ≠ the build's exit code; force-elab + re-run over a bare exit status.)
+- **ARCHITECTURE CRUX surfaced (controller, high-value):** decomp-5b's (ii) plan is "mechanical covers_subset
+  over a FanTree" = the FULL-pivot-fan engine. But route (b) needs the covering LEAF SET = the K-ORBIT (θ leaves,
+  each a K-transport of a representative), NOT the full 9×8×4 pivot-fan. RISK: a full FanTree yields all
+  pivot-leaves, and any leaf NOT a K-transport needs a BESPOKE chart → crux B BLOWS UP (or the leaf must be dropped
+  as redundant). PIN (told routeP-p1 + decomp-5b): (a) leaf set = the K-orbit (transportable AND covering); (b)
+  covering it = orbit_covers (the isometry/tiling argument), NOT the mechanical full-fan covers_subset — UNLESS
+  every full-fan leaf is verified a K-transport (then the mechanical path is fine, say so explicitly); (c)
+  decomp-5b's (ii) leaf set = cruxB's (B) charts family (the SAME orbit = the shared spine routeP-p1 is converging).
+  K-orbit doesn't cover → orbit_covers STOP.
+- **BOTTLENECK:** routeP-p1 owns the gWrapFan/K-orbit def that BOTH lanes wait on (decomp-5b asked twice, its
+  substantive piece done + idle). Pushed routeP-p1 to prioritize the hand-off. NET: two lanes live (decomp-5b (ii),
+  cruxB (B)); shared spine = the K-orbit indexing routeP-p1 converges; next pivotal signals = cruxB's K-equivariance
+  gate + whether the K-orbit covers (orbit_covers).
+
+**ARCHITECTURE UPDATE — route-(b) pin REVISED to "full-fan mechanical cover + generic transport" (controller,
+2026-07-25; driven by decomp-5b's decorrelated cover analysis — closed-loop Bayesian update, NOT thrash).**
+decomp-5b surfaced the decisive fact: the `LeafCoverTiling` engine (`covers_subset`/`covers_fanOfSteps`)
+mechanically covers ball ⊆ leafImages ONLY for the FULL pivot-fan (its block-atom covers ALL pivots of a
+center); the θ-orbit cover is `orbit_covers` = SUBSTANTIVE new geometric content, NOT engine bookkeeping. This
+flips the cost calculus I had:
+- My route-(b) pin assumed the θ-orbit was "the smaller RIGHT structure with a cheap cover". FALSE: the θ-orbit
+  cover is EXPENSIVE (substantive orbit_covers), the full-fan cover is FREE (mechanical).
+- THE REFRAME: leaf-COUNT only matters if crux B is per-leaf BESPOKE. If crux B is GENERIC
+  (`charts i := transport_chart (leafPerm i) chart334` — one lemma × numC instantiations), then numC=288 is FINE
+  (mechanical instantiation; binding fan-invariant → uniform), we use the MECHANICAL full-fan cover, and
+  orbit_covers is NOT NEEDED AT ALL. The θ-pruning was only ever an optimization for the bespoke case.
+- NEW architecture: mechanical full-fan cover (decomp-5b building NOW, box-containment banked) + generic
+  transport (cruxB) — IF transport is generic over the full fan. DECOUPLES (ii) [now known-correct Lean, building]
+  from the crux-B regime question.
+
+**THE SHARPENED GATE (the one open fork; = cruxB's K-equivariance gate, refined):** transport_chart consumes
+`coreGen` equivariant-UP-TO-INDEX-PERM (entries PERMUTE, cofactors conjugate), NOT entry-FIXING. So the relevant
+group is the FULL S4×S3×S3 (permuting entries), NOT the clean entry-fixing internal-S₃ (too small, fixes pivots).
+decomp-5b's "the entry-fixing S₃ doesn't move the pivots u0/u1/u20 → θ-orbit under-covers" worry is about the
+WRONG (too-small) group. THE decisive question: is coreGen equivariant-up-to-index-perm under the PIVOT-MOVING
+perms relating chart334's pivots to the OTHER full-fan leaves' pivots?
+  - YES → generic transport covers the full fan → mechanical cover + ONE transport lemma, cheapest, orbit_covers
+    NOT needed. THE GO.
+  - Only the entry-fixing S₃ → transport NOT generic → non-related leaves need `chartAtPivot`-generic (the blow-up
+    chart proven generic-IN-PIVOT directly, sidestepping transport) → re-route crux B (report it; NOT a hard STOP).
+decomp-5b's numeric test redirected: cross-check "is transport GENERIC over the full fan" (does the up-to-perm
+equivariance act transitively enough on pivot choices to relate all 288 leaves to chart334), NOT "does the
+entry-fixing θ-orbit cover". NET this tick: (ii) = mechanical full-fan cover (decomp-5b building, known-correct,
+decoupled) · crux B = generic transport gated on the sharpened equivariance · orbit_covers likely UNNEEDED ·
+one open fork (generic-transport vs chartAtPivot-generic), resolved by cruxB+routeP-p1's equivariance derivation.
+
+**PIECE (i) LANDED — gWrapFan the SHARED full-fan def banked (routeP-p1 @ 8debc32c6, 2026-07-25).**
+`Corank2FanDef334.gWrapFan = fanOfSteps (r↦r+2r²) [sigmaPiv-node σ=shearH∘permP, bbA0-node σ=id, bbA1-node σ=id]`
+(compiles, clean-three), canonical leaf = gWrap. It's the FULL-fan def (branches over all pivots of the 3
+centers) — exactly the updated architecture's cover. Both lanes import the SAME def (no divergence — the trap
+that bit us at 5b). decomp-5b's "where does permP go" question RESOLVED: permP folds into node-1's INNER σ
+(legit — FanTree.node's σ is ARBITRARY, not blockShear-restricted). CONSEQUENCE (reconciled to routeP-p1, whose
+status crossed my architecture update): with the full-fan mechanical cover, **orbit_covers is DEAD as a
+kill-condition** — the fan covers BY covers_fanOfSteps (the engine theorem, given decomp-5b's box-containment),
+unconditionally. The ONE remaining live fork is cruxB's SHARPENED equivariance gate (generic-transport over the
+full fan vs chartAtPivot-generic). (ii) is now mechanical from gWrapFan; (B) imports it; routeP-p1 wires both via
+resolution334_of_ballCover_ofValues. gWrapFan re-verified at cover-integration (AxCheck on the resolution334 root).
+
+**(ii) LANDED + a false-completion CORRECTED (drift-glance heartbeat, 2026-07-25).** Drift-glance (idle
+heartbeat) found decomp-5b's (ii) mechanical full-fan cover BANKED @ 594b09660 (5d-cover branch):
+`ball 0 ρ ⊆ gWrapFan.leafImages` — exactly the updated architecture (full-fan mechanical cover on the shared
+gWrapFan + banked shearH_covers). Strong reading; re-verify at cover-integration. (B) still open (cruxB no
+commits yet — on the equivariance gate). CALIBRATION CATCH: #142 (the cover) had been marked `completed`, but
+its scope is the FULL cover feeding resolution334 (ball ⊆ ⋃ charts.g''dom), which still needs (B)'s charts + the
+leaf-image↔charts.g''dom identification + routeP-p1's wiring — so the completion was FALSE (contradicted its own
+"Blocked by #143"). Reopened #142 → in_progress; the false "cover done" would have propagated to a false
+"Resolution done". (Heartbeat cron armed, hourly :17 — pulse self-healing.) STATE: (i) gWrapFan ✓ · (ii) full-fan
+ball-cover ✓ (594b09660) · (B) open (cruxB, equivariance gate) · then identification + wiring → resolution334.
+
+**EQUIVARIANCE GATE = GO, but a COVER-ROUTE FORK + a sensor DISAGREEMENT surfaced (2026-07-25).**
+- **cruxB GATE = GO (verified all 864):** coreGen dvec eWrap IS equivariant-up-to-index-perm under G =
+  S4(output rows) × S3(output cols) × S3(middle/contraction), |G|=864. NOT entry-fixing-only — the col-S3 +
+  middle-S3 MOVE the pivots, so generic transport IS legitimate. The middle-S3 acts as pure gauge (π=id);
+  row-S4 + col-S3 permute entries. Building the generic transport_chart + K-equivariance Lean now (route-agnostic).
+- **THE FORK (routeP-p1 STOP+report — honored):** covers_fanOfSteps proves only the FULL 288-leaf fan covers
+  (no sub-cover). The K-orbit of chart334's pivot-triple (20,0,1) reaches only 18 of the ≤288 joint sector-triples.
+  So the 288-fan is NOT one G-orbit → only 18 leaves are transport-reachable from chart334. THREE routes:
+  (a) decomp-5b's DONE 288-fan cover + #G-orbit-classes representative hideals (~16 if orbit=18) + transport;
+  (b) prune to 18 leaves + orbit_covers (substantive, coverage UNCONFIRMED) + 1 hideal;
+  (a-generic) chartAtPivot-generic — chart334's hideal proven GENERIC in the pivot (1 proof, all 288) → sidesteps
+  the orbit-class count ENTIRELY, dominates ~16 bespoke representatives (cruxB+routeP-p1 assessing feasibility:
+  is the monomialisation pivot-UNIFORM?).
+- **SENSOR DISAGREEMENT reconciled (not a contradiction):** cruxB "orbit=288/1-class" was CONDITIONAL (orbit of
+  the full chart IF fan=G-orbit); routeP-p1 "orbit=18/~16-class" is the ACTUAL pivot-triple orbit. routeP-p1's 18
+  answers cruxB's own open question — fan ≠ G-orbit.
+- **DECISIVE de-risk COMMISSIONED (decorrelated, hunt-precedes-trust):** pen-and-paper `sector-count` (#144) —
+  θ(3,3,4) two ways (paper formula + Core CTheta, decorrelated from routeP-p1's Python) + #G-orbit-classes among
+  the 288 + is top-dim-sector-set = the 18? Decides route (a) vs (b); top-dim=18=K-orbit → (b), else → (a).
+  decomp-5b numeric cross-check in parallel. BUILD HOLD on route-dependent charts/wire until the count lands;
+  cruxB stays route-agnostic; decomp-5b's 288-fan cover DONE + sound (banked, safe). Next signal = the count.
+
+**CONVERGENCE (3-channel) + a SHARP NEW CRUX (2026-07-25).** The orbit fork RESOLVED, 3-channel (routeP-p1
+group action + decomp-5b numeric + cruxB recompute): the 288-leaf fan = **25 K-ORBITS** (sizes 4-16;
+chart334's = 7), the leaves are INDEPENDENT fixed-center pivot-paths (NOT G-orbit conjugates — G moves the
+CENTERS, the fan keeps centers fixed + varies the pivot). Transport-from-chart334 reaches only 7/288 →
+transport-alone OUT. ROUTE (all three agree) = **chartAtPivot-generic** (prove the fixed-center blow-up chart at
+ANY pivot carries hideal + binding∈TE, generic in the pivot → one lemma → all leaves). jac IS pivot-generic
+([p1↦8,p2↦7,p3↦3]).
+- **CONTROLLER OWNS the 2nd optimism correction:** my "generic transport, numC=288, one lemma" framing was
+  WRONG — the fan is 25 orbits, not one. This is the SECOND time my cover-simplification instinct was corrected
+  by the team's decorrelated analysis (1st: "finish line = wire"). Anti-optimism lesson, internalised: the
+  coupled corank-2 cover is genuinely intricate (nested centers, coinciding pivots, orbit structure) — let the
+  EXACT analysis lead, resist the clean-one-lemma instinct. The team's decorrelated hunt IS the damping working.
+- **COVER (ii) DONE + banked on the SHARED def:** decomp-5b @ 149e8623e (Corank2FanCover334 imports routeP-p1's
+  Corank2FanDef334; gWrapFan_covers + exists_ball_subset_gWrapFan_leafImages, green 8465, clean-three). numC=288.
+  DEDUP RESOLVED: KEEP Corank2FanDef334 (single shared def; decomp-5b refactored its cover onto it + deleted its
+  own; routeP-p1's "drop mine" was a stale read of the pre-refactor 594b09660). Do NOT drop at integration.
+- **THE SHARP NEW CRUX (cruxB, well-caught):** 92/288 leaves have COINCIDING pivots (p1==p2: 32, p2==p3: 36,
+  +others). There the jac exponents ADD → naive binding value 16 (p1==p2) or 11 (p2==p3), NOT in TE={8,9,12} →
+  clause (i) of atlasRealizesExponents would FAIL → a single chartAtPivot-generic lemma is at RISK on these.
+  cruxB's part-C read: outer pivot factors out (pivot-agnostic within center), inner block-elim+Bezout LIKELY
+  uniform on the 196 DISTINCT-pivot leaves; the 92 COINCIDING are the risk (E and c11/p3-axis coincide →
+  degenerate). Two escapes: (i) coinciding leaves get a DIFFERENT dominant monomial with binding∈TE; (ii) the 92
+  are lower-dim/droppable and the 196 distinct cover.
+- **DISPATCH:** RE-CHARGED sector-count (#144, orbit-count now moot) to the 92-crux: θ(3,3,4) + top-dim/droppable
+  + escape(i) [degenerate-leaf monomial binding∈TE?] + escape(ii) [196 cover?]. cruxB builds the CLEAN distinct-196
+  chartAtPivot (the Lean build confirms pivot-uniformity there) + the route-agnostic transport core (fallback);
+  HOLDS the coinciding-leaf charts + the (iv) wire until sector-count resolves. decomp-5b in reserve for the
+  196-cover re-proof if escape (ii) wins. Next signal = sector-count's escape verdict + cruxB's distinct-196 GO/STOP.
+
+**chartAtPivot-generic ≠ sidestep — the route calculus made HONEST + θ is THE lever (routeP-p1, part-C mechanism;
+2026-07-25). 3rd optimism catch on this cover — controller owns it.** routeP-p1 (holds the part-C hideal context)
+corrected my "chartAtPivot-generic sidesteps the count":
+- WITHIN a K-orbit the hideal IS uniform — but that's exactly `transport_chart` (coreGen-conjugates; we have it;
+  chart334's 7-leaf orbit).
+- ACROSS the 25 orbits: part-C's hideal is a BRUTE-FORCE `peeled_comp_gFaithful : fin_cases i <;> fin_cases j
+  <;> ring` over the 12 entries SPECIFIC to pivots (0,1,20). A different-orbit pivot-triple → different
+  gFaithful-analog → NEW brute-force. NOT pivot-generic.
+- Generic-in-pivot across all 288 (symbolic) = essentially the general-d hideal MONUMENT route P sidestepped
+  via the concrete (3,3,4) brute-force. So chartAtPivot-generic does NOT dominate ~bespoke; it IS the monument
+  (or per-orbit brute-forces + transport-within). NO free lunch.
+⟹ #brute-force-hideals = #top-dim orbit-classes, and **θ / #top-dim-classes is THE lever:**
+  • θ small → route (b) prune to θ top-dim (few brute-forces + orbit_covers) — tractable, drops the 92
+    coinciding-degenerate (resolves cruxB's binding∉TE), paper-faithful (the paper resolves top-dim comps ≈ θ).
+    Likely the win.
+  • θ ≈ 25 → route (a) full-fan (~25 brute-forces, no orbit_covers) — heavy but BOUNDED detail-at-scale.
+GATE NOTE: for the (3,3,4) GATE even θ CONCRETE brute-forces is fine — the SYMBOLIC general-d hideal is the
+POST-gate monument, not this bar. So the gate is buildable regardless of θ; θ sets weight + whether to prune.
+CONTROLLER anti-optimism (internalised): this is the 3rd time my cover-simplification instinct was corrected
+(wire → 25-orbits → chartAtPivot-sidestep); I defer to the exact count + routeP-p1's mechanism now.
+DISPATCH: cruxB builds the transport_chart core (within-orbit) + keeps chart334 as the 1 rep; does a BOUNDED
+check for a STRUCTURAL (non-brute-force) pivot-generic hideal (true sidestep if it exists — report; else default
+transport-core + hold); does NOT grind per-orbit brute-forces or the monument-generic until θ decides #orbits.
+When θ lands: pick route + convene the ELDER on tractability if θ is large (a mini-monument grind = a re-scope
+joint, not a silent proceed). Next signal = sector-count's θ + escape verdict.
+
+**COVER→VALID-ATLAS GAP — decomp-5b's decorrelated numeric cross-check (the de-risk I commissioned) surfaces a
+DEEPER finding; route (a) DEAD (2026-07-25). 4th complexity finding on this cover — confidence recalibrated DOWN.**
+decomp-5b (sympy-exact over the 288 gWrapFan leaves, decorrelated from the group theory + sector-count):
+- POSITIVE-MEASURE: all 288 have generically-nonzero jacDet → 0 degenerate by that criterion (288, not 18).
+- NORMAL-CROSSINGS (the REAL chart-validity criterion — hjac needs MONOMIAL jacDet): only **160/288** have
+  monomial jacDet. Pattern: per inner (p2,p3), 5 of 9 sigmaPiv-pivots p1∈{0,1,2,3,20} are monomial; the 4
+  SHEAR-MODIFIED slots p1∈{4,5,6,7} give POLYNOMIAL jacDet (v3[p1]=u0u1+u8u10…) → **128 leaves CANNOT be valid
+  Charts** (hjac unit vanishes on a hypersurface through 0).
+- COVERAGE CONCERN: the cover routes each target to its sigmaPiv-argmax over {0..7,20}; **~44.7% of targets have
+  argmax in the shear-slots {4,5,6,7}** → route to a NON-normal-crossings (invalid) chart. So the 160 valid charts
+  likely UNDER-COVER unless valid charts cover those sectors by OVERLAP (open — the decisive check).
+CONSEQUENCE: the SET-cover (ball ⊆ 288-leafImages, decomp-5b banked) is correct, but a set-cover by leaf-images
+is NOT an ATLAS of valid resolution charts. **Route (a) [all 288 charts] is DEAD** (128 aren't valid charts).
+The atlas MUST be the VALID subset (normal-crossings ∩ clean-binding) + prove-it-COVERS.
+FOUR MEASUREMENTS to reconcile (all different things): θ(3,3,4) [top-dim comps] · 160 normal-crossings [valid
+jacDet] · 196 distinct-pivot [clean binding, cruxB] · 25 K-orbits [transport classes].
+THE DECISIVE QUESTION = does the VALID (nc ∩ clean) subset COVER the ball (incl. the 44% shear-slot sectors via
+overlap)? → valid-covers → prune to valid, GATE DISCHARGES; valid-doesn't-cover → design gap (EXCLUDE shear-slots
+from sigmaPiv center, or a DEEPER blow-up).
+DISPATCH: GREEN-LIT decomp-5b's indicative overlap-coverage check (does the 160 cover); sector-count #144 = the
+CENTRAL reconciliation (the valid-covering atlas + is |valid|≈θ paper-faithful); routeP-p1+cruxB keep the uniform
+hideal (route-agnostic, right mechanism) but HOLD atlas assembly + coinciding-92 + the (iv) wire for the
+valid-covers verdict. ELDER FIDELITY JOINT SET (trigger = valid-doesn't-cover): is the gWrapFan the PAPER's
+normal-crossings resolution, or a naive fan that DRIFTED (44%-invalid smells like drift; a real resolution is
+normal-crossings by construction)? CONTROLLER: this is the 4th "more complex than the clean framing" catch on
+this cover (wire → 25-orbits → chartAtPivot-sidestep → atlas-validity gap) — I'm treating "full-fan closes
+cleanly" as NOT established, deferring to the exact reconciliation + a possible paper-fidelity re-design. NOT a
+kill (decomp-5b: honest, not a kill) — the fix (prune-to-valid + cover, or deeper blow-up) is tractable; but the
+finish line is genuinely further + the approach's fidelity is now in question. Surfaced async to operator
+(non-blocking; within the (3,3,4) boundary). Next signal = the valid-covers verdict (decomp-5b overlap + sector-count).
+
+**RECONCILED + the MONUMENT FEAR RETIRED; cruxB transport-core BANKED; the COVER is the remaining hard gate
+(2026-07-25).** Full 3-channel reconciliation (counts measure DIFFERENT things): 25 K-orbits (transport classes;
+chart334's = 7) · 160 normal-crossings (valid jacDet) / 128 polynomial (invalid; shear-slots {4,5,6,7}) · **≤18
+role-shapes / 3 exponent-shapes** ({3,7,8}×80, {7,8,10}×60, {8,10}×20 — decomp-5b's jac-classification) · θ (top-dim,
+≤18). Valid center1 pivots {0,1,2,3,20} → 5×8×4 = 160.
+- **GOOD — monument fear RETIRED:** the hideal WORKLOAD is BOUNDED (≤18 classes / 3 exponent-shapes + transport
+  within class), NOT the unbounded pivot-symbolic general-d monument. Route (a) workload feasible. (Partly reverses
+  my prior "confidence down" — the HIDEAL axis is bounded; the COVER is the hard axis.)
+- **cruxB transport-core DONE + banked @ 2d8330538 (ChartTransport.lean, ~275 LoC, force-elab clean-three, pushed
+  origin); lane STOPPED at a checkpoint** (route-dependent atlas work held). Findings: (a) transport MOVES the blow-up
+  CENTERS (the 3 nested centers are NOT K-invariant) → transport charts feed a G-ORBIT (moved-center) cover ≠
+  decomp-5b's FIXED-center fan; (b) structural pivot-generic hideal NOT in reach (the TUNED shear obstructs it) →
+  per-class brute-force confirmed, but bounded; (c) shear-slot degeneracy = the 128 invalid.
+- **THE COVER = the remaining hard gate (orbit_covers revived).** decomp-5b's fixed-center set-cover is correct but
+  its valid subset doesn't cover via naive argmax (44.7% gap). THE FORK, sequenced cheapest-first:
+  • **V1** (decomp-5b running, no σ-map): do the VALID FIXED-CENTER charts cover via OVERLAP? → YES: prune to valid +
+    fixed-center chartAtPivot (≤18 hideals) → 5d closes on decomp-5b's banked cover. Simplest.
+  • **V2** (if V1 fails, needs routeP-p1's σ-map): the K-TRANSPORT (moved-center) atlas covers? = orbit_covers.
+  • **V3** (if V2 fails): DEEPER blow-up for the shear-slots → re-architecture → ELDER fidelity joint.
+- **DISPATCH:** decomp-5b runs V1 (decisive); routeP-p1 DERIVES per-shape bexp/binding (the STOP-gate: any shape's
+  binding ∉ TE) + hands decomp-5b σ-map if V1 fails; sector-count does exact θ + valid-covering + is-|valid|≈θ
+  (paper-faithful). HOLD atlas assembly + wire + the per-shape hideal LEAN build (resume cruxB with a full spec once
+  the cover route + shapes settle — building fixed-center hideals now risks waste if V2/deeper). ELDER trigger =
+  V1 fails / deeper blow-up (fidelity: is gWrapFan the paper's normal-crossings resolution, or a naive fan?).
+  Next signal = V1 verdict + per-shape binding∈TE + exact θ.
+
+**COVER RESOLVED (valid-COVERS, both routes) → ROUTE (B) [K-transport atlas] ADOPTED (controller, 2026-07-25).**
+decomp-5b's decisive numerics (decorrelated): (V1) the 160 valid FIXED-CENTER charts cover ball 0 1 = **1.000**
+(4000 samples, incl. the 44.7% shear-slot-argmax targets — covered by OVERLAP in the large dom box f^[3]1=903,
+NOT by argmax); (V2) chart334's **K-ORBIT covers = 1.000** (3000 samples, orbit_covers HOLDS, zero misses). So the
+cover→valid-atlas gap is CLOSED — the valid atlas covers, BOTH ways. NO deeper blow-up, NO drift, NO
+elder-fidelity crisis (the V1-fails trigger did not fire). cruxB code-confirmed the uniform hideal IS the monument
+(hardcoded canonical roles) — no structural sidestep; valid center1 pivots {0,1,2,3,20} → 160.
+- **ROUTE DECISION (B over V1) — controller call, cost-dominant:** ATLAS = chart334's K-ORBIT (numC≈7-18). ALL
+  charts = transports of chart334 via the BANKED transportChart (@ 2d8330538) → hideals ALL FREE (one bespoke =
+  chart334, banked), binding UNIFORMLY {8,9}∈TE (transport preserves values). ⟹ V1's binding-∈-TE pruning +
+  {7,8,10}/{8,10}-∉-TE risk is MOOT (route B uses only chart334's shape). V1's expensive part = ≤3-18 DIRECT
+  chart334-scale hideals; (B) trades them for 1 K-equivariance + 1 orbit-cover (both bounded). (B) also
+  templates general-d (transport-symmetry = the paper's structure). V1 = documented FALLBACK.
+- **ROUTE (B) PIECES + named STOP-risks (bold-to-build, humble-before-the-risk):**
+  1. coreGen K-EQUIVARIANCE in Lean — cruxB (RESUMED, GO; numerically verified all 864; the ONE real STOP-risk —
+     STOP+report if it fights). The hequiv transportChart consumes.
+  2. K-ORBIT COVER Lean `ball 0 ρ ⊆ ⋃_σ g_σ(dom)` a.e. — decomp-5b (K-invariance reduction: permOf σ isometry +
+     banked bricks + block-atom on gWrap). Bounded.
+  3. numC + σ_c ENUMERATION PIN — routeP-p1 (the GATING pin — unblocks both #1's application half + #2).
+  4. transportChart APPLICATION over the orbit → charts : Fin numC → Chart …0, hideals+binding free — cruxB (after #3).
+  5. WIRE via resolution334_of_fanCover_ofValues (a.e.; routeP-p1 says banked — controller VERIFIES the a.e. seam
+     genuinely accepts the measure-zero exceptional-locus gap at integration; load-bearing).
+- a.e. is CORRECT for the RLCT/measure purpose (strict-⊆ fails only on the codim-5 measure-zero exceptional
+  locus {x0=x1=x2=x3=x20=0}). #144 (cover-route decider) RESOLVED. sector-count released (θ no longer blocking;
+  minimality via chart334, binding 8 = minAdm). CONTROLLER honest recalibration: my prior "finish line much
+  further" is substantially walked back — the decorrelated hunt found+closed the gap, and route (B) is a bounded
+  path with 3 named STOP-risks. Next signal = cruxB's K-equivariance GO/STOP + routeP-p1's numC/σ pin.
+
+**sector-count ADJUDICATION #144 lands — θ=1 + a DECISIVE COVER DISSENT → route (B) BACK ON HOLD (controller,
+2026-07-25). DON'T-COLLAPSE-TO-THE-MODE: I'd just blessed route (B) on decomp-5b's MC; the decorrelated exact
+adjudication dissents — reconcile before believing either.**
+- **θ(3,3,4) = 1** (codim C=8, rlct=4) — verified 3 ways (paper QIP/Kostant by hand; exact enum matching
+  Core.CTheta; geometric stratification) + Codex xhigh decorrelated. CATEGORY CORRECTION: θ = ONE irreducible
+  component; θ ≠ chart-count (the resolution needs many charts to cover the nbhd of that ONE component).
+- **COVER DISSENT (exact + Codex, CONTRADICTS decomp-5b's orbit_covers 100%):** the ~18 column charts (chart334's
+  pivot-orbit) cover ~NOTHING — a TRANSVERSAL-dominant A0 config (e.g. the (4,4,7)-leaf) is in NO column chart;
+  covering it needs the MIXED leaves ({7,8,10}/{8,10}) → the FULL 288, not the 18/80. MC (sector-count): 18 columns
+  leave ~98% uncovered; full 288 = 0%. Codex: "columns cover a.e. only in the trivial Zariski-dense sense; as a
+  bounded-sector blow-up cover, mixed leaves are genuinely required." Also: the fixed-center fan is **G-RIGID**
+  (Stab(C1,C2,C3)={id}, Codex-confirmed) → transport buys ZERO within the fixed fan.
+- **THE DISAGREEMENT to reconcile (BLOCKS route B):** decomp-5b MC (18/80/K-orbit cover 100%, inversion into the
+  903-box) vs sector-count exact (18 columns ~98% uncovered, transversal needs mixed leaves). Likely crux: the
+  903-box is HUGE → almost everything inverts into it (trivial Zariski-dense "coverage"), masking that a genuine
+  bounded-sector blow-up cover needs the mixed leaves. The exact adversarial counterexample beats an MC-reports-100%
+  (an MC can't PROVE coverage). RECONCILIATION KICKED OFF (#145): decomp-5b tests sector-count's SPECIFIC transversal
+  counterexample in its 903-box; pin orbit / box-too-permissive / criterion. Route (B) HELD until resolved.
+- **ROUTE OPTIONS if B dead:** (a) full-288 + ~15 INDEPENDENT hideals (G-rigid → no transport savings); (b) a
+  G-EQUIVARIANT ADAPTED-CENTER fan (node-k center = cells-not-yet-used, per-pivot; then cover AND transport hold on
+  ONE object; reps ≈ 15 non-degen classes) — re-architecture; (c) **the θ=1 LEVER — #111 (value = chart334-upper +
+  a lower bound, BYPASS the full atlas). θ=1 signals ONE binding chart carries the value; the ~15-class grind is
+  entirely the lower-bound/full-Resolution formalism.** Potentially the biggest simplification of the endgame.
+- **DISPATCH:** decomp-5b + sector-count RECONCILE the cover (#145); routeP-p1 HOLD numC/wire; cruxB CONTINUE the
+  coreGen K-equivariance (route-agnostic gate; + it confirms the A0/A1-mixing = sector-count's tripwire that
+  ⟨coreGen∘g⟩=⟨c11·E⟩ is IMPOSSIBLE if g touches only A0), HOLD the transport-application/atlas. ELDER+NAVIGATOR
+  COUNCIL to convene on the θ=1/#111 lever + the route re-scope ONCE the cover reconciles (route/gate-bar decision =
+  their joint; not a silent controller call). Surfaced async to operator (the picture shifted; non-blocking, within
+  the (3,3,4) boundary + the same destination). Next signal = the cover reconciliation (#145).
+
+**TEAM CONVERGED on HOLD + the CONE reconciliation method (2026-07-25).** Independently: routeP-p1 RETRACTED its
+route-B GO (owning the over-trust of decomp-5b's numeric — "the exact seat trumps the numeric at the commit
+point"); cruxB self-corrected "B dead"→"B CONTESTED" + HALTED the route-B K-equivariance (won't build on a
+whipsawed/contested route). Controller OWNS the parallel error: I blessed route (B) "adopted" on decomp-5b's MC
+before sector-count's exact adjudication landed — premature (I did hedge with STOP-risks + a V1 fallback, and held
+as soon as sector-count dissented, but "adopted" was too strong). Calibration lesson (Nth on this cover): don't
+bless a route on a numeric MC while a decorrelated EXACT seat is mid-adjudication — wait for the exact.
+- **THE RECONCILIATION METHOD (cruxB's cone insight — the KEY):** coreGen is degree-2 HOMOGENEOUS → its zero locus
+  is a CONE → sector-count's transversal escape, if a genuine direction/ray, is SCALE-INVARIANT (escapes at every
+  ρ). So decomp-5b's orbit_covers=1.000 in the big-box-903 is the SUSPECT (a huge box reaches a point at that scale
+  while the same escaping DIRECTION still escapes as ρ→0). DECISIVE TEST (decomp-5b + sector-count, #145): take
+  sector-count's SPECIFIC escaping ray (transversal-dominant A0), test whether it's in ANY route-B chart's image at
+  SMALL ρ (sweep ρ→0), NOT re-sample. Escapes at every ρ → route B DEAD (measure-positive); covered at small ρ →
+  big-box artifact, B a.e.-covers. Quick + decisive.
+- **ANCHOR (stop the V1↔B↔contested whipsaw):** reconcile the cover FIRST (cone test) → THEN pick the route; no
+  numC pin until settled. **V1 (fixed-center distinct-{3,7,8}, 80) is the LIKELY route** (decomp-5b's distinct-80
+  100% + sector-count's "geometry-diverse needed" both point to it; sector-count's exact says the column-only
+  K-orbit doesn't cover). V1's gate = the DIRECT hideal (pivot-uniform over {3,7,8} = ONE proof, or ≤18-per-class,
+  since the fan is G-rigid → transport buys nothing) — cruxB running an independent sympy Gröbner check of it NOW
+  (decorrelates + de-risks the likely route); routeP-p1 co-derives via part-C. transportChart stays banked (for a
+  future G-equivariant-adapted-fan route, not V1). θ=1 → chart334 carries the VALUE; the θ=1/#111 lever → elder+
+  navigator council once the route settles. Next signal = #145 cover reconciliation + cruxB's V1 Gröbner verdict.
+
+**★ DECISIVE RE-SCOPE — the flat (3,3,4) fan is NOT a resolution; the cover saga resolves (2026-07-25). ★**
+Multi-channel exact confirmation (sector-count exact algebra WITH the real shear shearH∘permP [superseding its
+A0-only first pass] + routeP-p1 + cruxB): **MONOMIALIZATION ⊥ COVERAGE.**
+- chart334 (node1-pivot p1=20) MONOMIALIZES ⟨coreGen∘g⟩=⟨E·c11⟩ (1/12 unit, TERMINAL) — but the p1=20 family does
+  NOT cover (~8% of a nbhd uncovered even at radius 10, robust positive-measure gap).
+- The 117/118 valid+distinct COVERING charts do NOT monomialize (GCD-monomial factored out leaves 0/12 units ⟹
+  ⟨coreGen∘g⟩ ⊊ ⟨monomial⟩, residual singularity → NON-TERMINAL).
+- Valid (monomial-jacDet) ⟺ p1 ∈ {0,1,2,3,20} (row-0 ∪ col-0 "hook"); the invalid 128 = p1∈{4,5,6,7} = the
+  lower-right 2×2 block the shear CLEANS → blowing up a cleaned slot gives polynomial jacDet.
+⟹ **No sub-selection of the fixed-shear flat fan is simultaneously covering AND all-monomializing.** The flat fan =
+chart334's ONE terminal chart + 287 non-terminal cover-fillers. **Route (a) flat-288, (b) prune-18, chartAtPivot-
+generic, V1-direct-hideal — ALL DEAD.** This RESOLVES #145 deeper than the dom-mismatch (decomp-5b's dom-catch, 903
+vs 1, was real but secondary): coverage HOLDS at dom=903, but the covering charts aren't terminal. **The (3,3,4)
+resolution is intrinsically the RECURSIVE buildTree** (chart334 = its column-0 terminal branch; every covering
+sector recurses into its residual {4,5,6,7} block with its OWN adapted shear until terminal) = route P's general-d
+recursion. FIDELITY DRIFT CONFIRMED (my earlier worry): the flat gWrapFan was a naive fan, not the paper's
+normal-crossings recursive resolution. The decorrelated EXACT hunt caught this before we certified a non-resolution
+— the ultimate calibrate-sensors win (the numerics' coverage-100% masked the monomialization failure).
+- **WHAT STANDS:** routeP-p1's rungs 5a + 5b + part-C + chart334 are ALL CORRECT (chart334 = a genuine terminal
+  branch, reusable in the recursive tree). Only the flat-fan COVER architecture (ii/iii/iv/crux-B) was the wrong
+  object. transportChart + K-equivariance stay banked (relevant IF recursive).
+- **TWO ROUTES for the payoff (routeP-p1 + sector-count both strongly recommend (b)):**
+  (a) full RECURSIVE general-d buildTree (#112) — big, the recursion is the monument.
+  (b) **θ=1 BYPASS (#111 / V-wire): value = chart334 single-chart UPPER + the banked #109 LOWER, bypassing the full
+  Resolution atlas ENTIRELY.** θ(3,3,4)=1 ⟹ ONE component ⟹ ONE binding chart carries the value; :311 re-points
+  through the θ=1 value argument, not the atlas.
+- **CONTROLLER — PRICE (b) HARD, decorrelated, NOT on optimism (memo retired the "V-lower-lighter mirage" 3× on our
+  optimism):** spawned pen-and-paper `price-theta1-bypass` (#146) to adjudicate — (1) VIABLE (does chart334-upper +
+  #109-lower = 2·rlct=cCodim without the atlas, does the wire close)?; (2) KEEPS the geometric codim C PROVED (the
+  NEW CONTENT — not dodge/cite it)?; (3) MIRAGE-check (F1-mirage 3rd cycle)?; (4) vs recursive #112. Autonomy-
+  consistent: a SURPRISE re-scope cleared by DECORRELATED review (not controller optimism) may PROCEED. Route
+  decision AFTER the pricing. Lanes: decomp-5b STAND DOWN (flat-fan cover dead; bricks transfer to recursive);
+  cruxB HOLD (transportChart banked; its Gröbner confirms the monomialization death); routeP-p1 holding, backs (b).
+  Surfaced to operator (major pivot, same destination = the value). Next signal = the #146 pricing verdict.
+
+**Route B FLIPPED AGAIN (contested) + #146 sharpened with the mirage-DISCRIMINATOR + cruxB lane COMPLETE
+(2026-07-25).** Post-re-scope updates:
+- **sector-count RETRACTED its cover dissent** → now says route (B) [MOVED-center K-transport] is VALID: its
+  earlier "98% uncovered / transversal escape" OMITTED the shear + tested the FIXED-center columns (wrong object);
+  corrected, the MOVED-center G-orbit covers 0/3000 at B=3 AND B=10 + monomializes (verified 3 images, all 1/12
+  unit). Crucially: monomialization⊥coverage kills route (a) [fixed shear] but VALIDATES route (B) [transported
+  shear] — same finding, opposite conclusion (you cannot hold the shear fixed while varying pivots; you must
+  transport it). **BUT pnp-fan still says route B DEAD** (scale-invariant escape cone, exact witness
+  x=½·e_4+1e-5·e_V). So route B is CONTESTED-AGAIN (sector-count valid vs pnp-fan dead). CONTROLLER: NOT collapsing
+  to the retraction (ledger lesson — don't bless the latest clean reading); route B = FALLBACK, reconciling in
+  parallel (sector-count ↔ pnp-fan: does the MOVED-center orbit cover pnp-fan's exact witness?). The route-B
+  flip-flop (contested→dead→valid→contested) is itself the argument for the θ=1 bypass (the cover is at the edge of
+  clean decidability).
+- **#146 (θ=1 bypass pricing) SHARPENED with routeP-p1's discriminator (THE mirage-check):** does #109-lower PROVE
+  the geometric codim C (ideal/blow-up side), or CITE the combinatorial cCodim? GEOMETRIC → clean bypass, keeps C
+  proved (the new content), route (b) GO. CITE → the V-lower-lighter mirage recurring → route (b) hollow, only
+  recursive #112 (or objects-only) keeps C proved. Pin #109's exact provenance = THE discriminator. routeP-p1
+  exemplarily flagged its OWN advocacy confound (backed θ=1 right after a dead-end → "price it, don't conclude").
+- **cruxB lane COMPLETE + banked (clean-three, pushed):** transportChart (2d8330538) + coreGen K-equivariance
+  (Corank2CoreGenEquivar.lean, 68385c86d, K=S4×S3×S3 |K|=864) + the V1 Gröbner (decorrelated confirm of
+  monomialization⊥coverage). Both modules reusable IF recursive (#112), moot if bypass (#111). decomp-5b count
+  correction (64 not 80 valid, immaterial to the verdict). bricks + 5b + chart334 + 5a/5b/part-C all STAND.
+- **ANCHOR:** #146 θ=1 pricing = PRIMARY decisive gate (its discriminator = #109 proves-vs-cites C); route B =
+  FALLBACK (contested, reconciling); route decision when #146 lands. Next signal = the #146 provenance verdict.
+
+**★ #146 VERDICT: the θ=1 bypass (#111) is a MIRAGE (4-channel) — the last clean route is dead; the fork is now
+(a) full recursive Resolution [monument-class?] vs OBJECTS-ONLY close (2026-07-25). ★**
+price-theta1-bypass adjudicated (4-channel: exact algebra + Lean structure + sector-count's banked + decorrelated
+Codex; skeptic-default):
+- **Q1 VIABLE? NO.** The RLCT LOWER bound is intrinsically a whole-neighbourhood integrability statement — in
+  `Core/Aoyagi/ProductResolution.lean` `mem_localAdmissible_of_lt` (470-531) it transfers onto a nbhd EXPLICITLY
+  via `res.hcover`. Drop the cover → integrability only on ⋃ chart-images, NOT a nbhd → conclusion fails. Coverage
+  is LOAD-BEARING; no ideal-level shortcut. The UPPER bound IS single-chart (chart334 → rlct ≤ 4, real).
+- **★ MAJOR CALIBRATION CATCH: #109 was NEVER a banked lower bound.** Every #109 / "V-L-lower" commit is
+  `render(aoyagi):` MARKDOWN; the V-route was RETIRED as the F1-mirage. "#109 completed" = the render was written,
+  the route killed. I'd trusted "#109 completed" as a plug-in lemma for #111 — it isn't one. The ONLY cite-free
+  Lean lower bound = `two_mul_rlctAt_eq_divisorMin ∘ mem_localAdmissible_of_lt`, which NEEDS a full Resolution
+  (res.hcover). AxCheck: the payoff's sorryAx cone = exactly `exists_coreResolution` (the atlas). [#109 task corrected.]
+- **Q2 KEEPS C PROVED? NO.** The payoff's hard half = the lower bound rlct ≥ ½·C (the "mildly singular" new content
+  beyond Watanabe's universal ≤). Route (b) sub-cases: (b-cite) cite Aoyagi-lower → not cite-free, dodges §1 content
+  (hollow); (b-prove) the only cite-free lower = the full atlas = route (a). No third option.
+- **Q3 MIRAGE-CHECK: YES, F1-mirage 4th cycle.** θ=1 = ONE component ≠ one/few charts (Codex: one component can have
+  arbitrarily complicated singular geometry). Empirically: chart334's orbit covers ~2% of a punctured nbhd; the
+  transversal-dominant leaves need the MIXED charts = the full atlas. The cover is load-bearing, MEASURED.
+- **SALVAGE (real, low-regret, banking):** chart334's single-chart UPPER bound = #110 (V-upper) deletes
+  `cited_watanabe_upper_ax` CITE-FREE — bounded, θ-independent, useful in BOTH forks. Bonus: cruxB's sympy
+  reproduced chart334's ⟨c11·E⟩ → part-C decorrelated-validated.
+- **THE FORK (operator-gated — definition-of-done):** (a) full RECURSIVE buildTree Resolution (#112 — price-seat:
+  large detail-at-scale, hard cover gate, plausibly MONUMENT-class at general-d) vs OBJECTS-ONLY close (charter
+  RED-flip fallback, cite the lower). NOT silently proceedable on either horn. DISPATCH: re-tasked price-seat (#147)
+  to price (a) as DETAIL-AT-SCALE vs MONUMENT (THE discriminator); route-B/cover reconciliation SUBSUMED into it
+  (sector-count/decomp-5b stood down); cruxB done+banked; routeP-p1 holding, all its Lean stands. SURFACED to the
+  operator (this is the pivotal decision-point; wait-for-explicit-go class). Next signal = #147 (a)-detail-vs-monument.
+- **CONTROLLER — the honest read:** the expedition has exhausted the clean routes (flat fan not a resolution;
+  θ=1 bypass a mirage). The remaining paths are the monument-class recursive build or the objects-only close — a
+  genuine "bold to build the buildable / humble before the mountain" call, now the operator's (definition-of-done)
+  informed by #147. chart334 + 5a/5b/part-C + transportChart + K-equivariance + decomp-5b's bricks all STAND
+  regardless — a genuine terminal branch + reusable engine, not wasted.
+
+**STABILIZED (2026-07-25) — route B definitively dead, mirage airtight, #147 leaning detail-at-scale, #110 greenlit.**
+- **Route B DEAD, STABLE (5 converging lines):** the ρ-SWEEP is the discriminator (the earlier valid↔dead flips
+  were ρ~1 vs ρ→0 artifacts). Moved-center K-orbit covers only an ANNULUS (ρ≳1e-3), collapses as ρ→0 (deg-2
+  homogeneous ⟹ scale-invariant cover required; restricted-pivot ratio ~1/ρ escapes any fixed box). decomp-5b
+  reproduced (K-orbit 0.992→0.000 as ρ→0; full fan scale-stable to 1e-9); sector-count re-vindicated; cruxB's cone;
+  exact witness. Both sector-count + decomp-5b owned the ρ-sweep discipline miss (sweep ρ→0 for homogeneous
+  coverage; ρ~1+big-box = false positive — banked lesson). #142 CLOSED (no flat/orbit cover is a resolution).
+- **#146 mirage AIRTIGHT (refinement):** the discriminator's "geometric-lower-that-bypasses" branch is EMPTY — a
+  geometric proof of rlct≥½C IS the atlas (rides hcover); bypass ⟹ cite `cited_aoyagi_lower_ax` ⟹ hollow. And the
+  disambiguation: the CODIM C (Object D) is ALWAYS proved cite-free in Core (combinatorial); route (b) dodges the
+  ANALYTIC LINK rlct≥½C, not C. #109's own retired render CONCLUDED route P = the full atlas.
+- **#147 (recursive #112 detail-vs-monument) LEANING detail-at-scale:** sector-count's input — the recursion is
+  FINITE + EXPLICIT (θ=1 → depth-bounded ~3; each level composes the proven L-A/L-B/L-C spine; "explicit finite
+  blow-ups of smooth centres, NOT Hironaka"), so the monument risk is LEAN-LABOR-AT-SCALE (general-d recursion
+  bookkeeping + per-sector shear), NOT open mathematics. Relayed to the price-seat (#147); full verdict pending.
+- **#110 SALVAGE GREENLIT (controller's-call, fork-independent):** routeP-p1 wiring chart334's single-chart UPPER →
+  delete `cited_watanabe_upper_ax` cite-free (bounded, θ-independent, valid in both forks). The one greenlit build.
+- The FORK (recursive #112 vs objects-only) stays operator-gated pending #147. If #147 confirms detail-at-scale, the
+  lean (per operator-pref maximal-push) is BUILD (a) — a large but bounded engineering commitment; I surface the
+  commit as a knowing decision when #147 lands. Team standing down / holding; all Lean stands. Next = #147 verdict.
+
+**★ #147 VERDICT — the recursive #112 SPLITS: (3,3,4) instance = DETAIL-AT-SCALE, GENERAL-d = MONUMENT
+(2026-07-25). The endgame fork is now set + operator-gated. ★**
+price-theta1-bypass (2-channel: exact worked.tex:555-743 read + banked part-C + Codex):
+- **(3,3,4) INSTANCE = DETAIL-AT-SCALE (large, buildable):** the instance IS the recursive tree — chart334
+  (column-0 terminal, banked) + covering sectors recursing into the {4,5,6,7} 2×2 residual with adapted shears
+  until terminal. Finite corank-2 tree. Buildable but NOT cheap (each node = own hideal + recursive cover; the
+  cover alone consumed ~a week + flip-flopped). A worked coupled (3,3,4) resolution = a genuine 2nd cite-free LC
+  instance (beyond the banked d12 regular case); validation, does NOT discharge Object B at full generality.
+- **GENERAL-d = MONUMENT — 3 UNESTABLISHED-GENERAL pieces (not merely un-built):** (1) the uniform (S,J) per-step
+  ideal lemma — banked (3,3,4) is pure brute-force (fin_cases;ring over 12 entries), does NOT lift; Codex: SHOULD
+  exist by determinantal-ideal algebra but is a formal-abstraction gap (large, not stock Mathlib). (2) general
+  terminal-principality (thread-28 deeper-mixed open end, worked.tex:651-664) — instance-verified, NOT reproduced
+  general; Codex: THE decisive obstruction (can't finish a theorem by unlimited instance-generation). (3)
+  pruned-cover completeness at coupled corank — the retained children stay-conull, construction-specific,
+  unestablished. The VALUE `rlct=½·min Mval` is robust general-L (done); the lower bound is INDUCTIVE (consistent
+  with the #146 mirage — "no flat atlas" = inductive, still a resolution).
+- **RECOMMENDATION (price-seat): OBJECTS-ONLY CLOSE** — bank the decomposable pieces (value formula, codim C =
+  Object D, A = ideal-invariance, C = monomial RLCT, V-upper #110, d12) + build the (3,3,4) instance as validation
+  + CITE the general-d resolution existence (honestly labeled `cited_aoyagi_lower_ax`, the charter's NAMED cite;
+  a general resolution, not merely Hironaka). This is the charter's stated DE-RISK fallback ("general-L stall →
+  objects-only") + per #94 the objects A-E discharged = the charter-faithful DONE. The cite is now EARNED (general-d
+  priced a genuine monument), not a dodge — disposition: "cite the monuments."
+- **DE-RISK PROBE commissioned (#148, sj-uniform-probe) — the ONE gate that flips general-d, run BEFORE conceding
+  (push to the honest ceiling):** prove the dimension-parametric one-pivot (S,J) lemma WITHOUT fin_cases (uniform
+  in block dims/corank) → derive general terminal-principality on a deeper-mixed branch. SUCCESS → general-d =
+  detail-at-scale (reconsider the build); FAILURE at principality → objects-only confirmed ON EVIDENCE. Decorrelated
+  "try-to-build-it" mandate (counter to the pricing's "monument"); base-rate = failure (brute-force-not-lifting),
+  but settles it on evidence not optimism.
+- **THE FORK = OPERATOR-GATED (definition-of-done: cite general-d vs prove it via the monument build).** SURFACED.
+  Not silently proceedable. #110 salvage continues (fork-independent). chart334 + 5a/part-C + transportChart +
+  K-equivariance + decomp-5b bricks all STAND (a genuine terminal branch + reusable engine). Next = #148 probe
+  verdict → then the operator's fork call (objects-only close vs — if the probe flips it — commit the general-d build).
+
+**#147 REFINED (price-seat Bayesian update, weighing sector-count — 2026-07-25): general-d = NOT-open-math,
+UN-PROBED at the detail-at-scale↔MONUMENT BOUNDARY; principality RETRACTED off-path.** The seat moved OFF its
+flat-monument call (exemplary calibration — neither optimism nor defending the prior):
+- ACCEPTED (sector-count + Codex + pnp-coupled): the recursion is FINITE + EXPLICIT + not-Hironaka, composes the
+  paper-verified L-A/L-B/L-C atoms, θ=1 → depth-bounded. So general-d is NOT open mathematics — Aoyagi's, explicit,
+  sound+general on paper.
+- **RETRACTED its piece-2 (general terminal-principality / thread-28) as a payoff obstacle** — charter §1.B: the
+  RLCT lower bound needs only the WEAK reverse (per-divisor no-over-vanishing), NOT the principality collapse
+  ⟨I⟩=⟨b₁⟩; thread-28 principality is OFF the payoff's critical path. So the general-d obstacles COLLAPSE to: (1)
+  the uniform (S,J) TWO-SIDED per-step hideal (incl. weak-reverse/realization), corank-generic over SYMBOLIC
+  dimension — "the whole ballgame"; (2) inductive pruned-cover completeness (now more tractable than the dead flat
+  fan, un-probed general).
+- **REVISED HEADLINE: general-d = a LARGE symbolic-dimension Lean library-build, tractability UN-PROBED, exactly at
+  the detail-at-scale↔monument boundary — undecided, ONE probe from decidable.** Evidence MIXED: FOR (determinantal-
+  ideal algebra should give the uniform lemma) vs AGAINST (the only Lean instance brute-forces + doesn't lift; not
+  in Mathlib; lean/CLAUDE.md's documented dependent-dimension matrix pain). "Should exist by algebra" ≠ "closes in
+  Lean at symbolic Fin(d k) widths." Charter §3 forbids the optimistic read at the KNOWN failure case (coupled
+  corank≥2) without a decorrelated probe → the honest state is undecided-at-the-boundary.
+- **PROBE (#148, sj-uniform-probe) RE-FOCUSED to exactly this:** DROPPED principality (off-path); the uniform
+  one-pivot two-sided hideal WITHOUT fin_cases over symbolic dimension — closes (→ general-d DETAIL-AT-SCALE, route
+  a viable) or stalls on the dependent-dimension bookkeeping (→ OBJECTS-ONLY, on evidence). It hosts as the (3,3,4)
+  build's first crux lemma. Base-rate leans stall; settles on evidence.
+- **"BUILD the (3,3,4) instance EITHER WAY"** (price-seat) — detail-at-scale, a 2nd cite-free LC instance, and the
+  probe is its first lemma. A larger commitment — surfaced to the operator with the fork (not unilaterally
+  committed; the probe is the shared cheap first step). The FORK stays operator-gated (definition-of-done). #110
+  salvage continues. Next = the #148 probe verdict → the operator's fork call.
+
+**★ OPERATOR CORRECTION (hand-off #2, 2026-07-25) — "you're missing already-banked pieces AGAIN; consume, don't
+re-derive." Controller RE-GROUNDS: the (3,3,4) INSTANCE is BANKED-modulo-wiring, NOT a monument. ★**
+The operator flagged that I over-generalized the (narrowly-correct) flat-fan-not-a-resolution + θ=1-mirage DETOUR
+findings into "general-d monument → objects-only," LOSING the banked route-P engine. Verified at the Lean level
+(not assumed; #print-axioms re-verify commissioned = consume-verify #154):
+- **LEDGER = general-L, PROVEN:** isFullMonomialization_buildTree_conRoot {L} + minAdm_le_terminalExponents {L}
+  (EngineConstruction.lean) + stepUpdate/MvalCoh/L8'. No ledger work owed.
+- **L5 FOLD = general-L machinery:** L5FoldSpec (the leaf_stepInv_of_path fold hinge) + DivBirthReach.leaves_chart_
+  clauses {M : Fin(L+1)→ℕ}. Build the body over the templates, CONSUMING the gate2 Corank2*Proto family; NEVER the
+  MonumentAtlas Encoding-S anchors (case1_conjA/appendResidDescent/MergeBoostSplit — the OTHER encoding's
+  frontiers). ONE new lemma owed: the b-chain along a path (the protos assume it as a hypothesis).
+- **PER-STEP HIDEAL:** the Core Corank2*Proto family is over Fin 21 = the (3,3,4)/corank-2 INSTANCE engine, BANKED.
+  RECONCILIATION: the #147 price-seat read the (3,3,4) BRUTE-FORCE (Corank2CoreGenWrap) as "the hideal" + called
+  general-d a monument, MISSING that the Fin-21 protos ARE the banked instance engine. Both right about DIFFERENT
+  objects: the (3,3,4) INSTANCE is banked-wireable (Fin-21 protos); only the SYMBOLIC-general uniform (S,J) hideal
+  is genuinely open (= the #148 tripwire).
+- **COVER:** exists_ball_subset_gWrapFan_leafImages (5d-cover lane) + resolution334_of_ballCover (routeP) EXIST
+  proven but "have never met" — the 3 lanes (routeP/5d-cover/5d-transport) must merge; the seam = enumerate the fan
+  leaves as a CERTIFIED chart family (from the L5 fold's leaves_chart_clauses, NOT the flat-fan leaves that don't
+  all monomialize) + identify leafImages = ⋃ charts.
+- **CONTROLLER MISS OWNED (the "again"):** I let the decorrelated pricing/detour seats drive to "monument/objects-
+  only" WITHOUT cross-checking the banked route-P engine. The flat-fan/θ=1 findings were narrowly correct; the
+  over-generalization to the INSTANCE was the error. Calibration: cross-check the banked engine before pricing a
+  build as a monument. (Ledger entry owed.)
+- **CORRECTED PLAN (consume, don't re-derive):** (1) consume-verify (#154) #print-axioms-verifies each + the
+  CONSUME-MAP (b-chain lemma statement, cover seam, merge order). (2) CONSUME → merge the 3 lanes (gate2 → trunk
+  first, then routeP/5d-cover/5d-transport), build the L5 fold body + the b-chain lemma, wire the cover seam → the
+  (3,3,4) Resolution (#130); routeP-p1 leads the consume-build on the map. (3) the (A)/(C) GENERAL-d fork
+  (recursive general build [needs the symbolic uniform lemma, #148] vs (C) θ=1 [#146-mirage]) = the ONE open
+  decision, ELDER-GATED (operator's instruction); if (C) ever adopted, its lower-bound soundness gets its OWN
+  decorrelated render first (the V-lighter guard). Next = consume-verify's CONSUME-MAP → the consume-build.
+
+**★ #148 PROBE FLIPS general-d: MONUMENT → DETAIL-AT-SCALE (on the MATH) — a POSITIVE surprise, decorrelated
+(2026-07-25). ★** sj-uniform-probe (the "try-to-succeed" mandate, decorrelated from the pricing's "monument")
+SUCCEEDED, 3-channel (its structural analysis + 3 exact-algebra probes + Codex xhigh):
+- **The uniform (S,J) per-step hideal lemma EXISTS** — clean, parametric in block dims + corank. Decomposition:
+  (A) I₁(QMP)=I₁(M) [unimodular Schur shears]; (B) coordinate-center blow-up divisibility [smooth LINEAR center];
+  (C) b-chain absorbs cross-terms via the threshold formula. LOAD-BEARING invariant (named): the coords form a
+  JOINT REGULAR COORDINATE SYSTEM, SURVIVING the recursion via the polynomial automorphism (β,γ,δ,C)↦(β,γ,Δ=δ−γβ,
+  Q⁻¹C) (inverse-polynomial, dim/corank-independent). Terminal principality holds per chart (Probes B/C: (5,5,5,5)
+  t=(3,1) two adjacent corank-2 drops → deep D-block stays FREE); AND route P doesn't even need principality (just
+  the two-sided ⟨∏C∘g⟩=⟨diag b⟩ + hchain = (A)+(B)+(C), charter §1.B).
+- **Why #147's monument was WRONG:** it priced the per-instance BRUTE-FORCE (peeled_comp_gFaithful 12-entry ring)
+  as "the hideal" — a FOLD artifact that doesn't lift. But the DECOMPOSITION lifts, and 2/3 atoms are ALREADY
+  parametric in Lean (regionRepresents_of_matrix_mul = I₁-inv; blockBlowupMap/resid_comp_gBlk = blow-up;
+  terminal_bezout = reverse); the 3rd (unit-pivot Schur QCP=diag(1,Δ)) is STOCK Mathlib (fromBlocks_eq_of_invertible₁₁).
+- **THE ONE REMAINING DISCRIMINATOR (controller — don't collapse to the optimism):** the probe did exact-algebra,
+  NOT Lean. The MATH is detail-at-scale (confirmed); the LEAN BUILD tractability (dependent-Fin cast-tax at symbolic
+  widths + the new recursive buildTree module + the un-exercised Case-1(1) merge) is UN-PROBED — that was the
+  price-seat's ORIGINAL tripwire ("should exist by algebra ≠ closes in Lean at symbolic Fin(d k)"). COMMISSIONED the
+  probe's own "next to settle" = #155 (schur-casttax): a parametric-dims Lean example of the unit-pivot Schur atom
+  at symbolic residual width — measures the missing atom's cast-tax IN LEAN. CLOSES → detail-at-scale in Lean ((A)
+  viable); STALLS → the engineering risk quantified.
+- **IMPLICATION for the (A)/(C) fork:** "cite general-d" is NO LONGER forced by a math wall — general-d is
+  detail-at-scale. (C) [θ=1] stays a mirage (#146). So the fork is (A) recursive general build [detail-at-scale,
+  Lean-tractability pending #155] vs objects-only [now a pragmatic choice, NOT monument-avoidance]. Per the charter,
+  committing to a detail-at-scale build is the CONTROLLER's executive call; per the operator (hand-off #2), the fork
+  is ELDER-GATED. So: #155 (Lean cast-tax) → convene the elder → the build-commit call. Objects-only NO LONGER the
+  default. CONTROLLER NOTE: this is a positive surprise against the base-rate — accept the MATH flip (decorrelated),
+  but gate the (A)-build-commit on the LEAN discriminator (#155), not the optimism. Next = #155 verdict → elder gate.
+
+## 2026-07-25 — FORK DECIDED (operator): BUILD (A) in route-B (transformed-center) shape
+
+**Operator call:** BUILD the cite-free lower — but in the route-(B) shape that COLLAPSES the cover monument.
+Four points: (1) fan the CONSTRUCTION not the composite (the recursion emits the atlas; each stage's blow-up
+presented in the branch's CURRENT coords; drop the 288/160/196 flat-fan framing — the 128 invalid leaves +
+escape-cone were ONE error: a globally-fixed shear wrong for the pivots it wrote); (2) per-step cover is a
+triviality (block-atom + Covers fold), threaded through the SAME induction as hideal (one induction, two
+clauses); (3) resolve REPRESENTATIVES only, transport certs by compensated relabeling (equal-b run → within-run
+relabeling fixes the stage family), the one new lemma = stage-family equivariance (equal-b explicit); (4) exec:
+L5 fold STRUCTURE over the gate2 protos, general-d from the start, (3,3,4) = regression evidence only,
+objects-only = STOP-fallback. Operator directive: "ground yourself (controller!) in the math AND the code,
+verify EVERY piece, understand the full path" before re-issuing.
+
+**Controller grounding (read the code+math MYSELF, not summaries — the over-reliance the operator is correcting):**
+- §1 VERIFIED: `L5FoldSpec` §A (fold recurses buildTree, carries invariant down, produces atlas); `LeafCoverTiling.FanTree.node` carries PER-PIVOT σ p + per-pivot child (already fans the construction); the flat-fan diagnosis is corroborated in `LeafCoverTiling`'s docstring ("the col-pin drops the pivots hcov needs").
+- §2 VERIFIED: `covers_subset` (clean-three, #assert_banked_clean_batch) + block-atom `closedBall_subset_iUnion_blockBlowup_image_radius`; per-pivot shears = τ∘rep∘τ⁻¹ (isometry → box-containment transfers). Cover monument collapses into the fold.
+- §3 VERIFIED: L-A (`regionRepresents_of_matrix_mul` general + symbolic Schur over any CommRing / `SchurClearTwoSided` general-d), L-B (`maintenance_step_two_sided` general, b-chain-conditional), L-C (`terminal_bezout` general); composition = `regionRepresents_comp`+`.trans`+`terminal_bezout`; `transportChart` (banked -5d-transport, ALL Chart fields incl. both hideal, under hequiv, = τ∘rep∘τ⁻¹). Equal-b-run legality checked vs `stepUpdate` (each center a same-layer/same-clearing run → b constant on it). The one new lemma (stage-family equivariance) = stage-level analog of banked `Corank2CoreGenEquivar`, well-posed.
+- SEAM VERIFIED: :311 reduces SORRY-FREE (`RecursionAdapter.exists_hlb_hattain_of_exists_atlasRealizesExponents`) to `∃ res : Resolution, AtlasRealizesExponents d res`; `AtlasRealizesExponents` = a VALUE-SUPPORT match (ℕ-exponents ↔ terminalExponents), NOT a structural chart↔leaf map — WHY exponent-preserving relabeling suffices. Architecture and seam fit exactly.
+
+**THE ONE CAVEAT (caveat-next-to-claim):** the build must produce the `Resolution` DIRECTLY from the fold — NOT
+route through `MonumentAtlas.leaf_stepInv_of_path` (Encoding-S `FoldStepInvAt` + the `case1_preserves_stepInv`
+WALL). The carried invariant is the stage ideal identity (RegionRepresents at the node) + the cover clause,
+NOT FoldStepInvAt. A genuine re-architecture of the fold's INVARIANT; the brief pins it so a seat can't drift
+back into the wall.
+
+**Actions:** brief issued `build-brief-routeB.md` (route-B shape, short re-pricing). Decorrelated obstruction
+audit FIRED (pen-and-paper `audit-routeB` + own Codex) on §§1-3, highest-risk target = equal-b-run legality at
+GENERAL d (esp. Case-2 successive clearing). HOLDING the full build team until the audit clears (operator's
+"audit → then build"); STOP-fallback = objects-only (cite `cited_aoyagi_lower_ax`, charter-faithful #94).
+Next: audit verdict → spin the fold build starting with the one-new-lemma (stage-family equivariance) early brick.
+
+## 2026-07-25 — DECORRELATED AUDIT REFUTES THE ROUTE-B ECONOMY (no wall; re-priced) + a controller miss owned
+
+`audit-routeB` (pnp obstruction, exact algebra + Codex xhigh, both agreeing; catalogue
+`threads/audit-routeB/obstruction-catalogue.md`, scripts `/tmp/audit-routeB/*.py`) — I read the catalogue +
+verified the exact-algebra myself. VERDICT: NO single hard MATH wall, but the v1 brief's ECONOMY claim
+("resolve representatives only; collapses the monument") is REFUTED.
+
+- **O1 [SERIOUS] node non-transitivity.** `transportChart` consumes coreGen (the product family), needs σ a
+  coreGen SYMMETRY. The only coreGen syms: end-perms (α/β, τ≠id) + matched-gauge (shared index in BOTH
+  adjacent layers, τ=id). Matched-gauge swap of an intermediate pivot co-permutes the adjacent layer → if it
+  carries an ANCESTOR pivot, the chart lands under a DIFFERENT parent. Parent stabilizer NOT transitive on
+  node pivots (d=(2,2,2) witness). ⇒ transport = per-K-ORBIT-of-LEAVES dedup, NOT per-node collapse.
+- **O2 [SERIOUS/MED] cover-vs-cert seam.** §2 cover transports via ISOMETRY (any swap); §3 cert only for
+  coreGen-sym swaps. Different sets. Exponent-only seam (AtlasRealizesExponents) CANNOT certify coverage
+  ({β₁,β₁} = same exponent-support as {β₁,β₂}, misses (0,ε)). ⇒ NEW named obligation: a node-stabilizer /
+  chart-path coherence theorem (transported chart = the tree leaf, exponent-to-AXIS incidence, not just value).
+- **O3 [MED]** transport reduces leaf COUNT, not the per-leaf hard part; the general-d L-A/L-B/L-C hideal
+  spine per orbit-rep remains the load-bearing labour. Route-B does NOT shrink the hideal monument.
+- **O4 [MED]** the "one new lemma" mis-stated (wrong family: transportChart = coreGen not the stage {b·Xᵢ};
+  wrong granularity: per-stage end/matched-gauge, not uniform within-run swap). Correctly stated it holds.
+- **§1 escape-cone diagnosis INCOMPLETE:** TWO independent pathologies — fixed-shear (cured by
+  transformed-center) AND col-pin/fan-completeness (col-pin misses 67%, cured by route-a full-fan).
+- **§3(a) equal-b: NO obstruction** (holds general-d incl. Case-2 successive clearing) — but the v1
+  STOP-conditions checked EXACTLY this (which passes) → FALSE-GREEN; didn't name O1/O2.
+
+**CONTROLLER MISS (owned).** My grounding told the operator "every piece of §§1-3 checks out." I verified the
+MECHANISMS exist (correct) but over-read the ECONOMY: echoed "resolve representatives only / collapses the
+monument" WITHOUT checking node-transitivity (O1) or the transport family-match (O4: transportChart consumes
+coreGen, not the stage family). The decorrelated audit caught it — calibrate-sensors working; I should have
+caught it in grounding (verify COMPOSITION-economy, not just mechanism-existence).
+
+**Corrected picture:** cover-monument-collapse HOLDS (§2, operator's primary insight validated); cert-economy
+REFUTED (§3). No wall. Re-priced to the substantial general-d monument: L-A/L-B/L-C spine per K-orbit-rep +
+route-a full-fan cover + the O2 coherence theorem; transport = leaf-count reduction on top.
+
+**Actions:** brief rewritten v2 (`build-brief-routeB.md`: atlas-identity = tree full-fan g-maps up front; O2
+coherence named; one-new-lemma restated as coreGen equivariance under per-stage matched-gauge/end;
+STOP-conditions re-pointed to O1/O2, NOT equal-b). HOLDING the de-risk gate (general-d single-intermediate-node
+end-to-end: matched-gauge hequiv + ancestor-pivot bookkeeping + transported-chart-on-tree-leaf coherence +
+cover) for the operator's CONFIRM — surfaced because the refuted economy was the operator's stated rationale
+for route-B and re-prices the fork. Objects-only stays the STOP-fallback. audit-routeB standing by for the
+gate's decorrelated review.
+
+## 2026-07-25 — DE-RISK GATE WALLED (route-B not economical) → recommend STOP to objects-only
+
+`gate-routeB` (lean-formaliser, general-d intermediate node d=(2,2,2)) — VERDICT: WALL at M2/M3. 3/5
+acceptance criteria pass; #3 (ancestor-pivot/O1) + #4 (cover-cert/O2) fail. Deliverable
+`GateRouteB222.lean` (184 LoC, 0 sorries, clean-three, branch expedition/aoyagi-engine-gate-routeB, banked
+as de-risk evidence, NOT wired). TRIANGULATED: gate exact-algebra + gate Codex xhigh + concordant with
+audit-routeB's prior O1/O2 obstruction (final decorrelated audit re-run on the concrete σ222 in flight).
+
+- M1a GREEN: the matched-gauge hequiv on coreGen IS real (σ222=(0 2)(1 3)(4 5)(6 7) on Fin 8, touches both
+  adjacent layers, coreGen-invariant τ=id, transportChart closes GIVEN a from-scratch input chart). The
+  transport MECHANISM works. Criteria #1,#2,#5 ✓.
+- THE WALL (economy, not math): (1) transport-group (coreGen symmetries = matched-gauge + end-perms) vs
+  cover-set (entry-level coord swaps) are DISJOINT on node pivots (`unmatched_not_symmetry222`, witness
+  u=e₂+e₄ ⟹ P₀₀ 0 vs 1) → transport supplies NO sibling certificate; coverage is the full fan, never a
+  symmetry orbit. (2) The valid matched gauge co-permutes the adjacent layer, moving an ancestor pivot →
+  transported chart under a DIFFERENT parent → node-local sibling coherence impossible. (3) The structural
+  chart↔leaf bridge (O2) is UNBUILT + unstatable with banked assets: transportChart acts on geometric
+  Charts, buildTree/conOracle produce abstract ResolutionTree leaves, and AtlasRealizesExponents is by its
+  docstring a ℕ-VALUE match, NOT a chart↔leaf correspondence. That structural assembly IS the unbuilt
+  general-d chart↔path monument.
+- CONSEQUENCE: route-B does NOT collapse the monument. Codex: "CLOSES" only as "no logical impossibility,
+  finite-but-laborious" — it requires the full per-leaf general-d L-A/L-B/L-C spine (mostly from-scratch;
+  transport de-dups only within a symmetry orbit, which does NOT align with the fan's cones) + the unbuilt
+  structural chart↔leaf assembly (5 requirements) + the fan cover. That IS the substantial multi-tide monument.
+
+**Controller verdict:** the de-risk (fired precisely to decide this) WALLED on my stated STOP-condition
+(O1/O2). No economical/de-risked cite-free path exists; the cite-free lower = the full general-d monument
+incl. a genuine unbuilt structural bridge. RECOMMENDING STOP to objects-only (charter-faithful #94: the
+objects A-E are the objective; cited_aoyagi_lower_ax = Watanabe upper + Aoyagi exact is a PERMITTED cite).
+This is the honest ceiling for the economical cite-free ambition. SURFACED to the operator (destination /
+close decision, wait-for-explicit-go); alternative named = build the full monument anyway (maximal-push, no
+shortcut, large + an unbuilt structural monument). Full team NEVER committed (the gate held it). audit-routeB
+final re-run pending; gate-routeB banking GateRouteB222 + resting.
+
+## 2026-07-25 — OPERATOR GO: BUILD the one-object re-route (cite-free lower). Route-P (two-object) RETIRED.
+
+Operator handed the re-route plan (`reroute-plan.md`, v1.0, now in-repo) + "Go." after I grounded it. Adopted.
+
+**Why it's sound (controller-grounded, verified against source — not the plan's say-so):** the gate's WALL
+was a TWO-OBJECT-architecture artifact. The one-object recursion (state carries geometry + ledger in
+lockstep, updated by the SAME stepUpdate driving buildTree) DISSOLVES both walls: O1 (siblings BORN
+per-pivot from a pivot-generic constructor — maintenance_step_two_sided verified pivot-generic, blockBlowupMap
+pivot-parameterized — never transported) and O2 (each geometric leaf's ledger IS a buildTree leaf ledger by
+shared stepUpdate [verified pivot-independent], so AtlasRealizesExponents' value-only match [verified] is
+definitional via a bounded lockstep-coherence lemma — the "unbuildable structural bridge" never arises). NOT
+a shortcut — it's the RIGHT WAY to build the monument (10-16 tides, honest). Atoms verified real: leaves_chart_clauses
+(routeP WF idiom), covers_subset, terminal_bezout, the protos; chart_of_collapse + conjResolution on the
+merge-in lanes (5d-cover/5b-decomp).
+
+**Residual risks (damping the plan's FINAL confidence):** R3 (geometry-valued WF fold) is THE risk — the
+9×-proven idiom is combinatorial; threading analytic charts + both RegionRepresents + cover-inflation through
+WF is unproven, dependent-type-heavy. R2 general-d cover box-inflation "rendered" not built. Lockstep coherence
+a real (bounded) obligation. Estimate optimistic — widen the tail.
+
+**Execution:** rung-gated R0→R6, objects-only STOP-fallback at EVERY rung boundary; PR-merge + dev→main
+operator-gated. Kickoff: R0 (merge gate2+5d/5c atoms → working trunk) + FRONT-LOAD the R3 geometry-valued-invariant
+de-risk (pen-and-paper, my added guard — hunt-precedes-trust) in parallel, then R1 (StageState + pivot-generic
+constructor + the (2,2,2) born-siblings de-risk = reproduce GateRouteB222 M1a from the constructor). Guardrail-0:
+NO geometry outside the step constructor (encodes this week's lesson). Elder convened to update charter §1-B +
+compass to the one-object adoption (route-P retired).

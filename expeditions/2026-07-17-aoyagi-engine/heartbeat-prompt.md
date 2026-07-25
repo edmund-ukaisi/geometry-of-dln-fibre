@@ -8,6 +8,60 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
+- **▶▶▶▶▶▶▶▶▶ OPERATOR GO (2026-07-25): BUILD the cite-free lower via the ONE-OBJECT RE-ROUTE.** Plan =
+  `reroute-plan.md` (in-repo, v1.0, controller-grounded — atoms verified real). One recursion carries geometry +
+  ledger in LOCKSTEP (shared `stepUpdate`) → dissolves the gate WALL: siblings BORN per-pivot (not transported →
+  O1 gone), ledger definitional (AtlasRealizesExponents value-only match is free → O2 bridge never arises). NOT a
+  shortcut — the RIGHT way to build the monument (10-16 tides, honest). Rung-gated R0→R6, **objects-only STOP-fallback
+  at EVERY rung boundary**; PR-merge + dev→main OPERATOR-GATED. Guardrail-0: NO geometry outside the step constructor.
+  KICKOFF FIRED (2026-07-25): reroute-R0 (merge gate2+5d/5c atoms + SchurClearTwoSided → working trunk
+  `expedition/aoyagi-engine-reroute`, green-gate) [#162]; reroute-R3derisk (pen-and-paper FRONT-LOAD of the R3
+  geometry-valued WF invariant — THE residual risk, hunt-precedes-trust) [#163]; elder-reroute (charter §1-B +
+  compass update to the adoption — §1-B below is STALE till it lands). R1 (StageState + pivot-generic constructor +
+  (2,2,2) born-siblings de-risk) [#164] blocked-by R0; R2-R6 ladder [#165] blocked-by R1+R3derisk. The route-B/gate
+  bullet below is SUPERSEDED (operator chose BUILD). Route-P (two-object) RETIRED; GateRouteB222 = the WALL evidence.
+- **▶▶▶▶▶▶▶▶ FORK DECIDED (operator, 2026-07-25): BUILD (A) cite-free lower in ROUTE-B (transformed-center)
+  shape; AUDIT-CORRECTED v2.** Brief = `build-brief-routeB.md` (v2). SHAPE (validated): fan the CONSTRUCTION not
+  the composite (recursion emits the atlas; each blow-up in the branch's CURRENT coords); atlas = tree full-fan
+  g-maps; per-step cover = block-atom + `covers_subset` fold (COVER MONUMENT COLLAPSES §2 ✔). **DECORRELATED AUDIT
+  (audit-routeB, exact algebra + Codex) REFUTED the v1 ECONOMY — NO WALL, but re-priced:** O1 node non-transitivity
+  (transportChart consumes coreGen, needs a coreGen SYMMETRY; parent stabilizer NOT transitive on node pivots,
+  d=(2,2,2)) ⇒ transport = per-K-ORBIT-of-leaves dedup, NOT per-node collapse; O2 cover-vs-cert seam (isometry-cover
+  ≠ coreGen-sym-cert; exponent-only seam can't certify coverage) ⇒ NEW named coherence theorem owed; O3 transport =
+  leaf-COUNT reduction, the general-d L-A/L-B/L-C hideal spine per orbit-rep REMAINS the labour; O4 one-new-lemma
+  restated (coreGen equivariance under per-stage matched-gauge/end). §3(a) equal-b HOLDS (v1 STOP gated on it →
+  FALSE-GREEN; re-pointed to O1/O2). CONTROLLER MISS OWNED (calibration-ledger): grounded mechanism-existence,
+  over-read composition-economy — fire the obstruction seat BEFORE reporting an architecture "grounded". Re-priced
+  to the substantial general-d monument. **DE-RISK GATE WALLED (gate-routeB, d=(2,2,2) intermediate node) →
+  RECOMMEND STOP TO OBJECTS-ONLY.** DEFINITIVE — 4 decorrelated confirmations (gate
+  exact-algebra + gate Codex + audit's prior O1/O2 + audit's INDEPENDENT re-run reconstructing the exact algebra
+  without reading the gate script and reproducing the exact witness numbers; CONCUR, no dissent, no bounded path missed). M1a GREEN (the matched-gauge transport IS real);
+  WALL at M2/M3 (economy, NOT math): transport-group (coreGen syms) vs cover-set (entry swaps) DISJOINT on node
+  pivots (transport gives no sibling cert) + the structural chart↔leaf bridge (O2) is UNBUILT/unstatable with
+  banked assets (AtlasRealizesExponents is value-only). Route-B does NOT collapse the monument — the cite-free
+  lower = the full general-d per-leaf L-A/L-B/L-C spine + the unbuilt structural chart↔leaf assembly + fan cover
+  = the substantial multi-tide monument, no shortcut (Codex: "no logical impossibility, finite-but-laborious").
+  Evidence banked `GateRouteB222.lean` (branch -gate-routeB, clean-three, NOT wired). FULL TEAM never committed
+  (the gate held it). **SURFACED to operator (destination/close decision, WAIT-FOR-GO):** recommend objects-only
+  (charter-faithful #94, cited_aoyagi_lower_ax PERMITTED); alternative = build the full monument anyway
+  (maximal-push, no shortcut). VERDICT DEFINITIVE; both gate seats rested. Awaiting the operator's close call.
+  STOP-fallback = objects-only (cite `cited_aoyagi_lower_ax`, #94). The (A)/OBJECTS-ONLY fork below is CLOSED.
+- **▶▶▶▶▶▶▶ CHECKPOINT 2026-07-25 (operator-directed refresh) — READ `checkpoint-2026-07-25.md` FIRST; it
+  SUPERSEDES the older memo bullets below (the flat-fan / rung-9 phase = a DETOUR, closed).** State: the θ=1
+  bypass is a MIRAGE (#146, dead); the flat-fan cover is NOT a resolution (monomialization⊥coverage, dead);
+  general-d is DETAIL-AT-SCALE on the MATH (#148 + the Schur atom closes at symbolic width via sum-type blocks)
+  BUT the LEAN value-path (proto-consuming Encoding-I fold + adapted-chart cover route-A + per-step recursion +
+  assembly) is a SUBSTANTIAL MULTI-TIDE BUILD, not wiring — consume-verify (#154, force-elab) corrected the
+  "banked-modulo-wiring" optimism: SOLID banked = the ledger ✅ (general-L) + #110 upper ✅ (cite-free) +
+  value-combinatorics ✅ (θ=1, C=8); the L5 fold hinge is sorried Encoding-S (MonumentAtlas, 16 sorries, does
+  NOT consume the protos), the gate2 protos are ISOLATION measurement bricks (L-A ⟨peeled⟩ stop-finding), the
+  cover certified-charts must be BUILT. THE ONE OPEN DECISION = the (A)-build vs OBJECTS-ONLY FORK, ELDER-GATED
+  + surfaced to the operator (build the multi-tide resolution → cite-free payoff, vs bank the objects + cite the
+  resolution `cited_aoyagi_lower_ax`, charter-faithful per #94). HOLDING reactive dispatch + the elder-gate
+  pending the operator's fork call. In-flight (fork-independent, GO'd): schur-casttax (promote
+  `schur_clear_two_sided` = the first general-d brick), routeP-p1 (#110 (3,3,4)-upper wiring). Merge order
+  (gate2→routeP→5d-cover→5d-transport, full lake build after each) banked in the CONSUME-MAP. Do NOT re-open the
+  flat-fan / θ=1 sagas (dead); do NOT revive route-C (mirage, #109 = killed render).
 - **▶▶▶▶▶▶ RECALIBRATION (navigator, 2026-07-25) — the residual is 9 RUNGS not 5; re-aligned to the
   charter's gate bar.** Verified vs render SEAM-CHECK 1269-1282 (my own curation): closing :311 needs a
   REAL Resolution general-d — L6 (hjac, rendered exact) + L7 (hcover, coupled fan) are FIRST-CLASS, NOT

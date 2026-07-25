@@ -1118,3 +1118,56 @@ never changed (KILL Gröbner-true, full-diagonal load-bearing); only my render-C
 LESSON: "this render is cheap" is the visible-progress instinct applied to difficulty; a difficulty
 downgrade is a claim to verify (render-seat skepticism + decorrelated re-derivation + re-run the
 scripts), not a headline to bank. Damp render-optimism the way we damp result-optimism.
+
+## 2026-07-25 — the (3,3,4) flat-fan cover: COVERAGE ≠ RESOLUTION; 5 optimism-corrections, then dead
+Phase-transition entry (the flat-fan cover phase ended in a decisive re-scope). EXPECTATION (mine,
+across ~8 ticks): the flat (3,3,4) gWrapFan cover closes cleanly — successive "clean route" framings:
+(1) "finish line = wire"; (2) "generic transport, numC=288, one lemma"; (3) "chartAtPivot-generic
+sidesteps the count"; (4) route (B) K-orbit covers (blessed on decomp-5b's MC); (5) V1 fixed-center-80
+covers. REALITY: the flat fan is NOT a resolution — sector-count's EXACT algebra (real shear) found
+MONOMIALIZATION ⊥ COVERAGE (chart334/p1=20 is terminal but doesn't cover; the 117/118 covering charts
+are non-terminal). Each of (1)-(5) was corrected by a decorrelated seat; (4) I actually BLESSED as
+"adopted" on a numeric MC before the exact seat finished — premature (owned; routeP-p1 owned the
+parallel over-trust).
+THE MISS (root cause): I treated "does it COVER" (an MC-checkable set-cover) as the resolution gate and
+UNDER-WEIGHTED TERMINALITY (each chart must monomialize / be normal-crossings). A set-cover is a weaker
+object than a resolution atlas; a numeric coverage-MC CANNOT distinguish "covers" from "covers with
+terminal charts" — so the MC read 100% while the atlas was hollow. The exact seat caught what the
+numeric masked.
+LESSONS: (a) for a RESOLUTION claim, the load-bearing sensor is EXACT algebra (monomialization), not a
+coverage MC — commission the exact seat BEFORE blessing a cover route, not after. (b) Don't bless a
+route ("adopted") on a numeric while a decorrelated EXACT seat is mid-adjudication — wait for the exact.
+(c) The "clean route" optimism is the SAME visible-progress instinct as the render-cost optimism above,
+now on a cover architecture; the damping (decorrelated exact hunt) worked 5x, but I should have front-
+loaded the exact monomialization check at route-B adoption, saving cycles. NOT wasted: chart334 + 5a/5b/
+part-C STAND (a genuine terminal branch); the digging surfaced theta(3,3,4)=1 (the possible #111 bypass)
++ the exact fact that the (3,3,4) resolution is intrinsically RECURSIVE (buildTree) — both load-bearing
+for the endgame. NEXT: the theta=1 bypass (#111) is now itself a "clean route" candidate — being priced
+HARD + decorrelated (pen-and-paper #146, mirage-check) BEFORE adoption, applying lessons (a)/(b).
+
+## 2026-07-25 — MISS: grounded the mechanisms, over-read the economy (the decorrelated audit caught it)
+
+**Load-bearing question:** does the operator's route-B ("resolve representatives only; transport collapses
+the monument") hold — i.e. does the transport reduce the per-node build?
+
+**My EXPECTATION (grounding, reported to operator as "every piece of §§1-3 checks out"), confidence ~0.8:**
+the transport (`transportChart` + `Corank2CoreGenEquivar`) + the equal-b-run legality mean you resolve
+representatives only and transport the rest, collapsing the per-node hideal work.
+
+**ACTUAL (decorrelated audit `audit-routeB`, exact algebra + Codex, both agreeing — I verified the
+catalogue myself):** MISS on the economy. `transportChart` consumes coreGen (not the stage family), so it
+needs a coreGen SYMMETRY; the parent stabilizer is NOT transitive on node pivots (d=(2,2,2)); so transport
+is a per-K-ORBIT-of-leaves dedup, NOT a per-node collapse. Each orbit-rep still needs the from-scratch
+general-d L-A/L-B/L-C spine. Plus a NEW cover-vs-cert coherence obligation (O2). Equal-b DID hold (my one
+correct sub-claim) — but my STOP-conditions gated on equal-b → FALSE-GREEN.
+
+**What it changes in strategy:** (1) route-B re-priced UP to the substantial general-d monument (transport =
+leaf-count reduction, cover-collapse holds, hideal-collapse refuted). (2) The build now carries a named O2
+coherence theorem. (3) STOP-conditions re-pointed to O1/O2.
+
+**The lesson (the miss is the product):** when grounding an ARCHITECTURE (not just a lemma), verify the
+COMPOSITION-ECONOMY — the transitivity of the symmetry group on the objects being deduped, and that the
+transport lemma's consumed FAMILY matches the object you claim to transport — not just that the mechanisms
+EXIST. Mechanism-existence ✓ is necessary, not sufficient; I reported "checks out" on mechanism-existence and
+inherited the operator's economy framing without probing it. The decorrelated obstruction seat is the
+sensor that caught it — fire it BEFORE reporting an architecture "grounded", not only before the build.

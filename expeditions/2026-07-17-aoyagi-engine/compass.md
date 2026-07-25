@@ -151,6 +151,35 @@ radial + weak-reverse refinement); `next-build-render.md §9` (hcover OBL-1/2 + 
 `ideal-route-full-render.md` (L-A/L-B/L-C + Phase-3a); `IdealInvariance:447`, `ProductResolution:114-116`,
 `LearningCoefficient:296`, `RecursionAdapter` (`AtlasRealizesExponents`).
 
+**F9. Route-P (two-object) WALLED; the lower bound = the ONE-OBJECT recursion — ADOPTED (operator GO +
+gate-routeB de-risk + elder route-gate, 2026-07-25).** The route-P architecture assembled Object B as TWO
+objects — the banked combinatorial `buildTree`/ledger + post-hoc geometric charts, bridged by ambient-
+symmetry transport. Fired at a decorrelated de-risk gate (`GateRouteB222.lean`, 184 LoC clean-three, branch
+`expedition/aoyagi-engine-gate-routeB`; 4 concordant confirmations — gate exact-algebra + gate Codex xhigh +
+audit-routeB's prior O1/O2 obstruction + the concrete σ222 re-run). VERDICT: WALL, on ECONOMY not math, via
+two exact obstructions. **O1** the transport-group (coreGen matched-gauge + end-perms) is DISJOINT from the
+cover-set (entry-level coord swaps) on node pivots (`unmatched_not_symmetry222`, witness `u=e₂+e₄` ⟹ `P₀₀`
+0 vs 1) — transport supplies NO sibling certificate, the cover is the full fan never a symmetry orbit; and a
+valid matched gauge co-permutes the adjacent layer, moving an ancestor pivot ⟹ node-local sibling coherence
+impossible. **O2** the chart↔leaf structural bridge is UNBUILT + UNSTATABLE with banked assets (`transportChart`
+acts on geometric `Chart`s, `buildTree`/`conOracle` produce abstract `ResolutionTree` leaves, and
+`AtlasRealizesExponents` is a ℕ-VALUE match by its own docstring — RecursionAdapter:55 — never a chart↔leaf
+correspondence). So route-P does NOT collapse the monument; the cite-free lower under it = the full general-d
+spine + an unbuilt structural bridge. WHY the one-object route dissolves both (not a patch — the two-object
+SPLIT was the artifact): one `StageState` carries geometry + ledger in LOCKSTEP, updated by the SAME
+`stepUpdate` (EngineDefs:175, verified pivot-independent) that drives `buildTree`. Then O1 is gone — siblings
+BORN pivot-generically from one constructor (`blockBlowupMap` pivot-parameterized, BlockBlowup:31;
+`maintenance_step_two_sided` pivot-generic), never transported; and O2 is gone — each geometric leaf's ledger
+IS a `buildTree` leaf ledger by the shared transition, so `AtlasRealizesExponents`' value-only match is
+DEFINITIONAL via a bounded lockstep-coherence lemma, no structural bridge ever constructed. This is Aoyagi's
+own construction ORDER (charts + exponents together, one stage at a time, worked.tex:609–625) — the two-object
+split had no analogue in her proof. The route-P SPINE math (L-A/L-B/L-C, b-chain, two-sided `hideal`) is
+consumed UNCHANGED. Residual = the one-object recursion built R0–R6; THE risk = R3 (geometry-valued WF fold).
+STOP-fallback = objects-only at every rung. Witnesses: `GateRouteB222.lean` (the WALL); `reroute-plan.md`
+(the one-object plan + verbatim interface audit); journal 2026-07-25 (WALL + GO ticks). Skeleton anchors:
+`exists_coreResolution` (LearningCoefficient:292–311), `AtlasRealizesExponents` (RecursionAdapter:55),
+`stepUpdate` (EngineDefs:175), `blockBlowupMap` (BlockBlowup:31).
+
 ## Paper-fidelity ledger (documented Aoyagi typos; the mechanism stands)
 - **Def-3 broken** (verified typo) — use the geometric `½·min_t Mval(t)`. Witness `battery/g-def3-broken.py`.
 - **Lemma 1 direction**: worked.tex:156 prints `≥`; the correct/used direction is `≤` (`rlctAt_mono`) —

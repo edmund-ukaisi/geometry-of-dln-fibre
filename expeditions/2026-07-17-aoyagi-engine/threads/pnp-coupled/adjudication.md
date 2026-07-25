@@ -115,6 +115,78 @@ exactly (unit from the kept pivot row). Buildable general-`L`. Confidence MEDIUM
 inequality `A(v) ≥ M_min·v(I)` over the relevant (toric) valuations — a "cover" in valuation-theoretic
 clothing. Possibly lighter in Lean-labour, but unproven here; do not bank it as a dodge.
 
+## AUDIT of the controller's "L-lower-coupled — ATTACKED" render increment (2026-07-25)
+
+Reframed to AUDIT the controller's Findings 1–3, stressing Finding 1. Exact witness
+`/tmp/reverse_direction.py`. I hunt the hole; I do not rubber-stamp.
+
+**The load-bearing fact the increment misses: `rlct` is ANTI-MONOTONE in the ideal.** `I ⊆ J ⟹
+rlct(I) ≤ rlct(J)` (smaller ideal = bigger zero-locus = more singular = smaller threshold; sanity
+`⟨x²⟩⊆⟨x⟩`, `lct ½ ≤ 1`). Consequences, exactly opposite to the increment's split:
+- **Forward divisibility (i) `⟨(∏C)∘g⟩ ⊆ ⟨b₁⟩`** ⟹ `rlct ≤ rlct(⟨b₁⟩) = ½Mval` — this is the **UPPER**
+  bound (V-upper), and it is genuinely the easy, pivot-supplied, forward-only direction.
+- **The LOWER bound** `rlct ≥ ½·min` needs a sub-ideal `⟨b′⟩ ⊆ ⟨(∏C)∘g⟩` — the **REVERSE** inclusion
+  (`b′` recovered from the entries). There is no from-below route around this: the from-below
+  `F∘g ≥ b₁²·unit` **is** the assertion `∑cᵢ²(0) > 0`, i.e. some `cᵢ = (∏C)ᵢ∘g / b₁` is a unit at `0`,
+  i.e. `b₁ = cᵢ⁻¹·(∏C)ᵢ∘g ∈ ⟨(∏C)∘g⟩` — the reverse.
+
+**Exact witness that Finding 1's direction is backwards (`/tmp/reverse_direction.py`).** `I = ⟨δx, δy⟩`,
+`b₁ = δ`: forward `δ ∣ δx, δy` HOLDS (`I ⊆ ⟨δ⟩`); reverse `δ ∈ I` FAILS (needs `1 = h₁x+h₂y`); the
+from-below FAILS (`∑cᵢ² = x²+y²` vanishes at `0`, no positive floor). Yet `rlct(I) = ½` — delivered by
+the **full resolution** (the `δ`-divisor binds at `½`, the `x²+y²` core at `1`, min `= ½`), NOT by any
+from-below `b₁²·unit`. So the from-below is not merely "one-sided" — it is *equivalent* to the reverse,
+and when the reverse fails the from-below fails while the true lower bound still comes from the cover.
+
+### Per-finding verdict
+- **Finding 1 — DISAGREE with the ARGUMENT; AGREE (corrected) with the CONCLUSION.** The from-below is
+  NOT forward-only; the lower bound needs the reverse (above). BUT the reverse that is needed is the
+  **weaker integral-closure form**: `rlct` depends only on `Ī`, so the lower bound needs, per divisor `v`,
+  only `ord_v(I) ≤ (h_v+1)/min` (**no over-vanishing**) — NOT the exact two-sided principality
+  `⟨(∏C)∘g⟩ = ⟨b₁⟩`. So the EXACT-principality *monument* IS avoided — the conclusion survives — but the
+  justification is integral-closure / per-divisor order, **not "forward-only."** "(ii) leading-order at the
+  germ `0`" = "`b₁ ∈ Ī`" = the reverse (weak form); proving (ii) IS recovering `b₁` from the loss (via a
+  realizing entry). The controller's own worry resolves NEGATIVELY.
+- **Finding 2 — AGREE it is the same object as `AtlasRealizesExponents`; DISAGREE with "one-sided."**
+  (i)+(ii) is the **two-sided** realization (forward divisibility + reverse leading-order). The Lean seam
+  `AtlasRealizesExponents` is exactly the per-divisor order-realization = the (weak) reverse — so it is
+  NOT avoided; it is the genuine residual. Coherence render↔Lean: confirmed.
+- **Finding 3 — AGREE (correct, well-put).** `rlct = min` over the fixed resolution's charts ⟹ every
+  coupled chart needs a floor `≥ ½cCodim`; minimiser tight, non-minimisers tolerate a cruder realized
+  monomial. This strengthens the requirement: realization is needed on *every* terminal chart, not the
+  minimiser only.
+
+### Reconciliation — is my cover concern the SAME as hcover's OBL-2, or DISTINCT?
+Read `next-build-render.md §9` + `threads/pnp-l7coupled/`. **Answer: SAME on the cover; but there is one
+DISTINCT residual route-(a) does NOT address.**
+- **SAME (converged):** my cover-completeness concern = hcover **OBL-2** (fan-completeness) + **OBL-1**
+  (box-containment). The col-pin escape (`(4,4,4)` root case-2, `q=(0,row0,col1)` escaping every col-0
+  chart) IS my "most likely break" (a rank-drop direction the tree omits), already found and closed by
+  **route-(a) full fan** (block-atom `|S|`-general, coupling only enlarges `S`). Two decorrelated probes
+  converge: the geometric COVER is GREEN-on-math.
+- **DISTINCT (route-(a) does NOT address):** the per-divisor **leading-order realization / no-over-vanishing**
+  (= `AtlasRealizesExponents`, Finding 2's seam). OBL-1/OBL-2 are the **chart side** (which directions are
+  covered, do the boxes contain); realization is the **F-order side** (does `F∘g` achieve order exactly
+  `Mval` on each chart, or over-vanish and force a recursion). `⟨δx,δy⟩` shows these are independent: the
+  chart is present, coverage is fine, yet `F` over-vanishes (`∑cᵢ²(0)=0`) so the naive floor fails. The
+  hcover probe did NOT test the F-order side; so "both probes converge ⟹ all-green" is right about the
+  cover but **silent on the realization obligation.**
+
+### Net audit verdict
+V-lower is **DETAIL-AT-SCALE and the exact-principality monument is avoided** (Finding-1 conclusion stands)
+— but for the corrected reason (integral-closure / per-divisor no-over-vanishing), and with **TWO** residuals,
+not one:
+1. the geometric **cover** — GREEN via route-(a) full fan (converged with hcover); and
+2. the per-divisor **leading-order realization** (`AtlasRealizesExponents` = the weak reverse / no-over-
+   vanishing) — DISTINCT from the cover, detail-at-scale via the order-accumulation induction (my
+   radial-collapse probe: `h_E = Mval−1`, `a_E = 1` from a realizing pivot, corank-agnostic; the recursion
+   terminates when a retained-rank pivot appears), but **un-probed geometrically at deep-mixed** — the
+   honest residual risk (does the order-accumulation close general-`L` in the deep-mixed coupled case).
+
+So I **damp** "all green, both probes converge" by one notch: the cover converges GREEN, but the
+realization is a third obligation (the Lean seam), not yet probed geometrically. It is very likely
+detail-at-scale (pivot-supplied, terminating recursion), not a monument — but price it (or probe the
+deep-mixed order-accumulation) alongside the build, do not fold it silently into "cover GREEN."
+
 ## Bottom line
 The expedition **CAN close cite-free** — there is no genuine monument in the coupled resolution; the cited
 `rlct=½codim` is exactly what the build replaces. But cite-free **requires building the coupled GEOMETRIC

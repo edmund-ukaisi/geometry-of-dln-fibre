@@ -2,9 +2,9 @@
      READ THIS FIRST, every wake / every convening / every brief. Elder owns it; controller commits.
      EDIT IN PLACE, NEVER APPEND. Hard cap ~1 page. If it grows, it decays like the logs did.
      History lives in journal.md / compass.md; TRUTH lives here. Compaction distills TO this, never away.
-     Checkpoint: 2026-07-24 (PHASE CHECKPOINT — rev-render landed + geo-atlas-wire scope-correction).
-     Operator GO on the ideal-route re-architect; option-(b) build (the coupled hideal) scoped, not yet fired.
-     §1 FINAL — operator-confirmed 2026-07-21 ("detag permitted"). -->
+     Checkpoint: 2026-07-25 (ROUTE RE-ADOPTED — route-P/two-object RETIRED at the gate-routeB WALL
+     (GateRouteB222); the ONE-OBJECT re-route ADOPTED, operator GO). §1-B rewritten to the one-object
+     recursion; A/C/D/E unchanged. §1 FINAL — operator-confirmed 2026-07-21. -->
 
 # Charter — aoyagi-engine
 
@@ -42,34 +42,33 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   **IDEAL-LEVEL** (unimodular Schur-clearing `Q,P` maintain `⟨A⟩=⟨diag(1,Δ)⟩` with polynomial cofactors;
   the `b_i` accumulate; the block-elim cross-term drops as a product of generators — **NO coordinate
   substitution, NO degree-1 support-tracking**). corank≥2 = the SAME step iterated (coupling carried in `Δ`).
-  STATUS (2026-07-25, ROUTE ADOPTED — route P, cite-free BUILD, elder-gated):
-  - FOLD route RETIRED (§3); V-lower-lighter RETIRED as the F1-mirage (§3, compass F8).
-  - COMMITTED ROUTE = P: the two-sided `hideal` (`⟨(∏C)∘g⟩=⟨diag b⟩`, BOTH ways, dom-wide) = Aoyagi's
-    terminal normal crossing, reproduced over `buildTree` via the L-A/L-B/L-C Schur-clearing spine (flat
-    Lean `Resolution` of leaf charts = her inductive recursion flattened; FAITHFUL — flat-vs-inductive is a
-    Lean choice, not a math divergence). NO exact-principality MONUMENT: the lower bound needs only the WEAK
-    reverse (per-divisor no-over-vanishing `ord_v(I) ≤ (h_v+1)/min`), NOT the uniform collapse `⟨I⟩=⟨b₁⟩`.
-    Spine (L-A block-elim any corank / L-B (S,J)-maintenance, b-chain absorbs the reverse cross-terms / L-C
-    terminal) rev-render+Codex verified sound+general.
-  - The value engine rides the TWO-SIDED form (`IdealInvariance:447`; `Resolution` mandates
-    `hideal_fwd`/`hideal_bwd`, `ProductResolution:114-116`). Route P subsumes V-upper. **Route P has TWO
-    residuals:** (1) the (S,J) TWO-SIDED MAINTENANCE (L-A/L-B → terminal normal crossing) — INCLUDES the
-    realization / no-over-vanishing as its REVERSE half (`hideal_bwd` = `AtlasRealizesExponents`; NOT a
-    separate F-order axis); (2) the COVER (domain coverage) — GREEN via route-a (hcover + pnp converge).
-    Realization ⊂ maintenance, DISTINCT from the cover (the `⟨δx,δy⟩` witness: chart present, coverage fine,
-    F over-vanishes). The realization is PAPER-RESOLVED general-L (Aoyagi's own (S,J) two-sided maintenance,
-    Cases 1&2, per her abstract — WITH the expedition's T-F totality drop; worked.tex:663's "deeper-mixed
-    open end" is the EXPEDITION's thread-28 caveat, NOT Aoyagi's): detail-at-scale REPRODUCE-AND-VERIFY,
-    #124 instance-verified GREEN at (3,3,3,2,2)/L=4 (ONE instance — confidence-up, NOT general-proof). The
-    general-L Lean reproduction is the build labour (paper-resolved ≠ built).
-  - DE-RISKS: (a) [PIVOTAL, LIVE] the corank-2 TWO-SIDED END-TO-END first-brick gate (`hideal_fwd`+
-    `hideal_bwd` dom-wide + realization at (3,3,4) + full-fan cover atom, green-BOTH → START the full
-    `buildTree` build); (b) [DISCHARGED] the deep-mixed realization monument-risk — paper-first
-    (worked.tex:663 = expedition caveat, not Aoyagi's) + #124 instance-GREEN; the general-L reproduction
-    folds into the build labour. RED-flip on the corank-2 gate (a), or a general-L reproduction stall in the
-    build, → OBJECTS-ONLY close. Residual to `exists_coreResolution:311` = the two-sided `hideal`
-    reproduction (L-A/L-B/L-C over `buildTree`, incl. the reverse/realization) + full-fan cover. NOT
-    OPTIONAL; paper-resolved ≠ built.
+  STATUS (2026-07-25, ROUTE ADOPTED — the ONE-OBJECT re-route, cite-free BUILD, operator-GO + elder-gated):
+  - ROUTE-P RETIRED — the TWO-OBJECT architecture (banked `buildTree`/ledger + post-hoc geometric charts
+    bridged by symmetry-transport) WALLED at a decorrelated de-risk gate (`GateRouteB222.lean`, clean-three,
+    branch `expedition/aoyagi-engine-gate-routeB`; 4 concordant confirmations — transport-group ⊥ cover-set,
+    AND the chart↔leaf bridge UNBUILT + UNSTATABLE with banked assets). Mechanism + WHY in compass F9.
+    SUPERSEDED ≠ REFUTED: the SPINE math (L-A/L-B/L-C Schur-clearing, b-chain, two-sided `hideal`) SURVIVES,
+    consumed UNCHANGED.
+  - COMMITTED = the ONE-OBJECT recursion (`reroute-plan.md`): a single `StageState` carries geometry AND
+    ledger (`StepData`, via the SAME `stepUpdate` driving `buildTree`) in LOCKSTEP. Both walls dissolve
+    STRUCTURALLY (the artifact was the two-object SPLIT, not a patch): siblings BORN pivot-generically from
+    ONE constructor (`blockBlowupMap` pivot-parameterized + `maintenance_step_two_sided` pivot-generic, both
+    verified), never transported (→ O1 gone); each leaf's ledger IS a `buildTree` leaf ledger by the shared
+    transition, so `AtlasRealizesExponents`' value-only match is DEFINITIONAL via a bounded lockstep lemma
+    (→ O2, the "unbuildable bridge", never arises). Aoyagi's own construction ORDER (charts+exponents
+    together, worked.tex:609–625).
+  - RESIDUAL to `exists_coreResolution:311` = the one-object recursion built end-to-end: `StageState` + the
+    pivot-generic step constructor + the geometry-valued WF fold (over `conRel_wf`, the 9×-proven idiom) +
+    the per-stage cover. Rung-gated **R0–R6** (`reroute-plan.md §3`). NOT OPTIONAL; SPINE verified
+    sound+general, but render-bounded ≠ built.
+  - RESIDUAL RISK, NAMED: **R3 (the geometry-valued WF fold) is THE risk** — the 9×-proven WF idiom is
+    COMBINATORIAL; threading analytic charts + both `RegionRepresents` + cover-inflation through it is
+    unproven + dependent-type-heavy (front-loaded de-risk fired). "definitional via a bounded lemma" ≠
+    proven; R2 general-d cover box-inflation is rendered, not built.
+  - STOP-FALLBACK (standing, at EVERY rung boundary): a wall on any rung → OBJECTS-ONLY close, citing
+    `cited_aoyagi_lower_ax` (Watanabe upper + Aoyagi exact — PERMITTED; charter-faithful #94, §0: the
+    objects A–E ARE the objective) — a charter landing, not a defeat; ADOPTING it is operator-gated.
+    GUARDRAIL-0 (this week's lesson): NO geometry outside the step constructor.
 - **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: LANDED sorry-free (wave 1) —
   the S2 boxed rule is a THEOREM under Aoyagi's own divisibility chain (`DivChain` guard excludes
   the coupled counterexample; `Measurable unit` delta), `Core.Aoyagi.MonomialRLCT`. The coupled
@@ -113,6 +112,10 @@ category before reporting progress; the elder gates every route and every progre
 > support-tracking, `couplingClear`, the WALL/KILL/#95/#98/#69) is RETIRED — the drift, not the object.
 > SUPERSEDED ≠ REFUTED: those invariants were true where they held; the ENCODING drifted. Under option
 > (b) the fold's `foldResid_case11` re-shape (#69) is MOOT — the fold is retired, not repaired.
+> **ALSO RETIRED (2026-07-25): the two-object post-hoc-chart + symmetry-transport architecture (route-P),**
+> WALLED at `GateRouteB222` (compass F9; transport-group ⊥ cover-set + unbuildable chart↔leaf bridge).
+> GUARDRAIL-0: NO geometry is constructed outside the one-object step constructor — no composite-then-fan,
+> no transported siblings. Re-entry at design time is the drift; guardrail-0 refuses it.
 - **The recurring category error (KEPT + VINDICATED — the PROOF the ideal route is forced):** no
   det-1 / a.e.-injective chart diagonalises the loss on an open set (each `(∏C)ᵢⱼ` is a nonzero poly,
   ≢0 on a dense open; exact diagonalisation forces ≡0, a non-open det-0 projection). The value LOWER
