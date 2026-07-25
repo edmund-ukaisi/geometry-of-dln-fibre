@@ -24397,3 +24397,18 @@ the repoint; fixes + the 2 dab3cb308 bridge-lemmas re-checked next.)
 (routed to reroute-R2build, GO given) → new SHA → reviewer delta re-check at that SHA → controller merges to
 the reroute trunk. The disposition working: green build + my form-re-verify are necessary, the decorrelated
 review is what caught the conceptual framing slop.
+
+## 2026-07-25 (tick, cont.) — R2 delta re-review @dab3cb308: SURVIVED, Lean merge-ready; docstring/wiring fixes → merge
+
+r2build-review delta re-reviewed the refined HEAD dab3cb308 (11 roots): both bridge lemmas SOUND + axiom-clean
+(force-elab, independent #print axioms = clean-three). VERDICT SURVIVED, Lean MERGE-READY. Remaining = docstring
++ wiring (non-semantic): (#1) hnull = elementary nullity (codim≥1/≥2), NOT the #172 RLCT-ratio recursion —
+the rlct-vs-codim trap (controller-owned, ledger); (Q5, sharpened) the "mismatched → fails hchart" chain is
+PROSE not Lean (hchart is a set-cover identity charts satisfy) → reword to "fails the R>0 sandwich, an R3
+obligation", drop the hchart link, keep hchart (set-cover) distinct from the per-chart sandwich obligation;
+(#2) scope caveat (measure-bookkeeping, not the RLCT bound); (#3) trim the "R a unit near origin" overclaim;
+(#5) module ORPHANED → wire into DLNFibre.lean aggregator + AxCheck roots. Q4: hentry is the right minimal
+zero-set hypothesis (records only vanishing; the matched-pairing decomposition stays prose = R3). Reviewer
+RELEASED (no 3rd pass; fixes non-semantic — I verify the full-aggregator build + AxCheck roots myself at merge,
+the calibrate-the-sensor duty). Routed the Q5 reword + the fix list to reroute-R2build. MERGE fires when the
+seat pushes the fixed SHA and my aggregator/AxCheck verify passes. Reviewer re-engaged for the R3 fold.
