@@ -24,15 +24,21 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   Rungs 5a(realization)/5b(L6 hjac)/5c(L7 hcover)/5d(assembly) UN-STARTED = the full-(3,3,4)-Resolution gate
   bar (#130, blocked-by #132). HCOVER VERDICT = DETAIL-AT-SCALE (GO), 4-CHANNEL confirmed (pnp exact-algebra
   + pnp Codex + controller calibration + gate2 probes) — the highest-risk rung RETIRED (recoord N²=0 →
-  degree-exactly-2, LeafCoverTiling reused verbatim). THREE LANES NOW RUNNING (maximal push toward the full
-  (3,3,4) Resolution): (5c) hcover-atom formaliser = the corank-2 faithful hcover atom (pnp template,
-  faithfulShear_covers + covers_coTree, own lane branch); (5b) routeP-p1 = the L6 gWrap Jacobian fields
-  (hjac unit≡1 via jacDet_blockBlowupMap O9 + shear |det|=1; STOP+escalate on a faithful |det| subtlety);
-  (provenance) pnp-hcover = the buildTree route-a-vs-b + #86(B) COVER-preservation check (gate2's sharpening:
-  buildTree col-pinned via canonCenterOf → route-b likely; the K-symmetry transport must carry the COVER not
-  just the ideal — the one thing that could still bite; reconcile with #119/#120). 5a (realization) follows
-  5b's jac; 5d (assembly, incl. eWrap MeasurePreserving + eWrap→canonFlatten conjResolution transport)
-  follows. gate2 rests (next: fidelity-review the 5c atom + the provenance verdict). HOLDING for the 3 lanes.
+  degree-exactly-2, LeafCoverTiling reused verbatim). LANE STATUS (2026-07-25):
+  • 5c ATOM LANDED @ 649fc7924 (branch expedition/aoyagi-engine-hcover-atom, Corank2FaithfulHCover.lean:
+    faithfulShear_covers + covers_faithfulTree; #135/#136/#137 done) — PENDING gate2's no-proxy fidelity lens
+    + controller #print-axioms re-derive AT INTEGRATION (not yet wired; standalone atom).
+  • PROVENANCE = CONDITIONAL GO (banked #134): route (b) settled ((a) refuted, buildTree col-pinned via
+    IsRealBranch); the #86(B) K-symmetry transport CARRIES THE COVER — verified exact + Codex (generators =
+    coord-perm ISOMETRIES → carry containment not just the ideal; value preserved). Residual = a full-history
+    STABILIZER INDUCTION, base+first-step verified, detail-at-scale NOT monument. 5-lemma cover-transport
+    template + 2 named obligations (#86(B) emission; hdom_ball :152 → dom ⊇ f^[depth](1)) recorded on #130.
+    gate2's decorrelated read QUEUED (no rush). Depth-3 de-risk noted for the general-d gate.
+  • THE OPEN LANE = the CHART-ARCHITECTURE FORK (#138, pnp-chartarch): folded gFaithful |det|=E⁷·α³·c11⁸
+    (routeP-p1's 5b STOP) is (3,3,4)-specific → decompose (B) for general-d? crux-transfer to settle. GATES
+    5b (routeP-p1 paused, holds the folded structure + handoff). Controller read: (B).
+  5a (realization) follows 5b's jac; 5d (assembly, incl. eWrap MeasurePreserving + eWrap→canonFlatten
+  transport) follows. HOLDING for: pnp-chartarch fork verdict + gate2's two reads (5c lens, provenance).
 - **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
   two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
   `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
