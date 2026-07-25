@@ -21863,3 +21863,52 @@ operator** (my stated boundary on the grant), verdict-then-recommend. Elder conv
 
 **Status.** `pnp-coupled` adjudicating (background). Operator flagged with the honest recalibration. Holding
 for the verdict before recommending the route.
+
+---
+
+## 2026-07-25 (later) — ADJUDICATION LANDED: NO MONUMENT, cite-free BUILDABLE; the crux is the COVER (already GREEN via hcover route-a)
+
+`pnp-coupled` (decorrelated, own Codex xhigh; `threads/pnp-coupled/adjudication.md`) audited my L-lower-coupled
+render and delivered a clear verdict, controller-re-derived (S1-S4 sound):
+
+**NO GENUINE MONUMENT — the expedition CAN close cite-free.** The obstruction hunt came up empty:
+(1) resolution existence = explicit finite blow-ups of smooth centres, NOT Hironaka; (2) the ideal-algebra
+maintenance ("the wall") = substitution artifact, dissolved (b-chain divisibility, unipotent-polynomial Q;
+gate L-A GREEN confirms) — and my gate's "principal-collapse monument" was MIS-LOCATED (`⟨diag b⟩=⟨b₁⟩` is
+one-line L-C given the chain); (3) Theorem 4 landed for the core. The only monument in the destination is the
+cited `rlct=½codim` — exactly what the build DELETES.
+
+**The residual relocates to the COVER (the correction to my render).** My Finding 1 (reverse/principality
+avoided) is CONFIRMED on the ALGEBRA (S3: per-divisor F-multiplicity `a_E = min_ij ord_E((∏C)_ij∘g)` reads
+off the entries, no both-ways identity, no principality). BUT the lower bound RELOCATES to the geometric
+cover L7 (S1: no original-space monomial shortcut — {F=0} has cancellation points; S2: rlct=min over ALL
+divisors ⟹ the cover is load-bearing). V is lighter than P only on the ALGEBRA, not the cover. The cover is
+the SHARED crux of both routes. S4: the coupling-raise is a THEOREM of the JOIN geometry (blow up {q=u=0},
+discrepancies ADD; the from-below unit≥1 from the KEPT PIVOT ROW), not an elementary inequality.
+
+**RECONCILIATION (controller — the decorrelated convergence): the cover was ALREADY probed GREEN.** The pnp
+(formed independently) flags the cover as "un-probed" with "most likely break = a completeness gap (a
+rank-drop direction the built tree omits)." But the planning-phase `hcover` probe ALREADY probed the coupled
+corank≥2 cover (`next-build-render.md` §9): OBL-1 box-containment FULLY BOUNDED incl. the faithful multi-term
+shear (SEAM-2, 3e5 pts) — = the pnp's own "box-inflation-through-shears bound that moves confidence UP;
+OBL-2 fan-completeness — the col-pinned atlas is FALSE-as-pinned (a rank-drop [col-1] direction escapes = the
+pnp's exact "most likely break"), FIXED by route-(a) (emit the FULL fan, all pivots — sound, zero new math,
+NO tree re-architecture). So the two decorrelated probes CONVERGE: the cover is detail-at-scale + GREEN-on-math
+via route-(a). The pnp's "probe before committing" is SATISFIED by hcover (pending pnp's one-line confirmation
+that its concern = hcover's OBL-2, requested).
+
+**EARNED VERDICT (controller synthesis, two decorrelated probes + my render converge): BUILD, cite-free.**
+Residual = detail-at-scale, no monument: spine L-A/L-B/L-C (general, HIGH; L-A gate-GREEN) + V-upper (one
+minimiser chart, MEDIUM-HIGH, verified (3,3,4)/(4,4,4)) + V-lower algebra (F-mult off entries) + the COVER L7
+(the crux; GREEN-on-math via hcover route-a; detail-at-scale/bounded-reproduce per pnp+Codex). Confidence
+MEDIUM-HIGH. This is the "confirmed build → proceed under the grant" branch I flagged to the operator.
+
+**Action:** convening the ELDER at the route-adoption joint (my internal gate per the autonomy grant) — audit
+the route (BUILD cite-free via V + route-a cover) vs the fallbacks (objects-only close; the complex-lct bet),
+the "no monument" claim for overclaim, and the cover reconciliation. Informing the operator (destination-
+adjacent). Holding for: pnp's reconciliation one-liner + the elder's route-gate → then commit the build (per
+grant). NOT swinging to over-optimism: MEDIUM-HIGH is solid-not-certain; the elder + the reconciliation are
+the damping.
+
+**Status.** Verdict earned (BUILD cite-free). Elder convening (route-gate); pnp reconciliation one-liner
+pending. On both green → commit the build.

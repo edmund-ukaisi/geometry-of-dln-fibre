@@ -16,7 +16,20 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   re-derive every gate (`#print axioms`, fresh build) before believing "done"; name results honestly. STILL
   OPERATOR-GATED (unchanged, a different/release class): PR **merge** + `dev→main` promotion. Elder folds
   this into the charter's gating at the next convening (gate-result joint).
-- **▷ GATE-2 READ YELLOW (2026-07-25) → RECALIBRATION + decorrelated adjudication in flight.** The gate
+- **▶▶ VERDICT EARNED (2026-07-25): NO MONUMENT — cite-free BUILDABLE; the crux is the COVER (already GREEN
+  via hcover route-a).** `pnp-coupled` (decorrelated, own Codex) audited the controller's L-lower-coupled
+  render: obstruction hunt came up EMPTY (resolution=explicit blow-ups not Hironaka; ideal-algebra=dissolved
+  substitution artifact, gate L-A GREEN; "principal-collapse monument" MIS-LOCATED — `⟨diag b⟩=⟨b₁⟩` one-line
+  given the chain). My Finding 1 (reverse/principality avoided) CONFIRMED on the ALGEBRA; the residual
+  RELOCATES to the geometric cover L7 (rlct=min over ALL divisors ⟹ cover load-bearing; no original-space
+  shortcut). CONTROLLER RECONCILIATION: the cover was ALREADY probed GREEN by the planning-phase hcover-probe
+  (§9) — OBL-1 box-containment bounded incl. faithful multi-term (SEAM-2); OBL-2 completeness gap (col-pin,
+  = pnp's "most likely break") FIXED by route-(a) full fan. Two decorrelated probes CONVERGE. EARNED VERDICT:
+  BUILD cite-free (spine general HIGH + V-upper MEDIUM-HIGH + V-lower algebra + cover GREEN-via-route-a),
+  confidence MEDIUM-HIGH. HOLDING for: pnp reconciliation one-liner (its cover concern = hcover OBL-2?) +
+  ELDER route-gate (convening) → then commit the build (per autonomy grant). Not over-optimism: MEDIUM-HIGH,
+  elder+reconciliation = the damping. #122 done.
+- **(superseded) ▷ GATE-2 READ YELLOW (2026-07-25) → RECALIBRATION + decorrelated adjudication.** The gate
   (builder `gate2-hideal`, controller-re-derived): L-A (block-elim atom) is GREEN + cheap at the real ambient
   (zero Mathlib ideal-membership tax — the ideal route DOES dissolve the ENCODING). BUT the `Chart.hideal`
   field is a whole-resolution object: L-A reaches `⟨(∏C)∘g⟩=⟨peeled⟩` (coupled polynomial, NOT monomial);
