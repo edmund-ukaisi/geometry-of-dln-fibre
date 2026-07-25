@@ -22189,3 +22189,22 @@ review positive (faithful gFaithful w/ live shear coords, coupled Δ∘g, faithf
 **Status.** routeP-p1 grinding the crux; gate2 running the coreGen-level sympy bexp check + coordinating.
 Holding for: the sympy bexp verdict (confirm/adjust the crux target) + the crux discharge. phase-1 GREEN =
 coreGen-level hideal → elder general-d gate; wall → objects-only.
+
+**DOUBLE-COUNT RESOLVED (2026-07-25, gate2 sympy + controller re-derived exit 0) — the don't-defer call VINDICATED.**
+`coregen_bexp_check.py` (3 PASS): `coreGen∘(pivot-blowup) = c11·Pmat` (EXACT matrix identity — c11 is the free
+21st param, appears only in product row 0, Pmat normalizes it to 1), so `⟨coreGen∘g⟩ = ⟨c11·E⟩`, NOT `⟨E⟩`.
+So **bexp_coreGen = bexpE + [pivot c11 : 1]** (M'=1, principal ⟨c11·E⟩) — the pivot ADDS a factor. Had we
+accepted "flat(Pmat)-level GREEN" (deferred the wrap), routeP-p1 would have proven `hideal` at the WRONG
+monomial (E) and the coreGen-wrap would have contradicted it — the exact green-at-Pmat-fails-at-coreGen
+(charter §3) the up-front decorrelated check caught cheaply. CORRECTED TARGET: gFaithful += the pivot
+block-center blow-up step (its Pmat-level g assumed c11=1); the coreGen crux target = `⟨c11·E⟩`; the
+flat(Pmat)-level crux (bexpE) STAYS right (the wrap bumps it by the pivot). **rlct UNCHANGED = 4** (c11-divisor
+ratio (8+1)/(2·1)=4.5 > 4, so E stays BINDING; the pivot factor is NON-BINDING — value preserved, only the
+hideal target monomial shifts E→c11·E). GUARD (routeP-p1 pins the exact pivot exponent/center at the blowup
+step; qualitative is robust): the c11-ratio MUST stay ≥ 4 (non-binding); a built c11-ratio < 4 = STOP +
+reconcile (rlct=4 is known). Calibration win: the anti-optimism "don't defer the subtle wrap" + the up-front
+decorrelated sympy = a real subtlety caught before the expensive discover-at-wrap.
+
+**Status.** routeP-p1 on #127 (gFaithful, now += the pivot-blowup step) → #128 (crux, target ⟨c11·E⟩ at
+coreGen / ⟨E⟩ at Pmat-level). gate2 relayed the corrected target + does first-line fidelity on the pivot-blowup
+(c11-ratio ≥ 4). Holding for the crux discharge → phase-1 coreGen-level hideal GREEN → elder general-d gate.
