@@ -8,6 +8,18 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
+- **▶▶▶▶ #112 FIRED (route P, 2026-07-25) — the cite-free build commencing.** All de-risking EXHAUSTED +
+  GREEN: reverse two-sided across L-A/L-B/L-C (Lean, controller-re-derived clean-three; the 7th-over-claim
+  b-chain-reverse FALSIFIED) + faithful composition MATH + #124 tripwire PASSES + cover (route-a) +
+  realization (#124 = Aoyagi's (S,J) induction, paper-anchored). Builder's decisive finding: NO bounded
+  proxy-free Lean brick short of #112 (faithful Lean composite = the large 21-var factorisation = #112's
+  first chart, or the sorried monument route P retires; only-small = the forbidden proxy) → the
+  composition-in-Lean IS the build. PHASE-1 (gate2-hideal, branch `expedition/aoyagi-engine-routeP`,
+  commit-worthy): the SELF-CONTAINED faithful (3,3,4) composite g + two-sided hideal via the proven
+  mechanisms; guards = faithful multi-term + #124 tripwire + STOP-on-wall→objects-only. Phase-1 GREEN →
+  controller decides general-d continuation (buildTree recursion + charts + full-fan cover); WALL →
+  objects-only close (bank A/B-spine/C/D + V-upper, cite Aoyagi lower assembly). Build EXECUTION =
+  controller-judgment (grant); PR merge + dev→main = OPERATOR-gated. gate prototypes banked -gate2 @ origin.
 - **▶▶▶ ROUTE P ADOPTED (elder route-gate discharged, 2026-07-25); de-risk (b) #124 GREEN; holding for de-risk
   (a) #123 = the auto-fire trigger.** Charter/compass @ 75af1cb97 (two-independent-residuals map: cover[GREEN
   route-a] + realization[= AtlasRealizesExponents = Aoyagi's (S,J) lower-bound induction, detail-at-scale, the

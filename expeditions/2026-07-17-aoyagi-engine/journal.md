@@ -22066,6 +22066,37 @@ the (3,3,4) FAITHFUL multi-term composite g (composition measurement, Codex's bi
 risk with all mechanisms proven). gate2-hideal building it; tripwire = #124 pivot-less-deepest-intersection.
 GREEN → auto-fire #112 general-d; WALL → objects-only. Holding for the composite-g result.
 
+---
+
+## 2026-07-25 (later) — #112 FIRED (route P). De-risking exhausted + GREEN; the composition-in-Lean IS the build.
+
+The forward-composite measurement closed the gate. Builder: the FAITHFUL multi-term (3,3,4) composite MATH is
+GREEN (both directions, multi-term not proxy) + the #124 pivot-less-deepest-intersection tripwire PASSES
+(pivot survives, independent of α). And the DECISIVE structural finding: **there is NO bounded proxy-free Lean
+brick short of #112** — the faithful Lean composite is either the large self-contained 21-var factorisation
+(= #112's first chart) or rests on the sorried geometric-fold monument infra (42 sorries) that route P
+retires; the only small Lean object is the single-term proxy the fidelity guard forbids. So the
+belt-and-braces is EXHAUSTED, and every measurement obtainable short of the build is GREEN: reverse across
+L-A/L-B/L-C (Lean, re-derived, 7th-over-claim falsified) + faithful composition MATH + tripwire + cover
+(route-a) + realization (#124, = Aoyagi's (S,J) induction). The composition-in-Lean IS the build.
+
+**DECISION (controller, under the elder standing clearance + the operator grant): FIRE #112 (route P).**
+This is NOT "auto-fire on mechanisms-green" — the faithful COMPOSITION is verified (math + tripwire, one
+instance, multi-term); only the LEAN composition remains, and it = #112 phase-1 (the watched first chart),
+so composition is done EARLY-not-late (charter §3). PHASE-1 = the SELF-CONTAINED faithful (3,3,4) t=(1,0)
+composite chart g (block-elim shear ∘ radial ∘ join, multi-term, 21 vars, through coreGen) + two-sided
+`hideal` end-to-end, via the PROVEN mechanisms (Corank2HidealProto/MaintenanceProto/TerminalProto), NOT the
+sorried monument infra. gate2-hideal, branch `expedition/aoyagi-engine-routeP`, commit-worthy real build.
+Guards: faithful multi-term (no proxy) + #124 tripwire + sorry-free/#print-axioms-clean-three; STOP+report on
+a genuine Mathlib wall (the 21-var factorisation / coreGen flatten / radial self-contained) → objects-only
+(NOT push-through, NOT a proxy). Codex's biggest Lean risk, but math-green + all-mechanisms-proven =
+detail-at-scale; risk bounded (caught at phase-1 if it walls).
+
+**Status.** #112 FIRED, phase-1 = the (3,3,4) composite g (gate2-hideal, -routeP). #123 gate discharged
+(achievable content GREEN, all RED conditions falsified). Elder + operator informed. Merge/dev→main stay
+operator-gated. Holding for phase-1: GREEN → general-d continuation; WALL → objects-only. This is the
+cite-free build commencing.
+
 **PAPER-FIRST anchor + coherence tightening (pnp, 2026-07-25) — fold into the elder's #123 charter finalize.**
 Paper-first (charter §3 DEFECT gate): AOYAGI RESOLVES the realization (her two-sided (S,J) maintenance
 Cases 1&2 → terminal normal crossing, general-L per her abstract); the worked.tex:663 "deeper mixed open
