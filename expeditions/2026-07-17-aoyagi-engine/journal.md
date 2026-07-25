@@ -22524,3 +22524,31 @@ STOP+escalate if a faithful-multi-term |det| subtlety like the hcover's single-t
 buildTree-provenance check (route-b + COVER-preservation, gate2's sharpening) STAGED: reconcile with #119
 (fan-completeness adjudication) first, then pnp-hcover for the depth-2 3×3 realization + cover-preservation
 check — a general-d-gate de-risk, before the general-d L7 cover commits. 5a (realization) follows 5b.
+
+**PROVENANCE UPGRADED — #119 OPENED it, not closed; two named detail-at-scale obligations (2026-07-25).**
+pnp-hcover's #119 reconcile (from the docs + Lean code, decision-relevant): #119 (pnp-l7coupled corank≥2)
+did NOT close the buildTree provenance — it OPENED it. #119's verdict: "buildable for the STATED full-fan
+atlas, but the CURRENTLY col-pinned atlas has a GENUINE escape unless the outer gauge charts are added."
+Verified live: IsRealBranch (MonumentAtlas.lean:1068-9) PINS the case12/case2 pivot column to `cleared` →
+emits a ROW-FAN ONLY (not the full row×col fan); the code comment ADMITS it ("column-orbit = the #86(B)
+per-step-σ transport image, adjudicated at L7/L5 SPECIFY, NOT here"). #119's exhibited escape: d=(4,4,4),
+root case-2, pivot q=(layer0,row0,col1) — col-0-only pivots leave the |x_q|>(M+1)max|x_p| cone uncovered
+("an inner shear cannot repair an omitted OUTER blow-up pivot"). So the CURRENT emission's hcover is
+FALSE-as-emitted (the col-pin escape is real). gate2's route-(b)-likely lean is CONFIRMED: route (a)
+(buildTree enumerates all pivots) is FALSE; route (b) (#86(B) col-orbit σ-transport) is REQUIRED + UNBUILT.
+
+KEY: this stays DETAIL-AT-SCALE, NOT a monument — the fix is a NAMED, KNOWN build ("a MECHANICAL L5-driver
+change, not new math", per the L7 fan-design-certificate; atlas.n = Σ_paths ∏_steps |canonCenterOf s|). So
+the residual upgrades from "verify it's fine" to "BUILD these two named pieces" — still GO, but real work:
+  OBLIGATION 1 (general-d cover): the #86(B) full-fan emission — the column-orbit σ-transport OR full
+    row×col Finset.sigma enumeration (makes the atlas full-fan; without it the cover inherits the col-pin
+    escape → hcover FALSE).
+  OBLIGATION 2 (general-d cover): strengthen FoldProduced.hdom_ball (MonumentAtlas.lean:152) from
+    "∃R>0, closedBall 0 R ⊆ dom" to dom ⊇ f^[depth](1)-ball (finite but large, e.g. 21 at corank-2 depth-2).
+Both recorded on #130's 5c/5d legs. NOT blocking the corank-2 atom (5c abstract cover). pnp proceeding with
+the depth-2 check to CONFIRM route-b-required + produce the #86(B) cover-transport template + test whether
+the (3,3,4)/depth-2 case has the escape. gate2 decorrelated-reviews the verdict. The general-d gate must
+scope these two obligations (elder). RECONCILE-NOTE: IsRealBranch/FoldProduced live in MonumentAtlas
+(navigator flagged off-cone/prune) — the route-P cover must either build its own full-fan or salvage the
+buildTree backbone WITH #86(B); the general-d gate settles which (does route P reuse FoldProduced's tree, or
+build fresh?).
