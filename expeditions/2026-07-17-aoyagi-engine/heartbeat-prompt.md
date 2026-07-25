@@ -8,6 +8,17 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
+- **▶▶▶▶▶▶ RECALIBRATION (navigator, 2026-07-25) — the residual is 9 RUNGS not 5; re-aligned to the
+  charter's gate bar.** Verified vs render SEAM-CHECK 1269-1282 (my own curation): closing :311 needs a
+  REAL Resolution general-d — L6 (hjac, rendered exact) + L7 (hcover, coupled fan) are FIRST-CLASS, NOT
+  "wiring". THE HIGHEST UN-PROBED RISK = the coupled hcover (route-a full fan, faithful multi-term;
+  python-probed render §9 but LEAN-UNBUILT) → FRONT-LOADED as a go/no-go atom lane NOW (encoding-
+  independent, hunt-precedes-trust). GENERAL-D GATE BAR = charter DE-RISK(a): a FULL (3,3,4) Resolution +
+  realization + full-fan cover atom green-BOTH (jac/hjac/inj/cover/realization all UN-STARTED at (3,3,4))
+  — NOT the flat hideal; my "hold gate till coreGen-wrap" under-counted, re-aligning UP. VERIFIED-GOOD:
+  :308 seam route-AGNOSTIC (route P plugs same seam); backbone+value-engine+ConjResolution survive; :311
+  = the ONLY residual sorry on the cone; fold cluster (Monument/Wire/GeoAtlasTransfer) off-cone → prune at
+  close. The DE-RISK (crux+flat hideal, doubly-confirmed) = 1 rung of 9. Map: gate-gend-navigator-map.md.
 - **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
   two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
   `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
