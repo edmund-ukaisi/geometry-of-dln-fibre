@@ -21825,3 +21825,41 @@ general-`d` fold); the elder convenes at the gate result (route-adoption joint).
 
 **Status.** Gate-2 builder running (background). Holding for its report + tax verdict; re-derive the gate
 (`#print axioms` on a fresh build) before believing "done."
+
+---
+
+## 2026-07-25 — GATE-2 READ YELLOW → recalibration + decorrelated adjudication (destination-adjacent, flagged)
+
+The gate-2 builder returned **YELLOW** — a scope finding, not a Mathlib wall. Controller re-derived it
+against the render's MID-RENDER FINDING + the `:311` wiring (`RecursionAdapter`), and it holds and deepens:
+
+**Data (verified, `#print axioms` clean-three):** L-A (block-elim atom) is GREEN + cheap at the real ambient
+`(Fin 21→ℝ)→ℝ` for (3,3,4) — both ideal directions, continuous polynomial cofactors, ZERO `Ideal.mem` tax.
+**The ideal route genuinely dissolves the ENCODING** (the re-architect's bet pays off on L-A). BUT L-A alone
+reaches `⟨(∏C)∘g⟩=⟨peeled⟩` (coupled polynomial residual `Δ`, NOT monomial); `⟨peeled⟩=⟨monomialFam bexp⟩`
+is FALSE at the peeled stage. The `Chart.hideal` field is the TERMINAL monomialisation (a whole-resolution
+object) — reaching it needs the blow-up/radial resolution of the coupled residual (peeled→diag b), which is
+the coupled corank≥2 hard part, RELOCATED after block-elim, and which connects to the terminal single-chain
+principality the render flagged OPEN-IN-SOURCE (worked.tex:651-664, instance-verified only).
+
+**Controller recalibration (owned):** the planning-phase §10 verdict "no identified open mathematics /
+`hideal` render-bounded" was OVER-CLAIMED — the 6th scope-optimism catch this expedition. It weighted "L-A
+green + rev-render verified the SPINE sound+general" against the render's OWN flag that the coupled TERMINAL
+monomialisation is open-in-source. "Spine sound+general" (statements true) ≠ "terminal PROOF bounded"; the
+render explicitly separated "L-A complete" from "L-B/L-C statement+strategy, coupled terminal open." The
+decorrelated checks that DID run (rev-render, hcover-probe) covered the encoding-bypass + the cover, NOT the
+open-vs-buildable of the coupled terminal — the gap that now bites. **Both routes hit it:** P (atlas) needs
+all charts' monomialisation (atlas-wide open); V (value) narrows it to V-upper (minimizer branch value) +
+V-lower (coupled value-floor inequality — render §198/§237 flags the coupled case as where the hard part
+re-enters, "does NOT close by elementary bounds"). The ideal route never claimed to dissolve Aoyagi's coupled
+MATHEMATICS (render §88-95: "open whichever encoding we use") — only the encoding scaffolding.
+
+**Action:** fired a decorrelated obstruction seat (`pnp-coupled`, own Codex; task #122) on THE crux — is the
+narrowed coupled hard part (V-upper + V-lower) DETAIL-AT-SCALE (build, general-`d`) or a MONUMENT (cite)?
+Per-route verdict → decides: proceed on a bounded V-plan (operator autonomy grant) vs fall back (cite the
+coupled resolution / objects-only close). This is DESTINATION-ADJACENT + borderline → **flagged to the
+operator** (my stated boundary on the grant), verdict-then-recommend. Elder convenes at the pnp verdict
+(route-decision joint).
+
+**Status.** `pnp-coupled` adjudicating (background). Operator flagged with the honest recalibration. Holding
+for the verdict before recommending the route.

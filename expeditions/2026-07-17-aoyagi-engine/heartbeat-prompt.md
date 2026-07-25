@@ -16,6 +16,21 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   re-derive every gate (`#print axioms`, fresh build) before believing "done"; name results honestly. STILL
   OPERATOR-GATED (unchanged, a different/release class): PR **merge** + `dev→main` promotion. Elder folds
   this into the charter's gating at the next convening (gate-result joint).
+- **▷ GATE-2 READ YELLOW (2026-07-25) → RECALIBRATION + decorrelated adjudication in flight.** The gate
+  (builder `gate2-hideal`, controller-re-derived): L-A (block-elim atom) is GREEN + cheap at the real ambient
+  (zero Mathlib ideal-membership tax — the ideal route DOES dissolve the ENCODING). BUT the `Chart.hideal`
+  field is a whole-resolution object: L-A reaches `⟨(∏C)∘g⟩=⟨peeled⟩` (coupled polynomial, NOT monomial);
+  monomialising the coupled residual (peeled→diag b via blow-up/radial) is the coupled corank≥2 hard part,
+  RELOCATED after block-elim, connecting to the terminal principality the render flagged OPEN-IN-SOURCE
+  (worked.tex:651-664). **CONTROLLER RECALIBRATION (own it): the planning-phase §10 "no identified open
+  mathematics" was OVER-CLAIMED (6th scope-optimism catch) — it weighted "L-A green + spine sound" against
+  the render's OWN open-in-source flag. Both routes P (atlas hideal) and V (value bounds) hit the coupled
+  monomialisation; the ideal route never claimed to dissolve Aoyagi's coupled MATH (render §88-95), only the
+  encoding.** The crux that decides everything: is the narrowed coupled hard part (V-upper minimizer value +
+  V-lower coupled floor) DETAIL-AT-SCALE (build) or a MONUMENT (cite)? → fired decorrelated `pnp-coupled`
+  (obstruction seat, own Codex); task #122; deliverable `threads/pnp-coupled/adjudication.md`. This is
+  destination-adjacent → FLAGGED to operator (not silently proceeding), verdict-then-recommend. Elder convenes
+  at the pnp verdict (route-decision joint). #121 done (YELLOW).
 - **▶ GATE-2 BUILD LAUNCHED (2026-07-24, operator explicit go).** Planning phase COMPLETE (next-build-render
   §1-§10, triply-checked: survey-inv + rev-render ×2 + hcover-probe). Settled scope = **Encoding-I** (the
   ideal-route `hideal` via L-A/L-B Schur-clearing), NO open math obstruction; residual = a bounded-but-large
