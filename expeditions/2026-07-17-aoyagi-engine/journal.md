@@ -22742,3 +22742,27 @@ unit-triangular argument; the general blockShear lemma covers it). Relaying both
 STATE: hcover FULLY de-risked (depth-3 GO confirmed by pnp; gate2's depth-3 read queued); fork 3-channel
 CONFIRM. decomp-5b building the decomposed 5b (routeP-p1 supervising); 5a follows; then the full (3,3,4)
 Resolution → general-d gate. pnp-hcover + pnp-chartarch rest (arcs closed, artifacts banked for re-convene).
+
+**HCOVER ARC CLOSED — depth-3 CONFIRMED on gate2's channel; the induction is STRUCTURALLY well-shaped
+(2026-07-25).** gate2's decorrelated depth-3 read = CONFIRM GO, no obstruction. Its sharpest closing point:
+both stabilizer-induction obligations reduce to two ELEMENTARY STRUCTURAL facts (not instance-luck) —
+(a) composition of coord-perms is a coord-perm (hyp i; MORE robust than the write-up — commutativity of
+G₁/G₂ is a harmless red herring, the composite is a coord-perm regardless); (b) S_a×S_b is transitive on
+its position grid [a]×[b] AND the stabilizer of fixed pivots is AGAIN such a product (S_{rows∖i}×S_{cols∖j}),
+the rollover's two index-constraints (d_{s-1} row, d_s col) on DISTINCT indices ⇒ no coupling (hyp ii,
+corrected). Because both are STRUCTURAL, the base + first-rollover verification is REPRESENTATIVE — there is
+NO depth at which the mechanics change; (3,3,3,2,2) exercises the only new phenomenon (the compounding
+rollover) + reduces to the two robust facts. gate2 independently quantified the ADDENDUM-1 hyp (ii)
+over-claim (S₂×S₃ order 12, not S₆ order 720 — a 60× over-claim, genuinely false + arbitrary entry-perm
+isn't even a K-symmetry) → the correction (S_row×S_col position-transitivity + genuine K-symmetries only) is
+honest + right + doesn't move the GO. Owed lemma (residual-chart equivariance = naturality of
+blockBlowupMap/blockShear under a block coord-perm) = detail-at-scale, on #130.
+
+NET: the HCOVER — the render's NAMED HIGHEST RISK — is now FULLY DE-RISKED + CLOSED ON EVERY CHANNEL:
+adjudication (4-ch GO) + built 5c atom (2-ch PASS, fidelity/model) + provenance (route-b, transport carries
+cover, isometry — 3-ch) + the stabilizer induction (base + first-rollover, both STRUCTURALLY robust, hyp
+pinned at true strength — pnp + Codex + gate2). No monument, exact template + hypotheses pinned, correctly
+scoped as CONDITIONAL GO (the general induction = the #130 detail-at-scale build). The hcover ARC IS CLOSED;
+I stop reviewing it. ACTIVE LANE = decomp-5b (the decomposed 5b build, routeP-p1 supervising, conventions +
+lighter-wrinkle relayed) → 5a → the full (3,3,4) Resolution → the general-d gate → the general-d build.
+gate2 rests (next convene = decomp-5b's 5b fidelity review). pnp-hcover + pnp-chartarch rest (arcs closed).
