@@ -73,21 +73,29 @@ objects-only (C) is OFF; destination = (A) fully-cite-free reachable / (B) P-wit
 - **OPEN CAVEAT (B1, not buried):** #145's ~2% = (B2) the tube [RESOLVED here] + (B1) the sector-count
   ESCAPE CONE {max_W > C·max_V} [SEPARATE, still priced by sector-count, NOT closed]. Routed to the elder.
 
-**ELDER RANK (standing): P-build > objects-only > V.** V DEMOTED (shares the cover; edge = avoid a cheap
-verified local principality) [#110/#111 parked]. Honest destination (wait-for-go): (A) fully-cite-free
-(the survivor-entry-fan cover + {R=0}-recursion + local principality — the R>0 correction may drop this to
-ONE arbitrary-depth inference, elder to confirm) / (B) P-with-the-small-local-principality-cite / (C) objects-
-only #94 — now OFF unless B1 walls.
+**ELDER TUBE-COVER ADJUDICATION [DONE]: the R>0 correction is SOUND — P-vs-V COLLAPSES, (A) LEADS.** loss =
+(wy)²·R, R sum-of-squares with R(0)=1; the lower bound needs loss ≍ (wy)² where R>0 (pointwise sandwich, MORE
+elementary than the two-sided principality) ⟹ **the lower bound never needed P's two-sided principality**; it
+needs V's from-below content made precise. C OFF. **(A) fully-cite-free now LEADS** — reduced to ~ONE
+arbitrary-depth inference: **the recursion on {R=0} (codim 4) terminating with no new divisor ratio <
+½minAdm** (the two-sided-principality inference is DROPPED; the tube-cover is a verified-exact fan). Ranking:
+(A) > (B) P-with-small-cite (cite the recursion-ratio only if its general-L proof is a mountain) > (C) OFF.
+STERN FLAGS: (1) the monument-residual MOVED to the recursion-on-{R=0} — must be PERFORMED general-L, not
+assumed; (2) survivor-entry fan is a HARD spec (radial-pivot-only covers 0%); (3) R(0)=1 general-d = the
+kept-rank-survivor structure (r≥1), a named load-bearing inference.
 
-**IN FLIGHT (decision inputs):**
-1. **Elder re-convened** → elder-reroute: updated A-vs-B ranking; does the R>0 correction drop (A) to ONE
-   inference; is B1 (escape cone) a real residual or a Cartesian-fan artifact (does it need its own probe);
-   is the survivor-entry-fan R2 green-to-build.
-2. **tubecover-probe** held available for a possible B1 follow-up probe (instance+context loaded), else rests.
-3. **R2 [#165]:** re-scoped = survivor-entry fan (each residual-ideal generator) + {R=0}-recursion. HOLD the
-   build pending the elder's B1 read. Ideal side clear.
-4. **Operator surfaced** — C off, A/B reachable, the B1 caveat; non-blocking; the one steer that flips the
-   default = "strictly-cite-free-or-nothing".
+**IN FLIGHT (the LAST two de-risks — then BUILD; no more probes after these):**
+1. **B1 escape-cone probe** → tubecover-probe [#170]: escape cone {max_W>C·max_V} ∩ {loss=0}? loss-regular ⟹
+   B1 dissolves (artifact); meets fibre ⟹ real residual. Elder leans artifact (same class as #145 col-orbit).
+2. **Recursion-on-{R=0} minAdm-ratio de-risk** → rzero-probe [#172]: PERFORM the check (not assume) — does
+   the {R=0} recursion terminate with all deeper divisor ratios ≥ ½minAdm? WITNESS ⟹ (A) reachable, rlct=½C
+   exactly. OBSTRUCTION (a deeper ratio < ½minAdm) ⟹ rlct < ½C = KILL-condition for the payoff value. The
+   one remaining inference + the highest remaining risk.
+3. **R2 [#165] HELD** — survivor-entry-fan tube-cover is GREEN-to-build (elder), but launch the R2 formaliser
+   only after B1 + the recursion return (complete, verified spec). Full-cover completeness gates on B1.
+4. **Elder** revising F10 (commit when it sends); re-convenes at the B1 + recursion results + operator call.
+5. **Operator surfaced** — (A) leads, C off, P-vs-V collapsed, one inference remains; non-blocking; the one
+   steer that flips the default = "strictly-cite-free-or-nothing".
 
 **HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
 

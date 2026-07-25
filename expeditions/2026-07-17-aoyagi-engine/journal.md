@@ -24163,3 +24163,37 @@ fibre ⟹ B1 REAL residual (pivot-adapted normalizations; detail-at-scale-vs-mon
 decorrelated Codex. Persist → `threads/reroute-R2-tubecover/b1-escape-cone-probe.md`. Composes with the
 elder's read. IN FLIGHT: elder (A-vs-B ranking + does R>0 drop (A) to ONE inference + B1 interpretation) +
 the B1 probe. This is the sole remaining decision input before the destination is fully priced.
+
+---
+
+## 2026-07-25 (tick, cont.) — elder TUBE-COVER adjudication: R>0 correction SOUND, P-vs-V COLLAPSES, (A) LEADS at ONE inference
+
+**Elder-reroute (scrutinized the correction as the highest-suspicion class — a "simplification" of a named
+hard part):**
+- **The R>0 correction is SOUND.** loss = (wy)²·R, R sum-of-squares with R(0)=1. The lower bound rlct≥½Mval
+  needs loss ≍ (wy)² where R>0 — a POINTWISE SANDWICH from R(0)=1 (R continuous ⟹ R≥c near origin), MORE
+  elementary than the two-sided ideal principality. So **the lower bound does NOT need the two-sided
+  principality (P's over-strong technique)** — it needs the from-below content (loss ⪰ (wy)² via R>0),
+  exactly V's one-sided insight made precise. **P-vs-V has largely COLLAPSED into ONE corrected lower-bound
+  route (the R>0 / from-below route).** Not the mirage (mirage=forward-only, no reverse; this=genuine
+  from-below via the kept-"1" survivor). C (objects-only) OFF.
+- **Q1 — (A) reduces to essentially ONE arbitrary-depth inference:** the two-sided-principality inference is
+  DROPPED (not needed); the tube-cover becomes a VERIFIED-EXACT fan mechanism (survivor-entry fan). The ONE
+  core inference remaining: **the recursion on {R=0} (codim 4) terminating with no new divisor ratio <
+  ½·minAdm** (minAdm-minimality; instance-verified thread-28 rlct=2=½minAdm; must be PERFORMED general-L).
+  **Updated ranking: (A) fully-cite-free now LEADS** > (B) P-with-small-cite (cite the recursion-ratio only
+  if its general-L proof is a mountain) > (C) OFF.
+- **Q2 — B1 (escape cone): plausibly a Cartesian-fan artifact but NOT closed → own probe** (already fired
+  #170; elder concurs needed, leans artifact — same class as the #145 col-orbit ruling, fix = fan the
+  survivor ENTRY / route (a)).
+- **Q3 — survivor-entry-fan tube-cover GREEN-to-build** detail-at-scale (B2, exact 100% at boxR≥1). B1 gates
+  FULL-cover completeness, NOT the tube-build. Do not let "the tube is covered" travel as "the cover is done".
+- **THREE STERN FLAGS:** (1) the monument-class residual MOVED (two-sided principality → recursion-on-{R=0}
+  minAdm-ratio); must be PERFORMED general-L, not assumed — the stern-voice joint. (2) survivor-entry fan is
+  a HARD spec (radial-pivot-only covers 0%). (3) R(0)=1 general-d = the kept-rank-survivor structure (r≥1),
+  thread-28's inductive backbone — named load-bearing inference, not a given.
+
+**ACTIONS:** firing the recursion-on-{R=0}/minAdm-ratio de-risk (the one remaining inference + potential
+KILL-condition for the payoff value — a deeper divisor with ratio < ½minAdm ⟹ rlct < ½C). B1 probe in flight.
+R2 formaliser HELD until B1 + recursion return, then launch with the complete spec. Elder will revise F10;
+commit when it sends. Surfaced to the operator: (A) leads, C off, P-vs-V collapsed, one inference remains.
