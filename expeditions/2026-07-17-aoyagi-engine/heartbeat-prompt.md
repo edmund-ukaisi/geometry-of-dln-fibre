@@ -22,9 +22,17 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   RUNG 3 (coreGen-wrap) now CALIBRATED + WIRED + BANKED @ d95fcc540 (controller re-derived: full DLNFibre
   green 9025 jobs; hideal_coreGen_fwd/bwd force-elab clean-three; via_engine cone unchanged + cite-free).
   Rungs 5a(realization)/5b(L6 hjac)/5c(L7 hcover)/5d(assembly) UN-STARTED = the full-(3,3,4)-Resolution gate
-  bar (#130, blocked-by #132). HOLDING FOR: pnp-hcover's detail-vs-monument verdict = THE next decision
-  gate (build 5a/5b/5c vs re-scope to cite L7) + gate2's decorrelated wrap fidelity-review. routeP-p1 rests
-  (re-invoke for 5a/5b — deepest (3,3,4) chart/Jacobian context — after the hcover verdict).
+  bar (#130, blocked-by #132). HCOVER VERDICT = DETAIL-AT-SCALE (GO), 4-CHANNEL confirmed (pnp exact-algebra
+  + pnp Codex + controller calibration + gate2 probes) — the highest-risk rung RETIRED (recoord N²=0 →
+  degree-exactly-2, LeafCoverTiling reused verbatim). THREE LANES NOW RUNNING (maximal push toward the full
+  (3,3,4) Resolution): (5c) hcover-atom formaliser = the corank-2 faithful hcover atom (pnp template,
+  faithfulShear_covers + covers_coTree, own lane branch); (5b) routeP-p1 = the L6 gWrap Jacobian fields
+  (hjac unit≡1 via jacDet_blockBlowupMap O9 + shear |det|=1; STOP+escalate on a faithful |det| subtlety);
+  (provenance) pnp-hcover = the buildTree route-a-vs-b + #86(B) COVER-preservation check (gate2's sharpening:
+  buildTree col-pinned via canonCenterOf → route-b likely; the K-symmetry transport must carry the COVER not
+  just the ideal — the one thing that could still bite; reconcile with #119/#120). 5a (realization) follows
+  5b's jac; 5d (assembly, incl. eWrap MeasurePreserving + eWrap→canonFlatten conjResolution transport)
+  follows. gate2 rests (next: fidelity-review the 5c atom + the provenance verdict). HOLDING for the 3 lanes.
 - **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
   two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
   `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
