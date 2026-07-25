@@ -22787,3 +22787,28 @@ c5012ce22 (rebase, do NOT re-do STAGE 1). routeP-p1 SUPERVISES + integrates + ho
 split: deep-context = routeP-p1; mechanical GeneralGeoAtlas-reuse = fresh formaliser. I calibrate (#print
 axioms + full DLNFibre) at integration. The (3,3,4) Resolution's rung-5b crux-transfer is the load-bearing
 part + it's DONE; STAGE 2/3 is bounded reuse. 5a (realization) follows; then the full (3,3,4) Resolution.
+
+**RUNG 5b DONE — integrated + CALIBRATED @ 6ebe99f79 (2026-07-25).** The decomposed (3,3,4) chart Jacobian
+(decomp-5b's Corank2ChartJac, STAGE 2/3) + routeP-p1's STAGE 1 crux-transfer, reconciled + wired:
+- RECONCILIATION (routeP-p1 supervisor call, controller executed): decomp-5b's Corank2ChartJac SUBSUMES
+  routeP-p1's STAGE-1 Corank2GWrapDecomp (it re-created the decomposition off 7b25035df) → dropped the
+  redundant GWrapDecomp (not imported), wired ChartJac. Clean linear routeP (d95fcc540 coreGen-wrap in
+  ancestry, no divergence).
+- CONTROLLER CALIBRATION (kernel channel): FULL scripts/lb DLNFibre GREEN (9026 jobs, name-clash guard
+  passed); force-elab #print axioms on the 5 key results (gFaithful_decomp, abs_jacDet_gWrap, gWrap_hjac,
+  injOn_gWrap, abs_jacDet_permCoord) = [propext, Classical.choice, Quot.sound], NO sorryAx.
+- CONTENT: gFaithful_decomp (funext gFaithful = shearH∘permP∘blowA0∘blowA1, Lean-verified — the crux-transfer,
+  banked hideal untouched); abs_jacDet_gWrap = |u0|⁷·|u1|³·|u20|⁸ via jacDet_comp over the banked atoms (NO
+  21×21 det); gWrap_hjac (Chart.hjac, unit≡1), jac=[E:7,α:3,c11:8]; analyticOnNhd/injOn/excepWrap
+  ({u0=0}∪{u1=0}∪{u20=0}, vol 0) = the L6 Chart fields. The nonlinear-jacDet(H) wrinkle DISSOLVED (jacDet_blockShear
+  general = the unit-triangular arg). BONUS: abs_jacDet_permCoord (reusable coord-perm |jacDet|=1, general
+  Fin D — the inter-node relabelling for general-d; flag for Core/PathAtoms lift on 2nd use).
+- CHANNELS: decomp-5b build (clean-three self) + routeP-p1 supervisor statement-fidelity + my kernel
+  calibration; gate2's decorrelated fidelity read IN FLIGHT (4th). Fork #138 (B) is now LEAN-CONFIRMED
+  end-to-end (the funext closed in the kernel).
+
+STATE: the full (3,3,4) Resolution rungs — 5b DONE (this) + 5c DONE (hcover atom, 2-ch) + rung 3 coreGen-wrap
+DONE + the crux/hideal DONE. REMAINING: 5a (realization: AtlasRealizesExponents — jac+1 on binding axes
+{E:8,c11:9} ∈ tree.terminalExponents + hits minAdm=qipMin; α non-binding [not in bexp support]) + 5d
+(assembly: the Chart record + Resolution + eWrap MeasurePreserving + eWrap→canonFlatten transport). 5a
+GO'd to routeP-p1 (holds the jac/exceptional/bexp context). Then the full (3,3,4) Resolution → the general-d gate.
