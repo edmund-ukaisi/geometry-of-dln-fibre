@@ -1677,10 +1677,13 @@ import DLNFibre.DLN.Aoyagi.GeneralGeoAtlas
 -- Phase-1 scaffold. Corank2Proto (symbolic Schur spine) → HidealProto (L-A block-elim ℝ²¹, coupled Δ) +
 -- MaintenanceProto (L-B, b-chain reverse) + TerminalProto (L-C, terminal_bezout 1/unit) →
 -- CompositeProto (regionRepresents_comp precompose) → FaithfulComposite (the (3,3,4) composite g +
--- two-sided hideal skeleton; the RADIAL CRUX `crux_radial_monomialise` is a TRACKED sorry — #112 Phase-1).
+-- two-sided hideal; the RADIAL CRUX `crux_radial_monomialise` is PROVEN sorry-free — #112 Phase-1).
 import DLNFibre.Core.Aoyagi.Corank2Proto
 import DLNFibre.Core.Aoyagi.Corank2HidealProto
 import DLNFibre.Core.Aoyagi.Corank2MaintenanceProto
 import DLNFibre.Core.Aoyagi.Corank2TerminalProto
 import DLNFibre.Core.Aoyagi.Corank2CompositeProto
 import DLNFibre.Core.Aoyagi.Corank2FaithfulComposite
+-- CoreGenWrap (DLN side): the coreGen-level (3,3,4) two-sided hideal `hideal_coreGen_fwd/_bwd`
+-- (⟨c₁₁·E⟩ = pivot block-center blow-up ∘ the faithful chart) — #112 Phase-1 rung 3 (coreGen-wrap).
+import DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap
