@@ -21912,3 +21912,75 @@ the damping.
 
 **Status.** Verdict earned (BUILD cite-free). Elder convening (route-gate); pnp reconciliation one-liner
 pending. On both green → commit the build.
+
+---
+
+## 2026-07-25 (later still) — FIDELITY CROSS-CHECK (operator-directed) + ELDER YELLOW → a real P-vs-V route fork; the first-brick gate is the decider
+
+**Operator directed a cross-check vs Aoyagi's paper before re-planning.** Done (controller, worked.tex
+image-verified): **Aoyagi's lower bound is her STRUCTURAL DEPTH-RECURSION INDUCTION — "no full atlas needed"
+(worked.tex:717-723).** The pnp's "deeper cores create lower-ratio divisors" is HER inductive step
+(recursive ≥ ½min by IH), not open. The genuinely-flagged open end (worked.tex:651-664) is the single-chain
+principality (route P's terminal). STRAY CAUGHT: framing V-lower as the geometric cover L7 is HEAVIER than
+Aoyagi (her depth-recursion needs no atlas). Recorded in the render (§ FIDELITY CROSS-CHECK).
+
+**Elder route-gate ruling: YELLOW (3 pre-conditions), with a load-bearing catch I ACCEPT (own it).** My "V
+avoids the reverse-principality monument" framing is INCOHERENT with the committed route: `exists_coreResolution`
+needs a `Resolution`, `Chart` mandates BOTH `hideal_fwd`/`hideal_bwd`, the value transport rides the
+TWO-SIDED Object A (IdealInvariance:447). So route P (as-wired) INHABITS `hideal_bwd` (the reverse); V avoids
+it ONLY via the pending/un-rendered #111 re-wire, which is NOT committed. The elder's re-ground: "no monument"
+is TRUE but grounded on the RENDERED TWO-SIDED spine (L-A/L-B/L-C, the b-chain absorbs the reverse cross-terms
+into the ideal — the intellectual achievement), NOT the V-dodge; the reverse is INHABITED (detail-at-scale),
+render-bounded-NOT-built (gate-2 flagged it instance-verified at the terminal). Elder pre-conditions: (1)
+re-ground no-monument on the two-sided spine, drop V-dodge; (2) HOLD the corank-2 two-sided first-brick gate
+(both `hideal_fwd`/`hideal_bwd` + full-fan cover atom, green-both) — the render→built conversion; (3) get the
+pnp reconciliation one-liner. Charter §3 new warning proposed (the V-dodge framing retired). Confidence
+MEDIUM-HIGH; the RED-flip = the corank-2 two-sided gate finds `hideal_bwd` does NOT close cheaply (the 7th
+optimism-on-scope).
+
+**THE SYNTHESIS (controller) — a genuine P-vs-V fork the two decorrelated inputs surface from opposite sides:**
+- **Route P (elder, as-wired):** build the two-sided `hideal` atlas via L-A/L-B/L-C (b-chain absorbs the
+  reverse). Uses the LANDED value framework. INHABITS `hideal_bwd`. Risk = the reverse general-`d` coupled
+  (render-bounded, gate-2+Aoyagi-flagged). Subsumes V-upper/V-lower. HEAVIER than Aoyagi (she needs no atlas).
+- **Route V (fidelity, Aoyagi's actual argument):** forward per-branch value + the atlas-free depth-recursion
+  lower bound. AVOIDS `hideal_bwd` (forward-only). Faithful to her "no full atlas." Needs #111 (the atlas-free
+  value re-wire, un-rendered). Risk = the coupled forward lower-bound induction general-`L` + #111.
+- **THE DECIDER = the elder's pre-condition-2 first-brick gate, run BOTH directions:** build ONE corank-2
+  branch's END-TO-END TERMINAL `hideal` (the full L-A/L-B/L-C recursion, not one step like gate-2) + measure
+  `hideal_fwd` AND `hideal_bwd`. Reverse closes cheaply → route P (elder GREEN). Reverse hard, forward cheap →
+  route V (fidelity, render #111). Neither → cite/objects-only (fallback). This is the render→built
+  measurement AND the empirical P-vs-V decider; it faces exactly what the 6 prior optimistic mis-scopes never
+  faced (the smallest coupled instance built two-sided).
+
+**Action.** Accept the elder YELLOW + re-ground (drop V-dodge). Surface the fidelity fork to the elder (V is a
+distinct 3rd option its ruling weighed as "pending #111", not as the faithful route) + HOLD the charter/compass
+commit until the first-brick gate resolves the route (don't bake P prematurely). Fire the first-brick gate
+(re-convene gate2-hideal: corank-2 end-to-end terminal two-sided `hideal` + full-fan cover atom, both
+directions). pnp one-liner pending. Inform operator.
+
+**Status.** Elder YELLOW accepted; fidelity fork (P vs V) surfaced; first-brick gate = the decider, firing.
+Charter/compass commit held until the gate resolves the route.
+
+**ELDER SECOND RULING (on the corrected picture) — RESOLVES the fork: ROUTE P (V was the mirage, 3rd cycle).**
+The elder rebutted the V-drift, and I ACCEPT it (re-derived, own it): my fidelity read OVER-SCOPED — "no full
+atlas needed" means INDUCTIVE-not-flat, NOT forward-only. Aoyagi's depth-recursion STILL establishes the
+two-sided normal-crossing (inductively); that normal-crossing IS `hideal_bwd`. V-lower's "forward-only" is the
+F1-mirage, THIRD cycle (proposed → Phase-2-#1-retracted → §298-re-attacked → here); my "(ii) cofactor
+nonvanishing" is the reverse in disguise (the pnp's radial analysis agrees — the terminal single-monomial×unit
+needs the retained pivot's leading 1 = the normal-crossing). No lighter forward-only lower bound absent the
+complex-lct bet. **The route is P** (two-sided `hideal` = Aoyagi's normal-crossing flattened as the Lean
+`Resolution`; FAITHFUL — flat-vs-inductive is a Lean choice, not a math divergence; subsumes V-upper +
+ratio-bound-at-depth). This is the 7th-would-be optimism, caught by the stern voice — the base rate held.
+
+**COMMITTED PLAN (elder-aligned, final):** (1) BANK V-upper now (complete-general upper bound, deletes the
+Watanabe-ish upper cite; no gate). (2) Route P for the lower bound. (3) PIVOTAL DE-RISK = the corank-2
+TWO-SIDED first-brick gate (`hideal_fwd` AND `hideal_bwd`, dom-wide, corank-2 END-TO-END terminal + full-fan
+cover atom, green-BOTH) — the render→built conversion; green → P available/dominant/moots the ratio-bound;
+`hideal_bwd` doesn't close cheaply → objects-only close (cite Aoyagi for the lower assembly). Firing the
+first-brick gate + V-upper builder; the V-lower-lighter mirage RETIRED. Charter/compass: committed route = P
+stated → signal elder for the charter/compass commit (F8 mirage-3rd-cycle addendum + §3 V-upper-bankable/
+V-lower-mirage warning).
+
+**Status.** Route P committed (elder-aligned). Firing: V-upper builder (bank) + the corank-2 two-sided
+first-brick gate (pivotal de-risk). Signalled elder for the charter/compass commit. pnp one-liner moot-ish
+(the first-brick gate is pivotal, not the V-probe).

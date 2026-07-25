@@ -349,6 +349,70 @@ needs a bound" is wrong — every coupled chart needs one, the non-minimisers ju
 
 ---
 
+## FIDELITY CROSS-CHECK vs Aoyagi (controller, 2026-07-25, operator-directed) — V-lower is HER depth-recursion induction, not a full geometric cover
+
+Cross-checked the re-scoped plan against Aoyagi's paper (`aoyagi-2023-worked.tex`, image-verified via
+`worked-tex-errata.md`; errata clean except the corrected Lemma-1 direction typo E-1). Findings:
+
+1. **Aoyagi's lower bound IS a structural DEPTH-RECURSION INDUCTION — "no full atlas needed" (worked.tex:717-723).**
+   Her V-lower: α-divisor `≥ ½Mval(0)`; ρ-divisor `= ½Mval(branch)`; **recursive divisors `≥ ½min` BY
+   INDUCTION**; base `L=2` = nondegenerate rank-4 Morse quadratic (`rlct=½codim`; "only L=2 works",
+   worked.tex:709-710). One (incidence + one blow-up) peels exactly one layer → a fresh depth-`(L−1)` core.
+2. **The pnp's "deeper cores create lower-ratio divisors" (its #2) is HER inductive step** ("recursive
+   ≥ ½min by IH") — she HANDLES it; not open in her paper. The genuinely-flagged open end
+   (worked.tex:651-664) is the SINGLE-CHAIN PRINCIPALITY (route P's terminal, instance-verified) — which
+   the value path never touches.
+3. **STRAY CAUGHT — framing V-lower as "the geometric cover L7 / box-inflation FanTree" (`hcover`) is
+   HEAVIER than Aoyagi.** She needs NO full atlas; her depth-recursion bounds every divisor inductively with
+   bounded per-step blow-up charts. The pnp's S1/S2 ("a resolution is needed") is satisfied by the
+   depth-recursion — it IS the resolution, done inductively (the atlas-free value re-wire, task #111).
+   Building the full L7 cover does MORE than she does + hits the un-probed coupled cover. **FIDELITY-FAITHFUL
+   V-lower = her depth-recursion induction, NOT the geometric-atlas cover.**
+4. **V-upper is FAITHFUL** — ρ-divisor `= ½Mval(branch)`, block-elim unit-transform ⟹ `½Mval`
+   (worked.tex:719,737); matches the pnp's complete-general form (`a_E=1`, `h_E=Mval−1`). Build it.
+5. **The coupled leg (t₁≥2, corank≥2) MUST carry symbolic `diag(b)` support, NOT threshold-only**
+   (worked.tex:760-769: a per-row multiplicity cannot encode WHICH divisor variables are SHARED; sharing
+   changes the Newton polytope hence the RLCT — `⟨δx,δy⟩` witness). The coupling RAISES the threshold (helps
+   the `≥`, worked.tex:735 `3/2→2` at `(3,3,2,2)`).
+
+**RE-PLAN (fidelity-corrected).** V-upper (build; complete-general + faithful) + V-lower via **Aoyagi's
+depth-recursion induction** (α/ρ/recursive-by-IH; base `L=2` Morse; coupled leg with symbolic `diag(b)`
+support) — NOT the geometric cover L7 (that strays heavier). Value engine re-wired atlas-free (#111).
+**PRE-COMMIT PROBE (fidelity-framed): verify Aoyagi's COUPLED depth-recursion lower-bound induction closes
+general-`L`** — is "recursive coupled divisor `≥ ½min`" rigorous general-`L`, or does the coupled recursive
+step hide a flagged open end (as the single-chain principality does for P)? Decorrelated, against her paper.
+
+### ELDER CORRECTION (2026-07-25, second route-gate ruling) — my fidelity read OVER-SCOPED toward the V-mirage (3rd cycle); the route is P.
+
+The stern voice rebutted the re-plan above, and it is RIGHT (re-derived): **"no full atlas needed" means
+INDUCTIVE-not-flat, NOT forward-only.** Aoyagi's depth-recursion, carried to the base (`L=2` Morse), STILL
+establishes the two-sided normal-crossing (`F∘g = b₁²·unit`, only divisors the `b_i`) — INDUCTIVELY. That
+normal-crossing IS `hideal_bwd`. So:
+- **V-lower "forward-only" is a MIRAGE (the F1-mirage, THIRD cycle: proposed → Phase-2-#1-retracted →
+  §298-re-attacked → here).** Controlling EVERY divisor's ratio (incl. the deeper cores `G`, `‖ΔS‖²=u²·G`)
+  REQUIRES knowing the resolution is normal-crossing = the two-sided identity. My "(ii) cofactor nonvanishing"
+  IS the reverse in disguise (the terminal single-monomial×unit needs the retained pivot's leading `1` = the
+  normal-crossing — the pnp's own radial analysis confirms). There is NO lighter forward-only lower bound
+  absent the complex-lct bet.
+- **The route is P** (two-sided `hideal` = Aoyagi's normal-crossing, flattened as the Lean `Resolution`
+  `exists_coreResolution:311 = ∃ res`). FAITHFUL to her (her normal-crossing, flat vs inductive is a Lean
+  choice, not a math divergence). P SUBSUMES V-upper + the ratio-bound-at-depth (the terminal normal crossing
+  gives exact orders; no deeper core survives as a separate undershooting divisor).
+- **V-upper stands alone (bank it):** complete-general upper bound (deletes the Watanabe-ish upper cite);
+  also a corollary of P's terminal identity on the minimising chart.
+- **The pivotal de-risk = the corank-2 TWO-SIDED first-brick gate** (`hideal_fwd` AND `hideal_bwd`, dom-wide,
+  corank-2 END-TO-END terminal + full-fan cover atom, green-BOTH). Green → route P available, dominant, moots
+  the ratio-bound-at-depth. `hideal_bwd` does NOT close cheaply at coupled corank≥2 → the render's "b-chain
+  absorbs the reverse general" (L-B/Phase-3a) is the 7th over-claim → BOTH routes blocked → objects-only
+  close (bank A/B-spine/C/D + V-upper, cite Aoyagi for the lower assembly). This gate is the honest test the 6
+  prior mis-scopes never faced.
+
+**COMMITTED re-plan (elder-aligned): route P for the lower bound.** Bank V-upper now (no gate). Fire the
+corank-2 two-sided first-brick gate (the render→built conversion + the pivotal de-risk). The V-lower-as-lighter
+mirage is RETIRED.
+
+---
+
 ## L-A — the Schur-clearing ideal identity (COMPLETE, general)
 
 **Setup.** Let `R` be the ring of real-analytic germs at a point `w*` (a local ring; a germ is *regular*
