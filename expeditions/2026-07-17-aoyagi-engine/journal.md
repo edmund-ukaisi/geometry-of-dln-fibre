@@ -24607,3 +24607,37 @@ the block-blow-up atom + hnull from volume_commonZero...single + sandwich from s
 mandated. → card + final SHA → decorrelated review + re-verify → merge. Elder re-convened (confirm GO +
 register the K-orbit tripwire in the charter). Ladder: R0✓ R1✓ R2-cover-infra✓ → R3 (BUILD, first brick in
 flight). hchart-derisk released.
+
+## 2026-07-25 (tick, cont.) — ELDER CONFIRM (hchart de-risk): (A) = the V-WIRE (replaces exists_coreResolution); SOUNDNESS FLAG (compose #172, don't conflate hnull); W1 now (B)-only; charter §3 tripwire committed
+
+**Elder scrutinized "(A) drops binv" as the hard-part-reduction class — CONFIRM SOUND, with one soundness flag.**
+
+**(1) (A) = the V-WIRE — REGISTER the re-architecture.** Since the lower bound needs only the from-below R>0
+sandwich (never binv = the two-sided principality's chart form), **(A) = the R>0-sandwich lower (V-lower #109)
++ V-upper (#110) + Object D (#111), wired as 2·rlct = cCodim — NOT `exists_coreResolution` / the two-sided
+Resolution atlas.** binv is (B)-fallback only. This is vindicated-V, the lightest sound route (#111
+resurrected). REGISTER: (i) "R3 = wiring" is honest, but the wiring IS the V-WIRE ASSEMBLY (#109+#110+#111 via
+Object D) — a re-architecture from exists_coreResolution, priced detail-at-scale, must be PERFORMED; (ii) the
+reroute's original `exists_coreResolution` target is REPLACED by the V-wire for (A) — lighter, name it. [The
+V-arm tasks #109/#110/#111 are UN-parked; they ARE the (A) route now. ROADMAP owes this update.]
+
+**(2) SOUNDNESS FLAG — compose #172, do NOT conflate.** `hnull = volume_commonZero_eq_zero_of_single` handles
+the COVER's up-to-null (the fan misses {X=0}={R=0}, codim≥2, null → contributes 0). That is NOT handling the
+RLCT on {R=0}: the positive-measure SHELL {0<R<c} approaching it is where loss vanishes faster than monomial²
+and the sandwich FAILS; that shell is covered by DEEPER survivor-entry charts whose ratios must be ≥ ½minAdm =
+the recursion-{R=0} (#172 WITNESS), STILL a required piece of (A)'s lower bound. ⟨δx,δy⟩ lesson: a null
+positive-codim stratum's NEIGHBOURHOOD is positive-measure + CAN lower the RLCT. **R3 must COMPOSE sandwich +
+up-to-null cover + hnull WITH #172 (the deep-shell ratio check); hnull must NOT be read as "ignore {R=0}."**
+The first brick (one shallow node) is fine; the FULL R3 fold recurses into {R=0} with #172. Not a blocker —
+compose-don't-conflate.
+
+**(3) W1 now (B)-ONLY.** (A) drops binv → no shrink-localization → R1 (terminal-shrink⋈cover) largely
+DISSOLVES for (A). W1 is (B)-only (two-sided binv localizes to {unit≠0} + inherits R1). (A) sheds binv AND R1.
+
+**(4) W3 CONCRETE TRIPWIRE — charter §3 addition committed** (elder-authored, edit-in-place): the banked
+pre-reroute K-orbit skeleton `Corank2Chart334.lean:122-123` = a tombstone (retired O1 transport); R3 borns
+from `StepConstructor.bornSiblings`, never wires the cover as a K-orbit. A design-time refusal.
+
+**FIRST BRICK + DESTINATION: elder CONCURS.** First brick gated on sandwich+cover+hnull AS THEOREMS (M1/M2-
+style). Destination (A) = the V-wire (binv-free), recursion-{R=0} composed. (B) = the two-sided binv route
+(localizes, inherits R1) as fallback.

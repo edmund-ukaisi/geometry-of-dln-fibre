@@ -116,6 +116,12 @@ category before reporting progress; the elder gates every route and every progre
 > WALLED at `GateRouteB222` (compass F9; transport-group ⊥ cover-set + unbuildable chart↔leaf bridge).
 > GUARDRAIL-0: NO geometry is constructed outside the one-object step constructor — no composite-then-fan,
 > no transported siblings. Re-entry at design time is the drift; guardrail-0 refuses it.
+> **CONCRETE LEAN TRIPWIRE (R3 cover-wiring, the Lean-level form of guardrail-0/F9):** the banked PRE-reroute
+> skeleton `Corank2Chart334.lean:122-123` proposes the survivor fan as *the K-symmetry ORBIT of gWrap* — that
+> IS the retired O1 two-object transport (gate-routeB WALL, F9). R3 MUST born the survivor charts from
+> `StepConstructor.bornSiblings` (per-pivot, transport-free); NEVER wire the cover through the K-orbit
+> skeleton. Wiring the cover as a K-orbit re-enters O1 = DEAD ROUTE. Born-not-transported is the invariant;
+> the K-orbit skeleton is a tombstone, not a tool.
 - **The recurring category error (KEPT + VINDICATED — the PROOF the ideal route is forced):** no
   det-1 / a.e.-injective chart diagonalises the loss on an open set (each `(∏C)ᵢⱼ` is a nonzero poly,
   ≢0 on a dense open; exact diagonalisation forces ≡0, a non-open det-0 projection). The value LOWER
