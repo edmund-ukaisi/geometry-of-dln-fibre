@@ -22659,3 +22659,35 @@ TWO SCOPE CAVEATS (gate2, correctly out-of-scope in the atom, for the general-d 
     5c stands regardless of the fork; it's a genuine banked rung, not fork-contingent.
 STATE unchanged: hcover de-risked across adjudication (4-ch) + provenance (3-ch) + atom (2-ch) + depth-3 in
 flight. PIVOTAL OPEN DECISION = the chart-architecture fork (#138 pnp-chartarch). Holding.
+
+**FORK SETTLED → (B) DECOMPOSED, crux transfers FREE (2026-07-25).** pnp-chartarch settled #138; controller
+READ + calibrated (chart-architecture-fork.md); my read CONCURS — 2-channel (pnp + its Codex, which
+independently reconstructed the SAME P∘A0∘A1 factorisation + permutation tuple + dets). The fork was a
+near-false dichotomy: (B) does NOT re-open the crux.
+- gWrap = sigmaPiv ∘ H ∘ P ∘ A0 ∘ A1 EXTENSIONALLY (sympy-exact, all 21 coords): A1=blockBlowupMap{1,5,6,7}1
+  (u1³), A0=blockBlowupMap{0..7}0 (u0⁷), P=perm[8,9,10,11,1,5,6,7,0,2,3,4] (det−1), H=unipotent block-shear
+  (det1), sigmaPiv=blockBlowupMap{0..7,20}20 (u20⁸,O9). → |jacDet gWrap| = u0⁷·u1³·u20⁸ via jacDet_comp over
+  BANKED atoms, NO 21×21 det. (5b clean.)
+- CRUX-TRANSFER = sub-case (i) FREE: the banked two-sided hideal (crux_radial_monomialise, hideal_faithful_*,
+  hideal_coreGen_*) holds for the decomposed presentation VERBATIM — the only new obligation is the
+  extensional identity gFaithful = H∘P∘A0∘A1 (funext + fin_cases on 21 degree-≤4 polys, bounded), then rewrite
+  along it. NO monomialisation re-proof. FLAG-check clean: the E-factorisation is the shear-cancels-recoord
+  mechanism (F4: the shear's −u8u12−u9u16 terms cancel peeled row-0's Q2⁻¹ recoord → pure E), verified
+  LOAD-BEARING (peeled∘gFaithful 12/12 E-divisible, pivot=E; peeled∘blow-up-only 0/12) = exactly the GeoStep
+  shear∘blockBlowup structure. No hidden gap; the folded convenience did not hide one.
+- Q1: GeneralGeoAtlas ALREADY builds general-d L6/L7 DECOMPOSED (GeoStep.stepMap = shear∘blockBlowupMap;
+  abs_jacDet_geoPath unit≡1; shearBlowup_hjac / outerShearBlowup_injOn; covers_fanOfSteps). So (B) REUSES the
+  general-d L6 machinery (not a (3,3,4)-throwaway) + confirms the general-d chart form. This RECONCILES the
+  navigator's "#114 Geo* partially survives" — the Geo* mechanisms ARE the decomposed L6/L7, reusable.
+- CAVEAT (Codex-corroborated, load-bearing): the perm P (det−1, explicit) MUST be represented explicitly —
+  omitting it / reversing composition-order breaks the extensional identity + the det sign. Benign, named.
+
+DECISION: ADOPT (B). Re-invoke routeP-p1 (unblock 5b) for: (i) the crux-transfer (prove gFaithful =
+H∘P∘A0∘A1 by funext+fin_cases with P explicit → rewrite the banked hideal along it — the funext build
+self-gates the identity), (ii) 5b (the Jacobian via jacDet_comp over the banked atoms → u0⁷·u1³·u20⁸ + the
+Chart fields hjac[unit≡1]/jac/hg_inj/hexcep via GeneralGeoAtlas machinery). Route the verdict to gate2 (the
+confirming 3rd channel, parallel). The general-d chart-architecture TEMPLATE (§ of the deliverable): leaf
+chart = root→leaf composition of GeoStep=(shear)∘(blockBlowupMap) over buildTree; per-step ideal identity =
+L-A block-elim + shear + blow-up + L-B maintenance + L-C terminal (all banked two-sided general), composed
+via regionRepresents_comp + trans (structural induction) — the general-d spine spec. #139 (depth-3 rollover
+perms, pnp-hcover) = the general-d generalisation of P (the inter-node relabelling); the two lanes connect.
