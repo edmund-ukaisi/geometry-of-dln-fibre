@@ -22475,3 +22475,28 @@ review only). ASSEMBLY-LEG PINNED for #130 (gate2 downstream note, non-blocking)
 the payoff consumes exists_coreResolution at canonFlatten → 5d needs eWrap's MeasurePreserving (coord-reindex,
 provable) + the eWrap→canonFlatten conjResolution transport (rung-4 machinery banked/general; specific
 instantiation TODO). Still HOLDING for pnp-hcover's detail-vs-monument verdict (the next decision gate).
+
+**HCOVER VERDICT: DETAIL-AT-SCALE (GO) — the highest-risk rung de-risked, triple-confirmed (2026-07-25).**
+pnp-hcover adjudicated the coupled corank≥2 faithful hcover (the render's named highest un-probed risk):
+DETAIL-AT-SCALE, no monument; decorrelated Codex INDEPENDENTLY agrees (same single break-point). Controller
+READ + calibrated the elaboration (hcover-elaboration.md); my read CONCURS (triple-confirmed pnp+Codex+me;
+gate2's L7 lens = 4th channel pending):
+- OBL-1 (box-containment) SOUND: the faithful recoord Q₂⁻¹=I−N has N²=0 → degree-1 recoord, so every
+  product stays DEGREE EXACTLY 2 (multi-term = MORE degree-2 products, never higher); box-bound f(r)=r+C·r²,
+  exact-verified corank 2/3/(2,4)/4. LeafCoverTiling is generic in f/σ → REUSED VERBATIM; only NEW lemma =
+  faithfulShear_covers (= coShear_covers + more by_cases, C≥2). The render's "single-term engine" worry is
+  RESOLVED (not a new box-geometry monument).
+- OBL-2 (fan-completeness) SOUND: the argmax full-fan cover is the banked/PROVEN
+  closedBall_subset_iUnion_blockBlowup_image_radius, corank-independent; every off-canonical pivot is a valid
+  Schur-clearing chart (Q₁AQ₂=diag(1,Δ), all 9 pivots of 3×3). Fan-completeness = ENUMERATION, not existence.
+- THE ONE RESIDUAL (pnp+Codex+me): the ACTUAL buildTree atlas — does it enumerate the full fan (route a) or
+  complete via the loss-symmetry orbit (route b, #86(B) col-orbit transport)? A col-pinned recursion WITHOUT
+  the transport fails by the ε·e₂ escape. This is a buildTree PROVENANCE check, NOT a cover monument.
+
+CONSEQUENCE: the general-d atlas build's named highest risk is RETIRED (conditional on the provenance check).
+NEXT: (1) gate2's L7 lens (4th channel) — pending; (2) RECONCILE the residual with #119 ("Adjudicate
+fan-completeness (no omitted direction) at corank≥2", marked COMPLETED) — did #119 settle the provenance, or
+only the math existence? (don't re-litigate settled work); (3) commission pnp's recommended settling check
+(depth-2 3×3: enumerate every off-canonical pivot, verify faithful shear + state-update + next-center
+preserve the recursive residual identity AND appear as a buildTree child = full-fan REALIZATION). Then the
+full (3,3,4) Resolution build (5a/5b/5c) is clear + the general-d gate convenes on the landed Resolution.
