@@ -172,17 +172,16 @@ theorem monomialFam_bexpE (k : Fin 1) (u : Fin 21 → ℝ) : monomialFam bexpE k
   · intro d _ hd; simp [hd]
   · intro h; exact absurd (Finset.mem_univ _) h
 
-/-! ## THE RADIAL CRUX — tracked `sorry`, precise statement -/
+/-! ## THE RADIAL CRUX — proven (`crux_radial_monomialise`) -/
 
 /-- **THE CRUX (`-- map: #112-phase1-radial`).** The concrete radial factorisation of the 12-entry
 COUPLED `peeled∘gFaithful` to the single dominant monomial `⟨E⟩`, BOTH directions, on the chart region
 `nbhd`:
 - **fwd** `⟨peeled∘g⟩ ⊆ ⟨monomialFam bexpE⟩` — every pulled-back `peeled` entry is `E·(polynomial)`;
-- **bwd** `⟨monomialFam bexpE⟩ ⊆ ⟨peeled∘g⟩` — `E` recovered from the cleared-pivot entry (`E·unit`,
-  `unit 0 ≠ 0`), cofactor `1/unit` (this half IS `terminal_bezout`, proven — the builder supplies its
-  hypotheses for the finalised `g`).
-Math-GREEN via the `#124` pivot-survival tripwire (`faithful_composite_tripwire.py`); the concrete
-construction (the explicit faithful `g` making `peeled∘g = E·q`) is Phase-1's grind. -/
+- **bwd** `⟨monomialFam bexpE⟩ ⊆ ⟨peeled∘g⟩` — `E` recovered directly from the cleared-pivot entry
+  `peeled₀₀∘g = E` (cofactor `1`; the `unit ≡ 1` case of `terminal_bezout`).
+Proved via `peeled_comp_gFaithful` (all 12 entries `= E·quotMat`, pivot quotient `1`); the `#124`
+pivot-survival tripwire holds (`faithful_composite_tripwire.py`). -/
 theorem crux_radial_monomialise (nbhd : Set (Fin 21 → ℝ)) :
     RegionRepresents
       (fun i ↦ flat (peeled (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) C2conc) i
