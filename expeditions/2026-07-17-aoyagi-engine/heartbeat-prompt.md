@@ -61,13 +61,28 @@ side is now CLEAN for all, the decision is about the R2 cover + whether to prove
   `Chart.hideal_bwd`-field cite, strictly narrower than objects-only). ← middle; ideal-monument de-fanged.
 - (objects-only) cite `cited_aoyagi_lower_ax` (STOP-fallback, charter-faithful #94).
 
+**ELDER UPDATED RANKING [DONE, post-probe]: P-build > objects-only > V-build.**
+- **V DEMOTED** — V shares the SAME family-cover (lower bound = Σ_charts ∫ needs up-to-null coverage; b_k₀ is
+  a post-resolution object needing g); V's edge shrinks to avoiding a cheap+verified local principality;
+  same generality gap as P. Do NOT switch to V absent an operator strictly-cite-free steer [#110/#111 parked].
+- **Tube-cover = detail-at-scale IN KIND but general-d UNPRICED** (positive-measure {unit≈0} tubes ⟹ nullity
+  alone insufficient, sibling charts must actively cover; = the #145 object). Monument-ADJACENT, not -class.
+- **Honest destination (wait-for-go):** fully-cite-free = TWO arbitrary-depth inferences (local principality
+  + tube-cover), both verified-one-rung, neither proven general. (A) fully-cite-free=two mountains / (B)
+  P-with-the-small-cite (build atlas+cover, cite the LOCAL principality, < objects-only) / (C) objects-only #94.
+
 **IN FLIGHT (decision inputs):**
-1. **Elder re-convened** → elder-reroute [#168-followup]: updated P-vs-V ranking on the probe; is the
-   up-to-null unit-loci-tube cover detail-at-scale or monument-adjacent; does V share the cover.
-2. **Seat clarifier** → reroute-R3derisk: does V avoid the family-cover or share it.
-3. **R2 RE-SCOPED [#165]:** family-cover = "subordinate to leaf unit-loci {u≠0}, null complement, sibling
-   charts cover the {unit≈0} tubes." The true remaining monument-adjacent labour is this COVER, not the ideal.
-4. **Operator surfaced** — non-blocking; the one steer that flips the default = "strictly-cite-free-or-nothing".
+1. **TUBE-COVER PROBE [#169, tubecover-probe — THE TRUE NEXT GATE]:** does the born-sibling fan cover the
+   {unit≈0} tubes up-to-null at a deeper-mixed separated-depth instance (#145-at-depth). Witness ⟹
+   detail-at-scale (A/B); obstruction (positive-measure hole every sibling excludes) ⟹ monument-adjacent (C).
+   Persist → `threads/reroute-R2-tubecover/tube-cover-probe.md`. Elder re-convenes on this result.
+2. **Seat V-test tail** → reroute-R3derisk: finishing the one-sided-vs-two-sided V-test (now a decorrelated
+   confirmation of the elder's Q1, not decision-critical — V already demoted). Then rest.
+3. **R2 [#165]:** family-cover re-scoped = "subordinate to leaf unit-loci {u≠0}, null complement, sibling
+   charts cover the {unit≈0} tubes." HOLD the R2 cover build until #169 prices detail-at-scale-vs-monument.
+   Ideal side is clear to build (elder).
+4. **Operator surfaced** — the (A)/(B)/(C) destination framing; non-blocking; the tube-cover probe prices it;
+   the one steer that flips the default = "strictly-cite-free-or-nothing".
 
 **HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
 

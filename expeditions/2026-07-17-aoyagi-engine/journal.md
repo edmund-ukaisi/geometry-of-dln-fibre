@@ -24090,3 +24090,41 @@ share the same family-cover or truly avoid it (rlct=min over ALL divisors ⟹ co
 **R2 RE-SCOPED [#165]:** the family-cover obligation is now explicitly "subordinate to the leaf unit-loci
 {u≠0}, null complement, sibling charts covering the {unit≈0} tubes." HELD pending the elder ranking +
 operator destination call. Surfaced to the operator.
+
+---
+
+## 2026-07-25 (tick, cont.) — elder UPDATED adjudication (post-probe): V DEMOTED, P-build, tube-cover probe = the true gate
+
+**Elder-reroute, re-derived from `deeper-mixed-probe.md`:**
+- **Q1 — V shares the family-cover → V DEMOTED (decisive).** The lower bound `rlct ≥ ½Mval = ∫_U|f|^{-2s}`
+  is computed as `Σ_charts ∫_chart`, which REQUIRES the atlas to cover U up-to-null; a positive-measure
+  uncovered tube contributes an uncontrolled integral that can diverge below ½Mval. V's `b_{k₀}` is a
+  POST-resolution object (minimising-branch dominant monomial in exceptional coords) ⟹ V needs `g` and the
+  family-cover, exactly as P. V's only saving = proving ⊇ not two-sided = at the terminal — but the probe
+  showed the FULL two-sided principality holds locally one rung deeper, so the ⊆ half V skips is ALSO clean.
+  V's monument-free edge shrinks to "avoid a cheap, verified-one-rung, r≥1-robust local principality" —
+  marginal, non-decisive; V faces the SAME arbitrary-depth generality gap as P. **Do not switch to V.**
+- **Q2 — tube-cover: detail-at-scale IN KIND, but general-d is an OPEN inference → PROBE it.** A combinatorial
+  cover-tiling riding the tree (no single deep insight ⟹ NOT monument-class); but the {unit≈0} tubes are
+  positive-measure (nullity-alone insufficient), so the atlas must ACTIVELY cover them with sibling charts,
+  and general-d is an open arbitrary-depth inference of the same class as the local principality. SAME object
+  as #145 (the ~2% sector gap = the {unit≈0} tubes), which was a genuine disagreement. Monument-ADJACENT,
+  unpriced general-d ⟹ warrants a decorrelated probe BEFORE pricing "just build."
+- **Q3 — ranking: P-build > objects-only > V-build.** Honest destination headline (wait-for-go): fully-cite-
+  free = TWO arbitrary-depth inferences (local principality + tube-cover-over-{unit≈0}), both verified-one-rung
+  + structurally-supported, neither proven general. Real choices: **(A)** fully-cite-free = two mountains
+  (maximal push, honest, large/open); **(B)** P-with-the-small-cite (build atlas+cover, cite the LOCAL
+  single-chain principality — smaller than objects-only); **(C)** objects-only (#94 floor). The tube-cover
+  probe prices (A) vs (B)/(C).
+
+**ACTIONS (this tick):**
+- FIRED the decorrelated **tube-cover probe** [#169, tubecover-probe, fresh pen-and-paper]: does the
+  born-sibling fan cover the {unit≈0} tubes up-to-null at a deeper-mixed separated-depth instance (the #145
+  reconciliation rigorous at depth). Witness ⟹ detail-at-scale (A/B); obstruction ⟹ monument-adjacent (C).
+- V-arm [#110/#111] DEMOTED to #3 fallback (parked); do not switch absent an operator strictly-cite-free steer.
+- Continue P-build on the ideal side (elder: clear to build); HOLD the R2 tube-cover build until #169 prices it.
+- Surfaced the (A)/(B)/(C) destination framing to the operator (wait-for-go on the final cite; non-blocking).
+
+**Net:** the reroute dissolved the architecture walls, verified the ideal core one rung deeper, AND localized
+the residual precisely to the family-cover-subordinate-to-unit-loci (= #145). Genuine progress — named as that,
+NOT as "cite-free is close." The tube-cover probe is now THE load-bearing rung.
