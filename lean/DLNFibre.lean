@@ -1702,3 +1702,14 @@ import DLNFibre.DLN.Aoyagi.Corank2Realize334
 -- (all fields from 5b + part-C hideal) + `resolution334_of_ballCover` (assembly reduced to the SOLE cover
 -- obligation `ball 0 ρ ⊆ ⋃ charts.g '' dom` → the (3,3,4) instance of exists_coreResolution:311) — #112 rung 5d.
 import DLNFibre.DLN.Aoyagi.Corank2Chart334
+-- ── reroute R0 wiring (working-trunk atoms; union of lanes, appended) ──────────
+-- SchurClearTwoSided (Core.Matrix): two-sided unit-pivot block elimination over `Sum` index
+--   types — the network-free brick behind the per-step two-sided hideal (promoted from
+--   schur-casttax, previously untracked). Complements RankNormalFormTriangular.
+import DLNFibre.Core.Matrix.SchurClearTwoSided
+-- FanCover334 (5d-cover): the gWrapFan ball-cover on the shared Corank2FanDef334
+--   (`blockShear_covers_scaled`, inflation r + C·r²) — the per-stage cover box-containment atom.
+import DLNFibre.DLN.Aoyagi.Corank2FanCover334
+-- CiteFree334 (#110 upper): the (3,3,4) Watanabe upper bound CITE-FREE — the value-engine upper
+--   root the build consumes; previously an unwired routeP leaf, now reachable from the aggregator.
+import DLNFibre.DLN.Aoyagi.Corank2CiteFree334
