@@ -43,25 +43,27 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   the `b_i` accumulate; the block-elim cross-term drops as a product of generators — **NO coordinate
   substitution, NO degree-1 support-tracking**). corank≥2 = the SAME step iterated (coupling carried in `Δ`).
   STATUS (2026-07-25, ROUTE ADOPTED — route P, cite-free BUILD, elder-gated):
-  - The coordinate-FOLD route is RETIRED (§3); the V-lower-lighter route is RETIRED as the F1-mirage
-    (§3, compass F8).
-  - COMMITTED ROUTE = P: the two-sided `hideal` (`⟨(∏C)∘g⟩=⟨diag b⟩`, BOTH directions, dom-wide) =
-    Aoyagi's terminal normal crossing, reproduced over `buildTree` via the L-A/L-B/L-C Schur-clearing
-    spine (flat Lean `Resolution` of leaf charts = her inductive recursion flattened; FAITHFUL —
-    flat-vs-inductive is a Lean choice, not a math divergence). NO MONUMENT, grounded on the SPINE: L-A
-    (block-elim ideal identity, any corank) + L-B ((S,J)-maintenance — the b-chain absorbs the REVERSE
-    cross-terms into the ideal) + L-C (`⟨diag b⟩=⟨b₁⟩`); rev-render+Codex verified sound+general.
-    `hideal_bwd` is INHABITED by the spine, NOT dodged (the V-dodge was the reverse in disguise — retired).
+  - FOLD route RETIRED (§3); V-lower-lighter RETIRED as the F1-mirage (§3, compass F8).
+  - COMMITTED ROUTE = P: the two-sided `hideal` (`⟨(∏C)∘g⟩=⟨diag b⟩`, BOTH ways, dom-wide) = Aoyagi's
+    terminal normal crossing, reproduced over `buildTree` via the L-A/L-B/L-C Schur-clearing spine (flat
+    Lean `Resolution` of leaf charts = her inductive recursion flattened; FAITHFUL — flat-vs-inductive is a
+    Lean choice, not a math divergence). NO exact-principality MONUMENT: the lower bound needs only the WEAK
+    reverse (per-divisor no-over-vanishing `ord_v(I) ≤ (h_v+1)/min`), NOT the uniform collapse `⟨I⟩=⟨b₁⟩`.
+    Spine (L-A block-elim any corank / L-B (S,J)-maintenance, b-chain absorbs the reverse cross-terms / L-C
+    terminal) rev-render+Codex verified sound+general.
   - The value engine rides the TWO-SIDED form (`IdealInvariance:447`; `Resolution` mandates
-    `hideal_fwd`/`hideal_bwd`, `ProductResolution:114-116`); route P subsumes V-upper (P's terminal
-    identity on the minimiser) + the ratio-bound-at-depth (the normal crossing leaves no deeper-core
-    divisor to undershoot).
-  - PIVOTAL DE-RISK (render→built): the corank-2 TWO-SIDED first-brick gate — `hideal_fwd` AND
-    `hideal_bwd`, dom-wide, corank-2 END-TO-END terminal, + the full-fan cover atom (route-a), green-BOTH
-    → fire the full `buildTree` reproduction. RED-flip (b-chain does NOT absorb the reverse cheaply at
-    corank≥2 = the Phase-3a over-claim) → OBJECTS-ONLY close (bank A/B-spine/C/D + V-upper, cite Aoyagi
-    for the lower assembly). Residual to `exists_coreResolution:311` = the two-sided `hideal` reproduction
-    (L-A/L-B/L-C over `buildTree`) + the full-fan cover. NOT OPTIONAL; render-bounded ≠ built.
+    `hideal_fwd`/`hideal_bwd`, `ProductResolution:114-116`). Route P subsumes V-upper (P's terminal identity
+    on the minimiser). **Route P has TWO INDEPENDENT residuals:** (1) the COVER (domain coverage) — GREEN
+    via route-a (hcover + pnp converge); (2) the REALIZATION / no-over-vanishing (the F-order half of
+    `hideal_bwd` = `AtlasRealizesExponents`; the weak reverse) — DISTINCT from the cover (the `⟨δx,δy⟩`
+    witness: chart present, coverage fine, F over-vanishes), UN-PROBED at deep-mixed (worked.tex:663), the
+    hypothesis "detail-at-scale (pivot order-accumulation, terminates at a retained-rank pivot)" under test.
+  - TWO DE-RISKS in parallel (render→built; render-bounded ≠ built): (a) the corank-2 TWO-SIDED END-TO-END
+    first-brick gate (`hideal_fwd`+`hideal_bwd` dom-wide + realization at (3,3,4) + full-fan cover atom,
+    green-BOTH → START the full `buildTree` build); (b) the deep-mixed REALIZATION probe (F-order side,
+    (3,3,3,2,2)/L=4, PAPER-FIRST at worked.tex:663 — the parallel kill-check). RED-flip on EITHER →
+    OBJECTS-ONLY close. Residual to `exists_coreResolution:311` = the two-sided `hideal` reproduction
+    (L-A/L-B/L-C over `buildTree`) + full-fan cover + realization. NOT OPTIONAL.
 - **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: LANDED sorry-free (wave 1) —
   the S2 boxed rule is a THEOREM under Aoyagi's own divisibility chain (`DivChain` guard excludes
   the coupled counterexample; `Measurable unit` delta), `Core.Aoyagi.MonomialRLCT`. The coupled
@@ -127,12 +129,13 @@ category before reporting progress; the elder gates every route and every progre
   committed build, never a gate that scopes the object down.
 - **The V-lower-lighter route is the F1-MIRAGE (3rd cycle — RETIRED).** V-UPPER (minimiser chart value
   `=½Mval`; `a_E=1`, `h_E=Mval−1`) is COMPLETE-GENERAL and bankable (deletes the Watanabe-ish upper cite).
-  But V-LOWER as a *lighter* lower bound (forward-only, ratios off entries) is the mirage retracted THREE
-  times (Phase-2 #1 primary-source; the §298 re-attack; the pnp ratio-bound-at-depth): "forward-only /
-  cofactor-nonvanishing" IS the reverse inclusion in disguise, and the ratio-bound-at-depth (no deeper-core
-  divisor undershoots) reduces to route P's two-sided terminal normal crossing = `hideal_bwd` (absent the
-  unproven complex-lct bet). The lower bound is route P. Do NOT re-propose V-lower-as-lighter without a
-  decorrelated probe exhibiting a forward-only per-divisor bound at coupled corank≥2 (none found in 3 cycles).
+  V-LOWER as a *lighter* lower bound is the mirage retracted THREE times (Phase-2 #1 primary-source; the §298
+  re-attack; the pnp): "forward-only" was BACKWARDS — from-below IS the reverse (`⟨δx,δy⟩` witness). The
+  mirage conflated "avoid the exact-principality monument `⟨I⟩=⟨b₁⟩`" (TRUE — avoided; the lower bound needs
+  only the WEAK reverse) with "avoid the reverse entirely" (FALSE — the weak reverse = per-divisor
+  no-over-vanishing = route P's DISTINCT realization residual, still needed). The lower bound is route P. Do
+  NOT re-propose V-lower-as-lighter without a decorrelated probe exhibiting a genuinely-lighter per-divisor
+  bound at coupled corank≥2 (none in 3 cycles).
 - **The source-fidelity discipline (fidelity arc, 2026-07-23 — the deepest drift). Two composed gates:
   def-fidelity at BAKE time, paper-first at DEFECT time.** *BAKE:* a spine DEFINITION bakes only behind a
   source-fidelity certificate — the source construction and the Lean def, traced on the SAME concrete

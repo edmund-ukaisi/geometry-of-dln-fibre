@@ -127,21 +127,26 @@ landmark's literal-name node AND objects-first) if one exists; if the only liter
 + the objects. Elder recommendation to the operator: done = `via_engine` frontiers-land + a clean hbox-free
 literal-name re-point if available; hbox/DecoratedDescent NOT required and stays aoyagi-full.
 
-**F8. The coupled resolution is NOT a monument; the lower-bound route is P — SETTLED (pnp #122 +
-hcover-probe convergence + elder route-gate, 2026-07-25).** Obstruction hunt empty: resolution existence =
-explicit finite blow-ups of smooth centres (NOT Hironaka); the (S,J)-maintenance "wall" = substitution-
-encoding artifact, dissolved (b-chain divisibility absorbs the block-elim cross-terms, L-A/L-B/L-C, both
-directions); Theorem 4 landed+wired for the core (r=0 all-variables homogeneous); the radial step `Δ=u·D̄` is
-a smooth-subspace blow-up not a collapse, does not inherit terminal open-ness. The only destination monument
-is the cited `rlct=½codim` — which the build DELETES. WHY route P not V: `exists_coreResolution:311 =
-∃ res : Resolution` and the value engine rides the two-sided `Chart.hideal` (`IdealInvariance:447`), so the
-build INHABITS `hideal_bwd` (= terminal single-monomial×unit via the retained pivot's leading 1; pnp radial,
-coranks 2,3) — it does not dodge it. Route P is faithful (inductive normal crossing flattened as a flat Lean
-`Resolution` of leaf charts — a Lean choice, not a math divergence) and subsumes V-upper + ratio-bound-at-depth.
-V-lower-lighter = the F1-mirage 3rd cycle (retired, §3). PIVOTAL DE-RISK = the corank-2 two-sided END-TO-END
-first-brick gate (render→built); RED-flip → objects-only close. Witnesses: `threads/pnp-coupled/adjudication.md`
-(S1-S4 + radial addendum); `next-build-render.md §9` (hcover OBL-1/OBL-2 + route-a); `ideal-route-full-render.md`
-(L-A/L-B/L-C + Phase-3a); `IdealInvariance:447`, `ProductResolution:114-116`, `LearningCoefficient:296`.
+**F8. The coupled resolution is NOT a monument; lower-bound route = P (two-sided `hideal`) — SETTLED (pnp
+#122 + hcover-probe convergence + elder route-gate, 2026-07-25).** Obstruction hunt empty: resolution
+existence = explicit finite blow-ups of smooth centres (NOT Hironaka); the (S,J)-maintenance "wall" =
+substitution-encoding artifact, dissolved (b-chain divisibility absorbs the block-elim cross-terms,
+L-A/L-B/L-C, both ways); Theorem 4 landed+wired for the core (r=0 all-vars homogeneous); the radial step
+`Δ=u·D̄` = smooth-subspace blow-up not a collapse, no terminal open-ness inherited. The exact-principality
+MONUMENT (`⟨I⟩=⟨b₁⟩` uniform collapse through deep-mixed) is AVOIDED — the lower bound needs only the WEAK
+reverse (per-divisor no-over-vanishing `ord_v(I) ≤ (h_v+1)/min`). The only destination monument is the cited
+`rlct=½codim`, which the build DELETES. WHY route P: `exists_coreResolution:311 = ∃ res : Resolution` ×
+`AtlasRealizesExponents`; the value engine rides the two-sided `Chart.hideal` (`IdealInvariance:447`), so the
+build INHABITS the weak reverse (= terminal single-monomial×unit via the retained pivot's leading 1; pnp
+radial, coranks 2,3) — it does not dodge it. Route P is faithful (inductive normal crossing flattened as a
+flat Lean `Resolution`) and subsumes V-upper. **TWO INDEPENDENT residuals:** (1) COVER (domain) — GREEN
+route-a; (2) REALIZATION / no-over-vanishing (F-order = `AtlasRealizesExponents`) — DISTINCT (`⟨δx,δy⟩`
+witness), un-probed at deep-mixed. V-lower-lighter = the F1-mirage 3rd cycle (retired, §3). TWO DE-RISKS: (a)
+corank-2 two-sided END-TO-END gate; (b) deep-mixed realization probe ((3,3,3,2,2)/L=4, PAPER-FIRST at
+worked.tex:663). RED on either → objects-only close. Witnesses: `threads/pnp-coupled/adjudication.md` (S1-S4 +
+radial + weak-reverse refinement); `next-build-render.md §9` (hcover OBL-1/2 + route-a);
+`ideal-route-full-render.md` (L-A/L-B/L-C + Phase-3a); `IdealInvariance:447`, `ProductResolution:114-116`,
+`LearningCoefficient:296`, `RecursionAdapter` (`AtlasRealizesExponents`).
 
 ## Paper-fidelity ledger (documented Aoyagi typos; the mechanism stands)
 - **Def-3 broken** (verified typo) — use the geometric `½·min_t Mval(t)`. Witness `battery/g-def3-broken.py`.
