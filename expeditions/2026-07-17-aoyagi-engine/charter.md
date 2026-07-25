@@ -42,27 +42,26 @@ which rewards re-derivation, MVP shortcuts, and category-wrong charts. Steer by 
   **IDEAL-LEVEL** (unimodular Schur-clearing `Q,P` maintain `⟨A⟩=⟨diag(1,Δ)⟩` with polynomial cofactors;
   the `b_i` accumulate; the block-elim cross-term drops as a product of generators — **NO coordinate
   substitution, NO degree-1 support-tracking**). corank≥2 = the SAME step iterated (coupling carried in `Δ`).
-  STATUS (2026-07-24, PHASE CHECKPOINT — rev-render LANDED + geo-atlas-wire scope-correction):
-  - The coordinate-FOLD route is RETIRED (§3).
-  - The ideal-route **SPINE** — L-A (block-elim ideal identity, ANY corank), L-B ((S,J)-recursion
-    maintenance via the `b`-chain divisibility), Thm-4 (deepest point) — is RENDERED
-    (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`) and **VERIFIED sound+general by 4
-    rev-render rounds + Codex**: the coupled-corank≥2 MAINTENANCE wall was a substitution-encoding
-    artifact and is DISSOLVED at the MATH level. The **combinatorial value half** (`hlb`+`hattain`:
-    `minAdm_le_terminalExponents` + `clearable_of_minimizer`/`tStar_realized`/`o5_core_realized`) is
-    PROVED sorry-free clean-three (controller `#print axioms`-verified).
-  - **BUT B IN LEAN IS UNBUILT — and the deep monument is the `hideal`, not the geometry.** The `Chart`
-    record's `hideal_fwd`/`hideal_bwd` (the DOM-WIDE ideal identity `⟨(∏C)∘g⟩=⟨diag b⟩`, both ways;
-    `ProductResolution.lean:112-116`) are MANDATORY fields. The coupled-corank≥2 chart's `hideal` in Lean
-    STILL rests on the sorried geometric-fold monument (THE WALL `foldResid_case11`, refuted-as-stated).
-    The intended replacement — the **L-A/L-B Schur-clearing `hideal`, dom-wide** (pivot≡1 ⟹ unipotent-
-    polynomial `Q`, NO rational inverse; the (S,J) recursion reproduced over `buildTree`) — is RENDERED,
-    **NOT BUILT**. The box-geometry (L6 dom-wide Jacobian, rendered exact `unit≡1`; L7 cover) is
-    NECESSARY-NOT-SUFFICIENT and its MECHANISMS are built clean-three only for a SIMPLER object
-    (single-term shear) — three seams to faithful; **it does NOT touch the `hideal`**. L7's coupled
-    `hcover` at corank≥2 is UN-PROBED (the highest residual risk). So the residual to close
-    `exists_coreResolution:311` = the coupled **hideal** build (deep) + the box-geometry seams + the
-    coupled-`hcover` probe. **NOT OPTIONAL, never a footnote; render-bounded ≠ review-landed ≠ built.**
+  STATUS (2026-07-25, ROUTE ADOPTED — route P, cite-free BUILD, elder-gated):
+  - The coordinate-FOLD route is RETIRED (§3); the V-lower-lighter route is RETIRED as the F1-mirage
+    (§3, compass F8).
+  - COMMITTED ROUTE = P: the two-sided `hideal` (`⟨(∏C)∘g⟩=⟨diag b⟩`, BOTH directions, dom-wide) =
+    Aoyagi's terminal normal crossing, reproduced over `buildTree` via the L-A/L-B/L-C Schur-clearing
+    spine (flat Lean `Resolution` of leaf charts = her inductive recursion flattened; FAITHFUL —
+    flat-vs-inductive is a Lean choice, not a math divergence). NO MONUMENT, grounded on the SPINE: L-A
+    (block-elim ideal identity, any corank) + L-B ((S,J)-maintenance — the b-chain absorbs the REVERSE
+    cross-terms into the ideal) + L-C (`⟨diag b⟩=⟨b₁⟩`); rev-render+Codex verified sound+general.
+    `hideal_bwd` is INHABITED by the spine, NOT dodged (the V-dodge was the reverse in disguise — retired).
+  - The value engine rides the TWO-SIDED form (`IdealInvariance:447`; `Resolution` mandates
+    `hideal_fwd`/`hideal_bwd`, `ProductResolution:114-116`); route P subsumes V-upper (P's terminal
+    identity on the minimiser) + the ratio-bound-at-depth (the normal crossing leaves no deeper-core
+    divisor to undershoot).
+  - PIVOTAL DE-RISK (render→built): the corank-2 TWO-SIDED first-brick gate — `hideal_fwd` AND
+    `hideal_bwd`, dom-wide, corank-2 END-TO-END terminal, + the full-fan cover atom (route-a), green-BOTH
+    → fire the full `buildTree` reproduction. RED-flip (b-chain does NOT absorb the reverse cheaply at
+    corank≥2 = the Phase-3a over-claim) → OBJECTS-ONLY close (bank A/B-spine/C/D + V-upper, cite Aoyagi
+    for the lower assembly). Residual to `exists_coreResolution:311` = the two-sided `hideal` reproduction
+    (L-A/L-B/L-C over `buildTree`) + the full-fan cover. NOT OPTIONAL; render-bounded ≠ built.
 - **C. Monomial-ideal RLCT** `= ½·min (h+1)/(2k)` (Newton polyhedron), in full generality. STATUS: LANDED sorry-free (wave 1) —
   the S2 boxed rule is a THEOREM under Aoyagi's own divisibility chain (`DivChain` guard excludes
   the coupled counterexample; `Measurable unit` delta), `Core.Aoyagi.MonomialRLCT`. The coupled
@@ -126,6 +125,14 @@ category before reporting progress; the elder gates every route and every progre
   clean headlines are UNVERIFIED until probed with decorrelated exact-algebra at the KNOWN failure cases
   (coupled corank≥2). The build is a FULL reproduce, never MVP'd; the tractability probe is a CHECK on a
   committed build, never a gate that scopes the object down.
+- **The V-lower-lighter route is the F1-MIRAGE (3rd cycle — RETIRED).** V-UPPER (minimiser chart value
+  `=½Mval`; `a_E=1`, `h_E=Mval−1`) is COMPLETE-GENERAL and bankable (deletes the Watanabe-ish upper cite).
+  But V-LOWER as a *lighter* lower bound (forward-only, ratios off entries) is the mirage retracted THREE
+  times (Phase-2 #1 primary-source; the §298 re-attack; the pnp ratio-bound-at-depth): "forward-only /
+  cofactor-nonvanishing" IS the reverse inclusion in disguise, and the ratio-bound-at-depth (no deeper-core
+  divisor undershoots) reduces to route P's two-sided terminal normal crossing = `hideal_bwd` (absent the
+  unproven complex-lct bet). The lower bound is route P. Do NOT re-propose V-lower-as-lighter without a
+  decorrelated probe exhibiting a forward-only per-divisor bound at coupled corank≥2 (none found in 3 cycles).
 - **The source-fidelity discipline (fidelity arc, 2026-07-23 — the deepest drift). Two composed gates:
   def-fidelity at BAKE time, paper-first at DEFECT time.** *BAKE:* a spine DEFINITION bakes only behind a
   source-fidelity certificate — the source construction and the Lean def, traced on the SAME concrete
