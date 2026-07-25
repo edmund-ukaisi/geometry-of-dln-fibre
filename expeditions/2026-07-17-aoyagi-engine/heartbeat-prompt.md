@@ -63,17 +63,26 @@ operator's steer (does NOT gate the build). V-arm [#110/#111] parked.
 #172] / hchart [R3 wire]) [#173 ✓]. Fidelity review SURVIVED + all docstring fixes landed [#174 ✓];
 controller-verified (full aggregator GREEN 9041 jobs, no clash; force-elab → 11 roots clean-three, no cites).
 First R2 rung integrated.
-**NEXT RUNG (reroute-R2build, GO) [#175]:** R2-COMPLETION = the radius-parameterized real-tree COVER FOLD —
-assemble the per-node atoms over buildTree (the R3-derisk "genuine new fold": radius-parameterized conRel_wf
-cover over the real branching tree with per-node sheared box-containment). COVER-SIDE ONLY (ideal/charts = R3).
-Card → decorrelated review + re-verify → merge.
-**QUEUED (separate tracks):** the VALUE side (per-chart integrability + #172 recursion + G2). G2 = direct-sum
-RLCT SUPERADDITIVITY, SCOPED as a BUILD (~6-9 lemmas + a multivariate "zero-set of a nonzero poly is null"
-brick; NOT in Mathlib; equality NOT needed — Watanabe cites ≤; `threads/rlct-additivity/scope.md`) — a
-value-rung dependency; confirm the CThetaValue combinatorial-lnmin shortcut first (Core grep was empty).
-R3 = the unified fold (biggest rung; elder decorrelated read at landing; heads-up: the fan-by-ENTRY atom is
-COARSER than the loss-isometry-orbit fan — the finer structure lives in hchart's discharge = the real R3
-difficulty). Analysis seats rest; re-convene on triggers.
+**R2-COMPLETION FOLD ENGINE DELIVERED (reviewer-pending) [#175]:** `ImageTreeCover.lean` (-r2fold @317e4786e;
+abstract measure fold — glue_null + coversUpToNull_volume_diff + nullTransport_of_differentiable [null-transport
+from Differentiable ℝ g alone] + node_clause_of_survivorAtom [= the atom]; 7 roots clean-three,
+Codex-decorrelated). **ELDER LADDER RULING:** this is the cover-conjunct INFRASTRUCTURE (atom + abstract engine
++ hooks). "R2 done" is honest ONLY as "R2 cover-infrastructure done (reviewer-pending)"; it OVER-CLAIMS if it
+travels as "the real buildTree is covered." Engine is NECESSARY-NOT-SUFFICIENT — the hard part is R3. GATES:
+fidelity review [#176] + my merge-time re-verify → merge (on the seat's FINAL merge-ready SHA + re-fetch).
+
+**HONEST LADDER: R0 ✓ · R1 ✓ · R2-cover-INFRASTRUCTURE ✓ (reviewer-pending) → R3 = THE one big unified fold.**
+R3 = concrete buildTree→charts + the REAL survivor charts + hchart discharge (the loss-isometry-orbit structure
+= the real difficulty) + the cover engine APPLIED + binv (ideal) + ledger, all threaded through conRel_wf. The
+concrete cover FOLDS IN HERE — NOT a separate pre-R3 rung. **G1 rides on the R3 WIRE** (the engine folds a
+WRONG fixed-survivor fan to a VACUOUS cover — R3 MUST supply the survivor-ENTRY fan; radial-pivot-only = 0%).
+Elder-gated + decorrelated read; if the real hchart discharge is harder than detail-at-scale (a monument) →
+the (B)-fallback trigger. Then R4/R5/R6.
+
+**QUEUED (value side):** per-chart integrability + the #172 recursion + G2 = direct-sum RLCT SUPERADDITIVITY
+(BUILD, scout-scoped: ~6-9 lemmas + a multivariate "zero-set of a nonzero poly is null" brick; NOT in Mathlib;
+equality NOT needed — Watanabe cites ≤; confirm the CThetaValue combinatorial-lnmin shortcut first, Core grep
+empty; `threads/rlct-additivity/scope.md`). Analysis seats rest; re-convene on triggers.
 
 **STANDING GATES / DISCIPLINE:**
 - **Operator-gated (wait-for-explicit-go):** PR **merge**, `dev→main` promotion, any change to the destination

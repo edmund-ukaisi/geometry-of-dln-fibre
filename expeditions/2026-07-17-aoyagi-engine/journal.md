@@ -24468,3 +24468,32 @@ review [#176, r2build-review re-engaged] + the ELDER scope-ruling (does this com
 buildTree cover a distinct rung — the honest R2/R3 boundary; routed, non-blocking the merge) + my merge-time
 re-verify → merge to trunk. Process fix ACTIVE: merge only on the seat's EXPLICIT final-merge-ready SHA +
 re-fetch confirm (from the double stale-SHA race). reroute-R2build resting until the review lands.
+
+## 2026-07-25 (tick, cont.) — ELDER LADDER RULING: R2 = cover-INFRASTRUCTURE (done, reviewer-pending); the concrete cover is INSIDE R3
+
+**Elder-reroute (read ImageTreeCover's own §Scope docstring + the prior R2 re-scope ruling):**
+- **"R2 done" is honest ONLY scoped as "R2 = the cover-conjunct INFRASTRUCTURE"** — the atom
+  (`SurvivorFanCover`) + the abstract `ImageTreeCover` fold engine (`glue_null`, `coversUpToNull_volume_diff`,
+  `coversUpToNull_nbhd`) + the two hooks (`node_clause_of_survivorAtom` = the atom-assembly link;
+  `nullTransport_of_differentiable` = null-transport from `Differentiable ℝ g` alone). A genuine object
+  discharged (reusable Core-grade lemma family), non-vacuous, and the abstract-engine-then-apply shape is the
+  RIGHT one (rising-sea: build the general engine, apply it concretely). NAMING: "R2 cover-infrastructure done"
+  — names the object + a legal category. Progress.
+- **It OVER-CLAIMS if it travels as "the cover is discharged for the real object."** The concrete
+  buildTree/tGeo instantiation (interpret the real tree into the engine; build the REAL survivor charts;
+  discharge their `hchart` = the loss-isometry-orbit structure = the real difficulty) is NOT a distinct
+  pre-R3 rung — **it is PART OF R3** (the one big unified fold: concrete charts + hchart + engine APPLIED +
+  binv ideal + ledger, all through `conRel_wf`, G1/G2 held). The engine's two hooks are the CONTRACT R3 fills.
+- **THREE STERN FLAGS:** (1) the engine is NECESSARY-NOT-SUFFICIENT — don't let its cleanliness travel as
+  "cover basically done"; the hard part (real charts + hchart) is R3. (2) **G1 rides on the R3 WIRE, not the
+  engine** — the engine will fold a WRONG (fixed-survivor) fan to a VACUOUS cover; R3 must supply the
+  survivor-ENTRY fan (radial-pivot-only = 0%). (3) "R2 infrastructure done" is CONTINGENT on the reviewer's
+  clean-three + #print axioms (the sensor is the reviewer's re-derivation, not the seat's "sorry-free").
+- **MERGE: elder concurs** (reusable infrastructure, banks once the reviewer clears; not the elder's gate).
+
+**HONEST LADDER: R0 ✓ · R1 ✓ · R2-cover-INFRASTRUCTURE ✓ (reviewer-pending) → R3 = THE one big unified fold**
+(concrete buildTree charts + hchart discharge + the cover engine APPLIED + binv ideal + ledger, threaded
+through `conRel_wf`, G1/G2 held) — the concrete cover is INSIDE R3, the biggest rung, elder-gated +
+decorrelated read. If the real hchart discharge turns out harder than detail-at-scale (a monument) → the
+(B)-fallback trigger. Then R4/R5/R6 + the value side (superadditivity G2 + per-chart integrability + #172).
+Elder resting; re-convenes at the R3 landing.
