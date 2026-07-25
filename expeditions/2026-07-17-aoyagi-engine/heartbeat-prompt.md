@@ -19,6 +19,12 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   :308 seam route-AGNOSTIC (route P plugs same seam); backbone+value-engine+ConjResolution survive; :311
   = the ONLY residual sorry on the cone; fold cluster (Monument/Wire/GeoAtlasTransfer) off-cone → prune at
   close. The DE-RISK (crux+flat hideal, doubly-confirmed) = 1 rung of 9. Map: gate-gend-navigator-map.md.
+  RUNG 3 (coreGen-wrap) now CALIBRATED + WIRED + BANKED @ d95fcc540 (controller re-derived: full DLNFibre
+  green 9025 jobs; hideal_coreGen_fwd/bwd force-elab clean-three; via_engine cone unchanged + cite-free).
+  Rungs 5a(realization)/5b(L6 hjac)/5c(L7 hcover)/5d(assembly) UN-STARTED = the full-(3,3,4)-Resolution gate
+  bar (#130, blocked-by #132). HOLDING FOR: pnp-hcover's detail-vs-monument verdict = THE next decision
+  gate (build 5a/5b/5c vs re-scope to cite L7) + gate2's decorrelated wrap fidelity-review. routeP-p1 rests
+  (re-invoke for 5a/5b — deepest (3,3,4) chart/Jacobian context — after the hcover verdict).
 - **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
   two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
   `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
