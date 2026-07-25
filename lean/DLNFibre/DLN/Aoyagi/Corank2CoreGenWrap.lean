@@ -153,3 +153,71 @@ theorem monomialFam_bexpWrap (k : Fin 1) (u : Fin 21 → ℝ) : monomialFam bexp
   rw [Finset.prod_ite, Finset.prod_const_one, mul_one,
     show Finset.filter (fun d : Fin 21 => d = 0 ∨ d = 20) Finset.univ = {0, 20} from by decide,
     Finset.prod_insert (by decide), Finset.prod_singleton]
+
+/-! ## The two-sided `coreGen`-level `hideal` -/
+
+/-- `gFaithful` fixes the pivot coordinate `20` (the `c₁₁`-slot), so the `sigmaPiv` pivot factor survives
+`gWrap` as `c₁₁ = u 20`. -/
+theorem gFaithful_apply_20 (u : Fin 21 → ℝ) : gFaithful u 20 = u 20 := by simp [gFaithful]
+
+/-- The transpose reindex `Fin (4·3) ≃ Fin (3·4)` matching `mult`'s `4×3` flat index to `Pmat`'s `3×4`
+(swap the `finProdFinEquiv` components). -/
+def tau : Fin (dvec (Fin.last 2) * dvec 0) ≃ Fin (3 * 4) :=
+  finProdFinEquiv.symm.trans ((Equiv.prodComm _ _).trans finProdFinEquiv)
+
+theorem tau_symm_apply (k : Fin (dvec (Fin.last 2) * dvec 0)) :
+    finProdFinEquiv.symm (tau k) = ((finProdFinEquiv.symm k).2, (finProdFinEquiv.symm k).1) := by
+  simp only [tau, Equiv.trans_apply, Equiv.prodComm_apply, Prod.swap]
+  exact finProdFinEquiv.symm_apply_apply _
+
+/-- **The entry-lift**: `coreGen (3,3,4) eWrap ∘ gWrap = c₁₁ · (flat(Pmat) ∘ gFaithful)` reindexed by
+`τ` — `coreGen k (gWrap u) = (gFaithful u 20) · flat(Pmat) (τ k) (gFaithful u)`. Composes `coreGen`'s
+definition, `mult_eWrap`, and the `c₁₁`-scaling entry relation `mult_gWrap_entry`. -/
+theorem coreGen_gWrap_flat (u : Fin 21 → ℝ) (k : Fin (dvec (Fin.last 2) * dvec 0)) :
+    coreGen dvec eWrap k (gWrap u)
+      = gFaithful u 20 *
+        flat (Pmat (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) C2conc) (tau k)
+          (gFaithful u) := by
+  have h1 : coreGen dvec eWrap k (gWrap u)
+      = (A1 (gWrap u) * A0 (gWrap u)) (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2 := by
+    simp only [coreGen]
+    exact congrFun (congrFun (mult_eWrap (gWrap u)) _) _
+  rw [h1, mult_gWrap_entry]
+  congr 1
+  simp only [flat, tau_symm_apply]
+
+/-- **`coreGen`-level `hideal_fwd`** — `⟨coreGen (3,3,4) eWrap ∘ gWrap⟩ ⊆ ⟨monomialFam bexpWrap⟩` (the
+dominant monomial `c₁₁·E`), via the entry-lift + `hideal_faithful_fwd`'s cofactors reindexed by `τ`. -/
+theorem hideal_coreGen_fwd (nbhd : Set (Fin 21 → ℝ)) (hsub : nbhd ⊆ gFaithful ⁻¹' Set.univ) :
+    RegionRepresents (fun k => coreGen dvec eWrap k ∘ gWrap) (monomialFam bexpWrap) nbhd := by
+  obtain ⟨a', ha'c, ha'e⟩ := hideal_faithful_fwd nbhd hsub
+  refine ⟨fun k _ => a' (tau k) 0, fun k _ => ha'c (tau k) 0, ?_⟩
+  intro u hu k
+  simp only [Function.comp_apply]
+  rw [coreGen_gWrap_flat, Fin.sum_univ_one, monomialFam_bexpWrap]
+  have he := ha'e u hu (tau k)
+  simp only [Function.comp_apply, Fin.sum_univ_one] at he
+  rw [he, monomialFam_bexpE, gFaithful_apply_20]
+  ring
+
+/-- **`coreGen`-level `hideal_bwd`** — `⟨monomialFam bexpWrap⟩ ⊆ ⟨coreGen (3,3,4) eWrap ∘ gWrap⟩`, via
+the entry-lift + `hideal_faithful_bwd`'s cofactors reindexed by `τ`. -/
+theorem hideal_coreGen_bwd (nbhd : Set (Fin 21 → ℝ)) (hsub : nbhd ⊆ gFaithful ⁻¹' Set.univ) :
+    RegionRepresents (monomialFam bexpWrap) (fun k => coreGen dvec eWrap k ∘ gWrap) nbhd := by
+  obtain ⟨b', hb'c, hb'e⟩ := hideal_faithful_bwd nbhd hsub
+  refine ⟨fun _ j => b' 0 (tau j), fun _ j => hb'c 0 (tau j), ?_⟩
+  intro u hu i
+  rw [monomialFam_bexpWrap]
+  have he := hb'e u hu
+  simp only [Function.comp_apply, monomialFam_bexpE] at he
+  have hrw : (∑ j, b' 0 (tau j) u * (coreGen dvec eWrap j ∘ gWrap) u)
+      = gFaithful u 20 *
+        ∑ i, b' 0 i u *
+          flat (Pmat (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) C2conc) i
+            (gFaithful u) := by
+    rw [Finset.mul_sum, ← Equiv.sum_comp tau (fun i => gFaithful u 20 * (b' 0 i u *
+      flat (Pmat (cc 0) (cc 1) (cc 2) (cc 3) (cc 4) (cc 5) (cc 6) (cc 7) C2conc) i (gFaithful u)))]
+    refine Finset.sum_congr rfl (fun j _ => ?_)
+    rw [Function.comp_apply, coreGen_gWrap_flat]; ring
+  rw [hrw, he, gFaithful_apply_20]; ring
+
