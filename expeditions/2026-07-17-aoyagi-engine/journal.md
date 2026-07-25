@@ -22399,3 +22399,40 @@ phase-1-GREEN=DE-RISK (processing my general-d gate convene next); gate2 ACCEPTE
 grind) + will decorrelated-review the wrap on land (bar ratified: entry-relation vs sympy, ⟨c11·E⟩
 double-count accounted, GENUINE blockBlowupMap, c11-ratio ≥ 4 RED-FLAG STOP, τ a genuine permutation [no
 dropped generator], both directions, clean-three). Holding for routeP-p1's wrap-ready ping.
+
+**RECALIBRATION — the navigator caught my residual UNDER-COUNT; re-aligning to the charter's gate bar
+(2026-07-25).** navigator-gend delivered the general-d ladder + #114/#115 reconciliation map
+(expeditions/.../gate-gend-navigator-map.md). I VERIFIED its load-bearing claim against ground truth
+(render SEAM-CHECK 1269-1282, which I curated 2026-07-24): closing exists_coreResolution:311 needs a REAL
+Resolution general-d — hg_analytic, hg_inj/hexcep_null, hjac (L6, dom-wide, rendered exact), AND hcover
+(L7, coupled corank≥2 fan). The render says verbatim: L7's coupled hcover is "the one piece the audits
+left genuinely UN-PROBED at corank≥2 — the highest residual risk", "Do NOT frame the geometric atlas as
+small." My recent "DE-RISK green → coreGen-wrap completes the base case → general-d gate" framing DRIFTED
+back into the under-count the render explicitly warned against (folding L6/L7 into "value wiring"). The
+anti-optimism guard (caught 6 of 7) catches this as the next candidate. Owned.
+
+RE-CALIBRATED STATE (accepted, verified):
+- The ladder is 9 rungs, NOT 5: L6 (hjac/jac/analyticity/injectivity, rung 5b) + L7 (hcover, rung 5c) are
+  FIRST-CLASS, not "wiring". Rung 2 = the hideal SPINE (I mislabeled it "cover"); the (3,3,4)
+  fin_cases<;>simp<;>ring idiom does NOT lift — general-d is abstract symbolic composition (the LONG POLE,
+  GUARD-B). Rung 4 (conjResolution transport) BANKED/done.
+- The general-d gate ENTRY BAR = the CHARTER's own DE-RISK(a) terms (§1.B): a FULL (3,3,4) Resolution +
+  realization-at-(3,3,4) + full-fan cover ATOM, green-BOTH — NOT the flat(Pmat) hideal. At (3,3,4),
+  jac/hjac/injectivity/cover/realization are UN-STARTED. The charter held this line; my "hold the gate
+  until the coreGen-wrap lands" under-counted vs the charter. Re-aligning UP to the charter's bar.
+- The coupled hcover (5c) = the HIGHEST un-probed risk, encoding-INDEPENDENT → FRONT-LOAD it (a lane NOW,
+  parallel to everything, risk-free to start — needed under any outcome; the hunt-precedes-trust
+  discipline + the render's "aim the build at: does L7's hcover hold for the coupled fan at corank≥2").
+  The faithful multi-term box-containment was cleared only in a PYTHON probe (render §9); Lean-UNBUILT;
+  fan-completeness forces the FULL fan (route-a), NOT col-pinned (Codex exhibited a col-0 escape).
+- GOOD NEWS (verified both channels): the :308 seam is ROUTE-AGNOSTIC (exists_hlb_hattain_of_exists_
+  atlasRealizesExponents consumes ∃res for ANY res → route P plugs the same seam); the backbone
+  (buildTree/minAdm/o5) + value engine + Chart vocab + ConjResolution SURVIVE; :311 is the RIGHT + ONLY
+  residual sorry on the via_engine cone. The fold cluster (MonumentAtlas/Assembly + Wire + GeoAtlasTransfer)
+  is CONFIRMED off the via_engine cone → cartographer prune at close. #114 Geo* mechanisms PARTIALLY survive
+  as candidate 5b/5c reuse but for a SIMPLER single-term object (the multi-term fidelity gap IS 5b/5c).
+
+ACTIONS: (1) FRONT-LOAD the coupled hcover atom (corank-2 faithful, route-a full fan) — a fresh Lean
+go/no-go, decorrelated, STOP-on-math-gap → escalate to pen-and-paper. (2) re-print #print axioms on the
+next green build (CoreGenWrap downstream). (3) fold-cluster prune = a cartographer close-phase task.
+The DE-RISK (crux + flat hideal) remains a real + doubly-confirmed win — but it is ONE rung of nine.
