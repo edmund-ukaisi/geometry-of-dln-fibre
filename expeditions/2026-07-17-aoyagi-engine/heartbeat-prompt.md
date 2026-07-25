@@ -61,28 +61,33 @@ side is now CLEAN for all, the decision is about the R2 cover + whether to prove
   `Chart.hideal_bwd`-field cite, strictly narrower than objects-only). ← middle; ideal-monument de-fanged.
 - (objects-only) cite `cited_aoyagi_lower_ax` (STOP-fallback, charter-faithful #94).
 
-**ELDER UPDATED RANKING [DONE, post-probe]: P-build > objects-only > V-build.**
-- **V DEMOTED** — V shares the SAME family-cover (lower bound = Σ_charts ∫ needs up-to-null coverage; b_k₀ is
-  a post-resolution object needing g); V's edge shrinks to avoiding a cheap+verified local principality;
-  same generality gap as P. Do NOT switch to V absent an operator strictly-cite-free steer [#110/#111 parked].
-- **Tube-cover = detail-at-scale IN KIND but general-d UNPRICED** (positive-measure {unit≈0} tubes ⟹ nullity
-  alone insufficient, sibling charts must actively cover; = the #145 object). Monument-ADJACENT, not -class.
-- **Honest destination (wait-for-go):** fully-cite-free = TWO arbitrary-depth inferences (local principality
-  + tube-cover), both verified-one-rung, neither proven general. (A) fully-cite-free=two mountains / (B)
-  P-with-the-small-cite (build atlas+cover, cite the LOCAL principality, < objects-only) / (C) objects-only #94.
+**TUBE-COVER PROBE [#169, WITNESS — detail-at-scale; `threads/reroute-R2-tubecover/tube-cover-probe.md`]:**
+objects-only (C) is OFF; destination = (A) fully-cite-free reachable / (B) P-with-small-cite. Decorrelated
+(exact-algebra + own Codex, converged; SAME (3,3,3,2,2) instance as the ideal probe ⟹ compose).
+- **Mis-scoping CORRECTION (load-bearing):** the lower bound needs the FULL residual sum-of-squares R>0
+  (R(0)=1, {R=0} CODIM-4), NOT the pivot quotient 1+pd. The {1+pd≈0} tube was a two-sided-PRINCIPALITY
+  proof-technique artifact, not a lower-bound obstacle. R>0 on a whole ball radius<1; the tube only appears
+  at box scale ≥1, where the SURVIVOR-ENTRY fan covers it 100% (common-uncovered={X=0} codim≥2, measure 0).
+- **R2 SPEC CORRECTION:** the fan must fan over the SURVIVOR ENTRY (each residual-ideal generator), NOT the
+  radial pivot alone (radial-pivot-only covers 0%). Same lesson as sector-count's route (a).
+- **OPEN CAVEAT (B1, not buried):** #145's ~2% = (B2) the tube [RESOLVED here] + (B1) the sector-count
+  ESCAPE CONE {max_W > C·max_V} [SEPARATE, still priced by sector-count, NOT closed]. Routed to the elder.
+
+**ELDER RANK (standing): P-build > objects-only > V.** V DEMOTED (shares the cover; edge = avoid a cheap
+verified local principality) [#110/#111 parked]. Honest destination (wait-for-go): (A) fully-cite-free
+(the survivor-entry-fan cover + {R=0}-recursion + local principality — the R>0 correction may drop this to
+ONE arbitrary-depth inference, elder to confirm) / (B) P-with-the-small-local-principality-cite / (C) objects-
+only #94 — now OFF unless B1 walls.
 
 **IN FLIGHT (decision inputs):**
-1. **TUBE-COVER PROBE [#169, tubecover-probe — THE TRUE NEXT GATE]:** does the born-sibling fan cover the
-   {unit≈0} tubes up-to-null at a deeper-mixed separated-depth instance (#145-at-depth). Witness ⟹
-   detail-at-scale (A/B); obstruction (positive-measure hole every sibling excludes) ⟹ monument-adjacent (C).
-   Persist → `threads/reroute-R2-tubecover/tube-cover-probe.md`. Elder re-convenes on this result.
-2. **Seat V-test tail** → reroute-R3derisk: finishing the one-sided-vs-two-sided V-test (now a decorrelated
-   confirmation of the elder's Q1, not decision-critical — V already demoted). Then rest.
-3. **R2 [#165]:** family-cover re-scoped = "subordinate to leaf unit-loci {u≠0}, null complement, sibling
-   charts cover the {unit≈0} tubes." HOLD the R2 cover build until #169 prices detail-at-scale-vs-monument.
-   Ideal side is clear to build (elder).
-4. **Operator surfaced** — the (A)/(B)/(C) destination framing; non-blocking; the tube-cover probe prices it;
-   the one steer that flips the default = "strictly-cite-free-or-nothing".
+1. **Elder re-convened** → elder-reroute: updated A-vs-B ranking; does the R>0 correction drop (A) to ONE
+   inference; is B1 (escape cone) a real residual or a Cartesian-fan artifact (does it need its own probe);
+   is the survivor-entry-fan R2 green-to-build.
+2. **tubecover-probe** held available for a possible B1 follow-up probe (instance+context loaded), else rests.
+3. **R2 [#165]:** re-scoped = survivor-entry fan (each residual-ideal generator) + {R=0}-recursion. HOLD the
+   build pending the elder's B1 read. Ideal side clear.
+4. **Operator surfaced** — C off, A/B reachable, the B1 caveat; non-blocking; the one steer that flips the
+   default = "strictly-cite-free-or-nothing".
 
 **HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
 

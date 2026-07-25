@@ -1,0 +1,21 @@
+### (a) COMPOSES
+
+Proved from the stated hypotheses: `RegionRepresents` is transitive because cofactor matrices multiply, and both directions compose independently. Precomposition pulls cofactors back to the chart preimage, while restriction moves all identities to the required common region. Radially, every residual generator is \(E\) times a polynomial and the pivot generator is exactly \(E\), so the reverse certificate is the constant pivot selector. Block elimination introduces only \(\pm c_i(b_i/b_p)\); the threaded divisibility chain makes these polynomial monomials, not inverses. Thus arbitrary finite depth and coupling merely enlarge finite sums and products of continuous cofactors. The threshold-data mirage is a different, value-level information-loss problem and is not an ideal-composition obstruction.
+
+**Discriminating test:** At the first unverified deeper-mixed node, expand the complete reverse certificate after pullback; a negative exponent in any \(b_i/b_p\), or loss of a residual generator equal to \(E\), is the exact breaking witness.
+
+### (b) CONDITIONAL
+
+The full-space conclusion is proved for the corank-2 chart, while the shared-factor witnesses prove terminal polynomial ideal equality but not the arbitrary-depth chart invariant. If every step remains a pivot-fixing unipotent shear followed by an exact affine-pivot blow-up, then the pivot quotient is \(1\), the determinant is \(\pm\) the predicted monomial, and composition preserves unit \(1\) independently of corank. Arbitrary coupling coefficients inside unipotent shears do not alter this determinant or introduce division. Failure could occur only if a deep transition or corner-join scales the pivot by \(q\), ceases to be unipotent, or establishes terminal principality only after localizing at \(q\). Thread-28 means those possibilities have not been excluded generally, although no supplied witness exhibits them. Also, \(q\neq1\) alone does not force shrinkage: \(q\) must have zeros in the required chart region, and `unit 0 ≠ 0` always permits some smaller neighborhood avoiding them.
+
+**Discriminating test:** On the first thread-28 deeper-mixed chart, verify simultaneously over the polynomial ring that \(I_{\mathrm{terminal}}=\langle b_{k_0}\rangle\) and \(\det Dg=\pm m\) exactly; equality only after inverting a factor having a real zero breaks `nbhd = univ`.
+
+### (c) CONDITIONAL
+
+The stated recursion posits “deeper layers untouched,” but the supplied verified facts do not establish the corresponding normal-form invariant at arbitrary mixed depth. It is safe if every residual has form \(\operatorname{diag}(b)\,H\), with \(H\) and every \(c_i\) independent of shallower-cleared coordinates. Shared factors then affect only the \(b\)-exponents, with corner-join handling their terminal reconciliation. The two shared-factor witnesses support this mechanism but do not prove it beyond the tested joins. Even if a deep multiplier did read a cleared coordinate, its polynomial occurrence would not by itself invalidate part (a); it would instead break the fresh-core induction and possibly terminal principality. No supplied example actually reads a cleared coordinate.
+
+**Discriminating test:** At the first open deeper-mixed node, factor out the asserted \(\operatorname{diag}(b)\) and inspect the normalized core and elimination multipliers for shallow-cleared variables; any such variable in their polynomial support is an exact `READS-CLEARED` witness.
+
+### STOP-OR-GO: GO
+
+There is no demonstrated ideal-side MONUMENT wall: composition itself is settled under the local certificates and threaded chain. The unresolved part is the arbitrary-depth preservation of the exact chart normal form and terminal corner-join invariant. Calling this bounded detail-at-scale is presently a well-supported inference, not a proof; an objects-only fallback is not justified unless the proposed deeper-mixed test produces a denominator, unavoidable localization, or genuine cleared-coordinate dependency.
