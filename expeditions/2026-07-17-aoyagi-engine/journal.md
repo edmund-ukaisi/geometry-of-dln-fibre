@@ -24450,3 +24450,21 @@ cherry-picked 54c8ede35 (docstring-only, 13-line diff, disjoint from my aggregat
 trunk → **6e2221141**; force-elaborated (11 roots clean-three, no sorries); pushed. The Q5 reword (hchart
 set-cover DISTINCT from the R>0 sandwich; dropped the unsupported "fails hchart" link) is now genuinely on
 trunk. **R2 cover atom COMPLETE on trunk** — all review findings (#1/#2/#3/Q5) + aggregator wiring in.
+
+## 2026-07-25 (tick, cont.) — R2-completion FOLD ENGINE delivered (ImageTreeCover @317e4786e); review + elder-scope gating
+
+reroute-R2build delivered the cover fold ENGINE: ImageTreeCover.lean (branch -r2fold @317e4786e off trunk
+33b70f54e), sorry-free, 7 roots clean-three (force-rebuild, no cites), Codex-decorrelated [#175]. The abstract
+MEASURE fold: `glue_null` (one-node measure-gluing, ALL set/measure bookkeeping, general over any measure +
+Countable index) + `coversUpToNull_volume_diff` (THE FOLD: volume(closedBall 0 R \ leafImages)=0 by structural
+induction) + `coversUpToNull_nbhd` + `node_clause_of_survivorAtom` (per-node clause = the SurvivorFanCover
+atom) + `nullTransport_of_differentiable` (discharges per-chart null-transport from Differentiable ℝ g ALONE,
+via Mathlib addHaar Jacobian — the blow-up∘shear charts hook in with NO measure-preservation/det-1 appeal) +
+witness_* (non-vacuous, real propagating {0} hole).
+
+HONEST SCOPE (seat + Codex both flag): the ABSTRACT engine + assembly link + wire hooks, NOT the concrete
+buildTree/tGeo instantiation (needs the real survivor charts + hchart discharge = R3-adjacent). GATES: fidelity
+review [#176, r2build-review re-engaged] + the ELDER scope-ruling (does this complete R2, or is the concrete
+buildTree cover a distinct rung — the honest R2/R3 boundary; routed, non-blocking the merge) + my merge-time
+re-verify → merge to trunk. Process fix ACTIVE: merge only on the seat's EXPLICIT final-merge-ready SHA +
+re-fetch confirm (from the double stale-SHA race). reroute-R2build resting until the review lands.
