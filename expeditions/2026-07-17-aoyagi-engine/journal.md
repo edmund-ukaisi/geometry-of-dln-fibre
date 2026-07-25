@@ -22631,3 +22631,31 @@ doesn't reach + gate2's sharpest point. Bounded exact-algebra; general-d-gate de
 ((3,3,4) Resolution or the corank-2 atom). Hunt-precedes-trust on the general-d cover's load-bearing induction.
 STATE: hcover fully de-risked (adjudication 4-channel + provenance 3-channel + atom built + fidelity PASS);
 the depth-3 is the last hunt. PIVOTAL OPEN DECISION remains the chart-architecture fork (#138 pnp-chartarch).
+
+**5c ATOM — 2-channel PASS (build + gate2 fidelity/model); architecture-INDEPENDENT (2026-07-25).** gate2's
+full 5c model-fidelity read = clean PASS on both the no-proxy check AND the sharpened model question:
+- NO-PROXY (concrete): faithfulShear (Fin 14) writes {4-7} Schur (1 product) + {8,9} recoord (TWO products
+  each: slot8 = x2·x10+x3·x12, slot9 = x2·x11+x3·x13 = the genuine Q₂⁻¹=I−N combine); box r+2r² (C=2),
+  distinct from coShear's C=1 box r+r²; leaf box 21 = f^[2]1 (not coShear's 6); the two recoord by_cases
+  (hp1,hp2) prove the 2-product bound — independent proof it's the faithful object, not the proxy.
+- MODEL-FIDELITY (the sharpened q): w=2/Fin-14 is the RIGHT MINIMAL faithful corank-2 model — a valid OBL-1
+  instance (φ=0 on kept, reads only kept, write{4-9}⟂read{0-3,10-13}, degree exactly 2, exact inverse,
+  coeffs ±1; matches every OBL-1 corank-2 cell). NOT over-specified (the C=2 comes from CORANK — 2 pivot-col
+  ratios per slot — NOT w; w only sets the #recoord slots; w=2 deliberately exercises parallel-recoord
+  indexing, erring more-faithful = correct discipline). NOT under-specified (both recoord slots carry the
+  true 2-product form; nothing the real node exercises at the box level is missed). Verbatim engine reuse
+  confirmed; sorry-free; ends with #assert_banked_clean_batch over all 4 cover results.
+So 5c banks on 2 channels (build/clean-three-self + gate2 fidelity/model PASS); my #print-axioms force-elab
+re-derive AT INTEGRATION = the 3rd.
+
+TWO SCOPE CAVEATS (gate2, correctly out-of-scope in the atom, for the general-d gate):
+(1) C=2 is CORANK-SPECIFIC; the general-d cover needs the GLOBAL C∗ = max C over nodes (OBL-1's "one global
+    f = r↦r+C∗·r², C∗ ≤ D"). NAMED general-d cover obligation (add to #130 alongside #86(B) transport,
+    hdom_ball, the stabilizer induction).
+(2) The atom is an ABSTRACT Fin-14 model, NOT wired to the real (3,3,4)/gWrap node coords — that mapping is
+    5b/5d (paused on #138). No over-claim (the atom's docstring scopes it). KEY FINDING: the box lemma is
+    ARCHITECTURE-INDEPENDENT — the #138 folded-vs-decomposed fork changes how the shear is ASSEMBLED, not the
+    displacement's degree/coeff structure — so the 5c atom is ROBUST to the #138 outcome either way. Good:
+    5c stands regardless of the fork; it's a genuine banked rung, not fork-contingent.
+STATE unchanged: hcover de-risked across adjudication (4-ch) + provenance (3-ch) + atom (2-ch) + depth-3 in
+flight. PIVOTAL OPEN DECISION = the chart-architecture fork (#138 pnp-chartarch). Holding.
