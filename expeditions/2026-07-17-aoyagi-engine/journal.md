@@ -24128,3 +24128,27 @@ operator destination call. Surfaced to the operator.
 **Net:** the reroute dissolved the architecture walls, verified the ideal core one rung deeper, AND localized
 the residual precisely to the family-cover-subordinate-to-unit-loci (= #145). Genuine progress — named as that,
 NOT as "cite-free is close." The tube-cover probe is now THE load-bearing rung.
+
+---
+
+## 2026-07-25 (tick, cont.) — V-test EXHIBITED (but demoted, shares cover); compass F10 landed; both seats rest
+
+**V-test extension [reroute-R3derisk, Gröbner-exact + coupling sign; appended to deeper-mixed-probe.md]:**
+V is EXHIBITED (meets the elder's P8 bar) in two independent forms — (a) germ-at-0 ideal containment w ∈ I
+with cofactor 1/(1+p·d)→1 at 0; (b) MONUMENT-FREE pointwise `L ≥ (kept)² = w²(1+p·d)² ⟹ rlct(L) ≥ ½Mval`,
+needing only ONE pullback entry, no ideal membership / cofactor / det / injectivity / localization. Coupling
+sign = **+ (assists)**: extra mass = a²w²(ww−uv)²·Σz_j² = a sum of squares ≥ 0. **But V SHARES the R2
+family-cover** (3 reasons: rlct=min over all branches; b_k₀ is a post-blow-up chart-coord monomial; #109 is
+literally "the ideal-level COVER lower bound"). V's ONLY saving over P = dropping the per-leaf certified atlas
+(the cheap, verified-one-rung, r≥1-robust local principality). So the ideal side is CLEAN for both arms; the
+**single true gate = R2**. Value nuance (seat): P buys the full Resolution (reusable charter Object A–E); V
+buys only the lighter value-floor — given the now-small delta, P may be the better value if R2 closes and
+strictly-cite-free isn't demanded.
+
+**Compass F10 landed** (elder-authored, controller-committed): the settled fork-finding
+(VERIFIED-BUT-LOCALIZES; residual = tube-cover; V demoted; P-build > objects-only > V; destination A/B/C =
+operator). No charter §1-B edit yet (object B status "one-object re-route ADOPTED, rung-gated" still holds);
+a destination adoption (A/B/C) will trigger the §1-B status edit — flag the elder then.
+
+**Both decorrelated seats (reroute-R3derisk, elder-reroute) have delivered + are resting.** Sole in-flight
+decision input = the tube-cover probe [#169, tubecover-probe] — the true next gate that prices A vs B/C.

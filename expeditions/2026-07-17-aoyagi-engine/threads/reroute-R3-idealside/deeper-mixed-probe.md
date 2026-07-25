@@ -78,3 +78,39 @@ up-to-null hcover). MOST LIKELY TO BREAK IT: the all-depth family-indexed up-to-
 tubes (R2/geometry, = the #145 cover gap), NOT the ideal composition. The fatal 1/monomial is structurally
 excluded for binding branches (r≥1 ⟹ kept survivor ⟹ unit(0)≠0). NEXT: fold the "subordinate-to-unit-loci"
 refinement into R2's family-cover spec; the ideal conjunct is clear to build.
+
+---
+
+## V-TEST EXTENSION (appended) — V EXHIBITED but SHARES the cover
+
+Script `/tmp/vtest_probe.py`. Same deeper-mixed instance (deep corank-2 heart `a` + shallow radial `w`,
+separated depths). I's grevlex Gröbner basis: 17 elements (6 heart 2×2-minors `a·(sᵢs_{j+4}−s_js_{i+4})·w`,
+8 radial relations, the kept `d·p·w+w`, δ·t_j·w). Generators: `w·(1+p·d)` (kept), `w·a·σ_j`, `w·a·e·z_j`
+(e = ww−uv = Schur/coupling), `w·δ·t_j`.
+
+**P-test (I = ⟨b_k₀=w⟩ TWO-SIDED):** fwd (w | every gen) TRUE; bwd GLOBAL (polynomial cofactor) FALSE;
+bwd LOCAL (after inverting the kept unit 1+p·d) TRUE ⟹ P holds only LOCALLY (nbhd={unit≠0}) — the monument,
+needs the certified atlas + cover.
+
+**V-test (⟨b_k₀⟩ ⊆ I ONE-SIDED — EXHIBITED, two independent forms):**
+- V-ideal (germ at 0): w ∈ I with cofactor 1/(1+p·d), value 1 at 0 ⟹ continuous germ. TRUE.
+- V-pointwise (MONUMENT-FREE): L = Σ gens² ≥ (kept)² = w²(1+p·d)², factor→1 at 0 ⟹ L ≥ w²·c near 0 ⟹
+  rlct(L) ≥ rlct(w²) = ½Mval. NO ideal membership, NO cofactor, NO reverse inclusion, NO det=monomial, NO
+  a.e.-injectivity, NO localization — just ONE pullback entry = b_k₀·(unit@0). TRUE.
+⟹ V EXHIBITED (per the P8 bar); its per-chart certificate is FREE (L ≥ any one term² is automatic).
+
+**COUPLING SIGN: + (ASSISTS).** Extra mass L_coupled − L_decoupled(e=0) = a²w²(ww−uv)²·Σz_j² = a SUM OF
+SQUARES ≥ 0 ⟹ the shared deep factor RAISES L ⟹ the floor is MORE robust with coupling.
+
+**DOES V AVOID THE COVER? NO — V SHARES it** (three converging reasons): (1) rlct = min over ALL branches
+⟹ a lower bound must hold in every direction at 0 ⟹ charts must cover a nbhd up-to-null incl. each
+{unit≈0} tube; (2) b_k₀ is a monomial in CHART (post-blow-up) coords, so relating the original-coord germ
+to the branch-min REQUIRES the resolution charts + their cover; (3) the banked V-lower (#109) is literally
+"the ideal-level COVER lower bound" — its proof already uses a cover. **V's ONLY saving over P = dropping the
+per-leaf certified-resolution atlas (the local single-chain principality) — cheap, verified-one-rung,
+r≥1-robust.** The family-cover (R2) is SHARED ⟹ NOT a differentiator ⟹ the SINGLE TRUE GATE for both arms.
+
+**NET:** ideal side CLEAN for both arms one rung deeper; V vs P = how much ideal certificate (V none via the
+free pointwise bound + Object A; P the local principality); BOTH gated on R2 (the family-cover). If R2 walls,
+both fall to objects-only. Value nuance: P buys the full Resolution (a reusable charter Object A–E); V buys
+only the lighter value-floor.
