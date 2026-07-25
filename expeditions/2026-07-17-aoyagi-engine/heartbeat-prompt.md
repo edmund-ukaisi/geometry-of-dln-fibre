@@ -67,7 +67,7 @@ cites), wired into the aggregator. Per the elder ruling: this is the cover-conju
 Core-grade, honest tracked-open hnull [cheap codim-nullity, NOT #172] / hchart [R3]); NECESSARY-NOT-SUFFICIENT
 — NOT "the real DLN cover is discharged" (that's R3).
 
-**HONEST LADDER: R0 ✓ · R1 ✓ · R2-cover-INFRASTRUCTURE ✓ → R3 (elder GATING now: route-adoption + de-risk-first + decomposition) = THE one big unified fold.**
+**HONEST LADDER: R0 ✓ · R1 ✓ · R2-cover-INFRASTRUCTURE ✓ → R3 (elder ADOPTED; the hchart DE-RISK [#177] is the TRUE NEXT GATE — decompose hchart [binv/ideal-identity = already-priced-detail-at-scale, vs a separate structure] + price + W3-check; decides R3-is-a-build vs (B)-fallback). R3 WARNINGS held: W1 D_p-SAME-chart (cover+ideal on the SAME fam l, else R1 re-opens); W2 G1 survivor-ENTRY fan at the wire + G2 additivity-wireable; W3 [SHARP] hchart BORN per-pivot, NOT inter-sibling orbit-transport (= retired gate-routeB WALL F9). First-brick = real-(3,3,4)-hchart THEOREM (M1/M2-style) then the fold = THE one big unified fold.**
 R3 = concrete buildTree→charts + the REAL survivor charts + hchart discharge (the loss-isometry-orbit structure
 = the real difficulty) + the cover engine APPLIED + binv (ideal) + ledger, all threaded through conRel_wf. The
 concrete cover FOLDS IN HERE — NOT a separate pre-R3 rung. **G1 rides on the R3 WIRE** (the engine folds a
