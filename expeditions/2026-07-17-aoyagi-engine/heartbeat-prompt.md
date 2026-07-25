@@ -58,20 +58,16 @@ operator's steer (does NOT gate the build). V-arm [#110/#111] parked.
   build relies on it — NOT in-repo (controller-checked); scout `rlct-additivity-scope` scoping Fubini-build
   vs cite. A DISTINCT theorem from Object A.
 
-**BUILDING NOW:** R2 cover atom MERGED to the reroute trunk @ `33b70f54e` — `SurvivorFanCover.lean`
-(survivor-entry / matched-pairing fan, up-to-null cover; honest tracked-open hnull [cheap codim-nullity, NOT
-#172] / hchart [R3 wire]) [#173 ✓]. Fidelity review SURVIVED + all docstring fixes landed [#174 ✓];
-controller-verified (full aggregator GREEN 9041 jobs, no clash; force-elab → 11 roots clean-three, no cites).
-First R2 rung integrated.
-**R2-COMPLETION FOLD ENGINE DELIVERED (reviewer-pending) [#175]:** `ImageTreeCover.lean` (-r2fold @317e4786e;
-abstract measure fold — glue_null + coversUpToNull_volume_diff + nullTransport_of_differentiable [null-transport
-from Differentiable ℝ g alone] + node_clause_of_survivorAtom [= the atom]; 7 roots clean-three,
-Codex-decorrelated). **ELDER LADDER RULING:** this is the cover-conjunct INFRASTRUCTURE (atom + abstract engine
-+ hooks). "R2 done" is honest ONLY as "R2 cover-infrastructure done (reviewer-pending)"; it OVER-CLAIMS if it
-travels as "the real buildTree is covered." Engine is NECESSARY-NOT-SUFFICIENT — the hard part is R3. GATES:
-fidelity review [#176] + my merge-time re-verify → merge (on the seat's FINAL merge-ready SHA + re-fetch).
+**R2 COVER-INFRASTRUCTURE ✓ COMPLETE (merged to trunk @ `60f3f0ae3`).** The atom `SurvivorFanCover`
+(survivor-entry / matched-pairing fan, up-to-null cover) [#173] + the abstract fold ENGINE `ImageTreeCover`
+(glue_null + coversUpToNull_volume_diff + nullTransport_of_differentiable [null-transport from Differentiable
+ℝ g alone] + node_clause_of_survivorAtom = the atom hook) [#175] — both fidelity-reviewed SURVIVED [#174/#176],
+both controller-verified (full aggregator GREEN 9042 jobs, no clash; force-elab 11+7 roots clean-three, no
+cites), wired into the aggregator. Per the elder ruling: this is the cover-conjunct INFRASTRUCTURE (reusable
+Core-grade, honest tracked-open hnull [cheap codim-nullity, NOT #172] / hchart [R3]); NECESSARY-NOT-SUFFICIENT
+— NOT "the real DLN cover is discharged" (that's R3).
 
-**HONEST LADDER: R0 ✓ · R1 ✓ · R2-cover-INFRASTRUCTURE ✓ (reviewer-pending) → R3 = THE one big unified fold.**
+**HONEST LADDER: R0 ✓ · R1 ✓ · R2-cover-INFRASTRUCTURE ✓ → R3 (elder GATING now: route-adoption + de-risk-first + decomposition) = THE one big unified fold.**
 R3 = concrete buildTree→charts + the REAL survivor charts + hchart discharge (the loss-isometry-orbit structure
 = the real difficulty) + the cover engine APPLIED + binv (ideal) + ledger, all threaded through conRel_wf. The
 concrete cover FOLDS IN HERE — NOT a separate pre-R3 rung. **G1 rides on the R3 WIRE** (the engine folds a

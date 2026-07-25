@@ -24518,3 +24518,26 @@ alone suffices in equal-dim; NOT measure-preservation — reviewer pulled the so
 - Reviewer's engine-vs-done scope read CONVERGES with the elder's ruling: R2 = cover-INFRASTRUCTURE (a genuine
   reusable object); the concrete real-chart application (real survivor charts + hchart + per-child domains) = R3.
 Reviewer RELEASED (re-engage for the R3 unified fold). Merge fires on the seat's final SHA.
+
+---
+
+## 2026-07-25 (tick, cont.) — R2 COVER-INFRASTRUCTURE COMPLETE on the reroute trunk (fold engine merged)
+
+**MERGED [#175/#176 done]:** the R2-completion fold engine — cherry-picked the two -r2fold commits (317e4786e
+ImageTreeCover + ca8b93440 line-14 fix, seat's EXPLICIT final SHA, re-fetch-confirmed per the merge discipline)
+onto the trunk + wired the aggregator import → trunk @ **60f3f0ae3**. Controller-verified: full
+`lake build DLNFibre` GREEN (9042 jobs, NO name-clash), force-elaborated ImageTreeCover → "7 roots
+banked-clean, no cites" (clean-three re-derived). Review SURVIVED + elder scope-OK.
+
+**R2 = the cover-conjunct INFRASTRUCTURE is DONE (honest scope, per the elder ruling):** the survivor-entry
+atom (`SurvivorFanCover`) + the abstract up-to-null branching fold engine (`ImageTreeCover`: glue_null +
+coversUpToNull_volume_diff) + the two hooks (`node_clause_of_survivorAtom` = atom-assembly link;
+`nullTransport_of_differentiable` = null-transport from Differentiable ℝ g). Reusable Core-grade infrastructure,
+non-vacuous, clean-three. Merge = infrastructure banked; NOT "the real DLN cover is discharged" (that's R3).
+
+**LADDER: R0 ✓ · R1 ✓ · R2-cover-INFRASTRUCTURE ✓ → R3 = THE one big unified fold** (the concrete
+buildTree→charts + the REAL survivor charts + hchart discharge [the loss-isometry-orbit structure = the real
+difficulty] + the cover engine APPLIED via the GENERAL glue_null [per-child domains, NOT the packaged uniform
+fold] + binv ideal + ledger, all threaded through conRel_wf, G1 held at the wire). Elder-gated route-adoption
+joint; if the real hchart discharge proves harder than detail-at-scale → the (B)-fallback trigger. Convening
+the elder to gate R3. The value side (superadditivity G2 + per-chart integrability + #172) is a parallel track.
