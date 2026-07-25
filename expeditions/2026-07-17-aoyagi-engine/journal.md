@@ -22257,3 +22257,31 @@ two-sided hideal GREEN (delivered, controller-re-derived clean-three); ZERO sorr
 framing → ⟨c11·E⟩) + the fidrev-p1 fidelity verdict + the full scripts/lb DLNFibre gate. Holding for the
 full coreGen-level phase-1 GREEN → elder general-d gate (fresh, GUARD-A); or a wall/fidelity-gap → reconcile.
 GUARD-B: ONE instance ((3,3,4)), not general-L.
+
+**GUARD-3 GREEN + a FIDELITY GAP caught (2026-07-25).**
+- **Full-aggregator gate GREEN:** routeP-p1's `scripts/lb DLNFibre` = "Build completed successfully (9024
+  jobs)" — the crux + flat(Pmat) hideal integrate cleanly into the whole library (name-clash gate PASSED).
+  With the sorry-free + clean-three I re-derived, the crux deliverable is FULLY BANKED. (Resolves the
+  earlier unconfirmed-full-gate.) coord-20 fix verified (gFaithful u 20 = u 20 — the u20→c11 factor survives).
+- **FIDELITY GAP (fidrev-p1 decorrelated + Codex, controller-re-derived) — the fidelity guard working.**
+  `delta_comp_coupled` is NECESSARY-NOT-SUFFICIENT as the faithfulness witness: Δ01∘g = (u0u1u5 + u9u10) −
+  u9·u10 = u0u1u5 — the coupling cross-term u9u10 CANCELS, so a nonzero Δ01∘g witnesses the BLOW-UP, not the
+  coupling/recoord. Proxies (coupling-coords-zero) pass it + pass peeled_comp_gFaithful. So the CERTIFICATE
+  doesn't PROVE faithfulness (re-commits rev-render #7's false-assurance), even though gFaithful AS BUILT IS
+  genuinely faithful (verified non-trivialities: recoord u8u12+u9u16, coupling u9u10). PRECISION not
+  wrong-object. MINIMAL REPAIR (directed to routeP-p1; fidrev-p1 re-reviews): add TWO `∃u, expr ≠ 0` checks —
+  (a) recoord non-trivial, (b) coupling non-trivial (the cancelled u9u10) — certifying both participate; +
+  fix the STALE module docstring (still says SCAFFOLD/crux-is-a-sorry/nonexistent-component-defs). Q1
+  MATCHES + Q2 CORRECT (flat(Pmat) level; coreGen ⟨c11·E⟩ correctly deferred to part-C).
+- **∀e ASSEMBLY FLAG (controller, verified LearningCoefficient:292/:326/:201).** gate2's custom-e design
+  call is fine for phase-1's CHART, but exists_coreResolution is stated ∀e + the payoff consumes it at
+  exists_flatten's witness (canonFlatten), NOT the custom e — so the custom↔canonFlatten reindex MOVES from
+  the block-elim (avoided) to the exists_coreResolution ASSEMBLY (transport the custom-e atlas to ∀e, a coord
+  permutation; keeps ∀e). coreReduction e-general covers the VALUE leg only. KNOWN assembly item (flagged to
+  gate2), NOT a phase-1 blocker.
+
+**Status.** Crux FULLY BANKED (guard-3 green, re-derived). routeP-p1: (i) the fidelity repair (2 nontriviality
+checks + docstring) + (ii) part-C #131 (custom-e coreGen-wrap → ⟨c11·E⟩) — flagged the custom-e dependent-width
+Tuple as CLAUDE.md-hazardous, time-boxed + STOP-report-the-tax if it resists (right). fidrev-p1 re-reviews the
+repair. Assembly ∀e-transport tracked. Holding for the fidelity repair + part-C (GREEN → coreGen-level phase-1
+→ elder general-d gate; wall → objects-only). GUARD-B: ONE instance, not general-L.
