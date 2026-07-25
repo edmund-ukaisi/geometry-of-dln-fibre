@@ -24441,3 +24441,12 @@ G2 is a VALUE-RUNG dependency (after the fold), NOT the immediate path. Pinned c
 **Build state:** R1 ✓, R2 atom ✓ (on trunk). Building: the R2 cover fold. Queued: value side (per-chart
 integrability + #172 + G2), R3 unified fold (biggest rung, elder gate). De-risk arc stays closed ((A) sound,
 no monument). Guards live: G1 SUM-not-PRODUCT; G2 verify-additivity-wireable = SCOPED (build).
+
+## 2026-07-25 (tick, cont.) — Q5 fix cherry-picked onto trunk (6e2221141); R2 cover atom COMPLETE on trunk
+
+Second stale-SHA race (seat-caught): I FF-merged 3470c1361 (fixes #1/#2/#3) before the seat's Q5 fix landed
+as 54c8ede35 — so the trunk's SurvivorFanCover.lean:39 still had the old "fails hchart" prose. FIX:
+cherry-picked 54c8ede35 (docstring-only, 13-line diff, disjoint from my aggregator-import commit) onto the
+trunk → **6e2221141**; force-elaborated (11 roots clean-three, no sorries); pushed. The Q5 reword (hchart
+set-cover DISTINCT from the R>0 sandwich; dropped the unsupported "fails hchart" link) is now genuinely on
+trunk. **R2 cover atom COMPLETE on trunk** — all review findings (#1/#2/#3/Q5) + aggregator wiring in.

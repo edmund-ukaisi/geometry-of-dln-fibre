@@ -1235,3 +1235,23 @@ compass F10 did not carry the explicit conflation (checked).
 conceptual framing slop the green build + my own re-verify (which only checks form/axioms) could not. Keep
 gating integration on the decorrelated review, not just the axiom re-check. (The prior economy-miss lesson
 generalizes: re-derived form ✓ is necessary, not sufficient; the content/framing needs the decorrelated seat.)
+
+---
+
+## 2026-07-25 — PROCESS MISS (×2, seat-caught): merging on an intermediate SHA before all fixes landed
+
+Twice I merged/verified a formaliser branch at a SHA that was NOT the final all-fixes-in commit:
+(1) re-verified 8ee1df617 (9 roots) when the merge target had advanced to dab3cb308 (11 roots); (2) FF-merged
+3470c1361 (#1/#2/#3) before the Q5 fix landed as 54c8ede35, so the reviewer's Q5 reword wasn't actually on
+trunk. Both caught by the SEAT (reroute-R2build), not me. Both docstring/wiring-level (no soundness impact),
+fixed by re-point / cherry-pick.
+
+**Root cause:** I treated a mid-stream "fixes done @ SHA" report as the final merge-ready state and acted on
+it, while more fixes (routed in a crossing message) were still in flight — a race between my merge and the
+seat's follow-up pushes.
+
+**Durable fix (adopt as merge discipline):** before ANY merge/verify, (a) require the seat's EXPLICIT "final,
+all-findings-in, merge-ready SHA = X" (not just "fixes done"); (b) `git fetch` + confirm the branch tip == X
+immediately before merging; (c) if I've routed a NEW finding after the seat's last push, that push is NOT
+final — wait for the re-push. Cheap, and it closes the crossing-race that bit twice. (Generalizes the
+calibrate-the-sensor rule to the MERGE boundary: confirm the artifact identity, not just its greenness.)
