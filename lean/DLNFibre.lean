@@ -1732,3 +1732,7 @@ import DLNFibre.DLN.Aoyagi.Corank2ClearingGate
 --   guardrail-0 as a per-emitted-step DISCHARGED theorem (`CleanClearing.jacDet_shear`) + per-sibling
 --   certs (`bornSiblings_certified`), corank-2 real instance (`bornSiblings334_certified`).
 import DLNFibre.DLN.Aoyagi.StepConstructor
+-- CoverFold (R2, cover-side): the FAMILY-UNION-COVER — `bornSiblings_union_covers`: the union of the
+--   born-siblings' step-maps covers the node ball (given the node clearing covers the source box),
+--   via the banked argmax cover `ball_subset_iUnion_blockBlowup_comp`. The elder's owed R2 obligation.
+import DLNFibre.DLN.Aoyagi.CoverFold
