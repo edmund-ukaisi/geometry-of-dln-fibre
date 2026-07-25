@@ -141,3 +141,15 @@ matched pairings are still exactly the two product terms of each survivor entry.
 listed is STRONGER than the lower bound requires, which SIMPLIFIES the R2 spec. The only residual is
 the recursion (comparable-monomial / {R=0} deep strata), already named as detail-at-scale (#172). No
 ideal-monomialisation needed for the lower bound; no monument.
+
+### Tie-in: the matched escape chart has det-monomial AND the sandwich TOGETHER (probe6, exact)
+The matched/pivot-adapted (shear-outermost) escape chart — blow-up on the off-diagonal pivot pair
+(C3[0,1]=A, C4[1,0]=B) with the normalization adapted so the '1' sits at the pivot slot — has:
+- **det Dg = −A⁵·B³** — a coordinate MONOMIAL (the two blow-up radials); IDENTICAL exponents to the
+  canonical chart's (w⁵ for C3's 6 coords, y³ for C4's 4 coords).
+- **loss = (A·B)²·R, R(0) = 1** (kept survivor X[0,0]/(AB) = c′p′ + 1 → 1) — the SANDWICH.
+So the escape chart reads the SAME divisor ratios (A: (5+1)/2 = 3, B: (3+1)/2 = 2, min = 2 = ½·minAdm)
+as canonical → contributes EXACTLY the bound. It is a complete valid sandwich chart. The B1 fix needs
+ONLY the sandwich; the shear-outermost / pivot-adapted (matched) order supplies both det-monomial and
+R(0)≠0. (The shear is a unipotent bijection fixing 0 with D(shear)(0)=I, so applied last it cannot
+destroy R(0) — a value-at-0 of the kept survivor — it only re-monomialises the Jacobian.) [FACT, exact]

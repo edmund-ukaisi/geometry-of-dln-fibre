@@ -24251,3 +24251,14 @@ modes: radial-pivot-only (0%, FAIL) / mismatched-independent (R(0)=0, FAIL, recu
 
 **B1 FULLY CLOSED. NO MONUMENT.** The SOLE remaining open item is the recursion-on-{R=0} (#172, rzero, in
 flight) — and the B1 mismatched-sector story now also reduces to it. tubecover-probe rests (all B1 work done).
+
+## 2026-07-25 (tick, cont.) — B1 shear-outermost tie-in (probe6): the escape chart is a complete sandwich chart
+
+Confirming addendum (tubecover-probe, exact, probe6; appended to b1-escape-cone-probe.md): the matched /
+shear-outermost escape chart has BOTH properties in ONE — det Dg = −A⁵·B³ (coordinate monomial, exponents
+IDENTICAL to canonical w⁵y³) AND loss = (A·B)²·R with R(0)=1 (the sandwich). So it reads the SAME divisor
+ratios (3,2; min=2=½minAdm) as canonical ⟹ contributes EXACTLY the bound — a complete valid sandwich chart.
+MECHANISM: the shear is a unipotent bijection fixing 0 with D(shear)(0)=I, so applied LAST it re-monomialises
+the Jacobian WITHOUT destroying R(0) (a value-at-0 of the kept survivor). Confirms: B1 fix = sandwich only, no
+ideal-monomialisation; R2 spec = fan by the loss-isometry orbit (matched pairings). B1 FULLY CLOSED; sole
+residual = recursion-on-{R=0} (#172). tubecover-probe rests (all B1 work done).
