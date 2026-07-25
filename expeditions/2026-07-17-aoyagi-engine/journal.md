@@ -22312,3 +22312,39 @@ rest. Remaining (general-`d` ASSEMBLY): the general mult-flatten lemma + the piv
 ⟨c11·E⟩) + the ∀e conjResolution transport + the full atlas/cover + the value wiring. All landable
 detail-at-scale (per the de-risk + the banked lemmas), NONE open math. GUARD-B: one instance, not general-L.
 Holding for: the elder ratification + routeP-p1's fidelity-repair SHA (+ fidrev-p1 re-review).
+
+**DE-RISK GREEN CALIBRATED + condition-4 ANSWERED + general-d gate convening (2026-07-25).**
+Two decorrelated seats split on the coreGen-wrap: elder RATIFIED defer-to-general-d-gate (Q3: a
+(3,3,4)-specific grind is THROWAWAY, superseded by the general mult-flatten lemma; 4 conditions); gate2
+recommended GRIND-now (bounded ~1-2 tides, disposition: complete well-scoped work). I resolved the
+load-bearing fact FIRST (the elder's condition-4, which both rest on) from ground truth.
+
+CONDITION-4 ANSWERED (`coregen_bexp_check.py`, sympy-exact): the coreGen chart map =
+`blockBlowupMap` (the pivot block-center blow-up — a DESIGNED map, but composition `coreGen∘blowup =
+c11·Pmat` is sympy-VERIFIED, and `jacDet_blockBlowupMap` machinery is LANDED [O9, lean/CLAUDE.md
+2026-07-21]) ∘ the flat(Pmat) `g` (via the banked `conjResolution` transport, :111). This is a THIRD
+answer neither seat had cleanly: **designed-blowup-with-verified-composition** — NOT the elder's bad
+"unverified fresh-design" case (composition IS verified → deferral clean), and NOT gate2's "pure
+plumbing" either (the blockBlowupMap-composition leg + the `⟨c11·E⟩` ideal-scaling leg are REAL content
+beyond the flat(Pmat) crux — which is why gate2 under-weighted the tax twice). Verified-content-
+requiring-transcription, most of it GENERAL-d labour (the general mult-flatten lemma, the blockBlowupMap
+composition pattern, the ideal-scaling — every chart needs them).
+
+DE-RISK GREEN CALIBRATED (controller re-derived, force-elaborated olean-deleted): the 5 theorems
+`crux_radial_monomialise`, `hideal_faithful_fwd/bwd`, `recoord_comp_nontrivial`,
+`coupling_comp_nontrivial` all `[propext, Classical.choice, Quot.sound]`, NO sorryAx. The fidelity
+repair (fidrev-p1's necessary-not-sufficient finding → the two cancellation-free certs) LANDED @
+af25db69b (elder condition-2 discharged; the certificate now proves faithfulness cancellation-free, not
+just the necessary Δ01∘g proxy). CONDITION-1 label (name=content): **phase-1 GREEN = the DE-RISK**
+(crux + flat(Pmat) two-sided faithful coupled monomialisation, incl. the 2 cancellation-free
+faithfulness certs) — the coreGen Chart FIELD is NOT built (de-risk green ≠ coreGen field built).
+
+SYNTHESIS (honoring both seats): FOLLOW the elder's ratified structure (the coreGen-wrap is general-d
+labour, decided at the general-d gate, built as general lemmas — not a throwaway (3,3,4) grind), but
+CONVENE the general-d gate NOW (the trigger is met: DE-RISK green calibrated + condition-4 answered +
+gate2's mult-flatten paired-form mitigation works → the work is ready). This addresses gate2's
+"don't defer bounded work" (the gate is NOW, not a vague future; the work happens imminently as general
+lemmas serving all charts) AND the elder's Q3 (general-not-(3,3,4)-specific). routeP-p1: fidelity repair
+confirmed; writes the handoff note (part-C design + the 3 remaining legs + gate2's working mitigation +
+the line-175 stale-docstring nit) then rests — NOT more solo (3,3,4) grind (long-context + throwaway).
+The general-d build (task #112) is a FRESH elder gate (GUARD-B: one instance, not general-L) — convening.
