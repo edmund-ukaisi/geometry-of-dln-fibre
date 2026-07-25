@@ -24053,3 +24053,40 @@ reverse-inclusion). SHARPENING: the UPPER bound is ALREADY principality-free
 in the LOWER direction (`hideal_bwd`). The three fork arms line up on ONE axis — the reverse inclusion at the
 minimising branch: V (single-divisor, one-sided) ⊂ P (two-sided equality, all leaves) ⊂ objects-only. Records
 a HIT against the prior economy-MISS (read the interface before asserting the boundary — the correction held).
+
+---
+
+## 2026-07-25 (tick, cont.) — EXTENDED PROBE landed: VERIFIED-BUT-LOCALIZES; the residual RE-LOCATES to the R2 cover
+
+**#167 extended probe [reroute-R3derisk, decorrelated: faithful exact-algebra + real Gröbner/ℚ + Codex xhigh,
+converged]. Persisted `threads/reroute-R3-idealside/deeper-mixed-probe.md`.** At a genuinely deeper-mixed
+instance (separated deep corank-2 + shallow shared factor, (3,3,3,2,2)-class, beyond every banked witness):
+- (i) `I_terminal = ⟨b₁⟩` holds LOCALLY (Gröbner-exact, Rabinowitsch saturation);
+- (ii) `det Dg = ±monomial` EXACTLY (no unit factor, no Jacobian localization);
+- (iii) corner-join NOT localization-free — the kept pivot quotient = `1 + cross-terms` = a LOCAL UNIT, so
+  `nbhd = {unit≠0} ⊊ univ`. BENIGN: `terminal_bezout` is built for exactly this shrink; `Resolution.hcover`
+  is already up-to-null; `{unit=0}` is a measure-zero hypersurface.
+
+**HONEST CORRECTION (the seat's own, adopted):** `nbhd=univ` is single-peel / joined-cascade-special;
+separated-depth mixing localizes. The landed (3,3,4) `chart334_nbhd_univ` result STANDS (that regime IS
+single-block/joined-cascade); only the general-d EXTRAPOLATION to nbhd=univ was over-clean. Corrected to
+`nbhd={unit≠0}`, benign.
+
+**THE RE-LOCATION (decision-relevant):** the IDEAL conjunct is now CLEAN one rung deeper for BOTH arms —
+P's two-sided equality AND V's one-sided containment both hold locally, no denominator/cleared-coord wall.
+The true residual MOVED to **R2**: an all-depth, FAMILY-INDEXED, up-to-null `hcover` SUBORDINATE to the
+per-leaf unit-loci `{u≠0}` — the `{unit≈0}` tubes (positive-measure, so nullity-alone insufficient; sibling
+charts must cover them). This IS the #145/#146 cover reconciliation (the ~2% tube gap), now precisely
+characterized. Fatal 1/monomial structurally EXCLUDED (binding branch has rank r≥1 ⟹ kept survivor ⟹
+unit(0)≠0 — inference-not-proof at arbitrary depth).
+
+**What this does to the fork:** does NOT trigger objects-only; P closes up-to-null; V not necessary but
+available for strictly-cite-free. The scariest part (the ideal-side monument) is cleared one rung deeper +
+structurally robust; the residual is now geometry (R2 family-cover), which #145/#146 adjudicated
+detail-at-scale. Open questions routed to the elder [route-decision joint] + seat [clarifier]: (1) does V
+share the same family-cover or truly avoid it (rlct=min over ALL divisors ⟹ cover load-bearing for both)?
+(2) is the up-to-null unit-loci-tube cover still detail-at-scale or now monument-adjacent?
+
+**R2 RE-SCOPED [#165]:** the family-cover obligation is now explicitly "subordinate to the leaf unit-loci
+{u≠0}, null complement, sibling charts covering the {unit≈0} tubes." HELD pending the elder ranking +
+operator destination call. Surfaced to the operator.

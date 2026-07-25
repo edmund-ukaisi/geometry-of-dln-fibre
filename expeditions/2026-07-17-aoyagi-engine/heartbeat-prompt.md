@@ -40,27 +40,34 @@ fold AS-SCOPED CONSUMES the **general-d terminal single-chain principality = the
 Gröbner, no counterexample, NOT proven; worked.tex:651-664). The reroute LOCALIZES the ideal conjunct's
 dependence on the monument; it does NOT eliminate it. So the "cite-free lower" is cite-free MODULO this link.
 
-**THE FORK — the three arms line up on ONE axis (the reverse ideal inclusion at the minimising branch;
-calibration 2026-07-25 grounded in `ProductResolution.lean` + `Corank2UpperBound334.lean`):** the UPPER
-bound rlct ≤ ½C is ALREADY principality-free (uses `hideal_fwd` + a weak null-guard); the monument lives
-ENTIRELY in the LOWER direction (`hideal_bwd`, reverse inclusion). So:
-- (V) `⟨b_{k₀}⟩ ⊆ ⟨(∏C)∘g⟩` — SINGLE-divisor, ONE-SIDED containment at the minimising branch + Object A
-  monotonicity, coupling-assisted. Elder ruling: NOT the retired mirage IN KIND (mirage = value-level
-  forward info-loss; V = ideal-level one-sided + a landed general theorem) — but must be EXHIBITED not
-  argued (P8 highest burden). Monument-free if it exhibits. ← best.
-- (P) full two-sided equality `⟨coreGen∘g⟩=⟨diag b⟩` every leaf = the monument. Fully cite-free ⟹ prove it
-  general (open); else cite JUST the two-sided principality (a clean `Chart.hideal_bwd`-field cite, atlas
-  built cite-free around it — strictly narrower than objects-only). ← middle.
-- (objects-only) cite the whole resolution `cited_aoyagi_lower_ax` (STOP-fallback, charter-faithful #94).
+**PROBE RESULT [#167, VERIFIED-BUT-LOCALIZES — decorrelated exact-algebra + Gröbner + Codex, converged;
+`deeper-mixed-probe.md`]:** at a genuinely deeper-mixed instance (separated deep corank-2 + shallow,
+(3,3,3,2,2)-class) — (i) I_terminal=⟨b₁⟩ holds LOCALLY (Gröbner-exact); (ii) det Dg=±monomial EXACTLY;
+(iii) corner-join NOT localization-free — kept pivot quotient = a LOCAL UNIT ⟹ nbhd={unit≠0}⊊univ (BENIGN:
+`terminal_bezout` built for it, `hcover` already up-to-null, {unit=0} measure-zero). CORRECTION: nbhd=univ is
+single-peel-special; the (3,3,4) result STANDS, only the general-d extrapolation was over-clean.
+**THE RE-LOCATION:** the IDEAL conjunct is now CLEAN one rung deeper for BOTH arms (no denominator/cleared-
+coord wall); the true residual MOVED to R2 — a family-indexed, up-to-null `hcover` SUBORDINATE to the leaf
+unit-loci {u≠0} (the {unit≈0} tubes = the #145/#146 cover gap). Fatal 1/monomial structurally excluded
+(r≥1 ⟹ kept survivor ⟹ unit(0)≠0). Does NOT trigger objects-only; P closes up-to-null; V not necessary.
+
+**THE FORK (the three arms line up on ONE axis — the reverse inclusion at the minimising branch; the ideal
+side is now CLEAN for all, the decision is about the R2 cover + whether to prove/cite the local principality):**
+- (V) `⟨b_{k₀}⟩ ⊆ ⟨(∏C)∘g⟩` one-sided + Object A. Elder: NOT the retired mirage in kind; exhibited LOCALLY
+  by the probe. Monument-free IFF it also AVOIDS the family-cover (open — likely shares it, rlct=min over
+  ALL divisors). ← best if it truly avoids the cover.
+- (P) local single-chain principality (VERIFIED one rung deeper, r≥1-robust) + the R2 family-cover. Fully
+  cite-free ⟹ prove the principality general (mountain); else cite the LOCAL single-chain (clean
+  `Chart.hideal_bwd`-field cite, strictly narrower than objects-only). ← middle; ideal-monument de-fanged.
+- (objects-only) cite `cited_aoyagi_lower_ax` (STOP-fallback, charter-faithful #94).
 
 **IN FLIGHT (decision inputs):**
-1. **EXTENDED Gröbner probe** → reroute-R3derisk [#167]: at one deeper-mixed instance, tests BOTH
-   (P) I=⟨b_k₀⟩ exactly AND (V) ⟨b_k₀⟩⊆I one-sided + coupling sign; plus det Dg=±monomial + corner-join
-   localization. One probe adjudicates all three arms. Persist → `deeper-mixed-probe.md`.
-2. **Elder adjudication** → elder-reroute [#168] DONE (verdict banked journal + above; re-convenes at the
-   probe result, and — if V adopted — its first coupled-corank≥2 value-floor build).
-3. **Operator surfaced** — the recalibration bears on the "cite-free" premise of their GO; non-blocking;
-   the one steer that flips the default = "strictly-cite-free-or-nothing".
+1. **Elder re-convened** → elder-reroute [#168-followup]: updated P-vs-V ranking on the probe; is the
+   up-to-null unit-loci-tube cover detail-at-scale or monument-adjacent; does V share the cover.
+2. **Seat clarifier** → reroute-R3derisk: does V avoid the family-cover or share it.
+3. **R2 RE-SCOPED [#165]:** family-cover = "subordinate to leaf unit-loci {u≠0}, null complement, sibling
+   charts cover the {unit≈0} tubes." The true remaining monument-adjacent labour is this COVER, not the ideal.
+4. **Operator surfaced** — non-blocking; the one steer that flips the default = "strictly-cite-free-or-nothing".
 
 **HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
 
