@@ -8,6 +8,14 @@ coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite
 shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
 
 ## Memo (controller-edited, ≤10 lines — keep current)
+- **⇢ STANDING AUTONOMY GRANT (operator, 2026-07-25) — build progression is CONTROLLER-JUDGMENT, no
+  wait-for-go.** (1) GREEN gate → commit the swap + run the full general-`d` fold, proceed (no operator go).
+  (2) SURPRISE gate → re-scope / re-plan / explore; if the earned verdict is REASONABLE (cleared by the
+  decorrelated review/probe, NOT controller optimism — the bar stays where the planning phase held it),
+  proceed on the re-scoped plan (no operator go). The elder route-gate stays as the internal quality joint;
+  re-derive every gate (`#print axioms`, fresh build) before believing "done"; name results honestly. STILL
+  OPERATOR-GATED (unchanged, a different/release class): PR **merge** + `dev→main` promotion. Elder folds
+  this into the charter's gating at the next convening (gate-result joint).
 - **▶ GATE-2 BUILD LAUNCHED (2026-07-24, operator explicit go).** Planning phase COMPLETE (next-build-render
   §1-§10, triply-checked: survey-inv + rev-render ×2 + hcover-probe). Settled scope = **Encoding-I** (the
   ideal-route `hideal` via L-A/L-B Schur-clearing), NO open math obstruction; residual = a bounded-but-large
