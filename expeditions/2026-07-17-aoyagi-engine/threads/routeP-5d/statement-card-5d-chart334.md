@@ -28,14 +28,24 @@ banked lemmas (mirroring `LeafChartWire.chart_of_collapse`, specialised to `gWra
 Chart data (for the seam): `chart334_bindingAxes : bindingAxes (chart334.bexp chart334.k₀) = {0,20}`,
 `chart334_jac_E : chart334.jac 0 = 7`, `chart334_jac_c11 : chart334.jac 20 = 8`.
 
-**The assembly, reduced to the cover** (two forms, isolating the sole open obligation):
-- `resolution334_of_fanCover` — given a chart family + its localizing cover `hcover`
-  (`volume (U \ ⋃ c, (charts c).g '' (charts c).dom) = 0`, `U ∈ 𝓝 0`) + the per-chart binding data,
-  produces `∃ res : Resolution (coreGen dvec eWrap) 0, AtlasRealizesExponents dvec res` (the (3,3,4)
-  instance of `exists_coreResolution`'s :311 obligation), via `Corank2Realize334.atlasRealizesExponents_334`.
-- `resolution334_of_ballCover` — the SET-containment form: `ball 0 ρ ⊆ ⋃ c, (charts c).g '' (charts c).dom`
-  suffices (the measure step `ball ⊆ ⋃ ⟹ ball \ ⋃ = ∅ ⟹ null` is discharged here). This is the exact
-  shape `LeafCoverTiling.FanTree.covers_subset` produces.
+**The assembly, reduced to the cover** (isolating the sole open obligation):
+- `resolution334_of_fanCover` / `resolution334_of_ballCover` — the UNIFORM-axis forms (single chart or
+  a fan where every chart binds on the SAME `{0,20}` axes), via `atlasRealizesExponents_334`.
+- `resolution334_of_fanCover_ofValues` / `resolution334_of_ballCover_ofValues` — the **PER-CHART**
+  forms (gate2's 5d flag): each chart may bind on its OWN axes; the hypotheses demand only the
+  fan-invariant VALUE content (each chart's binding value `∈ {8,9}`, some chart attains `8 = minAdm`),
+  via `atlasRealizesExponents_334_ofValues`. Both produce `∃ res : Resolution (coreGen dvec eWrap) 0,
+  AtlasRealizesExponents dvec res` (the (3,3,4) instance of `exists_coreResolution`'s :311).
+  The `ballCover*` forms take the SET-containment `ball 0 ρ ⊆ ⋃ c, (charts c).g '' (charts c).dom`
+  (the `LeafCoverTiling.FanTree.covers_subset` shape) and discharge the measure step here.
+
+**gate2's uniform-`hbind` flag — resolved.** `atlasRealizesExponents_334` fixed ONE axis pair `{aE,aC}`
+UNIFORMLY across all charts — FALSE for a coord-permuted fan (different binding axes per chart). The
+`_ofValues` forms fix this: they require only that each chart's binding VALUES are `∈ {8,9}` and some
+chart attains `8`. This is FAN-INVARIANT (a coordinate permutation preserves `jac` VALUES, only
+permuting the axes → every fan chart binds at `{8,9} ≥ minAdm = 8`, NO lower-bound leak). So 5d works
+under EITHER presentation (single canonical chart, or full coord-permuted fan); the `_ofValues` form is
+the one to use for the honest fan.
 
 ## The WALL — the fan COVER (5c lane), with the bridge SPECIFY
 

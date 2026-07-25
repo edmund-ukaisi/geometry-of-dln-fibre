@@ -129,4 +129,37 @@ theorem resolution334_of_ballCover (numC : ℕ) (charts : Fin numC → Chart (co
     (Metric.ball_mem_nhds 0 hρ) ?_ hbind hjE hjC
   rw [Set.diff_eq_empty.mpr hcov]; exact measure_empty
 
+/-- **The PER-CHART fan seam** (gate2's 5d flag). For a coord-permuted FAN presented as multiple
+`Resolution.charts` (each chart binding on its OWN axes), the uniform `bindingAxes = {0,20}` is
+FALSE; this form demands only the fan-invariant VALUE content — each chart's binding-axis value is
+`8` or `9`, and some chart attains `8 = minAdm`. Feeds `atlasRealizesExponents_334_ofValues`. -/
+theorem resolution334_of_fanCover_ofValues (numC : ℕ)
+    (charts : Fin numC → Chart (coreGen dvec eWrap) 0)
+    (hne : (Finset.univ : Finset (Fin numC)).Nonempty) (U : Set (Fin 21 → ℝ)) (hU : U ∈ nhds 0)
+    (hcover : volume (U \ ⋃ c, (charts c).g '' (charts c).dom) = 0)
+    (hval : ∀ (c : Fin numC) (a : Fin 21),
+        a ∈ bindingAxes ((charts c).bexp (charts c).k₀) →
+        (charts c).jac a + 1 = 8 ∨ (charts c).jac a + 1 = 9)
+    (hmin : ∃ (c : Fin numC) (a : Fin 21),
+        a ∈ bindingAxes ((charts c).bexp (charts c).k₀) ∧ (charts c).jac a + 1 = 8) :
+    ∃ res : Resolution (coreGen dvec eWrap) 0, AtlasRealizesExponents dvec res :=
+  ⟨⟨numC, charts, hne, U, hU, hcover⟩, atlasRealizesExponents_334_ofValues _ hval hmin⟩
+
+/-- The per-chart seam in SET-CONTAINMENT (`ball ⊆ ⋃ images`) form — the recommended fan cover seam:
+the 5c bridge owes `ball 0 ρ ⊆ ⋃ c, (charts c).g '' (charts c).dom` plus, per chart, its binding
+values (`{8,9}`, fan-invariant under the coord-perm `jac`). Delegates to `..._fanCover_ofValues`. -/
+theorem resolution334_of_ballCover_ofValues (numC : ℕ)
+    (charts : Fin numC → Chart (coreGen dvec eWrap) 0)
+    (hne : (Finset.univ : Finset (Fin numC)).Nonempty) (ρ : ℝ) (hρ : 0 < ρ)
+    (hcov : Metric.ball (0 : Fin 21 → ℝ) ρ ⊆ ⋃ c, (charts c).g '' (charts c).dom)
+    (hval : ∀ (c : Fin numC) (a : Fin 21),
+        a ∈ bindingAxes ((charts c).bexp (charts c).k₀) →
+        (charts c).jac a + 1 = 8 ∨ (charts c).jac a + 1 = 9)
+    (hmin : ∃ (c : Fin numC) (a : Fin 21),
+        a ∈ bindingAxes ((charts c).bexp (charts c).k₀) ∧ (charts c).jac a + 1 = 8) :
+    ∃ res : Resolution (coreGen dvec eWrap) 0, AtlasRealizesExponents dvec res := by
+  refine resolution334_of_fanCover_ofValues numC charts hne (Metric.ball 0 ρ)
+    (Metric.ball_mem_nhds 0 hρ) ?_ hval hmin
+  rw [Set.diff_eq_empty.mpr hcov]; exact measure_empty
+
 end DLNFibre.DLN.Aoyagi

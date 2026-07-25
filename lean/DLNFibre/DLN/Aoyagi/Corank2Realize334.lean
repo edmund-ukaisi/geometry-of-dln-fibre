@@ -122,4 +122,33 @@ theorem atlasRealizesExponents_334 {D Mgen : ℕ} {F : Fin Mgen → (Fin D → �
     · rw [hbind c]; exact Finset.mem_insert_self aE {aC}
     · rw [hjE c, hk]; decide
 
+/-- **RUNG 5a — the PER-CHART realization seam** (the fan-faithful form; gate2's 5d flag). The seam
+allows each chart its OWN binding axes, so a coord-permuted FAN — where different charts bind on
+different coordinates — is NOT covered by the uniform-axis `atlasRealizesExponents_334`. This form
+demands only the VALUE content, which is FAN-INVARIANT (a coordinate permutation preserves `jac`
+VALUES, merely permuting the axes): (i) every chart's binding-axis value is `8` or `9` (both `∈
+terminalExponents`, so `≥ minAdm = 8` — NO lower-bound leak on any fan chart); (ii) SOME chart's
+binding axis attains `8 = minAdm`. Both the single canonical chart and the full coord-permuted fan
+satisfy these (every fan chart binds at `{8,9}`), so this is the form rung 5d uses regardless of the
+cover presentation. Strictly weaker hypotheses than the uniform form. -/
+theorem atlasRealizesExponents_334_ofValues {D Mgen : ℕ} {F : Fin Mgen → (Fin D → ℝ) → ℝ}
+    (res : Resolution F (0 : Fin D → ℝ))
+    (hval : ∀ (c : Fin res.numCharts) (a : Fin D),
+        a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) →
+        (res.charts c).jac a + 1 = 8 ∨ (res.charts c).jac a + 1 = 9)
+    (hmin : ∃ (c : Fin res.numCharts) (a : Fin D),
+        a ∈ bindingAxes ((res.charts c).bexp (res.charts c).k₀) ∧
+          (res.charts c).jac a + 1 = 8) :
+    AtlasRealizesExponents (![3,3,4] : Fin 3 → ℕ) res := by
+  refine ⟨?_, ?_⟩
+  · -- clause (i): each binding value is 8 or 9, both terminal exponents
+    intro c a ha
+    rcases hval c a ha with h | h
+    · rw [h]; exact mem_terminalExponents_334_eight
+    · rw [h]; exact mem_terminalExponents_334_nine
+  · -- clause (ii): the minAdm attainment is matched by the value-8 binding axis
+    intro l _ k hk
+    obtain ⟨c, a, ha, hv⟩ := hmin
+    exact ⟨c, a, ha, by rw [hv, hk]; decide⟩
+
 end DLNFibre.DLN.Aoyagi
