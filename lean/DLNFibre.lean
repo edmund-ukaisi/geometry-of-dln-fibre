@@ -1713,3 +1713,7 @@ import DLNFibre.DLN.Aoyagi.Corank2FanCover334
 -- CiteFree334 (#110 upper): the (3,3,4) Watanabe upper bound CITE-FREE — the value-engine upper
 --   root the build consumes; previously an unwired routeP leaf, now reachable from the aggregator.
 import DLNFibre.DLN.Aoyagi.Corank2CiteFree334
+-- AdmissibleLeaf222 (R1 de-risk): the (2,2,2)-leaf TERMINAL-SHRINK ⋈ COVER gate — the terminal
+--   non-vanishing region ⊇ the cover box under the real-leaf collapse (unit ≡ 1), + the API-clean
+--   `terminal_bezout_collapse` (PrincipalInv on the FULL V, no shrink) the R3 fold consumes.
+import DLNFibre.DLN.Aoyagi.Corank2AdmissibleLeaf222
