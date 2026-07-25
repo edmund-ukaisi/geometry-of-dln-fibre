@@ -22045,6 +22045,27 @@ END-TO-END gate is complete → auto-fire #112 under the grant. WALL/tripwire-tr
 composite g (gate2-hideal, re-convened). This is the LAST measurement before the general-d build; both other
 de-risks (cover route-a, realization #124) already GREEN. Holding for the composite-g result.
 
+**L-B MAINTENANCE two-sided BUILT — the 7th-over-claim RED-flip FALSIFIED (controller-re-derived, 2026-07-25).**
+gate2-hideal proactively built `Corank2MaintenanceProto.maintenance_step_two_sided` (banked -gate2 @ origin):
+the (S,J) row-clear through the NON-UNIT `diag(b')`, BOTH ideal directions, reverse cofactor `cᵢ·rᵢ`
+continuous IFF `rᵢ=b'ᵢ/b'_p` is (the b-chain); the coupling `cᵢ` is arbitrary (`hc` no structure) and NEVER
+obstructs the reverse. I force-rebuilt + `#print axioms` = clean-three MYSELF. **This directly FALSIFIES the
+elder's named RED-flip** ("the render's 'b-chain absorbs the reverse general' (Phase-3a) is the 7th
+optimism-on-scope over-claim"): the claim is PRECISE + TRUE — the b-chain is exactly the continuity
+hypothesis, and it holds by construction (`b'ᵢ=(∏u)·b'_p`). **All THREE recursion mechanisms now proven
+two-sided, sorry-free, controller-re-derived clean-three: L-A block-elim (coupled Δ, cofactor Q₁) / L-B
+maintenance (cofactor cᵢ·rᵢ, chain-continuous) / L-C terminal (terminal_bezout, 1/unit).** hideal_bwd GREEN
+across the whole recursion; the coupling never enters the reverse's continuity. NOTE the mechanisms are
+proven in ISOLATION (abstract for L-B, residual block for L-C, coupled Δ for L-A) — the END-TO-END
+composite g (composing them on the literal (3,3,4) chart through coreGen, faithful multi-term) remains the
+gate (charter §3: composition fails late at the consumer). Clarified to the builder: the composite g IS the
+gate = #112's first chart, not out-of-scope; proceed to it (faithful, no proxy).
+
+**Status.** #123 END-TO-END gate: reverse-half + all 3 mechanisms two-sided GREEN (re-derived). Remaining =
+the (3,3,4) FAITHFUL multi-term composite g (composition measurement, Codex's biggest Lean risk, now LOWER
+risk with all mechanisms proven). gate2-hideal building it; tripwire = #124 pivot-less-deepest-intersection.
+GREEN → auto-fire #112 general-d; WALL → objects-only. Holding for the composite-g result.
+
 **PAPER-FIRST anchor + coherence tightening (pnp, 2026-07-25) — fold into the elder's #123 charter finalize.**
 Paper-first (charter §3 DEFECT gate): AOYAGI RESOLVES the realization (her two-sided (S,J) maintenance
 Cases 1&2 → terminal normal crossing, general-L per her abstract); the worked.tex:663 "deeper mixed open
