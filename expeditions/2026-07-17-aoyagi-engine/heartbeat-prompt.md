@@ -24,21 +24,26 @@ shorter. Every commission, council charge, and review bar carries THIS framing, 
   Rungs 5a(realization)/5b(L6 hjac)/5c(L7 hcover)/5d(assembly) UN-STARTED = the full-(3,3,4)-Resolution gate
   bar (#130, blocked-by #132). HCOVER VERDICT = DETAIL-AT-SCALE (GO), 4-CHANNEL confirmed (pnp exact-algebra
   + pnp Codex + controller calibration + gate2 probes) — the highest-risk rung RETIRED (recoord N²=0 →
-  degree-exactly-2, LeafCoverTiling reused verbatim). LANE STATUS (2026-07-25):
-  • 5c ATOM LANDED @ 649fc7924 (branch expedition/aoyagi-engine-hcover-atom, Corank2FaithfulHCover.lean:
-    faithfulShear_covers + covers_faithfulTree; #135/#136/#137 done) — PENDING gate2's no-proxy fidelity lens
-    + controller #print-axioms re-derive AT INTEGRATION (not yet wired; standalone atom).
-  • PROVENANCE = CONDITIONAL GO (banked #134): route (b) settled ((a) refuted, buildTree col-pinned via
-    IsRealBranch); the #86(B) K-symmetry transport CARRIES THE COVER — verified exact + Codex (generators =
-    coord-perm ISOMETRIES → carry containment not just the ideal; value preserved). Residual = a full-history
-    STABILIZER INDUCTION, base+first-step verified, detail-at-scale NOT monument. 5-lemma cover-transport
-    template + 2 named obligations (#86(B) emission; hdom_ball :152 → dom ⊇ f^[depth](1)) recorded on #130.
-    gate2's decorrelated read QUEUED (no rush). Depth-3 de-risk noted for the general-d gate.
-  • THE OPEN LANE = the CHART-ARCHITECTURE FORK (#138, pnp-chartarch): folded gFaithful |det|=E⁷·α³·c11⁸
-    (routeP-p1's 5b STOP) is (3,3,4)-specific → decompose (B) for general-d? crux-transfer to settle. GATES
-    5b (routeP-p1 paused, holds the folded structure + handoff). Controller read: (B).
-  5a (realization) follows 5b's jac; 5d (assembly, incl. eWrap MeasurePreserving + eWrap→canonFlatten
-  transport) follows. HOLDING for: pnp-chartarch fork verdict + gate2's two reads (5c lens, provenance).
+  degree-exactly-2, LeafCoverTiling reused verbatim). HCOVER NOW FULLY DE-RISKED (2026-07-25):
+  • adjudication 4-ch GO + 5c ATOM BUILT (@ 649fc7924, Corank2FaithfulHCover.lean; 2-ch PASS: build +
+    gate2 fidelity/model; architecture-INDEPENDENT so robust to the fork; my #print-axioms at integration = 3rd)
+  • PROVENANCE = CONDITIONAL GO (3-ch: pnp+Codex+gate2): route (b) (buildTree col-pinned via IsRealBranch);
+    the #86(B) K-transport CARRIES THE COVER (generators = coord-perm ISOMETRIES; value preserved); residual =
+    the stabilizer induction, DEPTH-3 GO (base+first-rollover verified, NO obstruction; hyp (ii) CORRECTED to
+    the weaker-true S×S form). General-d cover = detail-at-scale; 5-lemma cover-transport template + 3 named
+    obligations on #130 (#86(B) emission; hdom_ball:152→dom⊇f^[depth]1; global C∗=max C). HUNT COMPLETE.
+  • CHART-ARCHITECTURE FORK #138 SETTLED → (B) DECOMPOSED, crux transfers FREE (2-ch pnp+Codex + my
+    calibration). gWrap = sigmaPiv∘H∘P∘A0∘A1 EXTENSIONALLY (sympy-exact) → |jacDet|=u0⁷·u1³·u20⁸ via
+    jacDet_comp over banked atoms (5b clean, NO 21×21 det); the banked hideal rewrites along the funext, NO
+    re-proof; shear LOAD-BEARING (F4) = the general-d GeoStep form; GeneralGeoAtlas builds general-d L6/L7
+    decomposed (reuse). CAVEAT: perm P explicit [8,9,10,11,1,5,6,7,0,2,3,4] det−1. gate2 confirming read queued.
+  FORWARD PATH (unblocked): decomp-5b (FRESH formaliser, lane expedition/aoyagi-engine-5b-decomp; routeP-p1
+  SUPERVISES — its context is long, build fully-recipe'd) building the DECOMPOSED 5b [(1) funext gFaithful =
+  H∘P∘A0∘A1 [P explicit] → rewrite banked hideal, NO re-proof; (2) jacDet_comp Jacobian u0⁷·u1³·u20⁸; (3)(4)
+  Chart fields via GeneralGeoAtlas L6. WRINKLE: H NONLINEAR → jacDet(H)=1 by a UNIT-TRIANGULAR arg, not a
+  linear-blockShear lemma — a real bounded piece] → 5a (realization) → full (3,3,4) Resolution (#130) →
+  general-d gate (elder+navigator, GUARD-B) → general-d build. HOLDING for: decomp-5b + gate2's two confirming
+  reads (fork #138, depth-3).
 - **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
   two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
   `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
