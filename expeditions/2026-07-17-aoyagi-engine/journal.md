@@ -22234,3 +22234,26 @@ coreGen-wrap + package toward Chart/exists_coreResolution + audit).
 checklist) + the full scripts/lb DLNFibre gate (running). Holding for the full phase-1 coreGen-level GREEN →
 elder general-d gate (a fresh gate, GUARD-A); or a wall (→ objects-only). Anti-optimism scope discipline
 (GUARD-B) holds: this is ONE instance ((3,3,4)), NOT general-L.
+
+**Phase-1 FULL REPORT + two controller actions (2026-07-25).** routeP-p1's full report: crux + flat(Pmat)
+two-sided hideal GREEN (delivered, controller-re-derived clean-three); ZERO sorries in the module; part-C
+(coreGen-wrap) HELD (routeP-p1 conscientiously refused to fudge). Two actions:
+- **PART-C FRAMING STEER (controller).** routeP-p1 was framing part-C as "coreGen = flat(Pmat) via a 1/pivot
+  NORMALIZATION" (divide by c11 to set C1[0,0]=1) — non-unit at c11=0, exactly the false-GREEN risk it
+  feared. STEERED to the OTHER (clean) direction from the sympy: `coreGen∘(pivot block-center blow-up) =
+  c11·Pmat` EXACT (the blow-up factors c11 OUT; MULTIPLY, no division). So add the pivot blow-up to
+  gFaithful → coreGen∘g entries = c11·(Pmat∘g), factor the common c11 → `⟨coreGen∘g⟩ = ⟨c11·E⟩` (bexp =
+  bexpE + [pivot:1], M'=1 principal). The 21st param c11 is NOT normalized away — it's the pivot coord
+  contributing the factor (resolves the 21-vs-20 dimension mismatch). FAITHFUL (a blow-up); ~60-120 LoC;
+  GUARD c11-ratio ≥ 4. This avoids routeP-p1's false-GREEN trap (the 1/pivot units).
+- **DECORRELATED FIDELITY REVIEWER commissioned (fidrev-p1, routeP-p1's correct request — it shouldn't
+  review its own fidelity).** Audits: (1) statement-match (crux + hideal genuine two-sided, right target,
+  non-vacuous); (2) bexpE correctness at flat(Pmat) level; (3) THE load-bearing — is `delta_comp_coupled`
+  (Δ∘g off-diag = u0·u1·u5 ≠ 0) a SUFFICIENT faithfulness witness (rules out the single-term proxy), or
+  necessary-not-sufficient? + Codex decorrelated. (The controller already re-ran #print axioms = clean-three
+  + build green, so the kernel/axiom status is verified; fidrev-p1 audits FIDELITY.)
+
+**Status.** Phase-1: crux + flat(Pmat) hideal GREEN (re-derived). Remaining = part-C (routeP-p1, blow-up
+framing → ⟨c11·E⟩) + the fidrev-p1 fidelity verdict + the full scripts/lb DLNFibre gate. Holding for the
+full coreGen-level phase-1 GREEN → elder general-d gate (fresh, GUARD-A); or a wall/fidelity-gap → reconcile.
+GUARD-B: ONE instance ((3,3,4)), not general-L.
