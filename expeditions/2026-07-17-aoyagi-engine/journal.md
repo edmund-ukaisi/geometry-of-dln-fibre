@@ -24497,3 +24497,24 @@ through `conRel_wf`, G1/G2 held) — the concrete cover is INSIDE R3, the bigges
 decorrelated read. If the real hchart discharge turns out harder than detail-at-scale (a monument) → the
 (B)-fallback trigger. Then R4/R5/R6 + the value side (superadditivity G2 + per-chart integrability + #172).
 Elder resting; re-convenes at the R3 landing.
+
+## 2026-07-25 (tick, cont.) — Fold engine review = SURVIVED (Lean bedrock); merge-pending line-14 nit; R3 caveat banked
+
+r2build-review re-verified ImageTreeCover @317e4786e (fresh worktree, force-elab): VERDICT SURVIVED. 7 roots
+clean-three (independent #print axioms), no cites/sorry, clash-free. glue_null genuinely OUTER-MEASURE-ONLY
+(no C⊆B / injectivity / measurability — mono + subadditive-null over Countable); nullTransport_of_
+differentiable an HONEST null→null use of Mathlib addHaar_image_eq_zero_of_differentiableOn... (differentiability
+alone suffices in equal-dim; NOT measure-preservation — reviewer pulled the source); non-vacuity real
+(codim-2 {0} hole propagates). Codex concurred throughout.
+- NIT (docstring): line 14 "the whole-tree uncovered set IS the finite union..." → "is CONTAINED IN a finite
+  union..." (Lean proves SUBSET via measure_mono_null; glue_null line 56 already says "contained in"). Routed
+  to the seat → its line-14-fixed FINAL SHA → controller re-fetch + merge + aggregator/AxCheck wiring.
+- **SHARP CAVEAT (banked for R3):** coversUpToNull_volume_diff hardcodes UNIFORM child domains
+  (B_i=closedBall 0 (f R)), but the real buildTree has PER-CHILD-VARYING domains (cf. CoverFold's `D p`). So
+  the R3 wire consumes the GENERAL glue_null (already supports per-child B_i/C_i) re-derived over conRel_wf —
+  NOT the packaged uniform fold. glue_null = the bedrock; coversUpToNull_volume_diff = a worked demonstration
+  that glue_null composes over a tree. Codex independently concurred (uniform domains = a genuine
+  concrete-wiring obligation). R3 targets glue_null directly.
+- Reviewer's engine-vs-done scope read CONVERGES with the elder's ruling: R2 = cover-INFRASTRUCTURE (a genuine
+  reusable object); the concrete real-chart application (real survivor charts + hchart + per-child domains) = R3.
+Reviewer RELEASED (re-engage for the R3 unified fold). Merge fires on the seat's final SHA.
