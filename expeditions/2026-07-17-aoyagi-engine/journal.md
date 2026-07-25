@@ -22716,3 +22716,29 @@ no monument, exact template + hypotheses pinned. The 5-lemma cover-transport tem
 COMPLETE — I stop reviewing it. FORWARD PATH: routeP-p1's decomposed 5b (crux-transfer funext + jacDet_comp
 Jacobian, unblocked) → 5a (realization) → the full (3,3,4) Resolution → the general-d gate → the general-d
 build (spine + charts + the cover with the pinned template). gate2 reads the depth-3 (queued, confirming).
+
+**#138 FORK — 3-CHANNEL CONFIRM (gate2 Lean-anchored, closes the transcription gap) + cross-consistency
+(2026-07-25).** gate2's decorrelated #138 read = CONFIRM (B) DECOMPOSED, all 4 claims PASS. Its channel was
+DECORRELATED IN THE RIGHT WAY: it did NOT re-run pnp's sympy — it anchored on the ACTUAL LEAN defs
+(blockBlowupMap semantics + gFaithful def) and DERIVED H by hand, closing the Lean→sympy TRANSCRIPTION gap
+(pnp+Codex verified a sympy transcription; gate2 verified against the Lean source). So the fork banks on 3
+channels: pnp + its Codex + gate2's Lean-anchored. Claims: (1) extensional identity — all 21 coords match
+(sp.expand diff 0) from the Lean semantics; (2) Jacobian u0⁷u1³u20⁸ via jacDet_comp, pivot-survival verified
+in ORIGINAL coords (coord20 survives H∘P∘A0∘A1 as u20); (3) shear load-bearing — STRONGER structural argument
+than 0/12: gFaithful slots {4-11} are SUMS of ≥2 monomials + blockBlowupMap ONLY multiplies → additive terms
+can ONLY come from H ⇒ shear necessarily present, at the DEF level; (4) P conventions pinned (below).
+BONUS CROSS-CONSISTENCY (valuable): the H gate2 derived IS EXACTLY the 5c atom's faithfulShear (write {4-11},
+read {0-3,12-19} disjoint, degree 2, Schur slots 1-product + recoord slots 2-product = C=2). So the #138 fork
+verdict AND the built 5c atom are MUTUALLY CONSISTENT — #138's shear IS the object 5c covers, not two
+disconnected claims. Strong.
+
+BUILD-CRITICAL CONVENTIONS (gate2, pinned — for decomp-5b to encode; the funext self-gates but getting it
+right up front saves a cycle): P = [8,9,10,11,1,5,6,7,0,2,3,4] (+ fixed 12-20), GATHER convention
+output[i]=input[P[i]], det −1 (45 inversions). Composition order: blow-up-INNER (A1 then A0) → perm → H
+shear-OUTER. REFINEMENT (pnp-chartarch → routeP-p1): jacDet_blockShear IS GENERAL (handles nonlinear φ) → H
+fits DIRECTLY — so the nonlinear-jacDet(H) WRINKLE I flagged is LIGHTER than briefed (may not need a bespoke
+unit-triangular argument; the general blockShear lemma covers it). Relaying both to decomp-5b.
+
+STATE: hcover FULLY de-risked (depth-3 GO confirmed by pnp; gate2's depth-3 read queued); fork 3-channel
+CONFIRM. decomp-5b building the decomposed 5b (routeP-p1 supervising); 5a follows; then the full (3,3,4)
+Resolution → general-d gate. pnp-hcover + pnp-chartarch rest (arcs closed, artifacts banked for re-convene).
