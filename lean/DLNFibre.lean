@@ -1673,3 +1673,14 @@ import DLNFibre.DLN.Aoyagi.Corank2GeoAtlas
 -- (blockShear_covers_of_norm_bound) + general-depth varying-center fan cover (fanOfSteps) + CENTERS
 -- discharged generally (fderiv outerDisp 0 = 0). No block/pivot/depth/center obstruction. 15 roots clean-three.
 import DLNFibre.DLN.Aoyagi.GeneralGeoAtlas
+-- [expedition aoyagi-engine 2026-07-25] ROUTE P #112 — the ideal-route two-sided `hideal` prototypes +
+-- Phase-1 scaffold. Corank2Proto (symbolic Schur spine) → HidealProto (L-A block-elim ℝ²¹, coupled Δ) +
+-- MaintenanceProto (L-B, b-chain reverse) + TerminalProto (L-C, terminal_bezout 1/unit) →
+-- CompositeProto (regionRepresents_comp precompose) → FaithfulComposite (the (3,3,4) composite g +
+-- two-sided hideal skeleton; the RADIAL CRUX `crux_radial_monomialise` is a TRACKED sorry — #112 Phase-1).
+import DLNFibre.Core.Aoyagi.Corank2Proto
+import DLNFibre.Core.Aoyagi.Corank2HidealProto
+import DLNFibre.Core.Aoyagi.Corank2MaintenanceProto
+import DLNFibre.Core.Aoyagi.Corank2TerminalProto
+import DLNFibre.Core.Aoyagi.Corank2CompositeProto
+import DLNFibre.Core.Aoyagi.Corank2FaithfulComposite
