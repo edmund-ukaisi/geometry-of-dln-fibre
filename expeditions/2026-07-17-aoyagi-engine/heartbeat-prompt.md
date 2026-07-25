@@ -84,18 +84,22 @@ STERN FLAGS: (1) the monument-residual MOVED to the recursion-on-{R=0} — must 
 assumed; (2) survivor-entry fan is a HARD spec (radial-pivot-only covers 0%); (3) R(0)=1 general-d = the
 kept-rank-survivor structure (r≥1), a named load-bearing inference.
 
-**IN FLIGHT (the LAST two de-risks — then BUILD; no more probes after these):**
-1. **B1 escape-cone probe** → tubecover-probe [#170]: escape cone {max_W>C·max_V} ∩ {loss=0}? loss-regular ⟹
-   B1 dissolves (artifact); meets fibre ⟹ real residual. Elder leans artifact (same class as #145 col-orbit).
-2. **Recursion-on-{R=0} minAdm-ratio de-risk** → rzero-probe [#172]: PERFORM the check (not assume) — does
-   the {R=0} recursion terminate with all deeper divisor ratios ≥ ½minAdm? WITNESS ⟹ (A) reachable, rlct=½C
-   exactly. OBSTRUCTION (a deeper ratio < ½minAdm) ⟹ rlct < ½C = KILL-condition for the payoff value. The
-   one remaining inference + the highest remaining risk.
-3. **R2 [#165] HELD** — survivor-entry-fan tube-cover is GREEN-to-build (elder), but launch the R2 formaliser
-   only after B1 + the recursion return (complete, verified spec). Full-cover completeness gates on B1.
-4. **Elder** revising F10 (commit when it sends); re-convenes at the B1 + recursion results + operator call.
-5. **Operator surfaced** — (A) leads, C off, P-vs-V collapsed, one inference remains; non-blocking; the one
-   steer that flips the default = "strictly-cite-free-or-nothing".
+**BUILD PHASE STARTED (elder: "the build toward A can start now, not gated on the A/B call"; default
+proceed-on-silence = build-toward-A, fall-back-to-B-if-it-bites). Build + de-risk IN PARALLEL:**
+1. **R2 build brick** → reroute-R2build [#173, lean-formaliser, own worktree off the reroute trunk]:
+   the SURVIVOR-ENTRY-fan per-node up-to-null cover atom (uncovered ⊆ {X=0} codim≥2; verified-exact by the
+   tube probe) + the kept-survivor normal form. The R2 cover atom is independent of the two de-risks below.
+2. **B1 escape-cone probe** → tubecover-probe [#170]: escape cone ∩ {loss=0}? loss-regular ⟹ B1 dissolves
+   (artifact, elder's lean); meets fibre ⟹ real residual. Gates full-cover completeness, not the atom.
+3. **Recursion-on-{R=0} de-risk** → rzero-probe [#172]: PERFORM (not assume) — does the {R=0} recursion
+   terminate with all deeper divisor ratios ≥ ½minAdm? WITNESS ⟹ (A) reachable, rlct=½C exactly. OBSTRUCTION
+   (a deeper ratio < ½minAdm) ⟹ rlct < ½C = KILL-condition for the value. The one remaining inference. Gates
+   the value-completion, not the cover atom.
+4. **Elder** F10 REVISED + committed (R>0 correction, P-vs-V collapse, residual=recursion-on-{R=0}, B1 open,
+   (A) leads). Re-convenes at B1 + recursion results + operator call. Rank: (A) > (B) in-build fallback > (C off).
+5. **Operator surfaced** — (A) leads, C off, P-vs-V collapsed, ONE build-shaped inductive inference remains,
+   BUILD started toward A; A-vs-B is the operator's steer but does NOT gate the build; non-blocking; the one
+   steer that changes the default = "strictly-cite-free-or-nothing" (→ A-or-bust).
 
 **HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
 
