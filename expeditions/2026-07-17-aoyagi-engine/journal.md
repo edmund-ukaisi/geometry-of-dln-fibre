@@ -22208,3 +22208,29 @@ decorrelated sympy = a real subtlety caught before the expensive discover-at-wra
 **Status.** routeP-p1 on #127 (gFaithful, now += the pivot-blowup step) → #128 (crux, target ⟨c11·E⟩ at
 coreGen / ⟨E⟩ at Pmat-level). gate2 relayed the corrected target + does first-line fidelity on the pivot-blowup
 (c11-ratio ≥ 4). Holding for the crux discharge → phase-1 coreGen-level hideal GREEN → elder general-d gate.
+
+**MILESTONE — the RADIAL CRUX is GREEN, controller-re-derived (2026-07-25). Codex's biggest Lean risk RETIRED.**
+routeP-p1 delivered on `expedition/aoyagi-engine-routeP @ 4e29d50e2` (Corank2FaithfulComposite.lean), and I
+RE-DERIVED it: force-rebuilt (olean deleted, build green 8267 jobs) + `#print axioms` MYSELF on
+crux_radial_monomialise + hideal_faithful_fwd/bwd = `[propext, Classical.choice, Quot.sound]`; statements
+verified = genuine TWO-SIDED RegionRepresents, `monomialFam bexpE` target, `peeled∘gFaithful`, faithful
+MULTI-TERM (witness `delta_comp_coupled`: Δ∘g = u0·u1·D̄ coupled + Q2inv∘g non-trivial — NOT the single-term
+proxy). So the 21-var faithful composed-chart factorisation `⟨peeled∘g⟩=⟨E⟩` (both directions, via gFaithful
++ L-A-block-elim∘g `.trans` the crux) is SORRY-FREE + clean-three. THE hard part of Phase-1 is done at the
+flat(Pmat) level. Tax: 1M maxHeartbeats on the 21-var computation (fin_cases 12 + full simp; Fin.mk-vs-literal
+friction) — detail-at-scale, NO wall, as predicted.
+
+**PART-C (coreGen-wrap) — FRAMING CONFIRMED (unblocking routeP-p1's held part-C).** routeP-p1 independently
+flagged coreGen ≠ flat(Pmat) (the pivot normalization = a real non-unimodular step) + HELD it rather than
+fudge (exactly right — the same double-count gate2 + I resolved). Framing sent: ADD the pivot block-center
+blow-up step to gFaithful (the GEOMETRIC/faithful handling of c11=0, NOT an algebraic fudge); `coreGen∘g =
+c11·(Pmat∘g)` EXACT (sympy re-run), so `⟨coreGen∘g⟩ = ⟨c11·E⟩` (bexp = bexpE + [pivot:1], M'=1 principal);
+INSIDE phase-1; detail-at-scale; rlct UNCHANGED = 4 (c11-ratio 4.5 > 4, pivot non-binding); GUARD keep
+c11-ratio ≥ 4. routeP-p1 tasks: #125-#129 done (API/foundation/gFaithful/CRUX/chain), #130 pending (the
+coreGen-wrap + package toward Chart/exists_coreResolution + audit).
+
+**Status.** Phase-1 crux GREEN (re-derived). Remaining = #130 (part-C coreGen-wrap: the pivot-blowup →
+⟨c11·E⟩ + package toward the (3,3,4) Chart / exists_coreResolution). gate2 first-line fidelity (5-item
+checklist) + the full scripts/lb DLNFibre gate (running). Holding for the full phase-1 coreGen-level GREEN →
+elder general-d gate (a fresh gate, GUARD-A); or a wall (→ objects-only). Anti-optimism scope discipline
+(GUARD-B) holds: this is ONE instance ((3,3,4)), NOT general-L.
