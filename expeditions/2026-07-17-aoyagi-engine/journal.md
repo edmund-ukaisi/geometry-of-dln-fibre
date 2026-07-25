@@ -24357,3 +24357,15 @@ build labour — (A) fully-cite-free priced SOUND, no monument. Every gate elder
 axioms; the decorrelated hunts raised real obstructions that were correctly killed — the pricing is earned,
 not a headline. Remaining = the reroute build (R2 atom landed clean-three; R3 fold next) carrying the two live
 guards (G1 sum-not-product; G2 verify additivity) + the (B) fallback at every rung.
+
+## 2026-07-25 (tick, cont.) — R2 atom refined to dab3cb308 (matched-pairing + hole⊆{R=0} bridge); merge-target pinned, re-verified
+
+reroute-R2build folded my spec-sharpening into SurvivorFanCover.lean: matched-pairing indexing (a CALLER
+choice of `gen`, abstract-over-ι — no born-siblings edit; mismatched → R(0)=0 → fails `sumSq_residual` → not
+a fan member, enforced downstream) + TWO bridge lemmas: `commonZero_subset_residualZero` (hole ⊆ {R=0} now a
+THEOREM) + `volume_commonZero_eq_zero_of_residualNull` (hooks #172's {R=0} codim≥2 null to discharge hnull in
+kind). HEAD advanced 8ee1df617 (9 roots) → **dab3cb308 (11 roots)** — the seat correctly flagged the stale-SHA
+hazard. CONTROLLER RE-VERIFIED dab3cb308 (force-elab, 2413 jobs replayed, no sorries, "11 roots banked-clean,
+no cites"). Repointed r2build-review to dab3cb308 (+ fidelity Qs 4-6 on the matched-pairing encoding / hole⊆{R=0}
+bridge / hnull-via-#172). MERGE → reroute trunk gated on the review clean at dab3cb308 (my re-verify already
+passed). Value-side heads-up carried: G2 (direct-sum RLCT additivity) NOT in-repo → scout scoping build-vs-cite.
