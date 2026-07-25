@@ -22905,3 +22905,29 @@ TWO general-d-gate caveats (gate2, not 5a defects): (1) the seam is VALUE-SUPPOR
 because bexp≡1 on binding axes (jac+1 = M-value); general-d with bexp>1 needs jac+1 ≥ minAdm·bexp (STRONGER
 than ∈TE) — a note on the pre-existing seam, for the general-d gate. (2) realize_aux needs hMpos (positive
 widths; supplied; false at zero width ![2,2,0]). Both recorded for the general-d gate. 5d in flight.
+
+**5d PART-1 DONE — the complete (3,3,4) Chart + assembly-reduction, wired @ 2e275c3c3 (2026-07-25).**
+routeP-p1 landed chart334 + the assembly reduced to the SOLE cover obligation; controller wired + calibrated:
+- chart334 : Chart (coreGen dvec eWrap) 0 — the COMPLETE concrete (3,3,4) chart, EVERY field from banked 5b
+  (jac/hjac unit≡1/analytic/injOn/excep) + part-C (two-sided hideal, nbhd=univ), mirroring
+  LeafChartWire.chart_of_collapse; dom=closedBall 0 1; + gWrap_zero. chart334_bindingAxes={0,20}, jac 0=7/20=8.
+- resolution334_of_fanCover / _of_ballCover — the assembly REDUCED: given a chart-family + cover + binding
+  data → ∃ res, AtlasRealizesExponents (the (3,3,4) instance of exists_coreResolution:311) via the 5a
+  reduction. The ballCover form takes ONLY `ball 0 ρ ⊆ ⋃ c, (charts c).g '' dom` (discharges the measure step).
+- CONTROLLER CALIBRATION: FULL DLNFibre green (9029 jobs, name-clash guard); no sorryAx/cited/native_decide
+  (routeP-p1 force-elab clean-three; the explicit #print-axioms list hit a re-capture tooling flake, but the
+  no-sorry/cite/native + green + AxCheck cover it). 5d part-1 clean.
+
+THE SOLE REMAINING OBLIGATION = the coupled fan COVER (routeP-p1 STOP+specify, correct — a single gWrap chart
+over compact dom does NOT a.e.-cover; the fan IS genuinely needed, matching the route-a full-fan verdict). The
+5c atom (Corank2FaithfulHCover, @ 649fc7924 other lane) is Fin-14 ABSTRACT (FanTree.Covers/faithfulShear) —
+NOT the Fin-21 gWrap fan; a bridge is needed. THE PLAN (feeds resolution334_of_ballCover): (i) the (3,3,4)
+gWrapFan as a FanTree 21 (K-orbit of gWrap); (ii) Covers via faithfulShear_covers at Fin-21 — THE substantive
+piece, decomp-5b to build (dimension-generic faithfulShear_covers PREFERRED-if-clean [templates general-d,
+avoids (3,3,4)-throwaway], else re-instantiate at Fin-21 [lands the gate bar]; decomp-5b judges cost);
+(iii)(iv) covers_subset → the ball cover (LeafCoverTiling reuse). CONVERGES with gate2's uniform-hbind flag:
+the fan charts have PER-CHART axes → resolution334 needs the per-chart binding form (values {8,9}⊆TE
+fan-invariant via the isometry) — routeP-p1 handles that + wires. DISPATCH: decomp-5b builds the cover
+(ii)+(i)+(iii)+(iv); routeP-p1 supervises (gWrap/K-orbit + resolution334 seam + per-chart binding + wire).
+STATE: (3,3,4) Resolution — rung 3 ✓ + 5c-atom ✓ + 5b ✓ + 5a ✓ + 5d-part-1 (Chart+reduction) ✓; REMAINING =
+the fan cover (→ resolution334_of_ballCover → the full (3,3,4) Resolution = the general-d gate entry bar).
