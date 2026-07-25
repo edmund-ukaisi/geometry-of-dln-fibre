@@ -1687,3 +1687,7 @@ import DLNFibre.Core.Aoyagi.Corank2FaithfulComposite
 -- CoreGenWrap (DLN side): the coreGen-level (3,3,4) two-sided hideal `hideal_coreGen_fwd/_bwd`
 -- (⟨c₁₁·E⟩ = pivot block-center blow-up ∘ the faithful chart) — #112 Phase-1 rung 3 (coreGen-wrap).
 import DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap
+-- ChartJac (DLN side): the DECOMPOSED (3,3,4) chart Jacobian — gWrap = sigmaPiv∘H∘P∘A0∘A1 (funext
+-- `gFaithful_decomp`); |jacDet gWrap| = |u0|⁷|u1|³|u20|⁸ via jacDet_comp; `gWrap_hjac` (unit≡1) + jac +
+-- analytic/injOn/excep Chart fields — #112 rung 5b (fork #138: (B) decomposed, crux transfers free).
+import DLNFibre.DLN.Aoyagi.Corank2ChartJac
