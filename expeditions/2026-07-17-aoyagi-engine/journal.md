@@ -22766,3 +22766,24 @@ scoped as CONDITIONAL GO (the general induction = the #130 detail-at-scale build
 I stop reviewing it. ACTIVE LANE = decomp-5b (the decomposed 5b build, routeP-p1 supervising, conventions +
 lighter-wrinkle relayed) → 5a → the full (3,3,4) Resolution → the general-d gate → the general-d build.
 gate2 rests (next convene = decomp-5b's 5b fidelity review). pnp-hcover + pnp-chartarch rest (arcs closed).
+
+**5b STAGE 1 (crux-transfer) DONE — the fork recipe is now LEAN-VERIFIED (2026-07-25).** routeP-p1 built +
+banked STAGE 1 @ c5012ce22 (new module DLNFibre/DLN/Aoyagi/Corank2GWrapDecomp.lean, sorry-free):
+- gFaithful_decomp : gFaithful = shearH ∘ permP ∘ bbA0 ∘ bbA1 — THE FUNEXT IDENTITY, Lean-verified (fin_cases
+  21 coords @ 2M heartbeats), matching pnp-chartarch's sympy 21/21. This was the ONE new obligation the fork
+  verdict named + the recipe's SELF-GATE — it HELD in the kernel. So the fork ((B) decomposed) is now
+  LEAN-CONFIRMED, not just sympy+Codex: the extensional identity that the whole crux-transfer-free argument
+  rests on is machine-checked.
+- gWrap_decomp : gWrap = sigmaPiv ∘ shearH ∘ permP ∘ bbA0 ∘ bbA1; the banked two-sided hideal (hideal_coreGen_*)
+  transfers to this presentation VERBATIM (same map) — the crux/hideal are NOT re-proved, exactly as the fork
+  predicted. bbA1/bbA0/permP (explicit [8,9,10,11,1,5,6,7,0,2,3,4])/shearH all defined.
+
+HAND-OFF (routeP-p1's recommendation, ACCEPTED): STAGE 1 (deep-gFaithful-context) done by routeP-p1; STAGE 2
+(Jacobian via jacDet_comp over the 5 atoms — permP-det is a NEW ~30-50 LoC piece [permIdx as Equiv.Perm,
+det=sign]; shearH via the GENERAL jacDet_blockShear, NOT one-product outerShear [slots 8-11 have TWO
+products]) + STAGE 3 (Chart fields via GeneralGeoAtlas outerShearBlowup_injOn + jacWeight, adapted for the
+standalone permP + two-product shearH) → decomp-5b (fresh, GeneralGeoAtlas-fluent), REDIRECTED to build on
+c5012ce22 (rebase, do NOT re-do STAGE 1). routeP-p1 SUPERVISES + integrates + holds the structure. Clean
+split: deep-context = routeP-p1; mechanical GeneralGeoAtlas-reuse = fresh formaliser. I calibrate (#print
+axioms + full DLNFibre) at integration. The (3,3,4) Resolution's rung-5b crux-transfer is the load-bearing
+part + it's DONE; STAGE 2/3 is bounded reuse. 5a (realization) follows; then the full (3,3,4) Resolution.
