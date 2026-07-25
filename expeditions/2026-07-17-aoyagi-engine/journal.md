@@ -24574,3 +24574,36 @@ the elder to gate R3. The value side (superadditivity G2 + per-chart integrabili
 reroute-R2build RESTS (no R3 build go until the de-risk decomposes+prices hchart + we scope the first brick).
 W3 banked as the newest standing R3 math-warning (flag the elder to fold into the charter warnings). Ladder:
 R0✓ R1✓ R2-cover-infrastructure✓ → R3 (adopted; hchart de-risk in flight).
+
+## 2026-07-25 (tick, cont.) — hchart DE-RISK = GO: R3 is a BUILD (wire priced pieces); hchart=SANDWICH not binv; W3 K-orbit tripwire; first brick dispatched
+
+**#177 [hchart-derisk, decorrelated exact-algebra + Codex converged; threads/reroute-R3-hchart/hchart-derisk.md].
+VERDICT: R3 = a BUILD (wire the priced pieces), NOT a monument. Kill-condition NOT triggered. Destination
+stays (A).**
+- **WHAT hchart IS: (a) the R>0 SANDWICH + survivor-entry set-cover + cheap hole-nullity — NOT a separate
+  structure.** The "matched-pairing" is the fan's INDEXING (which product-entry survives); R_a(0)=1 falls out
+  of each chart's OWN monomial being a matched term of its survivor (all 3 matched pairs of X[0,0] give
+  R(0)=1 each from its own pair; a mismatched pair gives R(0)=0 = not a fan member, recurses). **SHARP
+  SIMPLIFICATION: for the ADOPTED (A) lower bound, hchart does NOT need binv (the two-sided ideal) — the
+  ONE-SIDED sandwich suffices. binv is the (B)-fallback ONLY.** So the (A) route DROPS binv entirely.
+- **PRICED — DETAIL-AT-SCALE ⟹ R3 = wiring.** Every piece banked: sandwich = SurvivorFanCover.sumSq_residual;
+  cover = block-blow-up atom (GeneralGeoAtlas §1) via argmax; hole-nullity = volume_commonZero_eq_zero_of_single
+  (codim≥1). No monument for (A).
+- **W3 CLEAN (born-per-pivot, transport-free)** — each chart a distinct coord pair, sandwich from its own
+  coords, cover by argmax; iUnion_survivorRegion uses NO permutation; symmetry may enumerate indices, no cert
+  from a sibling. **BUT the SHARP live tripwire:** the banked PRE-reroute skeleton `Corank2Chart334.lean:122-123`
+  proposes the fan as "the K-symmetry ORBIT of gWrap" (resolution334_of_fanCover w/ a K-orbit fan) = the
+  RETIRED O1 two-object transport (WALL, compass F9). Wiring the cover through THAT re-enters O1 = DEAD ROUTE.
+  MANDATE (now an explicit R3 build-guard + flagged to the elder for the charter): born the fan from
+  StepConstructor.bornSiblings (shear-outermost), fold via ImageTreeCover.glue_null; NOT the K-orbit skeleton.
+  Transport AVAILABLE-but-AVOIDABLE.
+- **W1 (same chart) HOLDS for (A)** (cover + sandwich on the same born chart's domain). (B)-only caveat:
+  two-sided binv localizes to {unit≠0} at separated depth (#167) + inherits R1 — a (B) residual, not (A).
+
+**FIRST BRICK GO'd [#178, reroute-R2build]:** the real (3,3,4) one-node hchart theorem — SurvivorFanCover
+ι = node coreGen entries; charts = bornSiblings (per matched pivot pair); discharge hchart(set-cover) from
+the block-blow-up atom + hnull from volume_commonZero...single + sandwich from sumSq_residual; content = the
+ι(node generators)↔bornSiblings-pivots correspondence. Gated on hchart-as-a-THEOREM (M1/M2-style). W1/W2/W3
+mandated. → card + final SHA → decorrelated review + re-verify → merge. Elder re-convened (confirm GO +
+register the K-orbit tripwire in the charter). Ladder: R0✓ R1✓ R2-cover-infra✓ → R3 (BUILD, first brick in
+flight). hchart-derisk released.
