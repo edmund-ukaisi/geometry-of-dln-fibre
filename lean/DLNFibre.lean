@@ -1724,3 +1724,7 @@ import DLNFibre.DLN.Aoyagi.Corank2UnitOneDerived
 --   blockShears (no divide-by-pivot); `jacDet_three_successive_shears` (general) + a genuine coupled
 --   corank-3 shear (trilinear) + `abs_jacDet_g3` (|jacDet| = monomial). RED-FLIP does not fire.
 import DLNFibre.DLN.Aoyagi.Corank3HjacProbe
+-- Corank2ClearingGate (M2 first-unit gate): the real (3,3,4) clearing shearH IS a clean
+--   reads-only-kept blockShear (`clearing_334_clean_reads_only_kept`, the shearH_eq analogue) — no
+--   clearing reads a cleared coord (the surprise); the block-structure separation is exact.
+import DLNFibre.DLN.Aoyagi.Corank2ClearingGate
