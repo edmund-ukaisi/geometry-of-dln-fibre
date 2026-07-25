@@ -1,468 +1,95 @@
 # Heartbeat — 2026-07-17-aoyagi-engine
 
-Main quest (operator-reframed 2026-07-18, PRIORITY framing): **Aoyagi's mechanism built FULLY as
-a free-standing library** (her objects + invariants incl. sharing, end-to-end, conceptual-altitude
-first — cases derived, never chased) → THE LEARNING COEFFICIENT THEOREM (`aoyagi_learning_
-coefficient` unconditional, clean-three). hbox (`∀ M, RouteMBoxThresholdFinite M`) = adapter path
-(A), default; her native λ theorem = path (B), replaces the cite; DITCH the hole if (B) prices
-shorter. Every commission, council charge, and review bar carries THIS framing, not the hole's.
+Main quest (operator-reframed 2026-07-18): **Aoyagi's mechanism built FULLY as a free-standing library**
+(her objects + invariants incl. sharing, end-to-end, conceptual-altitude first — cases derived, never chased)
+→ the geometric codim `C` and, via the cited Aoyagi equality, the RLCT payoff `rlct(∑Fᵢ²) 0 = ½·C`. Every
+commission, council charge, and review bar carries THIS framing.
 
-## Memo (controller-edited, ≤10 lines — keep current)
-- **▶▶▶▶▶▶▶▶▶ OPERATOR GO (2026-07-25): BUILD the cite-free lower via the ONE-OBJECT RE-ROUTE.** Plan =
-  `reroute-plan.md` (in-repo, v1.0, controller-grounded — atoms verified real). One recursion carries geometry +
-  ledger in LOCKSTEP (shared `stepUpdate`) → dissolves the gate WALL: siblings BORN per-pivot (not transported →
-  O1 gone), ledger definitional (AtlasRealizesExponents value-only match is free → O2 bridge never arises). NOT a
-  shortcut — the RIGHT way to build the monument (10-16 tides, honest). Rung-gated R0→R6, **objects-only STOP-fallback
-  at EVERY rung boundary**; PR-merge + dev→main OPERATOR-GATED. Guardrail-0: NO geometry outside the step constructor.
-  KICKOFF FIRED (2026-07-25): reroute-R0 (merge gate2+5d/5c atoms + SchurClearTwoSided → working trunk
-  `expedition/aoyagi-engine-reroute`, green-gate) [#162]; reroute-R3derisk (pen-and-paper FRONT-LOAD of the R3
-  geometry-valued WF invariant — THE residual risk, hunt-precedes-trust) [#163]; elder-reroute (charter §1-B +
-  compass update to the adoption — §1-B below is STALE till it lands). R1 (StageState + pivot-generic constructor +
-  (2,2,2) born-siblings de-risk) [#164] blocked-by R0; R2-R6 ladder [#165] blocked-by R1+R3derisk. The route-B/gate
-  bullet below is SUPERSEDED (operator chose BUILD). Route-P (two-object) RETIRED; GateRouteB222 = the WALL evidence.
-- **▶▶▶▶▶▶▶▶ FORK DECIDED (operator, 2026-07-25): BUILD (A) cite-free lower in ROUTE-B (transformed-center)
-  shape; AUDIT-CORRECTED v2.** Brief = `build-brief-routeB.md` (v2). SHAPE (validated): fan the CONSTRUCTION not
-  the composite (recursion emits the atlas; each blow-up in the branch's CURRENT coords); atlas = tree full-fan
-  g-maps; per-step cover = block-atom + `covers_subset` fold (COVER MONUMENT COLLAPSES §2 ✔). **DECORRELATED AUDIT
-  (audit-routeB, exact algebra + Codex) REFUTED the v1 ECONOMY — NO WALL, but re-priced:** O1 node non-transitivity
-  (transportChart consumes coreGen, needs a coreGen SYMMETRY; parent stabilizer NOT transitive on node pivots,
-  d=(2,2,2)) ⇒ transport = per-K-ORBIT-of-leaves dedup, NOT per-node collapse; O2 cover-vs-cert seam (isometry-cover
-  ≠ coreGen-sym-cert; exponent-only seam can't certify coverage) ⇒ NEW named coherence theorem owed; O3 transport =
-  leaf-COUNT reduction, the general-d L-A/L-B/L-C hideal spine per orbit-rep REMAINS the labour; O4 one-new-lemma
-  restated (coreGen equivariance under per-stage matched-gauge/end). §3(a) equal-b HOLDS (v1 STOP gated on it →
-  FALSE-GREEN; re-pointed to O1/O2). CONTROLLER MISS OWNED (calibration-ledger): grounded mechanism-existence,
-  over-read composition-economy — fire the obstruction seat BEFORE reporting an architecture "grounded". Re-priced
-  to the substantial general-d monument. **DE-RISK GATE WALLED (gate-routeB, d=(2,2,2) intermediate node) →
-  RECOMMEND STOP TO OBJECTS-ONLY.** DEFINITIVE — 4 decorrelated confirmations (gate
-  exact-algebra + gate Codex + audit's prior O1/O2 + audit's INDEPENDENT re-run reconstructing the exact algebra
-  without reading the gate script and reproducing the exact witness numbers; CONCUR, no dissent, no bounded path missed). M1a GREEN (the matched-gauge transport IS real);
-  WALL at M2/M3 (economy, NOT math): transport-group (coreGen syms) vs cover-set (entry swaps) DISJOINT on node
-  pivots (transport gives no sibling cert) + the structural chart↔leaf bridge (O2) is UNBUILT/unstatable with
-  banked assets (AtlasRealizesExponents is value-only). Route-B does NOT collapse the monument — the cite-free
-  lower = the full general-d per-leaf L-A/L-B/L-C spine + the unbuilt structural chart↔leaf assembly + fan cover
-  = the substantial multi-tide monument, no shortcut (Codex: "no logical impossibility, finite-but-laborious").
-  Evidence banked `GateRouteB222.lean` (branch -gate-routeB, clean-three, NOT wired). FULL TEAM never committed
-  (the gate held it). **SURFACED to operator (destination/close decision, WAIT-FOR-GO):** recommend objects-only
-  (charter-faithful #94, cited_aoyagi_lower_ax PERMITTED); alternative = build the full monument anyway
-  (maximal-push, no shortcut). VERDICT DEFINITIVE; both gate seats rested. Awaiting the operator's close call.
-  STOP-fallback = objects-only (cite `cited_aoyagi_lower_ax`, #94). The (A)/OBJECTS-ONLY fork below is CLOSED.
-- **▶▶▶▶▶▶▶ CHECKPOINT 2026-07-25 (operator-directed refresh) — READ `checkpoint-2026-07-25.md` FIRST; it
-  SUPERSEDES the older memo bullets below (the flat-fan / rung-9 phase = a DETOUR, closed).** State: the θ=1
-  bypass is a MIRAGE (#146, dead); the flat-fan cover is NOT a resolution (monomialization⊥coverage, dead);
-  general-d is DETAIL-AT-SCALE on the MATH (#148 + the Schur atom closes at symbolic width via sum-type blocks)
-  BUT the LEAN value-path (proto-consuming Encoding-I fold + adapted-chart cover route-A + per-step recursion +
-  assembly) is a SUBSTANTIAL MULTI-TIDE BUILD, not wiring — consume-verify (#154, force-elab) corrected the
-  "banked-modulo-wiring" optimism: SOLID banked = the ledger ✅ (general-L) + #110 upper ✅ (cite-free) +
-  value-combinatorics ✅ (θ=1, C=8); the L5 fold hinge is sorried Encoding-S (MonumentAtlas, 16 sorries, does
-  NOT consume the protos), the gate2 protos are ISOLATION measurement bricks (L-A ⟨peeled⟩ stop-finding), the
-  cover certified-charts must be BUILT. THE ONE OPEN DECISION = the (A)-build vs OBJECTS-ONLY FORK, ELDER-GATED
-  + surfaced to the operator (build the multi-tide resolution → cite-free payoff, vs bank the objects + cite the
-  resolution `cited_aoyagi_lower_ax`, charter-faithful per #94). HOLDING reactive dispatch + the elder-gate
-  pending the operator's fork call. In-flight (fork-independent, GO'd): schur-casttax (promote
-  `schur_clear_two_sided` = the first general-d brick), routeP-p1 (#110 (3,3,4)-upper wiring). Merge order
-  (gate2→routeP→5d-cover→5d-transport, full lake build after each) banked in the CONSUME-MAP. Do NOT re-open the
-  flat-fan / θ=1 sagas (dead); do NOT revive route-C (mirage, #109 = killed render).
-- **▶▶▶▶▶▶ RECALIBRATION (navigator, 2026-07-25) — the residual is 9 RUNGS not 5; re-aligned to the
-  charter's gate bar.** Verified vs render SEAM-CHECK 1269-1282 (my own curation): closing :311 needs a
-  REAL Resolution general-d — L6 (hjac, rendered exact) + L7 (hcover, coupled fan) are FIRST-CLASS, NOT
-  "wiring". THE HIGHEST UN-PROBED RISK = the coupled hcover (route-a full fan, faithful multi-term;
-  python-probed render §9 but LEAN-UNBUILT) → FRONT-LOADED as a go/no-go atom lane NOW (encoding-
-  independent, hunt-precedes-trust). GENERAL-D GATE BAR = charter DE-RISK(a): a FULL (3,3,4) Resolution +
-  realization + full-fan cover atom green-BOTH (jac/hjac/inj/cover/realization all UN-STARTED at (3,3,4))
-  — NOT the flat hideal; my "hold gate till coreGen-wrap" under-counted, re-aligning UP. VERIFIED-GOOD:
-  :308 seam route-AGNOSTIC (route P plugs same seam); backbone+value-engine+ConjResolution survive; :311
-  = the ONLY residual sorry on the cone; fold cluster (Monument/Wire/GeoAtlasTransfer) off-cone → prune at
-  close. The DE-RISK (crux+flat hideal, doubly-confirmed) = 1 rung of 9. Map: gate-gend-navigator-map.md.
-  RUNG 3 (coreGen-wrap) now CALIBRATED + WIRED + BANKED @ d95fcc540 (controller re-derived: full DLNFibre
-  green 9025 jobs; hideal_coreGen_fwd/bwd force-elab clean-three; via_engine cone unchanged + cite-free).
-  Rungs 5a(realization)/5b(L6 hjac)/5c(L7 hcover)/5d(assembly) UN-STARTED = the full-(3,3,4)-Resolution gate
-  bar (#130, blocked-by #132). HCOVER VERDICT = DETAIL-AT-SCALE (GO), 4-CHANNEL confirmed (pnp exact-algebra
-  + pnp Codex + controller calibration + gate2 probes) — the highest-risk rung RETIRED (recoord N²=0 →
-  degree-exactly-2, LeafCoverTiling reused verbatim). HCOVER NOW FULLY DE-RISKED (2026-07-25):
-  • adjudication 4-ch GO + 5c ATOM BUILT (@ 649fc7924, Corank2FaithfulHCover.lean; 2-ch PASS: build +
-    gate2 fidelity/model; architecture-INDEPENDENT so robust to the fork; my #print-axioms at integration = 3rd)
-  • PROVENANCE = CONDITIONAL GO (3-ch: pnp+Codex+gate2): route (b) (buildTree col-pinned via IsRealBranch);
-    the #86(B) K-transport CARRIES THE COVER (generators = coord-perm ISOMETRIES; value preserved); residual =
-    the stabilizer induction, DEPTH-3 GO (base+first-rollover verified, NO obstruction; hyp (ii) CORRECTED to
-    the weaker-true S×S form). General-d cover = detail-at-scale; 5-lemma cover-transport template + 3 named
-    obligations on #130 (#86(B) emission; hdom_ball:152→dom⊇f^[depth]1; global C∗=max C). HUNT COMPLETE.
-  • CHART-ARCHITECTURE FORK #138 SETTLED → (B) DECOMPOSED, crux transfers FREE (2-ch pnp+Codex + my
-    calibration). gWrap = sigmaPiv∘H∘P∘A0∘A1 EXTENSIONALLY (sympy-exact) → |jacDet|=u0⁷·u1³·u20⁸ via
-    jacDet_comp over banked atoms (5b clean, NO 21×21 det); the banked hideal rewrites along the funext, NO
-    re-proof; shear LOAD-BEARING (F4) = the general-d GeoStep form; GeneralGeoAtlas builds general-d L6/L7
-    decomposed (reuse). CAVEAT: perm P explicit [8,9,10,11,1,5,6,7,0,2,3,4] det−1. gate2 confirming read queued.
-  FORWARD PATH: RUNG 5b DONE — 4-CHANNEL (decomp-5b build + routeP-p1 supervisor fidelity + gate2 decorrelated
-  fidelity PASS [shearH machine-identical to #138 H + 5c faithfulShear, NOT a proxy] + my kernel). Re-integrated
-  onto the TWO-MODULE authoritative form @ c712f8fef (GWrapDecomp STAGE 1 [gFaithful_decomp funext] + ChartJac
-  STAGE 2/3 [|jacDet gWrap|=|u0|⁷|u1|³|u20|⁸ via jacDet_comp + gWrap_hjac unit≡1 + L6 Chart fields]); full
-  DLNFibre green 9027 jobs, clean-three. (Divergence resolved: my 6ebe99f79 drop-GWrapDecomp call crossed
-  decomp-5b's rebase-onto-STAGE-1; adopted the builder-authoritative two-module — cleaner, STAGE 1 reusable
-  for general-d.) The nonlinear-jacDet(H) wrinkle DISSOLVED (jacDet_blockShear general). NOW: 5a (realization —
-  AtlasRealizesExponents, jac+1 {E:8,c11:9}∈terminalExponents + hit minAdm, α non-binding; in progress,
-  routeP-p1) → 5d (assembly: Chart record + Resolution + eWrap MeasurePreserving + eWrap→canonFlatten transport)
-  → full (3,3,4) Resolution (#130) → general-d gate (elder+navigator, GUARD-B) → general-d build. HOLDING for:
-  routeP-p1's 5a + gate2's 5a review. Bonus banked: abs_jacDet_permCoord (coord-perm |jacDet|=1, general-d reuse).
-- **▶▶▶▶▶ PHASE-1 DE-RISK GREEN + (3,3,4) coreGen-wrap COMPLETING (2026-07-25).** The crux + flat(Pmat)
-  two-sided faithful coupled monomialisation is BANKED + CONTROLLER-CALIBRATED (5 thms force-elab
-  `#print axioms` = clean-three; fidelity repair @ af25db69b — 2 cancellation-free certs, condition-2
-  discharged). coreGen-wrap turned out BOUNDED (routeP-p1 solved the mult-flatten incantations; gate2 was
-  right); GO'd to complete it as the WORKED BASE CASE → new DLN module `Corank2CoreGenWrap.lean` (crux/hideal
-  stay in Core). Condition-4 ANSWERED: coreGen map = blockBlowupMap[composition sympy-verified, jacDet landed
-  O9] ∘ flat(Pmat) g[banked conjResolution] — designed-blowup-with-verified-composition. GENERAL-D GATE HELD
-  (calibrate-sensors) until the (3,3,4) instance LANDS + I calibrate (wire aggregator + `#print axioms` +
-  full `scripts/lb DLNFibre` green) → THEN convene elder+navigator (GUARD-B: completing (3,3,4) ≠ authorizing
-  general-d). TRIGGER = routeP-p1 "wrap ready" ping → wire + calibrate + convene the gate. gate2 fidelity-
-  reviews the wrap; routeP-p1 building (guard-4: green or genuine NEW snag). See journal (2026-07-25 tail).
-- **▶▶▶▶ #112 FIRED (route P, 2026-07-25) — the cite-free build commencing.** All de-risking EXHAUSTED +
-  GREEN: reverse two-sided across L-A/L-B/L-C (Lean, controller-re-derived clean-three; the 7th-over-claim
-  b-chain-reverse FALSIFIED) + faithful composition MATH + #124 tripwire PASSES + cover (route-a) +
-  realization (#124 = Aoyagi's (S,J) induction, paper-anchored). Builder's decisive finding: NO bounded
-  proxy-free Lean brick short of #112 (faithful Lean composite = the large 21-var factorisation = #112's
-  first chart, or the sorried monument route P retires; only-small = the forbidden proxy) → the
-  composition-in-Lean IS the build. PHASE-1 (gate2-hideal, branch `expedition/aoyagi-engine-routeP`,
-  commit-worthy): the SELF-CONTAINED faithful (3,3,4) composite g + two-sided hideal via the proven
-  mechanisms; guards = faithful multi-term + #124 tripwire + STOP-on-wall→objects-only. Phase-1 GREEN →
-  controller decides general-d continuation (buildTree recursion + charts + full-fan cover); WALL →
-  objects-only close (bank A/B-spine/C/D + V-upper, cite Aoyagi lower assembly). Build EXECUTION =
-  controller-judgment (grant); PR merge + dev→main = OPERATOR-gated. gate prototypes banked -gate2 @ origin.
-- **▶▶▶ ROUTE P ADOPTED (elder route-gate discharged, 2026-07-25); de-risk (b) #124 GREEN; holding for de-risk
-  (a) #123 = the auto-fire trigger.** Charter/compass @ 75af1cb97 (two-independent-residuals map: cover[GREEN
-  route-a] + realization[= AtlasRealizesExponents = Aoyagi's (S,J) lower-bound induction, detail-at-scale, the
-  build tripwire = per-leaf pivot-survival-at-deepest-intersection CAS check]). NO exact-principality monument
-  (lower bound needs only the WEAK reverse). #124 deep-mixed realization probe GREEN (no undershoot; binding =
-  ½minAdm general; coupling RAISES; paper-first — realization IS her (S,J) induction, we reproduce). STANDING
-  CLEARANCE: full `buildTree` build auto-fires on #123 (corank-2 two-sided first-brick gate) green-BOTH — no
-  further elder gate; RED on EITHER #123/#124 → objects-only close (cite Aoyagi lower assembly), not re-attack.
-  Build EXECUTION = controller-judgment (grant); PR merge + dev→main stay operator-gated. gate2-hideal running
-  #123; pnp/elder resting (re-convene at #123). The V-lower-lighter mirage RETIRED (F1-mirage 3rd cycle, §3).
-- **⇢ STANDING AUTONOMY GRANT (operator, 2026-07-25) — build progression is CONTROLLER-JUDGMENT, no
-  wait-for-go.** (1) GREEN gate → commit the swap + run the full general-`d` fold, proceed (no operator go).
-  (2) SURPRISE gate → re-scope / re-plan / explore; if the earned verdict is REASONABLE (cleared by the
-  decorrelated review/probe, NOT controller optimism — the bar stays where the planning phase held it),
-  proceed on the re-scoped plan (no operator go). The elder route-gate stays as the internal quality joint;
-  re-derive every gate (`#print axioms`, fresh build) before believing "done"; name results honestly. STILL
-  OPERATOR-GATED (unchanged, a different/release class): PR **merge** + `dev→main` promotion. Elder folds
-  this into the charter's gating at the next convening (gate-result joint).
-- **▶▶ VERDICT EARNED (2026-07-25): NO MONUMENT — cite-free BUILDABLE; the crux is the COVER (already GREEN
-  via hcover route-a).** `pnp-coupled` (decorrelated, own Codex) audited the controller's L-lower-coupled
-  render: obstruction hunt came up EMPTY (resolution=explicit blow-ups not Hironaka; ideal-algebra=dissolved
-  substitution artifact, gate L-A GREEN; "principal-collapse monument" MIS-LOCATED — `⟨diag b⟩=⟨b₁⟩` one-line
-  given the chain). My Finding 1 (reverse/principality avoided) CONFIRMED on the ALGEBRA; the residual
-  RELOCATES to the geometric cover L7 (rlct=min over ALL divisors ⟹ cover load-bearing; no original-space
-  shortcut). CONTROLLER RECONCILIATION: the cover was ALREADY probed GREEN by the planning-phase hcover-probe
-  (§9) — OBL-1 box-containment bounded incl. faithful multi-term (SEAM-2); OBL-2 completeness gap (col-pin,
-  = pnp's "most likely break") FIXED by route-(a) full fan. Two decorrelated probes CONVERGE. EARNED VERDICT:
-  BUILD cite-free (spine general HIGH + V-upper MEDIUM-HIGH + V-lower algebra + cover GREEN-via-route-a),
-  confidence MEDIUM-HIGH. HOLDING for: pnp reconciliation one-liner (its cover concern = hcover OBL-2?) +
-  ELDER route-gate (convening) → then commit the build (per autonomy grant). Not over-optimism: MEDIUM-HIGH,
-  elder+reconciliation = the damping. #122 done.
-- **(superseded) ▷ GATE-2 READ YELLOW (2026-07-25) → RECALIBRATION + decorrelated adjudication.** The gate
-  (builder `gate2-hideal`, controller-re-derived): L-A (block-elim atom) is GREEN + cheap at the real ambient
-  (zero Mathlib ideal-membership tax — the ideal route DOES dissolve the ENCODING). BUT the `Chart.hideal`
-  field is a whole-resolution object: L-A reaches `⟨(∏C)∘g⟩=⟨peeled⟩` (coupled polynomial, NOT monomial);
-  monomialising the coupled residual (peeled→diag b via blow-up/radial) is the coupled corank≥2 hard part,
-  RELOCATED after block-elim, connecting to the terminal principality the render flagged OPEN-IN-SOURCE
-  (worked.tex:651-664). **CONTROLLER RECALIBRATION (own it): the planning-phase §10 "no identified open
-  mathematics" was OVER-CLAIMED (6th scope-optimism catch) — it weighted "L-A green + spine sound" against
-  the render's OWN open-in-source flag. Both routes P (atlas hideal) and V (value bounds) hit the coupled
-  monomialisation; the ideal route never claimed to dissolve Aoyagi's coupled MATH (render §88-95), only the
-  encoding.** The crux that decides everything: is the narrowed coupled hard part (V-upper minimizer value +
-  V-lower coupled floor) DETAIL-AT-SCALE (build) or a MONUMENT (cite)? → fired decorrelated `pnp-coupled`
-  (obstruction seat, own Codex); task #122; deliverable `threads/pnp-coupled/adjudication.md`. This is
-  destination-adjacent → FLAGGED to operator (not silently proceeding), verdict-then-recommend. Elder convenes
-  at the pnp verdict (route-decision joint). #121 done (YELLOW).
-- **▶ GATE-2 BUILD LAUNCHED (2026-07-24, operator explicit go).** Planning phase COMPLETE (next-build-render
-  §1-§10, triply-checked: survey-inv + rev-render ×2 + hcover-probe). Settled scope = **Encoding-I** (the
-  ideal-route `hideal` via L-A/L-B Schur-clearing), NO open math obstruction; residual = a bounded-but-large
-  Lean build. hcover GREEN-on-math (route-(a) full fan; SEAM-2 box-containment cleared for the faithful
-  multi-term shear). **Builder `gate2-hideal` (lean-formaliser) running** on `expedition/aoyagi-engine-gate2`
-  off `-PROTO`: the elder gate-(i) MEASUREMENT = instantiate the -PROTO symbolic Schur spine into a concrete
-  corank-2 `Chart.hideal_fwd`/`hideal_bwd`, measure the Lean tax (TAX REPORT = deliverable). Brief =
-  `gate2-hideal-prototype-brief.md`; task #121. Green-enough → controller takes commit-the-swap to operator
-  (wait-for-explicit-go on the full general-`d` fold). Elder convenes at the gate RESULT (route-adoption joint).
-  The NEW 3-LEVEL MODE holds: controller owns PROCESS + MATH (the render); decorrelated advisory seats
-  propose-never-act; Lean OUTSOURCED to builders, fires only on operator go (now given, THIS unit).
-- **⚠ (2026-07-24) — the phase/LANES text BELOW is STALE (retired
-  geometric-fold; do NOT act on it).** Current truth: the RE-ARCHITECT is committed (operator go, V →
-  coupled-B). Close-out = reproduce Aoyagi's Cases-1/2 (S,J) recursion IDEAL-LEVEL (⟨∏C⟩=⟨diag(b)⟩ →
-  rlct=½cCodim). RENDER ARC (`theory/aoyagi-2023-reproduction/ideal-route-full-render.md`): (1) rendered;
-  (2) rev-render's decorrelated audit REOPENED it — the SPINE (L-A/L-B/Thm-4) verified sound+general, but
-  the GEOMETRIC HALF (L6/L7/L8) was OVER-CLAIMED "bounded" without being rendered (2nd optimism-on-scope
-  error, caught); (3) RE-RENDERED general — L6 dom-wide Jacobian EXACT (unit≡1); L7 obl-1 via
-  one-pivot-per-step (uniform deg-2 shears, -L7cover engine); L7 obl-2 exhaustive fan; L8(ii) via EXHAUSTIVE
-  tree + Object D (my greedy=global worry was over-caution, source-resolved); totality via the b-chain.
-  EARNED re-verdict: NO open math; residual = the Lean geometric build (exists_coreResolution fields) + wiring.
-  **CURRENT STATE (post 5 rev-render audit rounds + controller #print-axioms verification): the value's
-  COMBINATORIAL half is DONE clean-three; the SOLE residual is the GEOMETRIC atlas (L6/L7 Lean build).**
-  SPINE (L-A/L-B/Thm-4) + teeth (L6/L7 math) VERIFIED/rendered. rev-render caught 4 scope-optimism errors
-  (route-A greedy, exhaustive-tree, Object-D-attainment, backwards case-roles) THEN surfaced the ground truth:
-  the minimizer-realization I kept re-deriving is ALREADY PROVED sorry-free in the retired-but-salvaged Engine
-  — I VERIFIED clean-three myself (o5_core_realized / tStar_realized / clearable_of_minimizer /
-  hlb_hattain_of_atlasRealizesExponents all `[propext, Classical.choice, Quot.sound]`; R7 sorry NOT in cone).
-  KILL-TEST PASSED (no stranded minimizer, 19,525 vectors + proof; value SAFE). So the ENTIRE close-out =
-  [spine verified] + [combinatorial value DONE clean-three] + [geometric atlas AtlasRealizesExponents = L6/L7,
-  math-rendered, Lean build = exists_atlasRealizesExponents (MonumentAtlas sorry) = the ONE residual,
-  operator-gated]. SEAM VERIFIED (read RecursionAdapter + exists_coreResolution): whole close-out = ONE
-  sorry (exists_coreResolution:311 = ∃ res, AtlasRealizesExponents d res = geometric atlas); payoff cite-free.
-  BUILD-PREP COMPLETE: brief = `geometric-atlas-build-brief.md` (L6 dom-wide hjac + L7 coupled hcover [the
-  UN-PROBED corank≥2 piece] + the ℕ-value-match; reuse -L7cover + -PROTO; first unit = corank-2 chart
-  go/no-go). BUILD-GO GIVEN (operator, 2026-07-24). LeafCoverTiling MERGED to trunk (c36ff259e, L7 reuse). corank-2
-  first unit = **MECHANISM GO** (builder geo-atlas-c2 + rev-render audit + Codex): Corank2GeoAtlas.lean
-  (origin/expedition/aoyagi-engine-geo-c2, 1c4e33f71) — the two hardest geometric mechanisms proven GENUINE
-  on general sorry-free primitives: coShear_covers (coupled per-edge box-containment, genuine 4-term rank-1
-  Schur shear, C=1 under f=r+r²) + coG_hjac (dom-wide unit≡1 Jacobian). RETIRES the un-probed-at-corank≥2
-  flag for the MECHANISMS. NOT general-d (covers_coTree = one hardcoded self-similar tree). General-d hcover
-  ASSEMBLY (6 items: real buildTree(d)↔FanTree correspondence, varying shears/blocks/CENTERS, fan-
-  completeness, radius bookkeeping, leaf↔chart) + hideal + Resolution/AtlasRealizesExponents wiring remain =
-  the actual exists_coreResolution:311 build. NEW risk: CENTERS (nonzero-center linear terms; likely safe as
-  Aoyagi is chart-origin-centered, confirm in build). rank-1 LOAD-BEARING (needs one-pivot-per-step).
-  VERIFIED + MERGED: my own #print axioms on a FRESH root build (forced elaboration, no stale-olean) = all 6
-  roots [propext, Classical.choice, Quot.sound]; #assert_banked_clean_batch fired GREEN in-build; MERGED to
-  trunk bfe4f2433 (full scripts/lb DLNFibre green, 8265/9017 jobs, no clash). The mechanism GO is confirmed.
-  GENERAL-d MECHANISMS DONE + VERIFIED (GeneralGeoAtlas.lean, geo-atlas-gd): L6 dom-wide unit≡1 hjac
-  per-step + multi-step branch; L7 box-containment ALL block sizes/pivots + general-depth varying-center fan
-  cover; CENTERS discharged GENERALLY (fderiv outerDisp 0=0 + global quad bound at every radius). NO
-  block/pivot/depth/center obstruction surfaced. My #print axioms (fresh build): 8 key roots clean-three;
-  15-root batch green; full scripts/lb DLNFibre GREEN (no clash). Merged d1f94693d.
-  ⚠ MISREAD CORRECTED (builder geo-atlas-wire STOPPED+reported, controller-verified, 2026-07-24):
-  exists_coreResolution:311 is NOT last-mile wiring. The `res` (Resolution) MANDATES each chart's hideal
-  (ideal identity ⟨coreGen∘g⟩=⟨diag b⟩) = the deep StepInv-fold MONUMENT: THE WALL
-  (foldResid_case11_mergeBoostSplit_canon, MergeBoostSplit.lean:108, REFUTED-AS-STATED on raw foldResid,
-  pending #69 elder object re-shape) + realBranch_appendResidDescent (cap) + leaf_stepInv_of_path' (L5) +
-  leafPath_compactCover (L7) + lastLayer_clear_preserves. The box-GEOMETRY (GeneralGeoAtlas/Corank2GeoAtlas
-  hjac/hcover, VERIFIED clean-three) is HALF the res — it does NOT touch hideal. The ideal-route hideal
-  (L-A/L-B, RENDERED-bounded) is UNBUILT in Lean (Lean still has the geometric-fold WALL). Pieces 2/3/4
-  (value-match/leaf-enum/AtlasRealizesExponents assembly) are ALREADY sorry-free (MonumentAssembly). Payoff
-  aoyagi_learning_coefficient_via_engine = cite-free but sorryAx-via-exists_coreResolution (NOT closed;
-  AxCheck.lean:1390-1414 confirms). My "geometry is the last mile" checkpoints OVER-CLAIMED (5th scope-optimism).
-  BLOCKED on the operator's DEFINITION-OF-DONE decision (wait-for-explicit-go): (a) land :311 tracked-open
-  LIVE frontier [honest payoff wording, no Lean edit] OR (b) build the ideal-route hideal [the monument:
-  #69 re-shape + fold/cover/cap]. Do NOT launch more :311 builders pre-decision.
-  NEW 3-LEVEL MODE: controller owns PROCESS + MATH(render); decorrelated
-  seats (rev-render review-only, scout-code, scout-proj); Lean OUTSOURCED to builders. PLAN =
-  `execution-plan-coupledB.md`. The Lean BUILD fires ONLY on the operator's explicit go. Geometric fold
-  (MonumentAtlas/KILL/#95/#98) RETIRED-superseded (not refuted).
-- **READ `charter.md` FIRST, every wake** — it is the fixed invariant core (goals = Aoyagi's machinery
-  as reusable objects; the headline is a corollary/test; the progress bar; the standing math-warnings).
-  Gate every progress-claim and every route against it. This heartbeat memo is operational state, NOT
-  the goal frame — the charter is.
-- phase: **THE N_p BAKE IS COMPLETE (44889cea0) → THE WALL'S ENDGAME (2026-07-23 ~18:20).** The
-  fidelity arc is CLOSED in the definitions: canonNormalizationOf (pivot-parametric + the deeper
-  recoord) replaced canonShearOf; IsRealBranch = value-pin + the (b) fan case-split (case12/case2
-  membership, case11 canonical); canonFlatten pinned; ShearWithinCarve I/II >sl; PivotPreservation
-  reworked sorry-free (pnp-fan's mechanism kernel-checked). Payoff isolation held THROUGHOUT. Census
-  40. The elder's PAPER-FIDELITY REVIEW delivered (paper-fidelity-review.md: coverage high+honest;
-  the monument = the ONE open frontier; Ext-model identification = the caveat to keep honest).
-  THE WALL'S TRUE KNOT (2026-07-23): ROUTE β is DEAD (seat-L4D, controller def-verified at
-  Deg1SupportedSlot :547-548 — the ∃c coefficients are CONTINUITY-ONLY; the case11 boost split
-  needs the b-chain (extra-block c_i vanish at u_pivot=0), which is path-inductive data anchored
-  at the canonFlatten root, withheld from ∀e leaves by design :1235). With the CAP-ESCAPE verdict
-  (descended support escapes blockCoords(S+1) on WIDE branches — INHERENT, witness (2,3,2,2),
-  banked + re-ran exit-0), that is the 10th+11th catches, BOTH in the carried invariant: support
-  TOO TIGHT + form TOO WEAK — FoldStepInvAt under-transcribes Aoyagi's induction hypothesis.
-  THE FROZEN RENDER SPEC (§8(i), 384ac17dc — supersedes all interim scopes incl. the two-sign
-  flip, which cleaned the WRONG OBJECT = the ed1 product; foldResid IS the block-slot per the
-  scalar-foldB def-fact): DEF-EDIT-1 = supportAt widen (unchanged). DEF-EDIT-3 = (a) branch-(i)
-  REPLACED by R4, the generator transform Q₁·A_S·Q₂ on the RAW A_S → diag(1,e₂) (SUBSUMES
-  branch-(i); stacking double-counts); (b) branch-(ii) FLIPPED to A_{S+1}·Q₁ (−γ, council Q1)
-  AND SCOPED to i ≥ cleared (§8(m): the scope IS her accumulated-Q₂'⁻¹ semantics — cleared
-  outer rows read as 0 by not being summed; the all-i≠a formula reads pre-clear values ⟹ the
-  inter-edge u₀₀₁²; R4's own reads likewise prior-clear-aware);
-  (c) foldResid at case11 = the CLEAN BLOCK D_J — boostReady consumes THIS (e₂ ∈ center,
-  Deg1SupportedOn ed.center DIRECT). DEF-EDIT-2 = NO new conjunct (existing slot confirmed
-  against the R4-rendered residuals, joint arch-C+L4D). §8(h) criterion: faithful =
-  PRODUCT-PRESERVING (her invariant is an IDEAL EQUALITY; ledger reads HER diag(b)); Gröbner
-  ideal-equality, never entry-cleanliness. Full circle: honest_clear/the certificate's MATH was
-  product-preserving all along — only its rendering as an unpaired coordinate shear was wrong.
-  §2 field RETRACTED (symptom-fitted); 11th catch dissolves; RLCT value never at risk; no
-  operator escalation. MERGE GATES (§8(j) CORRECTED the test — 3rd elder self-correction:
-  entry-ideal-equality between charts is NOT preserved by two-sided unimodular Q·M·P and
-  needn't be; RLCT rides the CoV): arch-C renders §8(i) (awaiting-confirmation flag; FORCED
-  payoff axioms load-bearing; its FIRST checkpoint carries PRE-FREEZE scope incl. the retracted
-  field conjunct — merge only an explicitly §8(i)-conformant branch) → pnp BLOCK-FORM battery
-  on the EXACT rendered formulas (R3+R4 reaches her MULTILINEAR clean block: E_J clean, corner
-  = classical e₂ (−γβ), D_J degree ≤ 1 per pivot-row/col coord — NO u₀₀₁²; u₀₀₁² RESOLVED as
-  R3-alone's row-half residue validating R4; RE-OPEN if the multilinear clean block is not
-  reached) + seat-L4D joint slot-confirm + elder delta-read → controller merges → seat-L4D
-  takes THE WALL (boostReady from clean block + foldB — no field, no ChainNF). MERGE CHECKLIST
-  one-liners: the recoord def's sum range carries `cleared ≤ i` (PRE-VERIFIED on REBAKE2 :928
-  ✓); the retracted field is ABSENT; R4 not in blockShear. RENDER SEAT = arch-C-3 on REBAKE2;
-  REBAKE @ 55a5d258f = dead pre-freeze render, never battery/merge against it.
-- CURRENT WAIT-STATE (2026-07-23 ~16:30 UTC): **DESIGN-COMPLETE; THREE LANES GRINDING; the
-  fan-artifact arc (#82/#84/#85/#86, rulings §9→§9.8) CLOSED and mutually consistent.**
-  THE SETTLED ARCHITECTURE: canonical-pin (her ledger is a canonical-frame object; the fan is
-  our cover artifact); the INV + chain carry the CanonicalPivots hypothesis (CHILD-path form on
-  appends/conjA, CAPR-confirmed); the per-step σ transport SOUND (coreGen σ-invariant via the
-  DLN gauge; clear σ-equivariant; labeled-jac exponent MULTISETS preserved both birth
-  sub-species — the codim is transport-invariant); divBirthCoord = the her-frame transport
-  TARGET (untouched; a "fix" would be anti-faithful); THE ONE FORCED DEF-EDIT = #87
-  canonCenterOf column-exclusion ((1)-ALONE; the phantom re-clear = the single genuine defect;
-  the gate fired — redundancy not-quick, the hole does not ship), full bake discipline: pnp's
-  4-item source-fidelity cert IN PRODUCTION (D₁ trace + no-under-admission + oracle-guard
-  interplay + the row-exclusion half) → elder bake-bless → render seat on a lane; BEFORE L5/L7,
-  current grinds unaffected (canonical-pin-scoped). CATCHES 25/25 pre-render (22 conjunct-role
-  split; 23 phantom; 24 CAPF#1 false-as-stated + controller exemption error owned; 25 GM S2
-  raw-u transcription divergence — corrected child-cleared-input form verified).
-  LANES: GM (unit FULLY DETERMINED): fix S2 pair → thread hcanon (child-path) on INV's def push
-  → keystone (a) via cert (i)'s write pattern → S2 → appends/conjA mechanical → conjB on CAPF →
-  re-points → full-green+forced-axioms gate. INV: rendering CanonicalPivots + threading + THE
-  READ-OFF (crux dissolved in-regime); root assembly BANKED (sourceClearedInv_root,
-  hypothesis-free); then only the 2 transport arms remain (GM's core + the L5 equivariance
-  frame). CAPF: analyticOnNhd_canonNormalizationOf (~150 lines, critical path for #1+#4) → #3 →
-  #4 → #5 KILL via route (a) PATH INDUCTION ((b) refuted on (2,3,3,3)) → #6. ELDER: 2 triggers —
-  bake-bless (#87 cert) + THE FOLDED PASS (scope: O2-revised list + case2 twins + carrier deltas
-  + #83 + corrected CAPF#1 + analyticity sub-lemma + corrected S2 pair + the hcanon re-bless).
-  pnp: the #87 cert, then clear. CAPR/L4D consult-on-call. MERGE ORDER: GM full-green → #73
-  (INV lane + GM branch + CAPF lane + aggregator, one controller merge) → #87 render lands →
-  L5 fold body (w/ #81 + the σ-transport discharge at its SPECIFY) → L7 → swaps → SUMMIT-RETIRE.
-  DELIVERY-LOSS discipline: cross-check wait-lists against the sent log; resend verbatim
-  (2 incidents caught today).
-  NOTE: the session cwd was moved to the CAPR worktree by the harness — the
-  transcript dir is now ...worktrees-aoyagi-engine-root/3a77f09d.../subagents (liveness polling there);
-  ALWAYS cd to root explicitly in commands. (Old:) The obstruction arc FULLY CLOSED (§7-§7.8 + pnp's discharges: the Q₁-lift
-  verified ALL witnesses — the multi-coupling difficulty was a chart artifact, dissolves at the
-  matrix level; loss literally gauge-invariant; measure caveat RESOLVED not flagged; B1 = cited
-  to the fan cert, the genuine cover debt lives at L7). THE CERTIFICATE banked @ 0cf748516
-  (capstone-invariant-certificate.md — the render contract, math fully fixed). LIVE: seat-CAPR
-  (lean-formaliser, lane -CAPR): restate gate → SPECIFY (sourceClearedResid def + the new
-  content lemma NAMED FOR THE OBJECT + the Q₁-lift bridge stmt + old-lemma SUPERSEDED-BY; elder
-  statement-delta before proofs) → the certificated induction (tripwire: certificate-vs-def
-  mismatch = STOP) → gates. pnp-cap (pen-and-paper, lane -CAP): the cap-frontier certificate
-  (support-descent 2 obligations; wide witness mandatory; stop-on-false). pnp-transport: arc
-  complete, holding. Elder: owes the ψ_gen-split confirm (non-blocking now — its two re-engage
-  triggers resolved positively); then rests. L4D: consult-on-call. LL: parked (2 renders
-  contract-ready on the capstone). ETA (DAG panel): optimistic ≈6d / median 8-10d / tail 14d.
-  MERGE ORDER: CAPR's SPECIFY (elder delta + my gates) → CAPR's proof → LL renders → cap render
-  → L5 → L7 → swap batch → SUMMIT-RETIRE. (Old:)
-  The obstruction arc CLOSED its design: ψ = a det-1 polynomial automorphism (F∘ψ=C, verified)
-  that IS Aoyagi's chart transition — ideal-EQUIVALENCE ψ*⟨F⟩=⟨C⟩, RLCT-PRESERVING (pnp
-  retracted its own dimension argument; the elder its ideal-equality — truth won both ways).
-  THE VALUE CHAIN READS ON C: RLCT(loss) = via ⟨C⟩ (p.15 invariant) = ½·min M_{s,k} (p.22
-  boxed rule, the LANDED atlas); ψ separately certifies RLCT(F)=RLCT(C). MEASURE-COMPAT
-  DISSOLVES under read-on-C (ψ never transports a weighted integral). MERGED RECURSION
-  UNTOUCHED (the fork I surfaced resolved: fold def unchanged; the READ-OFF runs on C — both
-  Option-2 economy and recursion-untouched satisfied; operator decision no longer needed).
-  B2 verified at the archetype + the DEEP-intermediate crux (re-open trigger DISARMED). THE
-  ONE OPEN CONSTRUCTION: pnp's ψ_gen (multi-coupling composite of unipotent Q₁ clears; wide
-  (3,3,3,2) needs higher-degree; FULL before the certificate — (B)≠(D), no gaps). ON ψ_gen:
-  the positive per-edge certificate → the FRESH RENDER SEAT (turn-key frame: §7-§7.7 +
-  L4D's scaffold (predicate/assembly/wired-variant, all reusable) + the banked consumer
-  contract + L4D as named def-owner consult). Elder + L4D resting; LL parked. (Old:)
-  Since ~06:30: the wall PROVEN modulo the content lemma + merged (census 42; turn-key swap;
-  L4D released) → pnp's KILL-CONDITION verdict: the content lemma is FALSE on the raw fold
-  (CHART-ONLY, triple-confirmed; (B) degree≤1 TRUE raw / (D) ⟨center⟩-membership FALSE raw,
-  TRUE on the source-column-cleared residual — the (B)≠(D) lesson banked; the lemma FENCED
-  on canonical 64092da06) → elder #69 ruling: the (D)-carrier = the NAMED derived object
-  sourceClearedResid; recursion untouched; options 2/3 rejected; det-1 prior WITHDRAWN →
-  pnp's crossing correction 5aa7dadad REFUTES the ruled ideal-equality bridge (⟨src⟩≠⟨raw⟩;
-  the object is a HYPERPLANE RESTRICTION; RLCT-soundness OPEN at INTERMEDIATE-layer reuse,
-  witness (2,2,2,2,2)) → ELDER §7.5 AMENDMENT in flight (paper-first: her intermediate clear =
-  Lemma-1-internal vs CHART/COVER structure (the fan; bridge = cover-membership) vs misread).
-  L4D stages the STABLE SPECIFY half (object def + (D)-statements + assembly wiring); the
-  bridge/append-re-point/LL-contract statements HELD. pnp holds post-correction. LL parked
-  (its 2 renders re-target the amended contract). ON THE AMENDMENT: corrected closing contract
-  → pnp certifies the true bridge → L4D full SPECIFY + elder statement-delta → proofs + the
-  fresh-formaliser spawn (targets sourceClearedResid's content lemma). Canonical is SOUND
-  throughout (all questionable statements sorry-gated + fenced). (Old state for context:)
-  Since ~03:30: the LL lane MERGED (LastLayerWire wired; conjA fully wired; census 44); L4D's
-  session-2 landed — the assembly lemma PROVEN clean-three, the content statement hardened
-  (case11-only + case12/2 sibling ratified), realBranch_boostReady_case11' PROVEN via
-  content∘assembly (sorryAx via the content lemma ONLY; hslot unused) — THE WALL = 
-  foldResid_case11_mergeBoostSplit_canon ALONE. THE TRIPWIRE FIRED (as designed): the capstone
-  needs a foldResid-induction whose invariant is the research content; RE-SHAPED: pnp-transport
-  elaborates capstone-invariant-certificate.md (root/δ=1/δ=0/read-off on the CONCRETE recursion,
-  canonFlatten-specific, consumer facts) → a FRESH FORMALISER renders → L4D executes the turn-key
-  swap + pushes + RESTS (large context). Elder's C9 gains the MergeBoostSplit predicate-fidelity
-  check (3 questions: single-e₂ generality; center-ignoring vs her b-monomials; the E_J/D_J
-  disjunction). IN FLIGHT: L4D's swap push; pnp's certificate; elder's C9+fidelity report.
-  ON pnp's certificate: spawn the fresh formaliser (lean-formaliser agent, self-contained brief:
-  the certificate + the turn-key frame + the banked contract). (Old state for context:)
-  The idiom ruling LANDED (threads/idiom-ruling.md: PIN where born + the invoking spine;
-  transports general-e; he-after-e convention ratified) and everything downstream is dispatched:
-  L4D renders the atomic pinned spine (Case1Wire #1-3 + case1'' threading + MonumentAssembly
-  he0/he_lin→he) AND grinds foldResid_case11_mergeBoostSplit_canon — the content lemma now has
-  FOUR consumers and a BANKED render contract (threads/L4-case1-core/split-consumers-needed-
-  facts.md: born-unit = case12/2 pivot-coeff origin-non-vanishing; conjunct-2 = per-slot
-  pivot-XOR-free disjunction; shaping fork case-generic-vs-sibling = L4D's call). LL: conjA
-  FULLY WIRED (case11 consumes the wall at S=L, no interior guard, reachability confirmed);
-  its 2 remaining holes ride the content lemma; #66 resolved-as-quarantined; PARKED. L3T3:
-  review standby (case1'' hunk) + Case1Wire fossil line (after #38+pin). Elder: C9 recursion
-  prose-intent (the LAST audit chunk; pp.15-22 image reads — long turns expected). MERGE ORDER:
-  L4D's atomic spine unit first, then LL's lane. STALE-TIP WARNING: L3T3's 65e14acf2 = dead
-  (crossing artifact, do not merge). The registered-vs-primed cone map: the swap improved the
-  PRIMED B' driver; the registered summit never consumed :1350 (CaseStepAssembly docstrings +
-  AxCheck comments carry this). Since the F₂
-  merge (a5295bcb8): the L3T3 lane MERGED + aggregator-wired (8c2b5253e; descent slot +
-  primed twins on canonical; build 9012); the Gap-B "swap" re-scoped (the twins were
-  CONSUMER-LESS — L3T3's DAG catch; Option A CaseStepAssembly GO'd, step-only, case2'' now /
-  case1'' held); the full-paper image class CLOSED (worked.tex Lemma-1 ≥→≤ typo fixed
-  e02610619, anchors held); the coverage audit banked (NO unplanned gap) with the operator's
-  TWO scope corrections banked in lessons.md (Aoyagi-only axis — L&R was drift; θ ≠ rlcm —
-  erratum WITHDRAWN; briefs name sources by exact path). THE LIVE FORK: two seats hit the
-  ∀e/canonFlatten boundary independently (L4D: the wall chain ∀e is UNPROVABLE, the ruled
-  pin was never rendered — the 13th catch; LL: lastLayer conjA-δ=1 needs all-Deg1,
-  canonFlatten-only — the 14th). TWO IDIOMS in play: pin-hypothesis (he : e = canonFlatten d)
-  vs consume-structure (general-e + Deg1 hypothesis + L5 anchoring = the step twin's shape).
-  ELDER rules ONE idiom (priority, before its audit queue: θ-reassess + Aoyagi-axis matrix
-  restructure). MEANWHILE: L4D grinds the MergeBoostSplit content lemma (canonFlatten-stated
-  under either idiom; Codex route banked @ e9bfd363d on -L4D-wall) + reports the summit
-  e-instantiation sites; L3T3 builds CaseStepAssembly + case2''; LL holds (3 holes gated).
-  ON THE RULING: L4D renders the wall side, LL the lastLayer side, L3T3 finishes case1'';
-  then MonumentAssembly re-point → summit-cone axiom audit → descent/L5 ladder. If a seat is
-  silent ≥2 polls, check transcript mtime (lost-wake hazard, 4 incidents now).
-- ELDER INCIDENT (2026-07-23 ~00:00): the previous elder-standing WEDGED (10.8MB transcript, 6
-  failed wakes) AND its 23:05 adjudication was DELIVERY-LOST (recovered from transcript, banked:
-  threads/L4-case1-core/elder-capescape-interim-adjudication.md — its fix-β superseded by the
-  INHERENT arm; its fan/slot-coupling + live-square + ε-table-col-a flags live). Wedged seat
-  STOPPED (zombie-wake hazard); FRESH elder-standing convened from durable artifacts with the
-  full #40 brief (paper-first). NEW transcript poll path: subagents/agent-aelder-standing-
-  512dde71e4294b02.jsonl (mtime 00:03 = alive). LESSON (standing): teammate→controller message
-  loss is REAL; on a critical-path wait, poll the transcript tail (mtime + last entry) — silence
-  after ≥2 unanswered sends = incident, not patience.
-  SUMMIT-RETIRE PRECONDITION (L3T3 flag, 2026-07-24): the UNPRIMED MonumentAtlas leaf
-  case1_preserves_stepInv (:1513) + its consumer, the UNPRIMED leaf_stepInv_of_path (feeding the
-  REGISTERED summit), carry NO `he` — before the retire-swap to case1'' the pin must be threaded
-  through the unprimed chain (replace he0/he_lin as done on the primed side) or the swap fails
-  statement-identity. case2's swap is CLEAN (both sides he-free).
-  MERGE-ORDER DISCIPLINE: pre-N_p branches rebase seat-side BEFORE controller merges. Remaining to
-  summit: the wall (L4D) → descent append (via the induction + the cap under N_p) → lastLayer
-  frontiers → L5 assembly (target = MonumentAssembly.leaf_stepInv_of_path') → L7 own-cover fold
-  (lemma Q banked, fan baked) → the :287 swap → SUMMIT-RETIRE (elder+operator) → cite-deletion
-  (operator). Elder: reviews done; next = delta-reads on demand.
+**READ `charter.md` FIRST, every wake** — the fixed invariant core (goals = Objects A–E as reusable objects;
+the headline is a corollary/test; the progress bar; the standing math-warnings). Gate every progress-claim
+and every route against it. This heartbeat memo is operational state, NOT the goal frame — the charter is.
+Full history: `journal.md` (banked per rung) + `compass.md` (the fork-history, F1–F9).
+
+## Memo (controller-edited — keep current; consolidated 2026-07-25, prior 480-line stacked history → journal/compass)
+
+**ROUTE (operator GO, 2026-07-25): BUILD the cite-free lower via the ONE-OBJECT RE-ROUTE.**
+Plan = `reroute-plan.md` (in-repo, controller-grounded). One `conRel_wf` recursion carries geometry + ledger
+in LOCKSTEP (shared `stepUpdate`) → dissolves the gate-routeB WALL: siblings BORN per-pivot (not transported
+→ O1 gone), ledger definitional (`AtlasRealizesExponents` = value-only match → O2 chart↔leaf bridge never
+arises). Trunk = `expedition/aoyagi-engine-reroute`; worktree = gate-routeB. Rung-gated R0→R6;
+**objects-only STOP-fallback at EVERY rung boundary**. Guardrail-0: NO geometry outside the step constructor.
+
+**LANDED (each elder-re-gated, `#print axioms` re-run by the elder itself):**
+- **R0** @ `6adf7ed15` — working trunk, 9034 jobs, clean-three all roots [#162].
+- **R3-DERISK (fold mechanism)** — WF-fold threading CLEARED with in-repo precedent (`flatCube` conRel_wf
+  Set-valued cover); NO dep-type obstruction under fixed-full-space; lockstep DEFINITIONAL [#163].
+- **R1** @ `e1e32ddf9` (`StepConstructor.lean`) — pivot-generic constructor + born-siblings AS THEOREMS;
+  guardrail-0 is STRUCTURAL (`PivotStep` REQUIRES a `clearing : CleanClearing` field, type-enforced) [#164].
+  M1 @ `4e4619652`: unit≡1 DERIVED (not assumed) on the coupled (3,3,4) chart334 leaf (nbhd=univ, no shrink).
+  corank≥3 hjac @ `4b20ffb3d`: elimination stays CLEAN UNIPOTENT at any corank (coupling-BLIND mechanism).
+  clearing gate @ `fcf92db10`: on the real (3,3,4) chart the coupled clearing reads-only-kept.
+- **R2 PARTIAL** @ `9d0b0d868` — `bornSiblings_union_covers` (the fan tiles the node box). The
+  radius-parameterized real-tree cover FOLD (the genuine new fold) is owed = R2 completion [#165].
+
+**THE FINDING (R3 ideal-side de-risk, 2026-07-25, decorrelated pen+Codex; persisted
+`threads/reroute-R3-idealside/`) — HONEST RECALIBRATION, surfaced to operator + elder:**
+The per-step ideal MECHANISMS are all PROVEN green in-repo (composition both ways, region=univ under unit≡1,
+reads-only-kept — corank-agnostic, coupling-independent, via `Corank2AdmissibleLeaf222`). BUT route-P's unified
+fold AS-SCOPED CONSUMES the **general-d terminal single-chain principality = the tracked coupled MONUMENT**
+(⟨coreGen∘g⟩=⟨diag b⟩ two-sided every leaf; inferred-general, instance-verified (3,3,4)/(4,4,4)/(3,3,3,2,2) by
+Gröbner, no counterexample, NOT proven; worked.tex:651-664). The reroute LOCALIZES the ideal conjunct's
+dependence on the monument; it does NOT eliminate it. So the "cite-free lower" is cite-free MODULO this link.
+
+**THE FORK (in flight — the current decision):**
+- (P) build route-P; rests on the monument. Fully cite-free ⟹ prove it general (open); else cite JUST the
+  single-chain principality (smaller cite than objects-only, atlas built). ← controller lean.
+- (V) value-floor re-scope (rlct ≥ ½Mval, minimising branch, coupling-assisted, claims monument-free) —
+  mirage-adjacent (V-lower retired ×3, #146); elder adjudicates genuine-vs-mirage.
+- (objects-only) cite the whole resolution (STOP-fallback, charter-faithful #94, `cited_aoyagi_lower_ax`).
+
+**IN FLIGHT (decorrelated decision inputs — act on results when they land):**
+1. **Deeper-mixed Gröbner probe** → reroute-R3derisk [#167]: a deeper instance (≥3 shared factors), compute
+   SIMULTANEOUSLY I_terminal=⟨b_k₀⟩ / det Dg=±monomial / corner-join localization-free. CLEAN ⟹ monument
+   verified one rung, P-confident. BITES ⟹ V/objects-only. Persist → `deeper-mixed-probe.md`.
+2. **Elder adjudication** → elder-reroute [#168]: P-vs-V-vs-objects-only + the decisive V-genuine-vs-mirage.
+3. **Operator surfaced** — the recalibration bears on the "cite-free" premise of their GO; non-blocking; the
+   one steer that flips the default = "strictly-cite-free-or-nothing".
+
+**HELD:** the R3 monument-consuming unified fold [#165], pending the fork decision.
+
+**STANDING GATES / DISCIPLINE:**
+- **Operator-gated (wait-for-explicit-go):** PR **merge**, `dev→main` promotion, any change to the destination
+  or definition-of-done. Everything within the staked boundary = proceed-on-silence (surface async, take the
+  recommended option if no reply, record it). Build progression is controller-judgment (2026-07-25 grant).
+- **Elder convene triggers (role-mandated — HONOR):** any rung boundary weighing objects-only; the R3 fold's
+  read must be DECORRELATED (not the builder's "done"); any proposed scope-drop / pre-deferral of within-reach
+  work / "simplification" of R3 or the lockstep-coherence lemma.
+- **Calibrate sensors on ground truth:** re-run the build + `#print axioms` yourself; the hunt precedes trust.
+- gate-routeB (two-object route) RETIRED; `GateRouteB222.lean` = the WALL evidence (branch -gate-routeB).
+
+## Standing rules (durable)
 - **The progress bar (before reporting progress):** name the charter §1 object it discharges AND its legal
   §3 category; a green build / closed leaf / re-derivation that discharges no object is motion, not progress.
 - Controller in `.claude/worktrees/aoyagi-engine/root`; NEVER touch expedition/aoyagi-full anything.
-- PROCESS-RESTART RECOVERY (2026-07-23 ~01:40): the operator's accidental stop killed all in-flight
-  agents + severed the registry. Disk was INTACT (worktrees + branches survived; seat-L4C's skeleton
-  committed locally → controller pushed 67293aa3c). RE-SPAWNED fresh: elder (convening from durable
-  artifacts — charter/compass/journal; owes the OPERATOR HIGH-LEVEL READ + Gap B verbatim), carto
-  (read + PARALLELIZATION audit), pnp-transport (harvest banked partial codex artifacts first),
-  seat-L4C (verify branch → option-B boundary reshape → hold for certificate). DORMANT holders NOT
-  respawned (seat-L3T2/arch-C/seat-L7/foldstate-render — respawn when their inputs land; their
-  worktrees/branches survived). LESSON: office/seat continuity = durable artifacts + pushed branches,
-  never transcripts; push checkpoints EARLY.
-
 - OPERATOR (2026-07-22): **updates are NOT urgent — finish the task at hand BEFORE answering an update/SVG
   request.** Reground/report/regenerate-DAG at a clean seam, not mid-integration.
-- Teammate isolation = EXPLICIT worktrees; lean/.lake = packages-only share (NEVER full symlink).
-- `git worktree add` RE-PINS this session's cwd to the new worktree (2 recurrences) — re-issue
-  EnterWorktree(root) immediately after every worktree creation; placement check catches it.
-- BRANCH-HIJACK GUARD (incident 2026-07-18): seats must NEVER `git checkout`/`switch` in root —
-  every seat brief mandates its OWN worktree for its branch. Controller: EVERY commit batch begins
-  with the assertion `[ "$(git branch --show-current)" = expedition/aoyagi-engine ]` (a seat's
-  checkout in root silently redirected 3 ticks of controller commits onto its branch; pushes of
-  the frozen ref "succeeded" — the placement check must check the BRANCH, not just the cwd).
-- Obligations STATED (tick 37); case-step-lemmas faithful-flip waits on the full-fidelity items.
-- Standing rules: exact-steps-only; truth witness at pin time; Def-3 never transcribed.
-- ELDER OWNERSHIP (operator, 2026-07-20): the ELDER authors both `charter.md` (the fixed invariant core)
-  and `compass.md` (the fork-history); the CONTROLLER commits + pushes (branch discipline) — do NOT edit
-  either yourself, commit the elder's edits (git add that file only, on the elder's "ready" signal). The
-  charter is edit-in-place / never-append / ≤1pg; the compass is the growing history and owes a deep
-  compaction pass (elder's first re-chartered task).
-- CONTROLLER SHELL GUARDS (recurring self-bugs): NEVER gate a chain on `validate | tail` (tail
-  masks the exit code — bank only via a grep-for-'0 error' gate); the hooksPath was dangling
-  (pointed at the MAIN checkout's absent scripts/hooks — repointed to THIS worktree's, verified
-  the hook exists); every commit batch starts with the branch assertion.
+- ELDER OWNERSHIP (operator, 2026-07-20): the ELDER authors both `charter.md` (fixed invariant core, edit-in-
+  place / never-append / ≤1pg) and `compass.md` (the growing fork-history); the CONTROLLER commits + pushes
+  (branch discipline, `git add` that file only on the elder's "ready") — do NOT edit either yourself.
+- Push feature/expedition branches freely (pre-authorized). Assert branch before every commit batch. Do NOT
+  write to global `~/.claude` memory — in-repo only; remind teammates.
+- Teammate isolation = EXPLICIT worktrees; `lean/.lake` = packages-only share (NEVER full symlink).
+- `git worktree add` RE-PINS this session's cwd to the new worktree — re-issue EnterWorktree(root) immediately
+  after every worktree creation; placement check catches it.
+- BRANCH-HIJACK GUARD: seats must NEVER `git checkout`/`switch` in root (each seat gets its OWN worktree). EVERY
+  controller commit batch begins with `[ "$(git branch --show-current)" = expedition/aoyagi-engine ]` — a seat's
+  checkout in root once silently redirected 3 ticks of commits onto its branch. Check the BRANCH, not just cwd.
+- CONTROLLER SHELL GUARDS: NEVER gate a chain on `validate | tail` (tail masks the exit code — bank only via a
+  grep-for-'0 error' gate); keep hooksPath pointed at THIS worktree's scripts/hooks.
+- CONTINUITY: office/seat continuity = durable artifacts + pushed branches, NEVER transcripts; push checkpoints
+  EARLY (process-restart severs the registry but disk survives — re-spawn from charter/compass/journal).
+- DELIVERY-LOSS: teammate→controller message loss is real; on a critical-path wait, silence after ≥2 unanswered
+  sends = incident (poll the transcript tail: mtime + last entry), not patience.
 
 ## Protocol (per wake)
 0. Verify placement: `.claude/worktrees/aoyagi-engine/root`, branch `expedition/aoyagi-engine`
