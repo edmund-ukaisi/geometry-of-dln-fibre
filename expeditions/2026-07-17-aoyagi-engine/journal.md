@@ -27404,3 +27404,17 @@ sorries stay [bridge + step-6 spine until H3] vs must close for the headline), +
 STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-A/B leaves (building, per-true-φ cover) + transport
 (a3f030, building) — all monument-free; H3 (ii) resting. Merge pre-audit in flight. NEXT: 15 leaves + transport → ∀-144
 canon_domination → merge (per the navigator plan) → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
+
+## 2026-07-26 — PATTERN-B DONE: 8 over-vanishing leaves GREEN clean-three; fidelity reviewer spawned (8/15 leaves)
+Pattern-B seat (abb725d5) DONE: all 8 leaves GREEN, clean-three, pushed @940224c42 (off @8113eb62c). 8 modules
+Corank2OverVanishB_20_{6_1,6_5,6_6,6_7,7_1,7_5,7_6,7_7}.lean (3309 LoC). Per leaf: canon_hentry (8 reg-seq entry
+identities, cols c=0,2) + canon_domination + canon_foldedJac + Ψ facts + cover. Zero sorries; #print axioms clean-three;
+NO Tonelli leak (rides pure-algebra monoSumSqGerm_le_of_regSeq_entries). Cover-atom per-true-φ: quadratic (20,6,7),(20,7,6);
+cubic the other 6 (incl. non-coinciding (6,1),(6,5),(7,1),(7,5) with degree-3 φ). Independent cross-check (patternB_verify.py:
+sympy reproduces the (20,1,1) template + all 8 collapse to vm·u_zc; a3f030's φ VALUES confirmed). Card + generator alongside.
+FIDELITY REVIEWER spawned (decorrelated — faithful replication of the verified recipe + per-true-φ cover + clean-three +
+sample spot-check).
+AGGREGATOR: pattern-B's 8 imports noted (navigator producing the full DLNFibre.lean wiring plan; controller wires at merge).
+STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-B DONE (8 leaves, review-gating) + pattern-A (7 leaves,
+building) + transport (a3f030, building) + navigator (merge pre-audit); H3 (ii) resting. 8/15 remaining leaves DONE. NEXT:
+pattern-A + transport land → ∀-144 canon_domination → merge (navigator plan) → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
