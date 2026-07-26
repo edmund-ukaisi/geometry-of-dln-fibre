@@ -25761,3 +25761,38 @@ composition axis is firing now. The fidelity tripwire ("the ledger is not the ge
 fed form an OUTPUT of the recursion, or an assertion? The pnp caught its own modelling assumption (excellent
 honesty). Routed to the elder (refined gate-cleared ruling + §3-promote-pending-composition). (3,3,4) lane (a)
 census unaffected (continues).
+
+## 2026-07-26 (cont.) — ELDER RULING: monument-gate CLEARED (§3 SATISFIED-PENDING committed) + census = BOUNDED FILL → both de-risk lanes running; POSITIVE MILESTONE (non-blocking) surfaced
+=== OPERATOR MILESTONE (non-blocking, per elder ruling — NOT a wait-for-go) ===
+The LAST MONUMENT-GATE of the expedition is CLEARED: the (A) cite-free value headline (rlct=½·cCodim) is reachable
+at FULL GENERALITY, detail-at-scale, monument-free — the born single-entry survivor (Pmat[0][0]=E, pivot-cross only)
+BYPASSES the corank-≥2 residual monument (the two-sided normal form is never needed for the VALUE bound). Headline
+TRUE ((3,3,4) rlct=4=½·codim, no red-flip). (A) was always the destination (§0/#94); this CONFIRMS it is reachable
+(no monument blocks it) = milestone-news, within (A), NOT a destination change. The ONLY contingent operator-gated
+decision (objects-only general-d IF the bounded fed-form invariant fails) does NOT arise now. Two bounded de-risks
+in flight; both build lanes moving.
+
+ELDER RULING (monument-gate cleared; invariant NOT-YET-SAFE):
+- Monument-gate CLEARED — no monument in the general-d value path (verified r=2..5 + Codex; the insight sound).
+- §3 line COMMITTED to the charter (SATISFIED-PENDING; promote to SATISFIED on the invariant-de-risk YES).
+- The fed-form invariant = a NOT-YET-SAFE bounded tracked-open → FIRE ONE de-risk (the composition axis, sharpened
+  ADVERSARIAL [late pivot's shear inputs overlapping an early cleared slot, tight coords] + a UNIFORM disjointness
+  preservation sketch [why buildTree's coord-allocation is always disjoint]). The failure mode = step COMPOSITION,
+  NOT corank width — so the sharpest de-risk is a deeper-L adversarial instance, not a wider corank.
+- LANDING = a positive milestone, non-blocking; both lanes moving.
+
+CENSUS (lane a) = BOUNDED FILL (not nearly-done): the shared-shear COLLAPSE (bornSiblings share ONE shear/node ⟹
+the 12960 max-modulus fan does NOT multiply the born-α count; granularity = 9 shear-step TYPES [3 at S=1, 6 at S=2])
+is the structural win — a 12960-leaf wall → a bounded fill. All 5 combinatorial leaves bind at exponent 8 (threshold
+4) — sandwich needed on all. N_singular (beyond canonical) = 0–8 types, not pinnable from structure. HIDDEN-MONUMENT
+RISK: a matched S=2 chart whose residual survives-vanishing EVEN AFTER its shear = a deep {R=0} stratum → #172.
+
+TWO DE-RISK LANES RUNNING (pen-and-paper, parallel):
+- Lane (b) COMPOSITION de-risk (a9a355c394db96cb1): the general-d fed-form invariant, adversarial + uniform.
+- Lane (a) PINNING (a7857e48490cadc97): the (3,3,4) nodewise residual-at-center table — exact N_singular across the
+  9 shear-step types + the hidden-monument check. Scout accelerator forwarded (the 9-type table + 2 pins: Pin1 the
+  binding monomial may be shear-free-smooth on the case11 reuse path [large N_smooth]; Pin2 the S=2 case2 1×2 dEdge-2
+  [×5] is the acute hidden-monument check).
+Elder drafting compass F13 (the decisive-insight bypass + the fed-form invariant as the one bounded gate +
+SATISFIED-PENDING); I commit on delivery. Then the formaliser fills the pinned N_singular born-α (gated on the Q4
+typed guardrail: one-sided/native/per-edge) + the canonical single_le_sum → the (3,3,4) V-lower.

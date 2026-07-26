@@ -180,6 +180,18 @@ category before reporting progress; the elder gates every route and every progre
   at the defect's location — has she already resolved this? For a fidelity project the prior is strong.
   Only then commission elaboration — which VERIFIES her answer, never de-novo-designs an object the source
   already has.
+- **General-d cite-free value headline = SATISFIED-PENDING (promoted from the Standing-counsel fidelity
+  tripwire, 2026-07-26; the 3a verdict + general-d discriminator YES, exact r=2,3,4,5 + Codex).** The general-d
+  value headline (`rlct = ½·cCodim`) is CITE-FREE reachable — the born single-entry survivor (`Pmat[0][0]=E`,
+  the PIVOT CROSS only, never the coupled residual block where the corank-≥2 monument-hardness lives) BYPASSES
+  the residual monument = INFERRED detail-at-scale (the two-sided residual normal form stays monument-class, but
+  the from-below VALUE bound does NOT need it — the F10 mis-priced-wall lesson, confirmed at general corank). THE
+  ONE BOUNDED GATE (a chart-invariant, NOT a monument): the born recursion must PRESERVE the pivot-adapted fed
+  form (`C1[0][0]=1`, `C2[0][0]=E`, first-row slots independently writable with disjoint non-exceptional
+  correction coords, uniform E/Jac exponents) — verified 2 instances ((3,3,4) Lean 21/21, #124 (3,3,3,2,2)), under
+  inductive-step de-risk (an ADVERSARIAL entanglement stress-test + a UNIFORM disjointness preservation sketch;
+  the failure mode = step COMPOSITION, not corank width). HOLDS ⟹ cite-free full-generality (promote to
+  SATISFIED); FAILS ⟹ objects-only general-d landing (operator-gated). INFERRED, not proven.
 
 ## §4  Durability
 Read first, every cycle, by every role. Elder is sole author (holds the abstract-object frame; gates
