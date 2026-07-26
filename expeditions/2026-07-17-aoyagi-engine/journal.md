@@ -25383,3 +25383,30 @@ CALIBRATION: the crux fork surfaced by the recon (its Strategy A recommendation)
   overruled it AND simplified (transport-free was always available via R2-survivor). The controller HELD the grind
   (didn't delegate the dead-route-adjacent lane) → the closed loop + W3 damping worked. 3rd K-orbit dead-route
   sighting; the tombstone holds.
+
+## 2026-07-26 (cont.) — PRE-DELEGATION CHECK back: K-transport confirmed dead + relabel confirmed + the resRank=0 BEDROCK GATE isolated → fresh scout enumerating
+Recon scout ran the elder's pre-delegation check (redirected to the flatCube/survivor side, K-transport dropped):
+  K-TRANSPORT: CONFIRMED SOUND to forbid — both discharge branches transport-free (unit-residual → survivor_
+    sandwich_lower; {R=0} → born #172 recursion); neither needs Corank2Transport334/MonumentAtlas. Costs nothing.
+  RELABEL (b): CONFIRMED — gWrap = sigmaPiv∘shearH∘permP∘bbA0∘bbA1; non-blow-up factors = permP (fixed coord
+    PERMUTATION = relabel) + shearH (fixed det-1 clearing, W3-clean), NOT a loss-symmetry K-element. Canonical-
+    flatCube-leaf ↔ gWrap is RELABEL-class (qNodeOf-style), pending only the #183 center-match (doesn't gate the
+    build). gWrap's PROVEN two-sided hideal = a legitimate decorrelated CONFIDENCE-BONUS, not a build dependency.
+  COVERAGE (a) → THE BEDROCK GATE (new, sharp): the discriminator is EngineDefs.lean:43 (LeafPullback) / :36
+    (residualBaseForm) — a leaf's residual lower bound = lo·residualBaseForm, = 1 (UNIT, resRank=0) or = ‖z‖²
+    (MORSE, resRank>0). The wire's hsandwich needs residualCore ≥ a POSITIVE CONSTANT, which ONLY the UNIT case
+    (resRank=0) supplies (survivor's kept-1-pivot IS resRank=0). The wire STRUCTURALLY EXCLUDES Morse leaves —
+    TWO obstructions: (1) a Morse ‖z‖² has no kept-1-pivot → survivor's hf0 unsatisfiable; (2) folding
+    loss=∑(monomial·zᵢ)² breaks hchain ({monomial·zᵢ} not a divisibility chain). So the wire applies to a leaf
+    IFF it is unit-residual. ⟹ the whole discharge hinges on: is EVERY (3,3,4) buildTree leaf resRank=0?
+    EVIDENCE (YES-all, not a proof): canonical chart334 is resRank=0 (M'=1, single monomial u₀u₂₀, R=∑a'ₖ²>0
+    globally via the PROVEN hideal_coreGen_bwd Bézout); terminalExponents(buildTree ![3,3,4]) ⊆ {≥ minAdm=8} ⟹
+    no sub-minAdm Morse leaf dragging ⨅ below 4 = ½minAdm. resRank>0 leaf (if any) → #172 (born, refine to unit)
+    OR an UNBUILT Morse-folding brick (a possible wall — NOT a K-transport monument).
+GATE DE-RISK: spawned a fresh buildTree-context scout (ada0fe048dedc6200) for the EXHAUSTIVE resRank=0-per-leaf
+  enumeration (the conOracle/geoChartMap side the recon scout only skimmed). YES-all → delegate the transport-free
+  discharge to a fresh formaliser (survivor + FULL cover flatCube_subset_leafPathImages; #172 maybe not needed);
+  resRank>0 witness → assess #172-vs-Morse-folding, re-convene the elder on a wall. Recon scout released (rest).
+CALIBRATION: front-loaded the load-bearing resRank=0 gate (the highest un-probed risk — could hide an UNBUILT
+  Morse-folding brick) with the right-context seat BEFORE committing a formaliser to the full discharge. The
+  hunt-precedes-trust move; the recon scout explicitly recommended a fresh buildTree seat for it.
