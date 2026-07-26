@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.Corank2NativeJac334
+import DLNFibre.DLN.Aoyagi.Corank2NativeEntry334
 import DLNFibre.DLN.Aoyagi.Corank2FanCover334
 import DLNFibre.Core.Aoyagi.MonomialSumSqRLCT
 
@@ -30,6 +31,8 @@ sits inside the folded chart's image over the enlarged domain — so the whole-c
 open MeasureTheory Set Metric Filter Topology RLCT
 open DLNFibre.Core.Aoyagi
 open DLNFibre.DLN.Aoyagi.NativeFan334
+open DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap
+open DLNFibre.DLN.Aoyagi.NativeEntry334
 
 namespace DLNFibre.DLN.Aoyagi.OverVanish334
 
@@ -163,5 +166,31 @@ theorem jacWeight_fixOn {D : ℕ} (h : Fin D → ℕ) {Ψ : (Fin D → ℝ) → 
   rcases Nat.eq_zero_or_pos (h d) with h0 | hpos
   · rw [h0, pow_zero, pow_zero]
   · rw [hfix d hpos]
+
+/-! ## §3 — the uniform `u_{p1}` factor-out of the pullback (piece 3, reusable step)
+
+The first, uniform `vm` factor of the pullback: `u_{p1}` factors out of every one of the 12
+`coreGen` entries (from `A0_gFlat_factor` + `A1_gFlat_spectator` + `Matrix.mul_smul`), so the whole
+loss carries `u_{p1}²`. The FURTHER per-type factors (`u_{p2}` / `u_{p3}` from the inner blow-ups
+inside `gInner`) plus the identification of the 12 residual factors `vf_k` are the per-type work
+that completes (3); this §3 is the reusable step shared by all 16 canonical types.
+-/
+
+/-- **The uniform `u_{p1}` factor of a `coreGen` entry.** `coreGen k (gFlat idx w) = u_{p1}·resid`,
+where `resid = (A1 (gInner idx w) · A0'')_k` and `A0'' = A0 (update (gInner idx w) p1 1)`. From
+`mult_eWrap` (`coreGen k v = (A1 v · A0 v)_k`) + `A1_gFlat_spectator` + `A0_gFlat_factor` +
+`Matrix.mul_smul` (the scalar `u_{p1}` pulls out of the product). -/
+theorem coreGen_gFlat_factor (idx : Idx) (w : Fin 21 → ℝ)
+    (k : Fin (dvec (Fin.last 2) * dvec 0)) :
+    coreGen dvec eWrap k (gFlat idx w)
+      = w idx.1.1 *
+        (A1 (gInner idx w) * A0 (Function.update (gInner idx w) idx.1.1 1))
+          (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2 := by
+  have h1 : coreGen dvec eWrap k (gFlat idx w)
+      = (A1 (gFlat idx w) * A0 (gFlat idx w))
+          (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2 := by
+    simp only [coreGen]
+    exact congrFun (congrFun (mult_eWrap (gFlat idx w)) _) _
+  rw [h1, A1_gFlat_spectator, A0_gFlat_factor, Matrix.mul_smul, Matrix.smul_apply, smul_eq_mul]
 
 end DLNFibre.DLN.Aoyagi.OverVanish334
