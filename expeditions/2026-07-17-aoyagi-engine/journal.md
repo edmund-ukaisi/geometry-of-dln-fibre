@@ -27054,3 +27054,16 @@ Lints (unused simp args, maxHeartbeats-comment, show→change) → merge cleanup
 STATE: clean-144 (B + clean_hentry) DONE+verified+locked; interface CLEAN; over-vanishing (Core-Tonelli + (ii)-DLN)
 building; A0_gFlat_factor landed. NEXT: Tonelli + (ii)(3)-(6) → step-6 mixed-288 assembly (honoring the cover-union
 guardrail) → unconditional (3,3,4).
+
+## 2026-07-26 — STEP-6 assembly sharpening (clean_hentry reviewer): the existing reduction is a single-mechanism LEAF
+The clean_hentry reviewer, closing out, sharpened the step-6 design: rlctAt_coreGen334_ge_four_of_survivor_entries is
+SINGLE-MECHANISM — its hentry field is ∀c over the family it's invoked on, so it CANNOT be invoked once on all 288
+(hentry ∀c FAILS on the over-vanishing-144, 0 single-entry survivors BY DEFINITION). It is a LEAF of the mixed-288
+cover-union, NOT the assembly lemma. The step-6 mixed-288 assembly must be MECHANISM-HETEROGENEOUS:
+(i) a GENERALIZED reduction whose per-chart hyp = "single-entry-monomial bound OR SoS bound, each ⟹ finite ∫ L^{-z} for
+    z<4" → iInf over 288 ≥ 4 [= the abstract per-chart-threshold wire, the earlier wire-calibration]; OR
+(ii) glue TWO finite-integral conclusions — clean-144 via the existing reduction on the clean sub-images + over-vanishing-144
+    via the (ii) SoS engine on their sub-images — combined because the 288 chart-images TILE the nbhd up to null.
+Both = cover-union-level combinations of finite z<4 integrals over the FULL 288 native_hcover. GUARDRAIL: don't read the
+∀c-hentry as an all-288 obligation (fails on over-vanishing) — the existing lemma is one leaf-mechanism of the union.
+Relayed to (ii) for step 6. (Reinforces the COVER-UNION guardrail with the precise mechanism-heterogeneity requirement.)
