@@ -25273,3 +25273,25 @@ MERGE now gates on: reviewer Lean-fidelity (in flight) + my force-elab verify @4
 BddAbove — NO monument. Downstream (elder re-convene): the monomialThreshold→½minAdm conversion (k=1/hunit1 +
 Object D + per-chart hsandwich from survivor_sandwich_lower) + the summit wire-up (via_engine → exists_
 coreResolution dead in the HEADLINE cone) + V-upper (#110, proven) → 2rlct=cCodim → cite-free payoff.
+
+## 2026-07-26 (cont.) — ★ V-LOWER WIRE MERGED @bdc3bf34e: the exists_coreResolution BYPASS is in the TRUNK (major milestone) [#187 DONE]
+`rlctAt_ge_iInf_threshold_of_sandwich_cover` (SandwichCover.lean, Core.Aoyagi) MERGED to the reroute trunk
+@bdc3bf34e (from r3wire @4ca080a88 + in-file #assert added + aggregator wired). The hideal_bwd-FREE
+cover-assembly V-lower: ⨅_c monomialThreshold(bexp,jac) ≤ rlctAt(∑Fᵢ²) x₀, +hbdd (= V-upper content,
+one-directional), −hunit1 (downstream). GATED THROUGH: elder (own #print axioms clean-three + statement-soundness
+ALL FOUR PASS) + reviewer (kernel + hand: #184 F1-gate PASSES, exists_coreResolution ABSENT, statement=content,
+hyps all-used) + my force-elab verify (full build 9046 jobs, in-file #assert fires clean-three) = FOUR
+independent clean-three confirmations. Reviewer Codex a pending non-blocking follow-up (double-confirmed
+sandwich/hbdd; revert/fix if it flags — unlikely).
+
+**MILESTONE:** the value LOWER bound is now a Core theorem taking only sandwich + cover + BddAbove — NO monument,
+hideal_bwd-FREE, exists_coreResolution-FREE (clean-three ⟹ absent from the cone). This is the CRUX of the (A)
+strategy realized in Lean: the F10/(A) bypass of exists_coreResolution, landed. The abstract V-lower is COMPLETE
+(both halves (i)(a)/(i)(b) + the wire, all merged, h0-free, weakest-fields).
+
+REMAINING to the cite-free payoff (all downstream, no monument): (1) the CONCRETE (3,3,4) discharge of the
+wire's per-leaf hypotheses (flatCube charts + survivor sandwich + #172 recursion — survivor rides the real
+sumSq_residual); (2) the monomialThreshold→½minAdm CONVERSION (Object D + k=1/hunit1 [headline-load-bearing,
+k≥2 = red-flip]); (3) V-upper (#110, PROVEN — discharges hbdd + the ≤-half); (4) the SUMMIT wire-up (via_engine
+re-pointed → exists_coreResolution dead in the HEADLINE cone) → 2rlct=cCodim → aoyagi_learning_coefficient
+cite-free + sorry-free. Elder downstream triggers active; controller to scope + delegate.
