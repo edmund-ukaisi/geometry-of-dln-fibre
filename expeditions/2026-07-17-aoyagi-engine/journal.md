@@ -26172,3 +26172,21 @@ completion) ledger item, the radius join = bounded. Elder's comprehension read p
 NEXT: reviewer fidelity clean + elder radius read → spawn the born-α family seat (contract = the reduction's
 hypothesis list; opening constraints = deep-hpull + bounded-radius-join). Then unconditional (3,3,4) headline → merge
 r2headline + aggregator wiring → + V-upper → summit → the (3,3,4) CITE-FREE PAYOFF.
+
+## 2026-07-26 — RADIUS TENSION ruled BOUNDED JOIN (elder, 3 decorrelated reads) — L2 ledger addendum folded into §3-FULL + F14
+The (3,3,4)-fill formaliser's surfaced radius tension (the cover fold's default leaf box = closedBall 0 903 vs hpos
+needs ∑resid²>0 on the whole dom, survivor only a unit near 0) is ADJUDICATED BOUNDED — NOT a re-open of the
+cover/value marriage. THREE decorrelated reads converge (controller + formaliser + elder-ground-truthed-vs-atoms):
+  - the 903 is an R=1 ARTIFACT: f(r)=r+2r² has 2r² dominate only at r≥1; f(r)≈r for small r.
+  - gWrapFan (R:ℝ) is scale-PARAMETRIC (Corank2FanDef334:43); the cover atoms carry the scale (shearH_covers {r},
+    permP_image_superset {s}, blockShear_covers_scaled).
+  - the wire needs hcover for SOME U∈𝓝 0 (not the 903-ball); the blow-up is continuous + 0↦0, so small SOURCE
+    leaf-domains → small TARGET images → cover a small nbhd of 0; both hcover + hsandwich hold at a common small R.
+THE JOIN (bounded shrink-to-common-ρ): R ≤ min over the (finitely many, ~6 singular) leaves of each leaf's
+sandwich-unit-radius (resid≥½ ⟹ ∑resid²≥¼>0 ⟹ hpos); re-instantiate Covers at that R (scale-parametric = bounded);
+small-R cover is a nbhd of 0. Marriage INTACT (g_c = born fan leaves), only the SCALE chosen.
+MIRAGE RULED OUT: option (a) 'residual is a global non-vanisher' is FALSE (∑resid² vanishes away from 0 — F12's
+refutation locus). Use (b) shrink. Told the born-α seat so it does not chase the false path.
+BORN-α SEAT (#188) GUARDRAIL (elder): (i) generalize gWrapFan_covers to general R (scale-parametric atoms, bounded);
+(ii) instantiate at R = min leaf sandwich-unit-radius; (iii) verify small-R cover is a nbhd of 0. Do NOT force the
+sandwich onto R=1 domains. A clean instance of the L2 ledger being WORKED (bounded labor, not a monument, not a re-open).
