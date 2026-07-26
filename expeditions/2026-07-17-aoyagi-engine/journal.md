@@ -24744,3 +24744,31 @@ it on repo facts. [#181 resolved-by-reuse; #182 done.]
 REAL center, node-hook variant, hnull via the existing Core brick; finish the flag-2 real-centers recon
 first). reviewer + elder acked/rested. Board: R0✓ R1✓ R2-cover-infra✓ → R3 (build; first brick = real-center
 full-cover node clause, in prep).
+
+## 2026-07-26 (cont.) — FLAG-2 fidelity CONFIRMED (real 3-node center chain; leaves monomialise); R3 first brick GO'd (i) at the real outer node; (b)-drop confirmed (existing brick = bedrock)
+
+**FLAG-2 fidelity confirm [reroute-R2build] — satisfies the elder's fidelity gate:**
+- REAL (3,3,4) node centers = a 3-NODE blow-up chain (from Corank2GWrapDecomp gWrap = sigmaPiv∘shearH∘permP∘
+  bbA0∘bbA1): OUTER `sigmaPiv` = blockBlowupMap {0..7,20} pivot 20 (c₁₁-blow-up, |jacDet|=u20⁸; inner shear =
+  shearH∘permP = the clearing); MIDDLE `bbA0` = {0..7} pivot 0 (E-blow-up, u0⁷, shear id); INNER `bbA1` =
+  {1,5,6,7} pivot 1 (α-blow-up, u1³, shear id). {0,1} (bornSiblings334) = CONFIRMED the R1 TOY (2-pivot
+  de-risk), NOT a real fold center — the corr-derisk was right.
+- LEAVES MONOMIALISE: CONFIRMED — |jacDet gWrap| = u0⁷·u1³·u20⁸ (pure monomial). The 3-node chain resolves
+  the leaf to a monomial Jacobian.
+
+**R3 FIRST BRICK GO'd (i) [#178]:** the REAL outer-node {0..7,20} full-cover node clause (= the elder's ruled
+"full-cover node clause at a REAL center", the M1/M2 first unit) — via CoverFold.bornSiblings_union_covers_closed
++ shearH_covers (fR=R+2R²), born-per-pivot (clearing=shearH), W3-clean, hnull-free. Then the 3-node fold.
+
+**ARCHITECTURE REFINEMENT (builder, carried — matches the elder's layering; registering):** since the node
+cover is FULL (no hole), the node-side fold can ride the EXISTING full-cover `FanTree.covers_subset` machinery;
+`ImageTreeCover`'s up-to-null fold then serves the LEAF/VALUE side (the {R=0} hole + the sandwich + the reused
+poly-null brick). So the two cover engines split by the layering: FanTree.covers_subset = NODE (full-cover);
+ImageTreeCover = LEAF/VALUE (up-to-null). Flag to the elder at its first-brick re-convene.
+
+**(b) DROP CONFIRMED:** reviewer's Codex cross-check corroborated (new proof sound, no gap) — verdict unchanged
+(duplication only). Reviewer INDEPENDENTLY verified the EXISTING reuse target: both MvPolynomial.
+volume_zeroSet_eq_zero AND ae_eval_ne_zero rest on clean-three, sorry-free (a hair cleaner —
+measure_prod_null_of_ae_null). Reuse target is BEDROCK. Housekeeping owed: wire it into the aggregator once
+R3-hnull/G2 import it (currently reachable only via its 13 importers). Reviewer stood down on (b), ready for
+the R3 first-brick review.
