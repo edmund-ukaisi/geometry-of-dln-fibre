@@ -27276,3 +27276,25 @@ seat (2hr frozen while the .lean file is edited at 18:26). RELIABLE ground-truth
 the seat's worktree, (2) the ping queued-vs-resumed. Use those, NOT the .output mtime.
 STATE: H1 VERIFIED+LOCKED; H2 alive + close (no sorry, mid-wiring, uncommitted — push requested); H3 (ii) resting.
 NEXT: H2 green + push → fidelity review → merge Tonelli + per-type → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
+
+## 2026-07-26 — H2 CANONICAL (20,1,1) TEMPLATE landed GREEN + clean-three + pushed; reviewer spawned; remaining-H2 → GENERAL form
+Per-type seat @8113eb62c (branch aoyagi-r2overvanish-pertype off 838d5c261): Corank2OverVanishCanon334.lean (485 LoC,
+namespace OverVanishCanon334), sorry-free, #print axioms clean-three, NO Tonelli sorry (canon_domination rides
+monoSumSqGerm_le_of_regSeq_entries, pure algebra):
+- canon_hentry: 8 reg-seq entry identities coreGen k (gFlat idxCanon (Ψ u)) = (∏u^vmExpCanon)·u_{zc k}, k∈Scanon [(1′)].
+- canon_domination: monoSumSqGerm vmExpCanon Zcanon ≤ sumSqFam(coreGen∘(gFlat∘Ψ)) [feeds the (ii) backbone].
+- canon_foldedJac: |jacDet(gFlat∘Ψ)| = jacWeight(jacExp) [(3)/hW]. Ψ facts (jacDet=1/differentiable/offblock/keep/read/hzc).
+- CUBIC COVER: blockShear_covers_cubic (r+C·r³) + phiCanon_norm_bound (‖φx‖≤2r³, r≥1) + psiCanon_cubic_cover +
+  image_comp_psiCanon_cubic_superset. RESOLVED (detail-at-scale; needs 1≤r [leafR≥1 holds]; non-coinciding = quadratic).
+VERIFIED: 8 entry values sympy vs Lean gFlat (max err 1.4e-15, 2000 pts). Card ov-pertype-canonical-cards.md.
+FIDELITY REVIEWER spawned (canon_hentry faithful + canon_domination feeds backbone + folded-jac + cubic-cover + clean-three,
+decorrelated Codex; the template's recipe replicates → a clean template = trustworthy recipe).
+REMAINING H2 (other 15 canonical + σ_p1 → 144): STEERED to the GENERAL object — a PARAMETRIZED ∀-over-vanishing
+canon_domination (H3 consumes all 144 at once) via fin_cases over the 16 canonical (p1=20) + recipe + a σ_p1-transport
+lemma (EXACT 144/144); NOT 15 MVP concrete leaf-modules. Seat assesses (fin_cases-16 heaviness / recipe parametrizability
+over (p2,p3) within a pattern); if too heavy/won't parametrize → parallelize by pattern (2nd seat for pattern B).
+GENERALIZATION sympy-verified (144=p2∈σC2(p1); 2 patterns [A p2∈{1,5} drop c=2, B p2∈{6,7} drop c=1]; vmExp deg 3 /
+coinciding deg 2; all 16 p1=20 shearOK; σ_p1→9).
+AGGREGATOR +Corank2OverVanishCanon334 (mine to wire at merge).
+STATE: H1 VERIFIED+LOCKED; H2 = (20,1,1) template GREEN+clean-three (review-gating) + the general form in build; H3 (ii)
+resting. NEXT: template review clean + general canon_domination → merge Tonelli + per-type → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
