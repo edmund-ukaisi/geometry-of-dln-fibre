@@ -123,4 +123,132 @@ theorem abs_jacDet_gFlat (idx : Idx) (u : Fin 21 → ℝ) :
   rw [fN, fC, fB, fA]
   ring
 
+/-! ## §3 — the per-leaf monomial `jacExp` + the `hjac` (jacWeight form, unit ≡ 1) -/
+
+/-- A single-axis exponent vector `d ↦ (if d = a then n else 0)`. -/
+def single (a : Fin 21) (n : ℕ) : Fin 21 → ℕ := fun d => if d = a then n else 0
+
+theorem jacWeight_single (a : Fin 21) (n : ℕ) (u : Fin 21 → ℝ) :
+    jacWeight (single a n) u = |u a| ^ n := by
+  rw [jacWeight, Finset.prod_eq_single a]
+  · simp [single]
+  · intro d _ hd; simp [single, hd]
+  · intro h; exact absurd (Finset.mem_univ a) h
+
+/-- **The per-leaf Jacobian monomial exponent** — `8@p1 + 3@p3` plus the `(bb σC2 p3 u) p2`-factor's
+`7`-power exponent (`7@p3` if `p2 = p3`, `7@p3 + 7@p2` if `p2 ∈ σC2\{p3}`, else `7@p2`). -/
+noncomputable def jacExp (idx : Idx) : Fin 21 → ℕ :=
+  single idx.1.1 8 + single idx.2.2.1 3 +
+    (if idx.2.1.1 = idx.2.2.1 then single idx.2.2.1 7
+     else if idx.2.1.1 ∈ sigmaC2Fs idx.1.1 then single idx.2.2.1 7 + single idx.2.1.1 7
+     else single idx.2.1.1 7)
+
+/-- The `(bb σC2 p3 u) p2`-factor's `jacWeight` equals `|(bb σC2 p3 u) p2|^7` (the three cases). -/
+theorem jacWeight_c2part (idx : Idx) (u : Fin 21 → ℝ) :
+    jacWeight (if idx.2.1.1 = idx.2.2.1 then single idx.2.2.1 7
+      else if idx.2.1.1 ∈ sigmaC2Fs idx.1.1 then single idx.2.2.1 7 + single idx.2.1.1 7
+      else single idx.2.1.1 7) u
+      = |(blockBlowupMap (sigmaC2Fs idx.1.1) idx.2.2.1 u) idx.2.1.1| ^ 7 := by
+  by_cases h1 : idx.2.1.1 = idx.2.2.1
+  · rw [if_pos h1, jacWeight_single, h1, blockBlowupMap_apply_pivot]
+  · by_cases h2 : idx.2.1.1 ∈ sigmaC2Fs idx.1.1
+    · rw [if_neg h1, if_pos h2, jacWeight_add, jacWeight_single, jacWeight_single,
+        show blockBlowupMap (sigmaC2Fs idx.1.1) idx.2.2.1 u idx.2.1.1
+            = u idx.2.2.1 * u idx.2.1.1 from by simp [blockBlowupMap, h1, h2],
+        abs_mul, mul_pow]
+    · rw [if_neg h1, if_neg h2, jacWeight_single, blockBlowupMap_offCenter_eq _ _ _ h2]
+
+/-- **`hjac` (jacWeight form), unit ≡ 1** — `|jacDet (gFlat idx) u| = jacWeight (jacExp idx) u`. -/
+theorem hjac_gFlat (idx : Idx) (u : Fin 21 → ℝ) :
+    |jacDet (gFlat idx) u| = jacWeight (jacExp idx) u := by
+  rw [abs_jacDet_gFlat, jacExp, jacWeight_add, jacWeight_add, jacWeight_single, jacWeight_single,
+    jacWeight_c2part]
+  ring
+
+/-! ## §4 — the binding-axis exponents (`≥ 7`) feeding `divisorMin ≥ 8` -/
+
+/-- `p1 ≠ p2` at the `Idx` level (`p2 ∈ σC1(p1)`, `p1 ∉ σC1(p1)`). -/
+theorem p1_ne_p2 (idx : Idx) : idx.1.1 ≠ idx.2.1.1 := by
+  intro h
+  have hmem := idx.2.1.2
+  rw [← h] at hmem
+  exact p1_notMem_sigmaC1Fs idx.1.1 idx.1.2 hmem
+
+/-- `p1 ≠ p3` at the `Idx` level (`p3 ∈ σC2(p1)`, `p1 ∉ σC2(p1)`). -/
+theorem p1_ne_p3 (idx : Idx) : idx.1.1 ≠ idx.2.2.1 := by
+  intro h
+  have hmem := idx.2.2.2
+  rw [← h] at hmem
+  exact p1_notMem_sigmaC2Fs idx.1.1 idx.1.2 hmem
+
+/-- The node-1 pivot's Jacobian exponent is exactly `8`. -/
+theorem jacExp_pivot1 (idx : Idx) : jacExp idx idx.1.1 = 8 := by
+  have h2 := p1_ne_p2 idx
+  have h3 := p1_ne_p3 idx
+  rw [jacExp]
+  simp only [Pi.add_apply]
+  have s1 : single idx.1.1 8 idx.1.1 = 8 := by simp [single]
+  have s2 : single idx.2.2.1 3 idx.1.1 = 0 := by simp [single, h3]
+  have s3 : (if idx.2.1.1 = idx.2.2.1 then single idx.2.2.1 7
+      else if idx.2.1.1 ∈ sigmaC2Fs idx.1.1 then single idx.2.2.1 7 + single idx.2.1.1 7
+      else single idx.2.1.1 7) idx.1.1 = 0 := by
+    split_ifs <;> simp [single, Pi.add_apply, h2, h3]
+  rw [s1, s2, s3]
+
+/-- The node-2 pivot's Jacobian exponent is `≥ 7` (`= 7`, or `10` when `p2 = p3`). -/
+theorem jacExp_pivot2_ge (idx : Idx) : 7 ≤ jacExp idx idx.2.1.1 := by
+  rw [jacExp]
+  simp only [Pi.add_apply]
+  have hcase : 7 ≤ (if idx.2.1.1 = idx.2.2.1 then single idx.2.2.1 7
+      else if idx.2.1.1 ∈ sigmaC2Fs idx.1.1 then single idx.2.2.1 7 + single idx.2.1.1 7
+      else single idx.2.1.1 7) idx.2.1.1 := by
+    split_ifs with h1 h2
+    · rw [h1]; simp [single]
+    · have ha : single idx.2.1.1 7 idx.2.1.1 = 7 := by simp [single]
+      have hb : single idx.2.2.1 7 idx.2.1.1 = 0 := by simp [single, h1]
+      simp only [Pi.add_apply, ha, hb]; omega
+    · simp [single]
+  omega
+
+/-! ## §5 — the reduction-shaped `hjac` / `jac` / `unit` + `divisorMin ≥ 8` -/
+
+open DLNFibre.DLN.Aoyagi.NativeFan334 (numCharts idxEquiv gFin)
+
+/-- The per-chart Jacobian exponent (the reduction's `jac` field). -/
+noncomputable def jacFin (c : Fin numCharts) : Fin 21 → ℕ := jacExp (idxEquiv c)
+
+/-- The per-chart unit factor `≡ 1` (the Jacobian is a single monomial). -/
+def unitFin : Fin numCharts → (Fin 21 → ℝ) → ℝ := fun _ _ => 1
+
+/-- **`hjac` (the reduction field), unit ≡ 1.** -/
+theorem hjac_gFin (c : Fin numCharts) (u : Fin 21 → ℝ) :
+    |jacDet (gFin c) u| = jacWeight (jacFin c) u * |unitFin c u| := by
+  rw [gFin, jacFin, hjac_gFlat, unitFin, abs_one, mul_one]
+
+/-- **`divisorMin ≥ 8`** — every binding axis (`{p1, p2}`) has Jacobian exponent `≥ 7`, so
+`inf'_c inf'_{d ∈ bindingAxes} (jac c d + 1) ≥ 8` (the weakened `hdivisorMin`; the pnp certifies the
+exact value `∈ {8, 9}`, min `8`). -/
+theorem divisorMin_ge_eight (hne : (Finset.univ : Finset (Fin numCharts)).Nonempty) :
+    (8 : ℝ) ≤ Finset.univ.inf' hne
+      (fun c => (bindingAxes (NativeValue334.ek₀ c)).inf' (NativeValue334.hbind c)
+        (fun d => (jacFin c d + 1 : ℝ))) := by
+  refine Finset.le_inf' hne _ (fun c _ => ?_)
+  refine Finset.le_inf' (NativeValue334.hbind c) _ (fun d hd => ?_)
+  rw [NativeValue334.bindingAxes_ek₀] at hd
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hd
+  have h7 : 7 ≤ jacFin c d := by
+    rcases hd with h | h
+    · subst h
+      have : jacFin c (NativeValue334.pivot1 c) = 8 := by
+        simp only [jacFin, NativeValue334.pivot1]; exact jacExp_pivot1 (idxEquiv c)
+      omega
+    · subst h
+      simp only [jacFin, NativeValue334.pivot2]; exact jacExp_pivot2_ge (idxEquiv c)
+  have : (7 : ℝ) ≤ (jacFin c d : ℝ) := by exact_mod_cast h7
+  linarith
+
+-- Forced axiom gate: the composite Jacobian + hjac + divisorMin rest only on
+-- `[propext, Classical.choice, Quot.sound]`.
+#assert_banked_clean_batch [abs_jacDet_gFlat, hjac_gFlat, hjac_gFin, divisorMin_ge_eight]
+
 end DLNFibre.DLN.Aoyagi.NativeJac334
