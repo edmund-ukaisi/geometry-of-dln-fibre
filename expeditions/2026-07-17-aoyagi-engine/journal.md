@@ -27437,3 +27437,41 @@ discharge hA0/hA1 + step 6).
 STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-B DONE (review-gating) + pattern-A building + transport
 (crux green, assembly seat building steps 1-5) + navigator (merge pre-audit); H3 (ii) resting. NEXT: pattern-A +
 transport-assembly land → ∀-144 canon_domination → merge → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
+
+## 2026-07-26 — NAVIGATOR MERGE PRE-AUDIT (git-verified): the (3,3,4) V-lower merge plan + corrected tracked-open map
+Navigator (aaec01) — git-verified merge-topology pre-audit. THE EXECUTABLE CONVERGENCE MERGE PLAN:
+CORRECTED DAG (shared fork 39a242ad9): pertype (tip 27d6d82842) ⊇ wholeconj-fan (ca71bd7c9) ENTIRELY + ⊇ aadc SPECIFY
+Core → integration set REDUCES to BASE=pertype + merge {tonelli, regseq, clean144, patternA, patternB}. wholeconj-fan
+needs NO separate merge. clean144 (off 39a242ad9 +ec9ab4f60) is an independent lane (Clean files import only
+NativeValue334+CoreGenWrap [shared-at-fork], standalone).
+MERGE ORDER (conflict-free, verified):
+  0. integration branch OFF pertype tip 27d6d82842.
+  1. merge tonelli 674f682f6 → Core CLOSE. ★ Core-file conflict AUTO-RESOLVES: regseq/pertype never touched
+     MonomialSumSqRLCT after aadc (byte-identical to SORRIED) → 3-way takes tonelli's CLOSED. Also auto-discharges the
+     bridge's propagated hole.
+  2. merge regseq 8a687824e → OverVanishAssembly334 (step-6 skeleton); OverVanish334 byte-identical → no conflict.
+  3. merge clean144 ec9ab4f60 → 3 Clean files (independent).
+  4. merge patternA/B — AFTER rebasing onto the integration tip (label-fix; seats already handled per-true-φ, risk-1).
+  5. CONVERGENCE EDIT (controller single-writer): aggregator wiring + close the step-6 spine.
+NAME-CLASH CLEAN (qualified scan). A1_00../coreGen_eWrap_entry in distinct namespaces (CleanHentry334 vs
+OverVanishCanon334). Reduction-weakening single shared commit a50122055 (no double-edit). CONVERGENCE: verify each leaf
+opens a UNIQUE namespace (pattern-B: OverVanishB_20_p2_p3 — good).
+★ CORRECTED TRACKED-OPEN MAP (simplifies H3): the BRIDGE chart_integrableAtFilter_of_monoSumSq_dom is ALREADY sorry-FREE;
+its 'tracked-open' is a PROPAGATED axiom-cone hole (consumes the Core Tonelli sorry) → the TONELLI-MERGE closes it
+automatically. Bridge NOT an H3 item. The ONLY H3 sorry = OverVanishAssembly334.rlctAt_coreGen334_ge_four_of_perchart_integrable
+(Assembly334:65, the step-6 spine) — discharged by wiring the 16 leaves + Transport334. MUST close for the unconditional
+headline 4 ≤ rlctAt(sumSqFam(coreGen dvec eWrap)) 0.
+AGGREGATOR: DLNFibre.lean untouched; chain-tops are ORPHAN roots. Wire (Core→DLN): MonomialRLCT→MonomialSumSqRLCT; then
+HeadlineValue334, CleanHentry334, OverVanishTransport334, OverVanishAssembly334, + the leaves (or let rewired
+Assembly334/Transport334 pull them). Register roots in AxCheck.lean; payoff root = RlctPayoff.lean.
+GATE: interim — spine sorried → unconditional headline NOT banked (only CONDITIONAL forms clean). Convergence — close
+Assembly334:65 → register unconditional root + #assert_banked_clean_batch; FULL-TRUNK force-rebuild + #print axioms on the
+headline = clean-three, sorryAx GONE (present until BOTH tonelli-merge AND step-6-close).
+RISKS: [1 HIGHEST, convergence] cover-atom label-fix flipped 8 leaves to cubic; patternA/B @8113eb62c pre-fix — BUT the
+seats ALREADY caught it + used per-true-φ cubic (pattern-A + pattern-B independently; reviews verify) → MITIGATED. [2 MED]
+leaf-namespace uniqueness (pattern-B OK). [3-4 LOW] tonelli/clean144 base-gaps (harmless).
+RE-TRIGGER the navigator when patternA/B push (final SHAs + leaf names/namespaces + cubic verification + aggregator
+leaf-list). (Navigator's pattern-B info STALE — pattern-B DONE @940224c42; pre-audit timing artifact.)
+STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-B DONE (review) + pattern-A building + transport (crux
+green + assembly steps 1-5) + MERGE PLAN ready; H3 = ONLY the step-6 spine (bridge auto-closed by tonelli-merge). NEXT:
+pattern-A + transport-assembly → merge (this plan) → close step-6 spine (H3) → 4 ≤ rlctAt → unconditional (3,3,4).
