@@ -25255,3 +25255,21 @@ takes the per-leaf sandwich + hbdd + cover as hypotheses; the #172 concrete disc
 monomialThreshold→½minAdm conversion (hunit1/k=1) are downstream. NEXT: formaliser commits + reports the SHA →
 decorrelated landing review (elder STATEMENT-soundness-first [delicate statement] + reviewer Lean-fidelity) +
 controller force-elab verify → merge + aggregator wire. Then: the concrete hpull/#172 discharge + the assembly.
+
+## 2026-07-26 (cont.) — ELDER wire read: ALL FOUR PASS, MERGE-OK (independently verified via its own #print axioms) [#187 @4ca080a88]
+Elder statement-soundness-first read (verified INDEPENDENTLY — its own #print axioms on all 3 wire results =
+clean-three + read the statement/proof/imports): ALL FOUR PASS, MERGE-OK. (1) STATEMENT TRUE — hbdd is a USED
+field (csSup_le_csSup bridges membership→sSup; the missing-BddAbove falsity fixed); name=content the honest
+V-lower ≥-half; hunit1-free (k=1 relocated downstream). BONUS: two elder watch-items SATISFIED IN THE STATEMENT
+— hcover = up-to-null cover over ALL charts; hsandwich = nbhd of EVERY domain point (the #172-nbhd item);
+Differentiable-suffices. (2) V-upper⊥V-lower NON-CIRCULAR (V-upper imports Corank2Chart334 not SandwichCover;
+clean cone corroborates). (3) DECOMPOSITION FAITHFUL (membership core + sSup-via-hbdd; imports only
+ProductResolution, no ChartBridgeFaithful). (4) exists_coreResolution DEAD-in-cone for the wire (clean-three ⟹
+no sorryAx ⟹ absent; structurally DLN not Core). SCOPE: the HEADLINE-level dead-in-cone (via_engine re-pointed)
+is the SUMMIT wire-up check (later).
+
+MERGE now gates on: reviewer Lean-fidelity (in flight) + my force-elab verify @4ca080a88 → cherry-pick to trunk
++ wire aggregator. MILESTONE (elder): the value lower bound is now a Core theorem taking only sandwich + cover +
+BddAbove — NO monument. Downstream (elder re-convene): the monomialThreshold→½minAdm conversion (k=1/hunit1 +
+Object D + per-chart hsandwich from survivor_sandwich_lower) + the summit wire-up (via_engine → exists_
+coreResolution dead in the HEADLINE cone) + V-upper (#110, proven) → 2rlct=cCodim → cite-free payoff.
