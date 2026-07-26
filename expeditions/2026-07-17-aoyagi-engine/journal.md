@@ -26511,3 +26511,23 @@ the per-path exact-min. Per-path jac accumulation (node-2/3 pivot in outer cente
 the per-leaf jacDet normal form.
 NEXT: seat delivers jac/hjac + uniform ≥8 + ek₀ shared; lands ek₀ early → fire (B) hentry (exact-check + feeder fallback);
 then assembled (3,3,4). Elder re-convene at (B) + the assembled (3,3,4).
+
+## 2026-07-26 — (C) FINDING: jac varies across 288 leaves → divisorMin≥8 = the permutation-invariance INSTANCE (finite decide, cite-free) + pnp de-risk fired (potential RED)
+The (A)/(C) fan seat computed the per-leaf |jacDet| exponent vectors for all 288 born-native leaves: VARY WILDLY (14
+distinct multisets; some coords jac as low as 3, up to 18 — per-path accumulation when a node-2/3 pivot sits inside an
+outer center; e.g. (0,1,5)→{0:8,1:15,5:18}; canonical (20,0,1)→{0:7,1:3,20:8}).
+IMPLICATION: divisorMin = min_c min_{d∈bindingAxes(ek₀ c)}(jac c d+1) ≥ 8 requires the SURVIVOR support ek₀ c (the
+pivot-cross exposed by the born-native shear) to ALWAYS land on the high-jac coords (E jac 7, pivot jac 8), NEVER a
+low-jac (3) coord, for all 288. Low-jac coords are NON-survivor (don't enter divisorMin IF ek₀ avoids them). This 'ek₀
+always lands high-jac' = the paper's PERMUTATION-INVARIANCE of the codim, INSTANTIATED at (3,3,4).
+CLASSIFICATION (controller read → elder): for (3,3,4) = FINITE DECIDE (detail-at-scale, cite-free) via option (b) — ek₀
+concrete ⟹ divisorMin ≥ 8 is a decidable finite check over 288. NOT a monument (finite at a fixed instance); NOT a cite
+— option (a) 'cite the permutation-invariance' RETREATS from the cite-free goal (route A's point; for a fixed instance
+the invariance is finite, not cited). General-d uniform invariance = the L1/L3 ledger's larger question. Elder convened.
+DE-RISK (potential RED, un-verified surface): the all-288 ≥8 is UNVERIFIED (F9 checked only the 9 node-1 DOMINANTS with
+CANONICAL inner pivots). FIRED a pnp de-risk (extend the F8 toric-LP true_rlct_perleaf to ALL 288 → true rlct ≥ 4 ⟺
+divisorMin ≥ 8, or catch a RED [any leaf rlct < 4 = survivor lands low-jac → headline breaks there → σ_p/survivor
+rework]). Like F8, extended to inner pivots.
+(C) seat: GO on per-leaf hjac (independent) + define ek₀/k0 concretely (shared def); HOLD the divisorMin ≥8 Lean decide
+until the pnp confirms ≥8 TRUE. (A) fidelity review HELD until the pnp de-risk (don't review a fan whose survivor
+selection might change on a RED). Elder re-convene on classification + the pnp verdict.
