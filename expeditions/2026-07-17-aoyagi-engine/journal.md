@@ -25796,3 +25796,36 @@ TWO DE-RISK LANES RUNNING (pen-and-paper, parallel):
 Elder drafting compass F13 (the decisive-insight bypass + the fed-form invariant as the one bounded gate +
 SATISFIED-PENDING); I commit on delivery. Then the formaliser fills the pinned N_singular born-α (gated on the Q4
 typed guardrail: one-sided/native/per-edge) + the canonical single_le_sum → the (3,3,4) V-lower.
+
+## 2026-07-26 (cont.) — COMPOSITION DE-RISK (lane b) = CLEAN on the entanglement axis; residual = fed-form invariant + general-d α to-be-BUILT (both construction labor, NOT a monument) → elder §3-promote
+Lane (b) composition de-risk (pnp, exact + Codex-corroborated) returned CLEAN on the ENTANGLEMENT axis:
+(a) The elder's adversarial worst-case (a Case-2-cleared slot feeding the ROLLOVER's shear input) is STRUCTURALLY
+    IMPOSSIBLE: the ROLLOVER CARRIES NO SHEAR (Lean-verified: dCenterOfEdge(rollover)=0 [QNodeChart:69], localSub=id
+    [GeoChart:176], alphaGauge rollover=id [GeoAlphaGauge:292], stepUpdate rollover = a pure relabel [EngineDefs:211,
+    cleared:=0]). No rollover-shear to entangle. The "later step pushes a first-row slot exceptional" variant is
+    blocked too: flatCoordOf INJECTIVE across (layer,row,col) ⟹ layer-(S+1) touches only its own coords, disjoint.
+(b) UNIFORM DISJOINTNESS (structural, not per-instance): within a node (schurCells pairwise-distinct writes,
+    pivot-row/col pass through ⟹ unit-triangular); ACROSS steps (order coords by level=min(i,j); a shear at level J
+    reads level J, writes STRICTLY-higher levels ⟹ ACYCLIC read/write DAG ⟹ unit-triangular; |det|=1 automatic by
+    multiplicativity); across layers (flatCoordOf injective ⟹ disjoint; rollovers neutral). ⟹ entanglement
+    structurally excluded, UNIFORMLY. + single-entry survivor PERSISTS (verified L=2,3,4: Pmat[0][0] = the peeled
+    pivot, invariant under the row-0-clearing shears).
+THE ONE RESIDUAL (distinct from entanglement, Codex concurs — bounded, NOT a monument):
+  (i) the FED-FORM INVARIANT itself (at every reachable node: pivot slot = the ledger factor + correction coords
+      stay non-exceptional) — a bounded construction-completeness property (verified (3,3,4)+#124 + supported by the
+      level-order structure).
+  (ii) the general-d from-below α is TO-BE-BUILT (live): the born geoAtlas is gauge=id (shear-free, for
+      cover/Jacobian); the only general-d α (GeoAlphaGauge/schurCells) is RETIRED — but retired for the CHART
+      route's category-false VALUE hole (leafDiagFrob = exact diagonalization), NOT for the shear construction or
+      its disjointness (which are SOUND). So the general-d α = a FRESH one-sided build reusing GeoAlphaGauge's sound
+      shear-shape/disjointness (F12 condition A: build the one-sided object fresh), = construction labor,
+      detail-at-scale. (Honesty: the pnp did NOT fully re-derive the (3,3,4) fed form from stepUpdate — the LEDGER
+      side is concrete, the GEOMETRIC fed-matrix side is the verified gFaithful; deep-L end-to-end couldn't compute
+      because the general-d α is not live. What IS established: the composition/entanglement failure mode is absent.)
+PNP READ: §3 → SATISFIED with (i)+(ii) as named bounded tracked-opens (the entanglement axis — the actual risk — is
+  CLEAN; the α = construction labor per F13's own SATISFIED language "the uniform invariant to be BUILT during the
+  value build"), PROVIDED the elder accepts the general-d α as construction labor (not a monument). Routed to the
+  elder for the §3-promote ruling. Lane (a) pinning (a7857e48490cadc97) still running.
+NET: the ENTANGLEMENT monument-risk is DEAD (the biggest composition worry — structurally excluded, uniform + Codex);
+  the general-d cite-free residual is now construction labor (build the fresh one-sided α + the bounded fed-form
+  invariant), NOT a monument. Evidence: /tmp/aoyagi_shearfree/deepL_clean.py + Lean reads + codex/answer_comp.md.
