@@ -26033,3 +26033,20 @@ it exactly); the LEAN labor is substantial.
 NEXT: two seats (chart-family-extraction geoAtlas→wire-loose-data + born-α-hpull ×6), branching off r3fill (build on
 the spine), GATED on the elder's imminent W3 value-family ruling (native fan-leaf composites, NOT K-orbit). Merge
 r3fill (+ the concrete fill + aggregator wiring) to reroute at the complete-fill integration. Value formaliser rested.
+
+## 2026-07-26 (cont.) — value-formaliser HANDOFF CONTRACTS for the two delegated seats (for when the elder's W3 ruling lands)
+The value formaliser (resting) gave the exact plug-in contracts (bank for the seat briefs):
+1. BORN-α-HPULL seat → feeds sandwich_on_domain_of_survivor. Per-chart contract:
+   - hpull : ∀ w, sumSqFam (fun i ↦ Fᵢ∘g_c) w = (∏_d w_d^(ek₀_c d))² · ∑ⱼ (resid_c j w)²  (a GLOBAL polynomial
+     identity — holds near every p; the compactness lift is already INSIDE the feeder).
+   - hpos : ∀ p ∈ dom_c, 0 < ∑ⱼ (resid_c j p)²  (the geometric survivor-on-dom).
+   - hcont per resid.
+   - Set the wire's bexp_c := fun _ ↦ ek₀_c (CONSTANT survivor family) ⟹ hchain is refl + monomialThreshold reads
+     only ek₀_c (the Mn copies absorbed into cst, feeder returns cst automatically).
+2. EXTRACTION seat → the wire's loose data {g_c,dom_c,nbhd_c,excep_c,bexp_c,jac_c,unit_c} + routine facts
+   (hgdiff/hdomcpt/hnbhd_open/hg_inj/hjac). Its output ⨅monomialThreshold ≤ rlctAt feeds
+   rlctAt_ge_half_divisorMin_of_iInf_threshold VERBATIM (LHS shape checked: Finset.univ.inf' hne (fun c ↦
+   monomialThreshold (bexp c (k₀ c)) (jac c) (hbind c))); then divisorMin=8 → rlctAt_ge_four_of_half_divisorMin.
+The feeder is AGNOSTIC to which composites supply hpull ⟹ survives EITHER W3 ruling. So the born-α seat is gated on
+the elder's W3 value-family ruling only for WHICH composites (native fan-leaf, not K-orbit); the feeder plugs in
+regardless. NEXT: on the elder's W3 ruling → spawn the extraction + hpull seats (branch off r3fill, these contracts).
