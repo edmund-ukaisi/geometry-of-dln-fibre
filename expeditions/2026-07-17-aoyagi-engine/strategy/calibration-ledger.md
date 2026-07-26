@@ -1387,3 +1387,17 @@ on it — the strongest vindication yet of statement-lock-then-early-check + fre
 **Math note:** the V-lower ≥-half genuinely DEPENDS on V-upper's finiteness (BddAbove) — the two halves are NOT
 fully independent; the ≥ direction needs the pole to be finite (one-directional: V-upper doesn't depend on
 V-lower, no circularity).
+
+### CALIBRATION (2026-07-26, idle slot) — V-upper (#110) status: is the wire's hbdd source proven?
+**Q:** the wire's new hbdd (BddAbove) is discharged by V-upper — is V-upper proven in-repo, and is hbdd available?
+**EXPECTATION (locked):** V-upper's core (rlct ≤ ½chartMin ⟹ BddAbove) likely proven in-repo (forward lemma),
+#110 the reroute wiring; hbdd available. Confidence MED.
+**FINDING:** HIT. `rlctAt_sumSqFam_le_chartMin_half` (Corank2UpperBound334.lean:25) = the (3,3,4) V-upper,
+0 sorries. `Chart.rlctAt_le_chartMin_half_forward` (ProductResolution.lean:501) = the general forward lemma
+(rlct ≤ ½chartMin) whose proof establishes localAdmissible ⊆ [0,½chartMin) = exactly the wire's hbdd/BddAbove.
+So the elder's "V-upper complete-general/bankable" is confirmed, AND the wire's hbdd is dischargeable from the
+existing V-upper (the missing-BddAbove fix has a ready source).
+**WHAT-IT-CHANGES:** the post-wire assembly is well-positioned — V-lower (wire, in-flight, +hbdd) + V-upper
+(proven) + Object D (neq_cCodim) + hbdd (from the forward lemma) are ALL present; the 2rlct=cCodim assembly is
+composition once the wire fill + the concrete hpull discharge land. NOTE: #110 board-"pending" may be stale (the
+core is proven) or = the reroute-charts wiring residual — confirm at the wire landing / assembly.
