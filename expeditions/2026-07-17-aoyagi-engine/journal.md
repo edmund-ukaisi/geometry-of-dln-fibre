@@ -25480,3 +25480,38 @@ general-d, the SUMMIT headline (general-d) INHERITS the same hpull-fidelity — 
 instance; general-d hpull is a summit-scoping concern (flagged for when the summit is scoped). Asked the elder to
 record it in the compass (§3 source-fidelity; it owns the compass + framed it). Not bloating the charter
 pre-resolution (the (3,3,4) instance resolves at the pre-mortem).
+
+## 2026-07-26 (cont.) — WALL: the hpull PRE-MORTEM = the (B)-wall (transport-free geoAtlas can't supply the pointwise sandwich) → elder adjudicates Option-C vs STOP-FALLBACK
+The discharge formaliser hit a WALL at STEP 1 (the hpull pre-mortem) — the fidelity gate (elder + controller +
+scout, decorrelated) CAUGHT IT; the formaliser HELD + surfaced (didn't grind a monument). THE CLOSED LOOP WORKED.
+STEP 0 LANDED clean: geoAtlas_resRank_zero (general) banked in GeoLeafLedger, clean-three, no sorryAx. But it
+  CONFIRMS the fidelity flag at the source: leafOfState HARDCODES resRank:=0 unconditionally (EngineConstruction
+  :1795/:1811) — resRank=0 is VACUOUS geometrically (a construction artifact). (334 corollary left un-banked on
+  purpose — the vacuity caution.)
+STEP 1 = WALL. The wire needs a POINTWISE per-leaf sandwich → hpull: frobSq(prod∘chartMap)=monomial²·∑fᵢ² +
+  kept survivor f_i0(0)=1. Findings (D1–D6, cited to source):
+  - The ONLY proven route to hpull = the two-sided ideal equality hideal_coreGen_fwd/bwd — proven for gWrap =
+    sigmaPiv ∘ gFaithful, and gFaithful INCLUDES the shearH incidence shear (LOAD-BEARING: it produces the
+    survivor/Bézout).
+  - The transport-free geoAtlas chartMap is SHEAR-FREE (GeoChart fannedEdges: geoChartMapNorm (fun _ => id), pure
+    blow-up fold — built for the cover/Jacobian, the shear "fills later for LeafPullback"). No shear ⟹ no survivor.
+  - Even WITH a shear, the atlas-level POINTWISE diagonal factorization is REFUTED: leafDiagFrob_geoAtlasNorm
+    (GeoAlphaGauge:666, the F1 hole) — NO det-1 chart makes the residual core bounded below on an open set
+    (→0; needs a det-0 projection); category-false for ALL charts; the honest lower bound is IDEAL-LEVEL (Lemma 1).
+  - So one NON-canonical leaf = fill α + prod∘chartMap infra + a bespoke per-leaf two-sided Bézout = REPROVE the
+    Corank2*Proto hideal_faithful stack per leaf = a MONUMENT (not bounded plumbing). conOracle noncomputable ⟹
+    leaves can't even be #eval-enumerated.
+STRATEGIC IMPLICATION (elder to rule, NOT concluded): the (A) premise "the R>0 sandwich BYPASSES
+  exists_coreResolution" may be FALSE AT THE COVER LEVEL — the pointwise hpull PER LEAF needs the same two-sided
+  ideal content as the monument. If so, the merged abstract wire is TRUE but VACUOUS-for-our-cover (its hpull
+  hypothesis can't be discharged transport-free) = a possible SPIKE (the disposition's exact warning). The
+  CANONICAL leaf's hpull IS proven (gWrap); the wall is the NON-canonical cover leaves.
+THE FORK (re-convened the elder, its (B)-territory): (1) is the wall genuine or the read too pessimistic (a
+  decorrelated check)? (2) OPTION C = a clean IDEAL-LEVEL cover lower-bound via PROVEN Aoyagi Lemma 1 (object A) +
+  #109 (ideal-level cover lower bound, COMPLETED) that avoids the pointwise hpull + transport + the monument —
+  and how #109 relates to the merged pointwise-sandwich wire (did the mechanism diverge from the proven
+  ideal-level path?); (3) if no Option-C → charter §1.B STOP-FALLBACK (OBJECTS-ONLY close, cite
+  cited_aoyagi_lower_ax; charter-faithful #94/§0, NOT a defeat) = OPERATOR-GATED (I surface).
+Formaliser HELD (STEP 0 banked; no monument-grind); re-engage once the elder rules the path.
+OPERATOR SURFACE PENDING: on the elder's verdict — Option-C → re-scope (proceed, surface async); STOP-FALLBACK →
+  a destination change (cite-free payoff → objects-only+cite) = wait-for-explicit-go, I surface to the operator.
