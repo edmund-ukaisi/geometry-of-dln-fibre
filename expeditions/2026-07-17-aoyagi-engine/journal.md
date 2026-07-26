@@ -25306,3 +25306,17 @@ the wire assembly = standard measure theory reused VERBATIM from mem_localAdmiss
 gap covers only standard/reused steps. Controller call: NO re-fire (belt-and-suspenders on standard reused code);
 the wire merge (@bdc3bf34e) stands on 2 human decorrelated reads + kernel (4× clean-three) + crux-Codex-×2.
 Tooling caveat (minor): Codex consults can hang >10min — a data point, not a soundness issue.
+
+## 2026-07-26 (cont.) — CONCRETE (3,3,4) discharge recon DELEGATED to a fresh scout; reroute-R2build deferred (context depth, sound) + seeded it
+reroute-R2build DEFERRED the concrete-discharge recon (genuine context depth — the recon loads NEW terrain
+[flatCube geometry, real pullback algebra, buildTree/#172, engine Chart] it hasn't touched this session; a fresh
+scout does it justice, as the wire recon did with fresh budget). It provided an EXCELLENT seed brief (the
+per-leaf obligation map + provenance + the 3 new scope items + key files). Spawned a fresh scout
+(a0067b1e974aca357) with it. RECON scope: (a) hpull = loss∘g = monomial²·R for the real (3,3,4) flatCube charts
+(the real pullback algebra, F1-clean, survivor rides the real sumSq_residual); (b) #172 recursion for the
+survivor-less deep {R=0} leaves (DISTINCT input); (c) wire the per-leaf hyps from the engine; + the
+monomialThreshold→½minAdm conversion (Object D + hunit1/k=1) as a possibly-separate brick. Pattern: recon →
+recipe → elder decomposition-nod → fresh formaliser fills. reroute-R2build resting (huge delivery: R2 infra +
+(i)(a)/(i)(b)/h0-lesson + the wire recon/lock + housekeeping); available on ping for a wire/value-side Q.
+BANKED-ALREADY per-leaf: hcover (ImageTreeCover/flatCube_subset_leafPathImages), area-formula (Corank2ChartJac),
+hbdd (V-upper #110 proven). The 3 new scope items + conversion are the recon's target.
