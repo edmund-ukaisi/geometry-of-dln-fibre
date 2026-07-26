@@ -25320,3 +25320,37 @@ recipe → elder decomposition-nod → fresh formaliser fills. reroute-R2build r
 (i)(a)/(i)(b)/h0-lesson + the wire recon/lock + housekeeping); available on ping for a wire/value-side Q.
 BANKED-ALREADY per-leaf: hcover (ImageTreeCover/flatCube_subset_leafPathImages), area-formula (Corank2ChartJac),
 hbdd (V-upper #110 proven). The 3 new scope items + conversion are the recon's target.
+
+## 2026-07-26 (cont.) — CONCRETE (3,3,4) discharge RECON back (fresh scout, Codex xhigh) — MAJOR finding + CRUX FORK → elder W3 ruling (NOT grinding)
+Fresh scout delivered the recon (recon-only, staged for elder nod → formaliser). Codex xhigh red-team persisted
+at threads/reroute-R2-tubecover/codex/r3discharge-{prompt,answer}.md.
+
+PIVOTAL FINDING (scout ran #print axioms = clean-three, no sorryAx): gWrap's TWO-SIDED hideal is ALREADY PROVEN
++ F1-clean (hideal_coreGen_fwd/bwd, coreGen_gWrap_flat, abs_jacDet_gWrap, injOn_gWrap). For the CANONICAL leaf
+both new-content items collapse to proven pieces:
+  - hpull (K∘g = monomial²·R): DIRECT from fwd — coreGen_k∘gWrap = (u₀u₂₀)·a'_k ⟹ K=(u₀u₂₀)²·∑a'_k², R=∑a'_k².
+  - R>0 GLOBALLY: from bwd Bézout ∑b'_k·a'_k=1 ⟹ ∑a'_k²>0 EVERYWHERE ⟹ R≥R_min>0 on compact dom ⟹ sandwich on
+    the WHOLE domain, NO #172 recursion (over-vanishing trap AVOIDED for the canonical leaf). Codex corrected the
+    scout's first "terminal-leaf-only" read here — the global-R route is the clean one.
+  Canonical-leaf discharge = bounded assembly of proven pieces + ONE easy new atom
+  (sandwich_of_globally_positive_residual: R cts ∧ R>0 ∧ dom compact ⟹ ∃cst>0, cst·∑mono² ≤ K on nbhd; bexp =
+  constant Fin-12 family = leaf's squarefree dominant monomial; supersedes survivor_sandwich_lower's near-0 form).
+
+CRUX FORK (routed to elder for W3 ruling — NOT grinding a formaliser until it rules):
+  1. COVER IDENTITY: wire runs over a finite chart family; W3-clean cover = flatCube/buildTree (pivotChart, #183).
+     But proven hideal is for gWrap (route-P composite?) + recipe references gWrapFan (~9×8×4) +
+     Corank2Transport334/MonumentAtlas. flatCube (clean) or gWrapFan (retired)? Is gWrap's hideal usable for the
+     flatCube leaves?
+  2. W3 (critical): Strategy A for the FAN leaves leans on K-conjugate TRANSPORT of the Bézout
+     (Corank2Transport334/MonumentAtlas = RETIRED route-P/O1 K-orbit territory, §3-forbidden). Transporting a
+     PROVEN Bézout certificate along K-conjugation — legitimate, or re-entry of the dead route?
+  3. (A) vs TWO-SIDED: using gWrap's proven bwd/Bézout for global-R>0 (cleaner, no recursion) — fits (A) [proven
+     ⟹ banked lemma, not the avoided monument] or drift?
+  4. (B)-fallback: non-canonical leaves with genuine {R=0} strata (open #183) → Strategy B = ImageTreeCover
+     recursion (built, per-node survivor-becomes-unit, laborious detail-at-scale, terminates).
+CONVERSION ⨅ monomialThreshold → ½·minAdm=4: SEPARATE + LIGHT downstream brick (Codex-confirmed) — squarefree
+  binding k=1 (hunit1/#172 load-bearing; k≥2 = headline-drop) + banked Object-D value data (binding∈{8,9}, some=8
+  = minAdm, from atlasRealizesExponents_334). Does NOT touch the sandwich/area discharge; finite-inf coercion only.
+BANKED-CLEAN provenance (scout-verified clean-three): the 5 hideal/jac atoms above + exists_ball_subset_gWrapFan_
+  leafImages + flatCube_subset_leafPathImages + the ImageTreeCover fold. F1-plan: every recipe atom routes through
+  these, NONE through {leafPullback_geoAtlasNorm, chartBridgeFaithful_buildTree, leafDiagFrob_geoAtlasNorm}.
