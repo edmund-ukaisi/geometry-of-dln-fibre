@@ -27155,3 +27155,18 @@ AGGREGATOR checklist +Corank2OverVanishAssembly334 +Corank2OverVanish334 (+ the 
 STATE: clean-144 COMPLETE+verified+locked; interface CLEAN; over-vanishing architecture FULLY SCAFFOLDED (backbone
 clean-three + 3 named holes). Remaining = H1 (Tonelli, drafted) + H2 (per-type facts) + H3 ((ii) on wake) → unconditional
 (3,3,4) → merge. The recovery arc's END is in sight: 3 holes, all owned/in-progress, NO monument.
+
+## 2026-07-26 — pnp-fan reconciliation CLOSE-OUT: #144/#145 superseded by value-from-bounds; decorrelated architecture corroboration
+pnp-fan (sector-count lane) confirmed FULL consistency with the current build — no contradiction:
+- It ALWAYS agreed the FULL 288 set-covers (ball ⊆ ⋃ 288-images); it only disputed the PRUNED valid subset (160/196)
+  covering. native_hcover (reviewer-verified full 288, diff EMPTY) IS the set-cover it never disputed.
+- Its #144/#145 concern was VALUE-side (the 128 non-monomial charts can't serve as per-chart RESOLUTION charts) — bites
+  ONLY a route that prunes-to-valid for per-chart value. The CURRENT route takes value from BOUNDS (V-lower ≥4 [#188] +
+  V-upper ≤4 [#110/#111] → =4), NOT per-chart resolution charts, so the concern is genuinely SUPERSEDED. This is route
+  (C) pnp-fan recommended.
+- DECORRELATED CORROBORATION: an independent lane confirms the current architecture (full-288 set-cover + per-chart
+  value-from-bounds [clean chain ≥4 + over-vanishing SoS =4], combined at the cover level) is sound.
+PRESERVED FUTURE-CAVEAT (MOOT under the current value-from-bounds build): if a route ever re-introduces a pruned-valid
+per-chart-MONOMIAL covering atlas, the shear-slot escape cone returns → do NOT prune-to-valid-and-cover; keep the full
+cover (value-from-bounds) OR fan (pivot, adapted-shear) pairs. pnp-fan won't propagate the retired concern; holding.
+STATE unchanged: (3,3,4) V-lower architecture scaffolded (3 holes H1/H2/H3); Tonelli + per-type building; (ii) resting for step-6.
