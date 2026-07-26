@@ -26190,3 +26190,14 @@ refutation locus). Use (b) shrink. Told the born-α seat so it does not chase th
 BORN-α SEAT (#188) GUARDRAIL (elder): (i) generalize gWrapFan_covers to general R (scale-parametric atoms, bounded);
 (ii) instantiate at R = min leaf sandwich-unit-radius; (iii) verify small-R cover is a nbhd of 0. Do NOT force the
 sandwich onto R=1 domains. A clean instance of the L2 ledger being WORKED (bounded labor, not a monument, not a re-open).
+
+## 2026-07-26 — elder shifts to BUILD-AUDIT mode (de-risk phase COMPLETE)
+Elder confirms the F14-title re-word (no veto — the 3-item L1/L3-distinct ledger is faithful). The DE-RISK PHASE is
+COMPLETE (wall → buildable-step → both monuments bypassed; decorrelated discipline held throughout). The elder now
+shifts from gate-ruling to BUILD-AUDITING and re-convenes LIGHTER — controller re-convenes it ONLY at
+ledger-touching moments, NOT routine green landings:
+  (1) the reduction reviewer's Corank2Headline334 fidelity verdict (does the conditional reduction match the claim?);
+  (2) #188's first born-α fill (guardrail: g_c = born fan leaves, never Transport334);
+  (3) the build's FIRST engagement with L1/L3 — the primary audit target, where a real snag (if any) surfaces;
+  (4) the summit wire-up (exists_coreResolution dead in the headline cone) + any close-phase §3-full re-audit
+      before the PR/merge signal.
