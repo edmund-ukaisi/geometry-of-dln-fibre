@@ -25095,3 +25095,19 @@ open = the real geometric pullback = the wire's genuine remaining content (keep 
 REMAINING V-lower: the WIRE (rlctAt_sumSqFam over ALL flatCube leaves + #172 + hunit1 => rlct >= half minAdm via
 Object D) + the hpull discharge (real (3,3,4) pullback algebra, F1-clean). Builder building the wire (abstract,
 hpull per-leaf open). #186 CLOSED.
+
+## 2026-07-26 (cont.) — CROSS: my (i)(a) merge landed the initial @8cbebd8c3; builder HARDENED it (r3ia @0c93b98f1) — adopt-via-delta-review; wire (#187) GO'd
+My (i)(a) merge @f10e40e16 landed the builder's INITIAL SurvivorSandwich (@8cbebd8c3 — reviewer+elder CLEAN,
+derive-not-assert, F1-independent) into the trunk BEFORE the builder's hardening (r3ia @0c93b98f1) arrived. So
+the trunk is SOUND (a clean version); r3ia is a fidelity improvement:
+- survivor_sandwich_lower now EXPLICITLY rides SurvivorFanCover.sumSq_residual + adds h0 (forall i!=i0, f i 0=0
+  = the faithful R2 normal form: only the kept pivot = 1 at center, others vanish, giving R(0)=1);
+- + the (i)(b) non-vacuity example (D=M=1, K=(u0)^2; hbdd via monomialSumSq_wLocalAdmissible_eq+bddAbove_Ico,
+  hnull via Measure.pi_hyperplane; fires 1<=2*wrlctAt) — closes the reviewer's flagged (i)(b) gap directly.
+PLAN: adopt r3ia's hardened SurvivorSandwich + the (i)(b) example, gated on a reviewer+elder DELTA-review — the
+DISCRIMINATOR: is the h0/sumSq_residual hardening LOAD-BEARING (the wire needs h0 in the brick) or REDUNDANT
+(the wire supplies the survivor to @8cbebd8c3's generic version)? On clean I swap the trunk + re-verify; keep
+r3brick until then. WIRE (#187) GO'd against the hardened r3ia interface (chart_rlct_ge_half_of_survivor w/ h0)
+— abstract (hpull per-leaf open) => rlct >= half minAdm over ALL leaves + #172. Both versions clean, so no risk;
+this is an improvement-swap, not a fix. (i)(b)'s non-vacuity is covered either way — by @8cbebd8c3's (i)(a)
+witness now, by the direct example post-swap.
