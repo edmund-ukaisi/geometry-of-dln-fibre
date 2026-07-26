@@ -24668,3 +24668,19 @@ theorem-gated done).**
   the THEOREM (M1/M2-style). Fold-rung reminder: composes #172 (hnull ≠ #172).
 The recon is the disposition working — decompose before committing a substantial build; parallelize the
 independent reusable brick; adjudicate the crux with a decorrelated p&p.
+
+## 2026-07-26 (cont.) — R3 (b) poly-null brick DELIVERED green first-try (volume_setOf_eval_eq_zero); review → merge
+
+reroute-R2build delivered the (b) brick [#181]: `PolyZeroNull.lean` (branch expedition/aoyagi-r3brick @
+ef11a4700, off trunk 60f3f0ae3), sorry-free, 2 roots clean-three (force-rebuild, no cites), +155 LoC,
+Core.Analysis. Built GREEN ON FIRST TRY (Codex xhigh pre-validated each step against v4.29 lake env before
+transcription — the verify-before-building discipline paying off). **THEOREM
+`volume_setOf_eval_eq_zero`: a nonzero MvPolynomial (Fin n) ℝ has Lebesgue-measure-0 zero-set** — the
+MEASURE Schwartz-Zippel (Mathlib has only the combinatorial Finset SchwartzZippel). Proof: induction on n +
+finSuccEquiv → univariate + measure-preserving transport (piFinSuccAbove 0 ∘ prodComm) + Fubini
+(measure_prod_null): a.e. slice = finite roots of a nonzero univariate; bad-slice-set ⊆ {leadingCoeff=0}
+IH-null. Non-vacuity: the {x0·x1=1} hyperbola. **REUSABLE Core brick: discharges R3's hnull ({mult=0} = the
+zero-set of a coreGen product-poly is null) AND is the exact brick G2 (direct-sum RLCT superadditivity) needs.**
+Fidelity review re-engaged [#182, r2build-review] → on clean, controller FF-merges to trunk + aggregator import.
+The R3 first-brick #178 (correspondence + hchart) lands later on the same branch (after corr-derisk #180
+adjudicates + this brick discharges hnull). Parallel: (a) corr-derisk #180 still adjudicating the crux.
