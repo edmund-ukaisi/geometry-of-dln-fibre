@@ -1502,3 +1502,16 @@ Elder ground-truthed the chain-wire finding (prior entry) + ruled ADOPT-WITH-AME
 not `…_eq_min` unless the eq is built, general law next to SumSq; (C) FOLD Ψ into g'=g∘Ψ⁻¹ (det-1) → no separate CoV
 lemma. The engine-shape STANDING TRIPWIRE is now in compass standing-counsel. BOUNDARY=LADDER confirmed. See journal
 2026-07-26 (elder ruling). PENDING: charter §3 sandwich-cover reconciliation (elder-to-author at the (ii) landing).
+
+## 2026-07-26 — cert-direction tripwire STRENGTHENED (the MECHANISM; reviewer marked-Q → controller domain call)
+The reviewer flagged a naive counter-intuition on THE CERT'S DIRECTION tripwire: since the term-ideal
+M = ⟨all monomials of all generators⟩ ⊇ I = ⟨g_i⟩, doesn't M ⊇ I suggest rlct(M) ≤ rlct(I) (LP = a LOWER bound)?
+DOMAIN CALL (controller): NO — the toric-LP is an UPPER bound, rlct(M) ≥ rlct(I) = true rlct.
+MECHANISM: SoS-RLCT is monotone INCREASING under ideal inclusion. Proof: I ⊆ M ⟹ choose M's generating set to CONTAIN
+I's generators + the extra monomials ⟹ ∑_M h² = ∑_I h² + ∑_extra h² ≥ ∑_I h² pointwise ⟹ (∑_M)^{-λ} ≤ (∑_I)^{-λ} ⟹
+integrable-λ-set(I) ⊆ integrable-λ-set(M) ⟹ rlct(I) ≤ rlct(M). More generators = larger sum = LESS singular = LARGER
+rlct. The naive flip conflates "bigger ideal = smaller variety" (TRUE) with "more singular" (FALSE for SoS). Concrete:
+I=⟨x²⟩ ⊆ M=⟨x⟩ gives rlct 1/4 ≤ 1/2. Equality iff I already monomial (no cancellation = the clean/tight leaves).
+ACTION: relayed to (ii) for one explicit direction-line in the writeup; the compass cert-direction tripwire to gain
+this mechanism line at the next elder convening (elder-owned). This CLOSES the "upper-vs-lower" as a settled domain call
+(not a re-derivable ambiguity).
