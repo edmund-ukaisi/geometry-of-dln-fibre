@@ -26930,3 +26930,31 @@ reconciliation — the mirage warning (§3 lines 166-174, "the lower bound is ro
 SANCTION the sandwich-cover / hideal_bwd-free lower-bound route (elder-verified SOUND: loss ≥ cst·RHS ⟹
 admissible(loss) ⊇ admissible(RHS)) WITH the r=8-regular-sequence-reverse note, so a future seat doesn't misread the
 sandwich-cover V-lower as the retired F1-mirage.
+
+## 2026-07-26 — FIDELITY REVIEW CLEAN: (A-rework)+(C) decorrelated-verified (SURVIVED, all 6 checks + Codex)
+Reviewer (a26dd606912e2f6be) returned SURVIVED/CLEAN, all six (build green exit-0, census clean, Codex concurs):
+(a) FIDELITY [load-bearing]: gFin IS the genuine whole-conjugate, NOT the value-broken §2-shear fan — BOTH structurally
+  (node-1 nativeChart1=nativeSel∘nativePerm perm PRESENT; nodes 2/3 at permuted p1-dep centres sigmaC1Fs/sigmaC2Fs) AND
+  numerically DECORRELATED (reviewer re-derived σ=colswap∘rowswap, checked all 9 dominants in sympy: sigmaC1Fs=σ({0..7}),
+  sigmaC2Fs=σ({1,5,6,7}), p1=σ(20), nativeSel=σ⁻¹∘shearH∘σ 21/21×9; every σ INVOLUTIVE; p1=20 σ=id reproduces gWrap).
+  blockBlowupMap_conj faithful.
+(b) divisorMin_ge_eight CORRECT (jacDet_comp telescope: 2 shears |det|=1, 3 blow-ups card−1=8/7/3; p1∉σC1,p1∉σC2 by
+  decide; binding axes {p1,p2} jac 8 & 7/10 → per-leaf divisorMin∈{8,9}, inf≥8; unit≡1 genuine).
+(c) WEAKENED reduction (=8→8≤) SOUND (8≤v ∧ v/2≤rlct ⟹ 4≤rlct; only internal consumers, all take 8≤; clean-three).
+(d) native_hcover GENUINE full cover (diff EMPTY, stronger than up-to-null; FanTree.covers_subset real structural
+  induction + non-vacuity witness; numCharts=288, leafR>0).
+(e) W3-clean (no Transport334/conjResolution/K-orbit in the 5 modules; gWrap only in docstrings, no ∘gWrap∘ in defs).
+(f) AXIOM clean-three (reviewer's own force #print axioms on 9 roots, deleted olean; #assert_banked_clean_batch green).
+⟹ (A-rework)+(C) DECORRELATED-VERIFIED (seat-built + reviewer-confirmed + Codex-concurring). The cover+data side of the
+(3,3,4) V-lower is SOLID.
+REPORT-ONLY RESIDUALS (none block; all disclosed in docstrings):
+1. VALUE-CHAIN SCOPE (highest): ek₀/divisorMin≥8 over ALL 288, but pivot-cross is the true survivor only for CLEAN-144;
+   over-vanishing-144 need the (ii) feeder (pivot-cross hentry FAILS there). No soundness break (divisorMin≥8 = structural
+   Jacobian fact, leaf-indep); divisorMin≥8-over-288 ≠ the value closure. COVERED by (ii), in build.
+2. UNCOMMITTED CERT: whole_conjugate_all288.py/.out referenced in docstrings; reviewer (on the Lean branch
+   aoyagi-r2wholeconj-fan) didn't see it. Branch-locality — resolves at MERGE (match the docstring path). Reproducibility
+   gap, NOT a fidelity hole (reviewer independently re-derived).
+3. NO LEAN BRIDGE gFlat=σ⁻¹∘gWrap∘σ: blockBlowupMap_conj standalone. The bridge closes via the VALUE pullback
+   (loss∘gFin=vm²·∑vf², B's hentry + (ii)), not blockBlowupMap_conj. Disclosed. COVERED by B+ii.
+4. COSMETIC lint (Jac334:80 >100 chars; NativeValue334 unused or_true L43, deprecated push_neg L79) — fold into MERGE.
+NEXT: (ii) + B land → all-288 wire case-split assembly → at merge: aggregator wiring + residual-2 cert-path + residual-4 lint.
