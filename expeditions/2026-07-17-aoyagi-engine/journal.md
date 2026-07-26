@@ -26463,3 +26463,23 @@ FRESH (A)+(C) SEAT spawned (fresh budget) off r2assembly: born-native σ_p fan (
 hchart block-blowup argmax + hnull cheap + box-containment C=2) + jac/divisorMin=8, from assembly-extraction.md. Land
 σ_p def early + signal (→ fire B). W1-unified flat Fin family. (B) ×9 hentry follows on the σ_p def. Elder re-convene at
 the σ_p def landing (W3 grep-clean) + the landings.
+
+## 2026-07-26 — assembly-brick reviewer verdict CLEAN + a contract-shape flag for (B)
+The hsandwich-discharge brick reviewer (ab5f5c0e0051ac0f2) + Codex xhigh: CLEAN / survived for
+rlctAt_coreGen334_ge_four_of_survivor_entries (built sorry-free 8468 jobs, reviewed @16b7717de on top of r2headline):
+(a) faithful hsandwich discharge (line-traced: sumSqFam_const_monomialFam collapses ∑monomial²=Mn·m²; cst·(Mn·m²)=m²;
+    m²=coreGen(k0)² [hentry] ≤ ∑coreGenᵢ² [single_le_sum]); cst=1/Mn RLCT-INVISIBLE (only in hsandwich/hcst, never the
+    conclusion; Codex: C>0 ⟹ rlct(CK)=rlct(K)); ρ=∞/global legit (stronger ∀w ⟹ the wire's ∀ᶠ; side-conditions
+    hgdiff/hdomcpt/hg_inj/hexcep/hcover separate + passed through).
+(b) hentry HONEST (exact per-entry identity, non-vacuous, non-circular, feeds survivor at k0; satisfiable — Codex
+    exhibits the born-α shear giving an entry = rE exactly).
+(c) NAME=CONTENT honest — CRUCIALLY: rlctAt here is the GENUINE analytic local RLCT of the (3,3,4) square-Frobenius
+    loss (sumSqFam(coreGen)=lossDLN∘eWrap), NOT a codim proxy, NOT resting on the cited Aoyagi equality — NOT the
+    rlct-named-but-only-codim trap. (d) clean-three (direct #print axioms, no F1/Transport334/cite).
+CONTRACT-SHAPE FLAG (report-only, for (B) — not a defect here): hentry demands EXACT coreGen = monomial, STRICTLY
+STRONGER than the built feeder DomainSandwich.sandwich_on_domain_of_survivor (monomial × unit, unit-bounded-below on
+compact dom → LOCAL sandwich). The pnp cert claims M[0,0]=E EXACTLY post-shear (survivor resid=1, unit folded into ek₀
+as an exponent-1 binding axis, consistent with hunit_mult) ⟹ exact SHOULD hold. HARD CHECK for the (B) hentry seat:
+VERIFY the concrete born-native chart gives EXACT coreGen = monomial (not monomial × nontrivial-unit); if only
+monomial × unit, hentry is FALSE + this brick strands → route (B) through sandwich_on_domain_of_survivor (graceful
+feeder fallback). Carried to #188 (B) + the (B) brief. Gate PASSED; the landed brick is clean (conditional on hentry).
