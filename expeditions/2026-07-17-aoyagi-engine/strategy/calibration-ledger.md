@@ -1495,3 +1495,10 @@ LESSON: before feeding a from-below sandwich RHS to the chain-based sandwich-cov
 in r vars) is INVISIBLE to the chain collapse (U^{-c}≤1 discards the non-min vanishing) — it needs the SoS engine.
 Sibling to the cert-DIRECTION tripwire (both: a plausible reading the decorrelated read exposed). Vindicates the seat
 reading the engine BEFORE building the statement.
+
+## 2026-07-26 — ELDER RULED ADOPT-WITH-AMENDMENTS on the SoS-engine route (pointer)
+Elder ground-truthed the chain-wire finding (prior entry) + ruled ADOPT-WITH-AMENDMENTS. 3 amendments relayed to (ii):
+(A) the chart unit COUPLES the x/z blocks → NO raw product-of-integrals, SANDWICH by unit sup/inf; (B) name `…_ge_min`
+not `…_eq_min` unless the eq is built, general law next to SumSq; (C) FOLD Ψ into g'=g∘Ψ⁻¹ (det-1) → no separate CoV
+lemma. The engine-shape STANDING TRIPWIRE is now in compass standing-counsel. BOUNDARY=LADDER confirmed. See journal
+2026-07-26 (elder ruling). PENDING: charter §3 sandwich-cover reconciliation (elder-to-author at the (ii) landing).

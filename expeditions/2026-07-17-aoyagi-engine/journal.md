@@ -26907,3 +26907,26 @@ counsel + the compass tripwire framing (advisory, non-blocking).
 GATES at (ii) def landing: (W3) Ψ native grep-clean; (cover) g_c∘Ψ blockShear cover; (NEW) SoS-engine Fubini
 factorization honest (rlctAt_sumSq at C=8, no hidden cross-term), clean-three.
 CALIBRATION banked (chain-wire caps at 1/2; SoS gain needs the SoS engine).
+
+## 2026-07-26 — ELDER RULING: SoS-engine route ADOPT-WITH-AMENDMENTS (ground-truthed); amendments relayed to (ii)
+Elder (a094f466b66658e87) ruled ADOPT-WITH-AMENDMENTS on the monomial×SoS engine, independently ground-truthing the
+Lean (SandwichCover / MonomialRLCT:724,777 / SumSq:212) + the pnp table. Confirms finding CORRECT, minimal honest fix
+YES, BOUNDARY=LADDER (proceed-on-silence). Amendments relayed to (ii):
+(A) SOUNDNESS [load-bearing]: the chart unit_c COUPLES the x/z blocks (does NOT factor) — NO raw product-of-integrals;
+    SANDWICH by unit's SUP (≥/convergence) + INF>0 (≤/divergence), mirroring monomialSumSq_integrableAtFilter_of_lt's
+    V=unit·U^{-c}≤Mub. State as two-sided-bound-by-unit, never a product-of-integrals eq.
+(B) NAMING+GENERALITY: build the general law rlctAt(f·g) for disjoint nonneg blocks in Core.Analysis.RLCT next to SumSq
+    (subsumes rlctAt_sumSq, vm=1); name `…_ge_min` if only the ≥ direction (name=content), `…_eq_min` only if the eq is built.
+(C) DESIGN NOTE: FOLD Ψ into g'=g∘Ψ⁻¹ (det-1 ⟹ jacWeight unchanged + unit·|detΨ⁻¹| continuous-nonzero) → the existing
+    area formula absorbs it, NO separate CoV-invariance lemma (drops pnp step 4); real labour = the disjoint-block
+    coordinate plumbing (Fin D = x⊔z, volume through the product equiv).
+MIRAGE CHECK (elder): hideal_bwd-free but NOT the F1-mirage — the weak reverse is INHABITED as the r=8 regular-sequence
+rank (r/2=4 NEEDS r=8; a rank-deficient residual drops below 4 = the F8 RED the pnp screened). Route requires+verifies
+no-over-vanishing.
+BANKED: the new engine-shape STANDING TRIPWIRE committed to compass standing-counsel (sibling to THE CERT'S DIRECTION
+tripwire, ~L477).
+PENDING (non-blocking; elder is SOLE charter author — folded into the (ii)-landing elder agenda): CHARTER §3
+reconciliation — the mirage warning (§3 lines 166-174, "the lower bound is route P") + the general-d bullet should
+SANCTION the sandwich-cover / hideal_bwd-free lower-bound route (elder-verified SOUND: loss ≥ cst·RHS ⟹
+admissible(loss) ⊇ admissible(RHS)) WITH the r=8-regular-sequence-reverse note, so a future seat doesn't misread the
+sandwich-cover V-lower as the retired F1-mirage.
