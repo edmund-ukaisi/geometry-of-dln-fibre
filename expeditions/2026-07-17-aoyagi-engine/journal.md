@@ -26284,3 +26284,26 @@ TWO SEAM-FACTS (forwarded to the elder — may refine the Path-A mechanism):
 NEXT: L2 reviewer clean + elder fact-#2 read → the Path-A cover-proper + assembly (re-engage reduction formaliser
 a6b6239b54dd15f06): g_c = flatCube shear-free cover ∘ per-leaf born-α → hcover + hsandwich → discharge the reduction
 → unconditional (3,3,4). Assembly gated on the L2 reviewer clean.
+
+## 2026-07-26 — pnp F8 RED: the fixed-shear gWrapFan POISONS the value lower bound (soundness catch PRE-assembly) → per-pivot native family CONFIRMED
+The pnp (a8403ed693f11ae79), continuing on the elevated cover/value seam, delivered a CONCRETE soundness RED (toric-LP
+exact, true_rlct_perleaf_334.py + seam_symconj_334.py; F8):
+  - TRUE per-chart rlct (toric LP over all monomial valuations: min_{w≥0}(w·κ+Σw)/(2·min_m w·m); canonical validated=4.0):
+    on the fixed-shear gWrapFan node-1 leaves, p1∈{4,5,6,7} (the Δ-block entries) = 2.5, 1.0, 1.0, 1.0 — BELOW 4
+    (p1∈{0,1,2,3}=4.5, p1=20=4.0; node-2/3 all 4.0).
+  - Over-vanishing = loss vanishes to HIGHER order = LOWER rlct ⟹ min over charts = 1.0 ⟹ rlct≥4 BREAKS. So the
+    FIXED-shear gWrapFan is UNSOUND as a VALUE family — some leaves actively POISON the lower bound (concrete 1.0 witness).
+NEAR-MISS: had the assembly naively used the fixed-shear gWrapFan as the value family, rlct≥4 would be FALSE — the
+wire-false-but-typechecks trap. Caught by the pnp's toric-LP BEFORE the assembly built it (decorrelated discipline again).
+CONFIRMS the elder's Path-A ruling: value family MUST be per-pivot NATIVE born-α (each dominant its own recoord shear),
+NOT the fixed shearH. The pnp verified per-pivot RESTORES rlct=4 on the WORST leaf (dominant u4: g'=σ⁻¹∘gWrap∘σ, true
+rlct=4.0, survivor idx-1, jacDet=u2⁷·u4⁸·u5³ ⟹ divisorMin=8) — F5-F8 holds for the RIGHT family. Headline SAFE (right
+family = 4, no red-flip); sharpens the FAMILY, within L1/L2.
+3 CONSEQUENCES (routed): (1) the reduction's family must range over the per-pivot native born-α (reduction itself
+family-ABSTRACT, UNAFFECTED — assembly just instantiates the right family) — a HARD assembly constraint; (2) the cover
+must be for the per-pivot family (open: does it cover?); (3) W3 FORK — the per-pivot born-α = σ⁻¹∘shearH∘σ (K-orbit
+conjugate) in tension with W3; resolve by building NATIVELY (explicit block-recoord shear per dominant, F5 — avoids
+Transport334, W3-clean; K-orbit = description-only). → routed to the ELDER: cover-reconciliation (does Path-A
+source-reparam close 'does the per-pivot family cover?') + the W3-fork ruling. ASSEMBLY HELD pending the elder.
+P2's fixed-shear gWrapFan cover likely moot for Path A (not the value family); its SCALING infra transfers to flatCube
+(fact #1). L2 reviewer (a8e2056dadb55eacb) continues (verifies the reusable scaling).
