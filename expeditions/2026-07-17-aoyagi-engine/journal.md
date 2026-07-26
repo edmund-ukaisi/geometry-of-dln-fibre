@@ -26445,3 +26445,21 @@ to BANK the full extraction (9 shears + hcover route + cert pointers) to a durab
 (threads/reroute-R2-tubecover/assembly-extraction.md); on the elder's shape confirm + the bank → a FRESH formaliser
 builds (A)+(C). (B) still gated on the σ_p def landing. Bricks (reduction + hsandwich-discharge) + hcover route + shear
 extraction all banked — the math is detail-at-scale, just sizable (multi-file build).
+
+## 2026-07-26 — CONTINUITY fix (pnp cert durably banked) + extraction banked + shape (b) LOCKED → fresh (A)+(C) seat spawned
+CONTINUITY: the pnp cert scripts (F5-F9: born_alpha_cert_334, seam_all9_dominants_334 [the 9 native shear source],
+true_rlct_perleaf_334 [toric-LP RED], jac/perleaf_divisormin, permconj_jac, leaftype_census + thread.md F5-F9 + codex)
+were UNTRACKED in r2build (at-risk per the CONTINUITY rule) — committed to expedition/aoyagi-engine + pushed. Now durable.
+EXTRACTION: the (A) formaliser (a6b6239b54dd15f06) banked assembly-extraction.md (branch aoyagi-r2assembly @40a2442b9,
+self-contained): §2 = all 9 explicit W3-clean native σ_p shears (DIRECT, quadratic ‖φ‖≤2r², blockShear_covers_scaled
+C=2), §0 target contract, §3 fan shape, §4 hcover route (SurvivorFanCover flat), §5 hentry+jac, §6 cert pointers, §7 W3
+gate + extract_native_shears.py (reproducer). Formaliser stood down (this session: 3 clean-three Lean bricks [reduction
++ hbdd + hsandwich-discharge] + hcover resolution + the extraction — decisive).
+SHAPE (b) LOCKED (elder): 3-step fanOfSteps, node-1 per-pivot native σ_p (the §2 direct shears), blockBlowupMap outer,
+nodes 2,3 id; 288 leaves; multi-node jac 7&8; W3-clean. (a) ruled out (no multi-node jac); (c) rejected (conjugate =
+W3-drift + under-covers). W3 GREP TARGET: node-1 σ_p defs = direct §2 shears, grep-clean of Transport334/conjResolution;
+conjugate in comments only; nodes 2,3 id.
+FRESH (A)+(C) SEAT spawned (fresh budget) off r2assembly: born-native σ_p fan (shape b) + hcover (SurvivorFanCover flat:
+hchart block-blowup argmax + hnull cheap + box-containment C=2) + jac/divisorMin=8, from assembly-extraction.md. Land
+σ_p def early + signal (→ fire B). W1-unified flat Fin family. (B) ×9 hentry follows on the σ_p def. Elder re-convene at
+the σ_p def landing (W3 grep-clean) + the landings.
