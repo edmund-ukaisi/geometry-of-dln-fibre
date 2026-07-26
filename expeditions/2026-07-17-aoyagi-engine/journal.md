@@ -26531,3 +26531,23 @@ rework]). Like F8, extended to inner pivots.
 (C) seat: GO on per-leaf hjac (independent) + define ek₀/k0 concretely (shared def); HOLD the divisorMin ≥8 Lean decide
 until the pnp confirms ≥8 TRUE. (A) fidelity review HELD until the pnp de-risk (don't review a fan whose survivor
 selection might change on a RED). Elder re-convene on classification + the pnp verdict.
+
+## 2026-07-26 — ELDER RULING: (C) divisorMin≥8 = (b) cite-free FINITE DECIDE (perm-invariance INSTANTIATED, not cited); all-288 de-risk REQUIRED (could RED)
+Elder confirmed my read + sharpened:
+- CLASSIFICATION: (b) cite-free FINITE DECIDE. NOT a monument (finite/decidable at fixed (3,3,4): divisorMin = min over
+  288 concrete leaves of min over binding axes of (jac+1), a decide/Finset computation). NOT a cite.
+- OPTION (a) CITE — DOUBLY REJECTED: the permutation-invariance of the codim is CHARTER-DESTINATION content ('the
+  surprising permutation invariance of (C,θ)') the expedition must PROVE; citing it = citing the very deliverable. The
+  ONLY sanctioned cite is Aoyagi rlct=½·codim. So (b) = the perm-invariance INSTANTIATED at (3,3,4) (compute, don't cite).
+- WHY likely: divisorMin≥8 = the survivor's binding axes (ek₀) always on jac≥7 (E jac7 + pivot c11 jac8), never the
+  low-jac (α:3, non-binding) — a CONSEQUENCE of the born-native shear DESIGN (exposes the survivor on E), verified 9/288 (F9).
+- CRITICAL CAVEAT (min-over-charts, concrete): the finite decide is UNVERIFIED (F9 = 9/288 only). All-288 could RED (any
+  leaf whose shear exposes a low-jac survivor ⟹ divisorMin≤4 ⟹ rlct≤2<4 ⟹ headline BREAKS — same as the fixed-shear RED).
+  The pnp all-288 de-risk is REQUIRED, NOT optional — do NOT claim ≥8 from the 9.
+- GATE: CLEAN (all 288 survivors on jac≥7) → divisorMin≥8 → cite-free headline + Lean finite decide over 288. RED → the
+  poison leaf's shear wrong/incomplete → per-pivot fix → re-check (bounded, decidable, not a monument).
+- General-d uniform perm-invariance = L1/L3 ledger's larger question, ALSO not a cite (proven uniformly, detail-at-scale
+  per F13). Cite-free at BOTH levels: (3,3,4) = finite-decide witness; general-d = uniform proof.
+CITE-BOUNDARY (crisp, load-bearing): perm-invariance of (C,θ) = the DELIVERABLE (prove, cite-free); ONLY Aoyagi
+rlct=½·codim is the sanctioned cite. STATE: pnp all-288 de-risk RUNNING (required gate); NOT claiming ≥8 from the 9;
+HOLD the ≥8 Lean decide + (A) review for the verdict. Re-convene the elder at the pnp verdict + the assembled (3,3,4).
