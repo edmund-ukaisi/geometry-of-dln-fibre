@@ -26263,3 +26263,24 @@ EASIER than the earlier bounded-shrink (mooted on the value side). BOUNDED, NOT 
 ACTIONS: P2 (a6eaa743b08f63e44) re-aimed to Path A (bank R-scaling + pivot, or hand off); elder acked (offered light
 L2-refinement of §3/F14 on its word); assembly (re-engage reduction formaliser a6b6239b54dd15f06) gated on P2 Path-A
 landing + the P1 cert.
+
+## 2026-07-26 — P2 (L2 scale-join) DELIVERED object-agnostic (clean-three) + 2 seam-facts for the elder
+P2 (formaliser a6eaa743b08f63e44) delivered the L2 scale-join — OBJECT-AGNOSTIC (no re-scope; my re-aim to Path A
+CROSSED the delivery, moot — P2 made NO fixed-shear-specific value/survivor claims). Branch aoyagi-l2scalejoin
+@f3881b370 (off r2headline), Corank2FanCover334.lean (+27 LoC), green 8465 jobs, 4 theorems all clean-three:
+  - gWrapFan_covers (R) : general-R (was R=1);
+  - ball_subset_gWrapFan_leafImages (R) : covered radius = R EXACTLY (ρ(R)=R, NOT ≈ — the f-inflation sizes only leaf
+    boxes, not the covered ball) [better than the ρ(R)≈R expectation];
+  - gWrapFan_leafImages_mem_nhds : the U∈𝓝 0 shape the wire consumes;
+  - exists_ball_subset_gWrapFan_leafImages : general-R form.
+Box-containment atoms untouched (NodeCover334 consumer safe). Reviewer spawned for fidelity (radius-exactness + 𝓝 0).
+TWO SEAM-FACTS (forwarded to the elder — may refine the Path-A mechanism):
+  1. general-R cover of ANY fanOfSteps fan is IMMEDIATE from the engine (covers_fanOfSteps ∀R + covers_subset) —
+     re-pointing the cover object needs only a new per-step box-containment; scale-parametricity is in the ENGINE.
+  2. FanStep.shear is ALREADY PER-PIVOT — the engine allows σ to vary with pivot p; per-leaf NATIVE born-α shears can
+     be carried at general R via a per-pivot box-containment + covers_fanOfSteps, PROVIDED the native charts fit the
+     node shape blockBlowupMap S p ∘ σ p (block-blowup outer, shear inner). [Possible simplification of Path-A's
+     reparam_image — carry the native shears ON the fan directly; elder to weigh vs reparam_image.]
+NEXT: L2 reviewer clean + elder fact-#2 read → the Path-A cover-proper + assembly (re-engage reduction formaliser
+a6b6239b54dd15f06): g_c = flatCube shear-free cover ∘ per-leaf born-α → hcover + hsandwich → discharge the reduction
+→ unconditional (3,3,4). Assembly gated on the L2 reviewer clean.
