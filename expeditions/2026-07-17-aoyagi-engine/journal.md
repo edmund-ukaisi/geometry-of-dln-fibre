@@ -25202,3 +25202,22 @@ DONE + captured; the durable API design deserves fresh context, not a rushed des
 CONCUR + spawned a fresh lean-formaliser with the complete recipe + the elder precisions + the gates; reroute-
 R2build STOOD DOWN + resting. Statement-lock first (early API check) → fill/TRACKED-OPEN → elder + reviewer +
 controller force-elab verify → merge. This is the last substantive new sub-lemma of the V-lower.
+
+## 2026-07-26 (cont.) — WIRE STATEMENT-LOCKED @e195fb436 (SandwichCover.lean, tracked-open); race reconciled (formaliser → FILL, not redesign); r3ia/r3brick cleaned up [#187]
+reroute-R2build statement-locked the wire: `rlctAt_ge_iInf_threshold_of_sandwich_cover` @e195fb436
+(Core/Aoyagi/SandwichCover.lean) — conclusion ⨅_c monomialThreshold(bexp,jac) ≤ rlctAt(∑Fᵢ²) x₀; per-leaf
+obligations = a Chart minus hideal_fwd/bwd + the SUM-level sandwich; hunit1 a per-leaf hyp. TYPECHECKS vs trunk
+h0-free; ONE tracked-open hole `-- map: R3-wire` (TRACKED-OPEN, not in the clean-batch, isolated → full-build
+AxCheck green). Cleanup: r3ia + r3brick DELETED (local+remote); r3wire rebased onto @ec464127e.
+
+RACE reconciled: the builder's statement-lock CROSSED my fresh-formaliser spawn (I'd told the formaliser to
+statement-lock first — but the builder had already done it). Redirected the formaliser (a2a3364f98e669636) to
+BUILD ON @e195fb436 (rebase + quick-review the record for weakest-fields + FILL the one hole), NOT redesign —
+avoids two divergent skeletons. reroute-R2build stays stood down + resting (its recon + the locked skeleton =
+the scarce scoping work delivered).
+
+REMAINING: the ~85-line FILL (the bounded adaptation of mem_localAdmissible_of_lt — one hdom_int line swapped
+for the sandwich-fed IntegrableOn) = the last substantive new sub-lemma of the V-lower. The "V-lower done /
+cite-free" CLAIM gates on the FILL + the elder 4-obligation + #172-distinct + F1-clean + exists_coreResolution
+dead-in-cone → elder + reviewer + controller verify → merge. Then: hpull concrete discharge (#172 for real
+charts) + V-upper (#110) + Object D → 2rlct=cCodim → the cite-free payoff.
