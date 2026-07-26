@@ -27087,3 +27087,18 @@ STEERED: proceed on (i), no pause; canonical-then-σ_{p1} right (σ_{p1} EXACT 1
 STATE: clean-144 COMPLETE+locked; interface CLEAN; over-vanishing = generic backbone CLEAN-THREE + step-6 bridge
 (tracked-open, awaiting Tonelli) + per-type grind (in build) + Tonelli (in build). NEXT: Tonelli close + per-type
 (i)(ii)(iii) → discharge chart_integrableAtFilter_of_monoSumSq_dom → step-6 mechanism-heterogeneous assembly → (3,3,4).
+
+## 2026-07-26 — SCOPING: per-type pullback grind SEATED as a dedicated follow-on; (ii) = step-6 assembler
+(ii) delivered the generic (3)-(5) backbone (clean-three) + the step-6 bridge (tracked-open) @56ebed343 and WAITED FOR
+WAKE on scoping the per-type grind (1)(2)(3) [(ii)'s rec: seat it as a follow-on — ~the clean-144-hentry-seat scale,
+best with a fresh full context budget]. DECISION (accept): SEATED a dedicated per-type seat (fresh lean-formaliser, off
+@56ebed343) for (1) the full per-type pullback (loss∘gFin=vm²∑vf² → hpull, via blockBlowupMap_center_factor + identify
+the 12 vf_k; reuse the clean-144 kernel recipe), (2) the concrete Ψ_c per type (blockShear straightening 4 linear vf → z,
+det-1, keep⊇supp vm → hstr/hzc), (3) the folded-jac (jacDet_comp + jacDet_blockShear + jacWeight_fixOn). Builds
+canonical-16 + σ_{p1} (EXACT 144/144); collapses to ~2 Ψ/reg-seq shapes (key on p2). Owns the per-type facts in
+Corank2OverVanish334.lean; consumes (ii)'s backbone + NativeEntry334 + pnp data; does NOT touch the Core files (Tonelli's).
+(ii) = the STEP-6 ASSEMBLER (built the bridge + backbone); offered (a) rest-until-wake or (b) optional step-6 wire
+scaffolding now (its call).
+STATE: clean-144 COMPLETE+locked; interface CLEAN; over-vanishing = backbone CLEAN-THREE + step-6 bridge (tracked-open) +
+[per-type seat (1)(2)(3)] + [Tonelli seat: the Core crux] in build. NEXT: per-type facts + Tonelli close → discharge
+chart_integrableAtFilter_of_monoSumSq_dom → (ii) step-6 mechanism-heterogeneous assembly → unconditional (3,3,4).
