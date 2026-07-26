@@ -26597,3 +26597,26 @@ conj-permP (rework build data) + verify all-288 divisorMin≥8 + confirm native-
 numeric harnesses reusable). On the pnp emission + elder confirm → spawn a FRESH fan-rework seat (rebuild node maps from
 the permuted atoms + re-derive hcover [transfers] + define ek₀). NET: the STOP-SHIP is a BOUNDED fix (incomplete
 extraction → extend it), route NOT threatened. B held for the reworked fan + ek₀.
+
+## 2026-07-26 — ELDER CONFIRM: permuted-centre blow-up = NATIVE (W3-clean, bounded) + the sharpened distinguishing test / grep-gate / char-lemma
+Elder confirmed the STOP-SHIP fix is W3-clean + bounded, WITH a sharpened W3 gate (scrutinized the deepest joint):
+- CONFIRM: blockBlowupMap(σ⁻¹C)(σ⁻¹p) is a NATIVE direct atom (W3-clean) — the conjugation identity σ⁻¹∘blowup(C,p)∘σ =
+  blowup(σ⁻¹C, σ⁻¹p) is a fine DERIVATION/DESCRIPTION tool; the W3 question is about the FINAL DEF, not the derivation.
+- DISTINGUISHING TEST: W3-CLEAN = the chart DEFINED as blockBlowupMap(C_p)(p) [DIRECT blow-up], C_p = p's NATIVE centre
+  (case i, from buildTree/stepUpdate) OR σ⁻¹C0 + a theorem σ⁻¹C0 = nativeCentreOf p (case ii, characterized-native). σ
+  acts only on the centre DATA (Finset) or a char-lemma — NEVER wrapping the CHART. TRANSPORT-IN-DISGUISE (forbidden) =
+  the chart DEFINED as σ⁻¹∘gWrap∘σ (canonical conjugated), even if equal to the direct form. KEY: σ in the CENTRE arg is
+  W3-clean (σ on centre data, not the chart); σ⁻¹C0 WITHOUT the native-match = canonical-relabeled (transport-flavored)
+  → case (ii) NEEDS the native-centre-match theorem.
+- SHARPENED GREP-GATE (controller runs at the chart def landing): (1) NO ∘gWrap∘ / canonical-conjugation in the def; (2)
+  centres NATIVE (buildTree) OR σ⁻¹C + `σ⁻¹C = nativeCentreOf p`; (3) NO conjResolution/Transport334/resolution334_of_
+  fanCover imports. All 3 ⟹ W3-clean. Conjugate in COMMENTS OK, never the def.
+- CODE-STRUCTURE (bonus): state the decomposition as a NAMED CHARACTERIZATION lemma (RHS = direct atoms); the DEF uses
+  the direct RHS. σ-conjugate provably-equal (description) + def provably-direct (construction) — the W3 line enforced by
+  CODE STRUCTURE, not just a grep.
+VERDICT: native, W3-clean, BOUNDED fix — CONFIRMED. This = the fresh-rework-seat's W3-build SPEC + the controller's
+def-landing gate.
+STATE: elder confirm LANDED. pnp (a468883f26dac7a88) emitting the permuted atoms + verifying all-288 (the remaining
+gate/build-data). On the pnp emission → spawn the FRESH fan-rework seat with this W3-spec (direct blockBlowupMap at native
+centres + the char-lemma) + the permuted-atom data. Re-convene elder at the chart def landing (grep-gate) + the pnp
+verdict + the assembled (3,3,4).
