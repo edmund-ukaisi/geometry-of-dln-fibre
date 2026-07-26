@@ -26218,3 +26218,26 @@ necessity (=8 is Object-D + what the theorem uses; the ≤8 belongs to V-upper).
        scale-parametric atoms; small-R cover = nbhd of 0), clean-three, off r2headline.
 ASSEMBLY (next seat, re-engage the reduction formaliser a6b6239b54dd15f06): wire P1 hpull + P2 cover at R = min leaf
 sandwich-unit-radius → discharge rlctAt_coreGen334_ge_four_of_family unconditionally → the (3,3,4) headline.
+
+## 2026-07-26 — P1 LANDED (pnp ×6 hpull cert): L1 audit CLEAN (stronger than expected) + the cover/value chart SEAM
+P1 (pnp a8403ed693f11ae79) delivered the ×6 per-leaf born-α hpull template (exact sympy + Codex; scripts in
+threads/reroute-R2-tubecover/pnp/, findings F5-F7).
+L1 AUDIT (elder trigger-3, 'does any leaf's fed-form need a FUDGE?') = CLEAN, NO FUDGE, STRONGER than the brief:
+  - the 6 singular types collapse to ONE parametrized born-α (block-recoord shear on the pivot row: S[0,:] :=
+    E·(1,t2..tc) − Σ_{i≥1} D̄[0,i]·S[i,:]), ×6 block-shapes ((3,3),(2,3),(1,2),(2,2),(3,4),(1,3)), ALL sharing one
+    exact cert. Cross-term KEPT ⟹ pivot M[0,0]=E EXACTLY. Survivor = index-0 resid = 1 CONSTANT (not 1+h.o.)
+    ⟹ from-below cst·∑monomial² ≤ loss, cst=1, ρ_leaf=∞ (GLOBAL sandwich on the whole dom, no shrink).
+  - divisorMin=8 (binding {c11 jac 8, E jac 7} squarefree; α jac 3 non-binding); rlct_chart = min(9/2,4) = 4.
+  - kills (a) single-entry survivor=pivot monomial E exactly, (b) survivor=1⟹ρ=∞ global sandwich cst=1,
+    (c) full jacDet(gWrap)=−u0⁷·u1³·u20⁸⟹divisorMin=8 — ALL SURVIVED (exact + Codex; canonical + 8 non-canonical + perm-transport).
+  - min-radius R=∞ (value UNCONSTRAINED by survivors; the scale-join is limited only by the COVER lane).
+THE SEAM (pnp caveat 1, 'most likely to break = the COVER'; routed to elder as the L1/L2 unification): the value rides
+the PER-LEAF NATIVE born-α, but the FIXED-shear gWrapFan (one shearH∘permP — the object the radius-join guardrail named
++ P2 is generalizing) does NOT supply survivors on all leaves (8/9 node-1 + 4/8 node-2 pivots OVER-VANISH). So the COVER
+family (fixed-shear gWrapFan) ≠ the VALUE family (per-leaf native born-α); the wire needs both on the SAME {g_c} (W1).
+Open question for the elder: the right {g_c} — flatCube substrate (memo: cover-substrate=flatCube, NOT born-fan) with
+native born-α per chart; or per-leaf-native charts with cover re-derived; or gWrapFan re-built with per-leaf-native shears.
+Taxonomy: 9 node-1 pivots perm-equivalent ⟹ ONE parametrized born-α + 6 instantiations (not 6 bespoke).
+Codex residual D (local block census ≠ composite-leaf cert; native born-α composite jac per non-canonical dominant =
+formaliser's instantiation step, closes by the confirmed jac-exponent perm-transport) noted for the assembly.
+ACTIONS: elder re-convened (L1 CLEAN + the seam); P2 flagged (hold fixed-shear-specifics, surface state); pnp acked.
