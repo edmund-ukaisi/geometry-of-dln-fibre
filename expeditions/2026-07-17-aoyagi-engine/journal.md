@@ -26201,3 +26201,20 @@ ledger-touching moments, NOT routine green landings:
   (3) the build's FIRST engagement with L1/L3 — the primary audit target, where a real snag (if any) surfaces;
   (4) the summit wire-up (exists_coreResolution dead in the headline cone) + any close-phase §3-full re-audit
       before the PR/merge signal.
+
+## 2026-07-26 — reduction reviewer verdict CLEAN (gate passed) → #188 born-α family LAUNCHED
+The (3,3,4) V-lower REDUCTION (Corank2Headline334 @19e5fb640) fidelity review: CLEAN / SURVIVED (reviewer +
+decorrelated Codex xhigh). (a) bundle = wire contract field-by-field (minus hFmeas/hbdd discharged concretely, plus
+hunit_mult/hdivisorMin), every hyp consumed, NO smuggle (no hyp mentions rlctAt); (b) ≥4 read-off honest (½ genuine,
+divisorMin=8 ⟹ 8/2=4, minAdm=8 confirmed); (c) name=content honest conditional (`_of_family`); (d) clean-three
+confirmed INDEPENDENTLY (force-rebuild 8467 jobs + separate #print axioms; NO F1/Transport334). The
+re-derive-before-trust gate PASSED — the reduction is trusted.
+CALIBRATION (reviewer caught my steer): for the LOWER bound ≥4, divisorMin ≥ 8 SUFFICES; my '=8 EXACTLY' overstated
+necessity (=8 is Object-D + what the theorem uses; the ≤8 belongs to V-upper). ≥8-fallback relayed to the seat.
+#188 (born-α family) LAUNCHED, decomposed into 2 parallel independent seats:
+  (P1) pnp (a8403ed693f11ae79): elaborate the ×6 per-leaf hpull template (T4-T9: born-α + hpull factorization +
+       sandwich-unit-radius ρ_leaf + jac exponent) + kill-conditions — the formaliser's build cert.
+  (P2) formaliser (a6eaa743b08f63e44): generalize gWrapFan_covers R=1 → general R (elder L2 scale-join guardrail (i);
+       scale-parametric atoms; small-R cover = nbhd of 0), clean-three, off r2headline.
+ASSEMBLY (next seat, re-engage the reduction formaliser a6b6239b54dd15f06): wire P1 hpull + P2 cover at R = min leaf
+sandwich-unit-radius → discharge rlctAt_coreGen334_ge_four_of_family unconditionally → the (3,3,4) headline.
