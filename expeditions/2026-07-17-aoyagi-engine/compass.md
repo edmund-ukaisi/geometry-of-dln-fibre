@@ -453,6 +453,19 @@ the bar); author the charter/compass; the stern voice on overclaim (hold "render
   independent seat, never the builder. An in-file witness is necessary, never sufficient.
 - **Survey banked state before commissioning anything** (3 redundant commissions on a prior run). Reuse
   dev's determinantal RESULTS for D; keep the RLCT-ideal work on the DLN side (the cite lives there).
+- **THE LEDGER IS NOT THE GEOMETRY — the hardcoded-resRank=0 fidelity tripwire (2026-07-26; elder +
+  controller calibration-ledger, DECORRELATED).** The engine's `leafOfState` HARDCODES `resRank:=0`;
+  `leaves_resRank_zero` (PROVEN-kernel) proves the LEDGER FIELD is 0, NOT that the geometry is
+  unit-residual. Faithfulness lives in `hpull`: resRank=0 is geometrically faithful IFF each leaf's
+  ACTUAL pulled-back loss `K∘g = monomial²·unit` (unit(0)≠0) — DERIVE `bexp`/`k₀` from the concrete
+  `frobSq∘prod∘chartMap` pullback, NEVER read them off the hardcoded resRank. A leaf whose real `hpull`
+  is HARD (a Morse/degenerate residual the ledger doesn't reflect) = the (B)-wall / k≥2 headline-drop
+  (a non-degenerate Morse is #172's built job, NOT a wall). GATE = the (3,3,4) hpull PRE-MORTEM (one
+  non-canonical full-block leaf) — checks the ledger against the geometry; a hard hpull surfaces to the
+  elder. **STANDING SUMMIT-FIDELITY DEPENDENCY:** the general-d headline `rlct = ½·cCodim` inherits this
+  — the (3,3,4) pre-mortem is the INSTANCE; general-d `hpull`-matches-hardcoded-resRank is the
+  summit-scoping concern. PROMOTE to charter §3 at the summit if resRank=0 general-d is load-bearing.
+  Witnesses: controller calibration-ledger; the R3 discharge delegation; #172 (Morse-handled if it arises).
 
 ## Landmarks (A–E frame; ≤9 — why these)
 *The map's landmark set MIRRORS this section; divergence is a drift item, not a rendering choice.
