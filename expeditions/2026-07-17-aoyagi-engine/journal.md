@@ -25295,3 +25295,14 @@ sumSq_residual); (2) the monomialThreshold→½minAdm CONVERSION (Object D + k=1
 k≥2 = red-flip]); (3) V-upper (#110, PROVEN — discharges hbdd + the ≤-half); (4) the SUMMIT wire-up (via_engine
 re-pointed → exists_coreResolution dead in the HEADLINE cone) → 2rlct=cCodim → aoyagi_learning_coefficient
 cite-free + sorry-free. Elder downstream triggers active; controller to scope + delegate.
+
+## 2026-07-26 (cont.) — wire decorrelation: reviewer's Codex-on-wire HUNG (tool failure); verdict UNCHANGED CLEAN (merge stands)
+The reviewer's decorrelated Codex consult on the V-lower wire HUNG (>10min zero output; killed — a tool failure,
+not a math gap). Verdict UNCHANGED: CLEAN, merge stands. Decorrelation is sufficient WITHOUT it: (a) kernel
+F1-gate fully verified (independent force-elab #print axioms: clean-three, no F1 route, exists_coreResolution
+absent); (b) the CRUX — the sandwich→integrability DIRECTION (loss ≥ cst·monomial ⟹ admissible(monomial) ⊆
+admissible(loss)) — was already Codex-decorrelated TWICE, on (i)(a) + (i)(b) (same mechanism, [FACT] both); (c)
+the wire assembly = standard measure theory reused VERBATIM from mem_localAdmissible_of_lt. So the hung-consult
+gap covers only standard/reused steps. Controller call: NO re-fire (belt-and-suspenders on standard reused code);
+the wire merge (@bdc3bf34e) stands on 2 human decorrelated reads + kernel (4× clean-three) + crux-Codex-×2.
+Tooling caveat (minor): Codex consults can hang >10min — a data point, not a soundness issue.
