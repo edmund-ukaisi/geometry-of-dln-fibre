@@ -27475,3 +27475,20 @@ leaf-list). (Navigator's pattern-B info STALE — pattern-B DONE @940224c42; pre
 STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-B DONE (review) + pattern-A building + transport (crux
 green + assembly steps 1-5) + MERGE PLAN ready; H3 = ONLY the step-6 spine (bridge auto-closed by tonelli-merge). NEXT:
 pattern-A + transport-assembly → merge (this plan) → close step-6 spine (H3) → 4 ≤ rlctAt → unconditional (3,3,4).
+
+## 2026-07-26 — PATTERN-A DONE: all 16 CANONICAL over-vanishing leaves now built (template + 7 A + 8 B)
+Pattern-A seat DONE: 7 leaves GREEN + axiom-clean @834574953 (aoyagi-r2ov-patternA). Modules
+Corank2OverVanishA_20_{1_5,1_6,1_7,5_1,5_5,5_6,5_7}.lean (2696 LoC), namespaces OverVanishA_20_p2_p3. Per leaf:
+canon_hentry + canon_domination + canon_foldedJac + Ψ facts + cover. Zero sorries; #print axioms clean-three; NO Tonelli
+leak. Cover-atom per-true-φ: quadratic (r+2r²) for (20,1,5),(20,5,1); cubic (r+2r³) for the other 5 (incl. non-coinciding
+(1,6),(1,7),(5,6),(5,7)). Public API name-matches the template VERBATIM → σ_p1-transport dispatches uniformly. φ VALUES
+cross-checked term-by-term vs a3f030's data (decorrelated, agree).
+⟹ ALL 16 CANONICAL (p1=20) over-vanishing leaves BUILT: (20,1,1)=Canon334 [VERIFIED-CLEAN] + pattern-A 7 @834574953
+[review-gating] + pattern-B 8 @940224c42 [review-gating]. The 16 base for the σ_p1-transport is COMPLETE.
+ACTIONS: (1) pattern-A FIDELITY REVIEWER spawned (decorrelated). (2) NAVIGATOR RE-CONVENED (A-half namespaces +
+per-true-φ cover + firm the final merge plan [patternA @834574953, patternB @940224c42, tonelli 674f682f6, regseq
+8a687824e, clean144 ec9ab4f60] + final aggregator leaf-list). (3) RELAYED to the transport-assembly seat (pattern-A
+@834574953 + namespaces; wire step 6 against all 16). (4) WIRING deferred to the convergence merge (single-writer).
+STATE: H1 VERIFIED+LOCKED; H2 = ALL 16 canonical built (template VERIFIED + A/B review-gating) + transport (crux green +
+assembly steps 1-5 + step-6 scaffold); H3 = only the step-6 spine. NEXT: A/B reviews clean + transport step 6 (∀-144
+canon_domination) → merge (navigator plan) → close step-6 spine → 4 ≤ rlctAt → unconditional (3,3,4).
