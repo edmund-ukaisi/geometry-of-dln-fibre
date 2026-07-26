@@ -26705,3 +26705,23 @@ RECOMMENDED — a cheap W3-FIDELITY closure (native leaves MATCH conjugated sign
 rework chart def landing; the pnp holds the conjugate side (ready).
 NET: STOP-SHIP value CLOSED; both residuals downstream/non-blocking; the ONLY load-bearing W3 check remaining = the
 grep-gate (+ the pnp-diff) at the def landing. Nothing to re-litigate.
+
+## 2026-07-26 — (A-rework) LANDED: whole-conjugate born-native fan + hcover, W3-clean (grep-gate PASSED, controller-verified) + clean-three
+The rework seat (a071ddb87a8c32348) SIGNAL(1): the σ_p/chart DEF LANDED, (A-rework) COMPLETE. Branch aoyagi-r2wholeconj-fan
+pushed. The STOP-SHIP fix (the whole-conjugate value-correct fan) is now BUILT in Lean.
+FILES: Corank2NativePerm334.lean (NEW: 9 conj-permP coord perms cpermS·, genuine Fin-21 bijections by decide; nativePerm +
+covers/|jacDet|=1/differentiable; nativeChart1 = nativeSel ∘ nativePerm + covers C=2). Corank2NativeFan334.lean (REWRITE:
+nativeFan node-1 = nativeChart1, nodes 2/3 at PERMUTED native centres sigmaC1Fs/sigmaC2Fs = σ(C1)/σ(C2); gFlat/gFin over the
+DEPENDENT Idx = Σ p1, σC1(p1)×σC2(p1) = the ACTUAL 288 leaves; native_hcover FULL cover ball 0 1; + blockBlowupMap_conj the
+elder-named CHARACTERIZATION lemma).
+W3 GREP-GATE PASSED (controller re-verified on ground truth): (1) gWrap ONLY in docstrings (describing what the direct atoms
+EQUAL); no ∘gWrap∘/canonical-conjugation in any DEF. (2) centres = explicit Finsets sigmaC1Fs/sigmaC2Fs (L80/93); value-chart
+def (gFlat L157) uses DIRECT blockBlowupMap at them; blockBlowupMap_conj (thm L54) = the σ-description. (3) NO Transport334/
+conjResolution/transportChart/resolution334_of_fanCover (0 hits). The char-lemma implements the elder's code-structure.
+VALUE-FIDELITY: seat verified direct-atom composite == whole_conj 288/288 (sympy). PLUS the Lean blockBlowupMap_conj THEOREM
+proves the decomposition identity ⟹ native=conjugate PROVEN IN LEAN (stronger than the pnp-diff). → elder: is the pnp-diff
+still wanted, or superseded by the char-lemma? (proceed-on-silence: skip as superseded unless the elder wants it).
+AGGREGATOR: Corank2NativePerm334 + Corank2NativeFan334 need imports in DLNFibre.lean — DEFERRED to the complete-headline merge.
+NEXT: seat lands ek₀/k0 (leaf-dependent: clean-144 pivot-cross, over-vanishing-144 higher native monomial) → SIGNAL → fire
+(B) hentry. Then hjac + divisorMin≥8 → assembled (3,3,4).
+NET: the STOP-SHIP fix is LANDED + W3-clean + clean-three (controller-verified) — the recovery is real Lean, not just a plan.
