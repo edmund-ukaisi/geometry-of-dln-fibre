@@ -27365,3 +27365,27 @@ NOTE FOR (ii)/H3: at the step-6 discharge, the over-vanishing charts' cover-tran
 quadratic for 2/8 per pattern), NOT uniformly quadratic — use each leaf's atom.
 STATE: H1 VERIFIED+LOCKED; H2 = template GREEN + leaves (pattern-A/B, per-true-φ cover) + transport (a3f030,
 loss-symmetry crux) — all monument-free; H3 (ii) resting. The cross-check decorrelation working as designed.
+
+## 2026-07-26 — H2 TEMPLATE (20,1,1) FIDELITY REVIEW CLEAN (kernel + Python 20000pts + Codex) — recipe verified trustworthy
+Template reviewer (ada0b47e) CLEAN — kernel-verified (full closure 8477 jobs; olean deleted + force-re-elab; #print axioms
+on all 10 roots = clean-three; Tonelli sorry did NOT leak) + decorrelated Python (re-impl gCanon/psiCanon/A0/A1/coreGen
+from the Lean defs, max err 1.7e-14, 20000 pts) + Codex xhigh (symbolic hand-expansion, all 8 entries zero-difference):
+(a) FIDELITY: idxCanon=(20,1,1) valid + coinciding (p2=p3=1); the 8 entry identities coreGen k (gCanon(Ψu))=u₁·u₂₀·u_{zc k}
+  confirmed 2 independent ways; vm=u₁·u₂₀ deg 2; Scanon=8 (cols c=0,1) → Z={0,2,3,4,12,13,14,15} bijective; the 4 dropped
+  c=2 entries genuinely don't straighten (correct reg subseq). Substrate faithful (coreGen=mult via mult_eWrap;
+  sumSqFam=DLN loss; codim 21−(5+8)=8=|Z|).
+(b) canon_domination FEEDS correctly (= monoSumSqGerm_le_of_regSeq_entries; a lower bound, respects the caveat).
+(c) canon_foldedJac correct (jacDet_comp + psiCanon jacDet=1 + jacWeight_fixOn; jacExp supp {1,20}).
+(d) CUBIC-COVER SOUND + INDEPENDENTLY CONFIRMS the cover-atom deviation: phiCanon carries a real cubic (u₁·u₁₆·u₅) → cubic
+  atom NECESSARY (Codex: a quadratic φ leaves the cubic uncancelled); blockShear_covers_cubic correct, 1≤r needed+holds
+  (leafR=903).
+(e) CLEAN-THREE ground-truth (all 10 roots; Tonelli sorry does NOT enter canon_domination — pure-algebra path).
+(f) SCOPE-HONEST (idxCanon-specific; no all-144 claim; generalization marked NOT-in-Lean).
+⟹ the (20,1,1) TEMPLATE is DECORRELATED-VERIFIED (seat + reviewer-kernel + Python + Codex + pattern-A cross-check). The
+RECIPE is TRUSTWORTHY for the 15-leaf generalization. The cover-atom-per-true-φ-degree rule is now TRIPLY-confirmed
+(pattern-A cross-check + reviewer + the actual φ). Non-defect notes: reg-seq terminology (fine); leaf-chart vm=u₁·u₂₀ ≠
+gWrap dominant u₀·u₂₀ (different charts, no conflict; threshold-matching = step-6's job; Z disjoint from supp(vm)∪supp(jac)
+={1,20}) — noted for (ii)/H3.
+STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + leaves (pattern-A/B, per-true-φ cover) + transport (a3f030,
+loss-symmetry crux) — all monument-free; H3 (ii) resting. NEXT: 15 leaves + transport → ∀-144 canon_domination → merge →
+wake (ii) H3 → 4 ≤ rlctAt → unconditional (3,3,4).
