@@ -26121,3 +26121,28 @@ meaning). The build honors 2 conditions (neither new): (1) the no-clearing-compr
 next-center-coordinate-block (the resolution's realization condition, shared with the ideal-preservation leaves,
 paper-resolved + instance-green — NOT the cover's residual). Forwarded to the elder for the §3 re-promote wording.
 Cover scout rested (task complete).
+
+## 2026-07-26 — === OPERATOR MILESTONE (non-blocking; elder-authorized surface) ===
+THE CENTRAL RESEARCH QUESTION IS ANSWERED YES: the cite-free RLCT lower bound for the DLN square-Frobenius loss —
+BYPASSING the exists_coreResolution monument — is REACHABLE at FULL GENERALITY. (A) is MONUMENT-FREE: BOTH monuments
+bypassed — the VALUE residual-clearing monument (F13: the pivot-cross single-entry survivor, corank-insensitive) AND
+the COVER monument (the general-d sheared cover = single-scalar-pivot triangular det-1 block-shear, detail-at-scale;
+2 decorrelated derivations + Codex). Same "one pivot per node" insight twice. The biggest de-risk of the expedition,
+earned via a long decorrelated-review arc (each confound caught: the mis-priced wall, corank-vs-composition,
+leaf-type coverage, the hcover-stub trap, the W3 marriage, the §3 cover-overclaim). §3 RE-PROMOTED to FULL-HEADLINE
+SATISFIED.
+
+HONEST STATUS (monument-free ≠ nearly done — F10's caveat, re-asserted by the elder): the ROUTE is monument-free +
+clear; the BUILD is the remaining work (~10-16 tides) + its OWN risk. LARGE inferred-not-proven surface, carried
+explicitly (the build AUDITS it, does not assume):
+  L1 = the general-d VALUE α + the uniform fed-form/preservation invariant;
+  L2 = the general-d COVER completion (LeafCoverTiling + blockShear_covers_scaled LANDED; reparam_image ~90% Path A,
+       or Path B target box-inflation to finish);
+  L3 = the §1-B inherited next-center-coordinate-block condition (paper-resolved + instance-green; likely distinct
+       from L1 — the resolution's realization condition vs the value fed-form).
+LANDED: the abstract V-lower wire (merged @bdc3bf34e) + the reusable value SPINE (feeder + joint + gate, clean-three,
+r3fill). IN FLIGHT: the (3,3,4) concrete V-lower fill → rlct=4 → +V-upper (proven) → summit re-point → the (3,3,4)
+CITE-FREE PAYOFF (the first fully-cite-free landing = the genuine next operator surface).
+NO operator DECISION needed — the objects-only fork is MOOT (cover = labor, not monument); this is milestone-news,
+within (A) (the destination was always cite-free full generality; this confirms it REACHABLE). Elder authoring F14
++ the §3-FULL line (I commit on delivery).
