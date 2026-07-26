@@ -24714,3 +24714,33 @@ Kill-condition NOT triggered (R3 = build, (A) unchanged) — but it CORRECTS the
 **ACTIONS:** first brick [#178] RE-SCOPED to the full-cover node clause, HELD for the elder's architecture-
 confirm; builder doing the flag-2 real-centers recon meanwhile; corr-derisk released (on-call). The (b) brick
 [#181] + its review [#182] proceed (hnull for the LEAF/VALUE side + G2 still use it). Destination (A) unchanged.
+
+## 2026-07-26 (cont.) — (b) brick = DUPLICATE (dropped, reuse existing Core lemma; my miss); elder ADOPTS the node/leaf layering + real-center first brick
+
+**(b) poly-null brick: STOP-before-merge — DUPLICATE (reviewer #182).** PolyZeroNull.lean @ef11a4700 is
+internally sound (2 roots clean-three, faithful, non-vacuous) BUT a near-verbatim DUPLICATE of the existing
+sorry-free Core brick `MvPolynomial.volume_zeroSet_eq_zero` (Core/MeasureTheory/PolynomialZeroSet.lean, commit
+68ef083f4 = ANCESTOR of both trunk + the branch; already imported by 13 modules; + the a.e. corollary
+`ae_eval_ne_zero`). RESOLUTION (reviewer option 1): DROP PolyZeroNull; R3-hnull + G2 point at the EXISTING
+brick (+ a thin Core.Analysis alias only if the namespace/signature is wanted); wire the survivor into the
+aggregator if orphaned. R3-hnull + G2 UNBLOCKED by the existing (more complete) brick — no new build.
+**CONTROLLER MISS (owned, ledger):** I dispatched the (b) build after grepping only Mathlib, not our own Core
+— the verify-before-building discipline (lean/CLAUDE.md) cuts to OUR Core too. The decorrelated review caught
+it on repo facts. [#181 resolved-by-reuse; #182 done.]
+
+**Elder SKELETON-REVISION GATE — the node/leaf layering ADOPTED (sound, architecture-improving):**
+- NODE = input-pivot FULL-cover (born charts tile the node box; bornSiblings_union_covers_closed + shearH_covers;
+  loss NOT monomialised here). LEAF = monomialisation (sandwich R(0)=1 on the full composite + the output-gen
+  tube-cover #169 + the {X=0} recursion). The fold engine is general (full-cover = up-to-null with diff=∅);
+  nothing merged is wrong.
+- ENGINE-HOOK: `node_clause_of_survivorAtom` (output-gen) is the LEAF hook; add a FULL-COVER node-clause
+  variant (input-pivot) as the NODE hook — small clean addition.
+- FIRST BRICK = the full-cover node clause AT A REAL gWrap center ({0..7,20}/{0..7}/{1,5,6,7}), NOT the toy
+  {0,1} (a labelled MECHANISM-DEMO only — must not travel as "the node cover works for (3,3,4)").
+- FIDELITY GATE before the fold: confirm the real centers buildTree produces + that the LEAVES monomialise.
+- recursion-{R=0} (#172) composition = the LEAF layer; W3 tripwire (charter §3) stands; (A) unchanged (V-wire).
+
+**ACTIONS:** relayed both to the builder (drop+reuse the poly-null; first brick = full-cover node clause at a
+REAL center, node-hook variant, hnull via the existing Core brick; finish the flag-2 real-centers recon
+first). reviewer + elder acked/rested. Board: R0✓ R1✓ R2-cover-infra✓ → R3 (build; first brick = real-center
+full-cover node clause, in prep).

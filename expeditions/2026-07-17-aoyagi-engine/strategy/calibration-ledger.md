@@ -1268,3 +1268,18 @@ for the correspondence, it would likely have carried its own output-generator fr
 seat caught it. LESSON (reinforces decorrelated-gating): for a de-risk that REFINES a prior de-risk's framing,
 use a FRESH seat, not a re-engage — the decorrelation is the sensor, and same-seat continuation correlates the
 error. Cost: one extra spawn. Value: caught a wrong-index-family build before the builder specified it.
+
+---
+
+## 2026-07-26 — MISS (reviewer-caught): dispatched a build for a brick that already existed in our OWN Core
+
+I steered the (b) poly-null build ("zero-set of a nonzero multivariate poly is null — confirmed NOT in
+Mathlib"). The builder grepped MATHLIB (correctly absent) + built it green. But it ALREADY EXISTED sorry-free
+in OUR Core (`MvPolynomial.volume_zeroSet_eq_zero`, Core/MeasureTheory/PolynomialZeroSet.lean, 13 importers).
+The decorrelated review caught the duplicate before merge. ROOT CAUSE: I (and the builder) verified absence in
+Mathlib but NOT in our own Core — the exact half of the verify-before-building discipline (lean/CLAUDE.md:
+"check our own Foundations/ before concluding Mathlib/we lack it") that I skipped when dispatching. DURABLE
+FIX: before dispatching ANY "build brick X, not in Mathlib" task, grep OUR Core/Foundations for X first (or
+mandate the builder do so as step 0) — a nonzero-cost build was spent re-deriving banked Core API. Cheap check,
+avoids a duplicate. (The review is the backstop; the grep is the front-stop.) Not a soundness issue — a
+reuse/efficiency one — but exactly the Core-bedrock discipline (stand on it, don't re-open it).
