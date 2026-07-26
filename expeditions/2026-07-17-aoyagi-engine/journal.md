@@ -27194,3 +27194,26 @@ avoids a file conflict) + FLAG if the cubic-unipotent cover-transport is harder 
 cubic-for-coinciding / quadratic-for-non-coinciding.
 HOLES MAP UPDATE: H2 (over-vanishing bridge) now = per-type entry-identities (8/type) + Ψ_c + folded-jac + the CUBIC-COVER
 for coinciding leaves. STATE otherwise unchanged (Tonelli H1 building, (ii) H3 resting).
+
+## 2026-07-26 ★★ H1 CLOSED — the ov-sos-tonelli analytic crux PROVEN sorry-free clean-three (no monument, VINDICATED)
+The Tonelli seat (ab996) CLOSED monoSumSq_integrableAtFilter_of_lt sorry-free clean-three (statement byte-unchanged from
+the reviewed-CLEAN locked form), branch aoyagi-ov-sos-tonelli @674f682f6 (off aadc0c271). #print axioms = clean-three.
+- +~300 LoC + 3 reusable private Tonelli-atoms (boxSumSqNegPow_integrableOn_fin [SumSq ball threshold via ofLp],
+  boxSumSqNegPow_integrableOn [Fintype reindex], boxProdRpow_lintegral_lt_top [pure-power box via prodRpow_boxSymm_lt_top]).
+- un-privated ONLY prodRpow_boxSymm_lt_top in MonomialRLCT.lean (minimal set, grep-clean); Core dependents
+  (ChartValueLower/ProductResolution/DomainSandwich/Corank2TerminalProto) rebuild clean.
+- MECHANISM (amendment A honored): the unit COUPLES the blocks → dominate the SINGLE coupled integrand W·(germ)^{-cc} by
+  Mub·g (|unit|≤sup near p via ContinuousAt), NEVER factoring through the unit; the unit-free g =ᵐ H∘e factors over Z⊔Zᶜ
+  (piEquivPiSubtypeProd + Integrable.mul_prod + prod_restrict + integrableOn_comp_preimage). NO Mathlib gap. (Diamond-dodge:
+  letI Subtype.fintype for the transport measures.)
+⟹ THE ANALYTIC CRUX (the one "is-it-a-monument?" question, the last hard analytic pole) is CLOSED. The elder-price
+"detail-at-scale, NOT a monument" is VINDICATED (~300 LoC, no gap, clean-three).
+GATE: PROOF fidelity reviewer spawned (decorrelated — force #print axioms ground-truth + amendment-A honesty + the 3
+atoms + statement-unchanged + dependents-rebuild). H1 review-gating.
+HOLES: H1 ✓ CLOSED (review-gating); H2 (per-type entry-identities + Ψ_c + folded-jac + cubic-cover) building (a3f030);
+H3 (step-6 spine) (ii) resting.
+INTEGRATION PLAN (at convergence): merge Tonelli @674f682f6 (MonomialSumSqRLCT + un-privated MonomialRLCT) + the per-type
+branch → the over-vanishing trunk (aoyagi-r2overvanish-regseq) → (ii) discharges step-6 on the closed Tonelli + per-type
+facts → the bridge closes → 4 ≤ rlctAt → (3,3,4).
+STATE: clean-144 COMPLETE+locked; interface CLEAN; H1 CLOSED (review-gating); H2 building; H3 resting. 2 holes left
+(H2 per-type, H3 spine), both detail-at-scale, both owned.
