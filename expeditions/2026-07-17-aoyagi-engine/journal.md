@@ -25829,3 +25829,20 @@ PNP READ: §3 → SATISFIED with (i)+(ii) as named bounded tracked-opens (the en
 NET: the ENTANGLEMENT monument-risk is DEAD (the biggest composition worry — structurally excluded, uniform + Codex);
   the general-d cite-free residual is now construction labor (build the fresh one-sided α + the bounded fed-form
   invariant), NOT a monument. Evidence: /tmp/aoyagi_shearfree/deepL_clean.py + Lean reads + codex/answer_comp.md.
+
+## 2026-07-26 (cont.) — PNP precision: the general-d α = schurCells + a CROSS-LAYER flatElemShear fold (concrete construction labor, entanglement-clean); deep-L end-to-end STAGED for the general-d build
+The pnp scoped the general-d one-sided α construction concretely (input to the elder's §3-promote): beyond the
+within-layer schurCells, it needs a CROSS-LAYER recoord — at (3,3,4), shearH (coords 8-11 = u0−u8u12−u9u16) cleared
+LAYER-2's first row using LAYER-1's couplings (a cross-layer read); the retired schurCells is within-layer only. So
+the from-below α = (fresh one-sided) within-layer schurCells + a CROSS-LAYER first-row-clearing flatElemShear fold
+(the SAME det-1 atom x_a ↦ x_a − x_b·x_c, new cross-layer index triple). ENTANGLEMENT-CLEAN by the SAME two banked
+arguments: (i) flatCoordOf injectivity (layer-S+1 write ≠ layer-S reads); (ii) order by (layer, then level) — a
+cross-layer read S→S+1-write is strictly increasing ⟹ the DAG stays acyclic. So the cross-layer recoord EXTENDS the
+sound shear-shape, does NOT reopen entanglement — bounded construction labor, no monument. This STRENGTHENS the
+§3-SATISFIED case (the α is a concrete recipe, not a vague "to-build").
+STAGED (not now): the pnp's sharpest remaining check = a single deep-L end-to-end from the ACTUAL qNodeOf + the
+cross-layer α, verifying Pmat[0][0]∘g = ledger monomial (the one thing the 3 probes didn't compute — qNodeOf
+intricate, α not-yet-live). This is the general-d VALUE-BUILD's FIRST verification — staged for the general-d build
+scoping (post-(3,3,4)); NOT needed for §3-SATISFIED (the elder's CLEAN-on-entanglement + uniform criterion is met).
+Forwarded to the elder for the §3-promote ruling. Lane (a) pinning (a7857e48490cadc97) still running (the immediate
+critical path: the (3,3,4) fill). pnp (all 3 probes + this scoping) standing by.
