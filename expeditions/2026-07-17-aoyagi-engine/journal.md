@@ -26006,3 +26006,30 @@ the elder rules that family W3-clean, hcover discharges as a COROLLARY (recipe s
 half) — the cover side has NO independent W3 debt. So the W3 verdict is a VALUE-side verdict, tied to the born-α
 being NATIVE (the value gate); flag (1) is NOT a cover risk (mis-scoping avoided). Flag 3 (general-d (ii)
 monument-vs-labor) remains the separate reconciliation. Forwarded to the elder. hcover scout resting.
+
+## 2026-07-26 (cont.) — R3 V-lower SPINE landed + verified (clean-three, on r3fill); concrete (3,3,4) headline WALLED = multi-thread (extraction + x6 hpull), gated on elder W3
+The value-fill formaliser landed the REUSABLE abstract V-lower SPINE (branch expedition/aoyagi-r3fill, 1 commit
+ahead of trunk / 0 behind = clean fast-forward), all sorry-free + clean-three (controller-verified: 0 sorries,
+#assert_banked_clean_batch on each; formaliser confirms scripts/lb green + scripts/sorries + cordon clean, no
+F1/K-transport/gWrapFan routes):
+  - Core/Aoyagi/DomainSandwich.lean (4 roots) — the ONE parametric born-α feeder sandwich_on_domain_of_survivor
+    (hpull + hpos [resRank=0 survivor on compact dom] ⟹ uniform cst ⟹ the wire's hsandwich near EVERY p∈dom;
+    compactness lifts the pointwise survivor to a uniform min; hpull/hpos stay hypotheses) + the STEP-5 conversion
+    (monomialThreshold → ½·chartMin, per-chart + over the atlas).
+  - Core/Aoyagi/SandwichCoverValue.lean (2 roots) — the STEP-4→5 JOINT (⨅monomialThreshold ≤ rlctAt ⟹ ½·divisorMin
+    ≤ rlctAt ⟹ ≥4 for divisorMin=8), VERIFIED against the wire's exact conclusion shape. The wire→payoff-value
+    spine COMPOSES.
+  - DLN/RLCT/Engine/GeoResRankZero.lean (1 root) — the STEP-0 ledger gate geoAtlas_resRank_zero.
+  hcover left OPEN (per the correction; not stubbed with F11). Aggregator UNTOUCHED (single-writer — controller wires
+  at the complete-fill merge).
+THE WALL (honest surfacing, not a grind): the concrete (3,3,4) headline needs the concrete chart-family
+{g_c,dom_c,nbhd_c,excep_c,bexp_c,jac_c,unit_c} extracted from the geoAtlas/buildTree engine into the wire's
+loose-data shape, PLUS per-leaf (a) hpull = the born-α pullback on the REAL coreGen∘chartMap (the fresh recoord-shear
+algebra, ×6 singular + 3 smooth — the retired-LeafPullback content built anew, UNBUILT on any sibling), (b) hpos =
+the geometric survivor-on-dom (the ledger→geometric bridge IS the born-α). Also hjac (Corank2ChartJac partial), hbdd
+(V-upper #110 PROVEN), divisorMin=8 (Object-D machinery on the old route). = MULTI-THREAD engine-integration +
+concrete algebra, NOT a single-thread fill. The pnp "bounded/no-monument" is the MATH mechanism (the feeder captures
+it exactly); the LEAN labor is substantial.
+NEXT: two seats (chart-family-extraction geoAtlas→wire-loose-data + born-α-hpull ×6), branching off r3fill (build on
+the spine), GATED on the elder's imminent W3 value-family ruling (native fan-leaf composites, NOT K-orbit). Merge
+r3fill (+ the concrete fill + aggregator wiring) to reroute at the complete-fill integration. Value formaliser rested.
