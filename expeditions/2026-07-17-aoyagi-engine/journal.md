@@ -25647,3 +25647,38 @@ hideal_faithful_fwd/bwd, peeled_comp_gFaithful); the value bound = those + ONE s
 (P[0][0]∘gFaithful)²=u0²). OPEN = general-d (the per-leaf born-α = route P's realization residual; pnp offers an
 exact-algebra probe: does born-α generalize to a wider dim-vector, or is general-d α a monument? = §3-promote
 territory). Forwarded to the elder for the path ruling; pnp standing by for the general-d probe.
+
+## 2026-07-26 (cont.) — ELDER RULING (Q1-Q5): born-α-per-leaf path ADOPTED (one-sided, W3-clean under 3 conditions + typed guardrail); PROCEED within (A); (3,3,4) leaf census commissioned
+The elder calibrated on the actual scripts (verify.py + check_codex_curve.py — both refutation curves sound) and
+CONFIRMED 3a / headline TRUE. Clean Bayesian SELF-UPDATE: R-α-shear-free REFUTED (the shear is load-bearing on a
+LOCUS, not a null set — the shear-free chart doesn't even monomialize the zero SET). Vindicated: the
+factorization-vs-inequality conflation, detail-at-scale, the 4-way contract catching 3a (a binary framing would
+have collapsed 3a into a false STOP).
+RULINGS:
+  Q1 ACCEPTED: from-below inequality achievable = detail-at-scale (single_le_sum on the sheared pivot entry), but
+    rides the born shear; shear-free dead.
+  Q2 ARCHITECTURE SOUND: shear-free geoAtlas = cover + Jacobian (shear is det-1-transparent to both — homeomorphism
+    preserves the set-cover, det-1 preserves jacWeight); born α (gauge slot) = value ONLY. (Why the shear was safely
+    left =id for the landed cover/fold lanes.)
+  Q3: (3,3,4) is NOT done by the single canonical chart — DE-RISKED. The wire demands the sandwich on ALL leaves
+    (rlct = min over leaves); mechanism PROVEN on the deepest leaf (α=gFaithful); REMAINING = the sandwich on the
+    others. SHARP: how many SINGULAR leaves (each needs a born α) vs SMOOTH siblings (trivial)? → COMMISSIONED a
+    scout for the (3,3,4) leaf census before pricing nearly-done.
+  Q4 (W3 flag): the born per-leaf α is W3-CLEAN + detail-at-scale + NOT route P IFF three conditions — (A) ONE-SIDED,
+    ONE-ENTRY (the born shear makes ONE pivot entry = the leaf's monomial EXACTLY; single_le_sum), NOT the two-sided
+    diagonalization (= leafDiagFrob_geoAtlasNorm, F1-dead — do NOT fill GeoAlphaGauge's sorries; the born-α is a NEW
+    one-sided object even if it reuses the gauge-slot shape); (B) NATIVE (each leaf's α from its OWN buildTree
+    structure via stepUpdate, clearing334-born like PivotStep.CleanClearing), NEVER K-orbit transport (route-P/O1
+    tombstone); (C) PER-EDGE R-b, not single-per-node ψ (respect cert-psi-mix; a mixed Case-1 node has no common ψ).
+    STRUCTURAL GUARDRAIL: make the born-α a TYPED FIELD of the step (one-sided by its type) so it CANNOT silently
+    become transport or the two-sided squeeze (like PivotStep.CleanClearing guardrail-0).
+  Q5: PROCEED within (A)'s boundary, NO operator surface (no red-flip ⟹ destination unchanged ⟹ STOP-FALLBACK MOOT;
+    the born-α fill completes a charter-staked value bound = proceed-on-silence). Gate on the Q4 typed guardrail.
+REMAINING MONUMENT-RISK (price separately, NOT now): the GENERAL-d uniform born-α over buildTree — (3,3,4) de-risks
+  the MECHANISM (one leaf, one-sided, detail-at-scale); whether the uniform per-leaf α exists + is inductively
+  provable for general-d is the banked fidelity tripwire ("the ledger is not the geometry"; §3-promote at the
+  summit). NOT a (3,3,4) blocker. The pnp's discriminator (does born-α generalize, or force a non-unimodular/
+  order-raising α = the monument-tell) is staged.
+NEXT: the (3,3,4) leaf census (scout, in flight) → the born-α fill (formaliser, gated on the Q4 typed guardrail).
+Elder authoring a compass F-entry (the route correction: R-α-shear-free refuted → born-α-riding-shear, one-sided,
+W3-clean) — I commit on next landing. NO operator surface (within (A)).
