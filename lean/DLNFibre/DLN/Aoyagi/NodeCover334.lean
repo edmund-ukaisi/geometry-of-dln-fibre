@@ -4,6 +4,14 @@ import DLNFibre.DLN.Aoyagi.Corank2FanCover334
 /-!
 # R3 first brick — the (3,3,4) born-fan over the KEPT center {0,1,2,3,20} covers (4..7 spectators)
 
+**RECONTEXTUALIZED (2026-07-26, elder-ruled #183).** This is the COVER-ONLY de-risk brick, NOT buildTree's
+actual node cover. buildTree's node uses the FULL center (`dCenterOfNode` = the full residual block, size 9 at
+the outer (3,3,4) node) via the RLCT Engine's `flatCube`/`pivotChart` (`flatCube_subset_leafPathImages`) — that
+is the value/cover substrate (elder-ruled W3-clean, clean-three). This kept-subset born-fan (card 5) covers a
+SMALLER center and CANNOT carry the value-Jacobian (kept card 5 → |u|^4 ≠ the correct |u|^8); guardrail-0 blocks
+its born value-Jacobian at the shear node. So this brick is banked as cover-side de-risk only — named
+`keptSubsetBornFan_cover_334` for exactly that.
+
 The elder-gated R3 node/leaf layering: the NODE cover is the input-pivot FULL cover (no hole, no
 `hnull`); the output-generator sandwich (`SurvivorFanCover`) is the LEAF/value side. This is the
 NODE hook at the REAL (3,3,4) geometry, W3-clean (born from `StepConstructor.bornSiblings`, NOT the
@@ -20,7 +28,7 @@ block-blow-up argmax atom, which covers `closedBall 0 R` for ANY nonempty center
 coords through). This is the born route's faithful handling of the shear node.
 
 ## The clause
-`node_cover_334`: `closedBall 0 R ⊆ ⋃ p, (bornSiblings {0,1,2,3,20} clearing334 · p).stepMap '' box`
+`keptSubsetBornFan_cover_334`: `closedBall 0 R ⊆ ⋃ p, (bornSiblings {0,1,2,3,20} clearing334 · p).stepMap '' box`
 — the born-siblings' step-maps (`blockBlowupMap ∘ shearH`) FULLY cover the node ball, with the box
 inflated by the real shear factor `f = r ↦ r + 2r²` (`shearH_covers`, the two-product slots force
 `C = 2`). NO hole, NO `hnull` — a full cover, per the elder's node layer. Via the banked general
@@ -44,7 +52,7 @@ inflated by the real shear factor `f = r ↦ r + 2r²` (`shearH_covers`, the two
 
 ## Main results
 - `kept334` — the center `{0,1,2,3,20}` is kept by the real clearing.
-- `node_cover_334` — the born-fan full-cover clause at the real (3,3,4) node.
+- `keptSubsetBornFan_cover_334` — the born-fan full-cover clause at the real (3,3,4) node.
 -/
 
 open MeasureTheory Set Metric
@@ -66,7 +74,7 @@ argmax over `{0,1,2,3,20}`, passing `4..7` through) — with step-map `blockBlow
 cover `closedBall 0 R`, from the shear-inflated box `closedBall 0 (max R 1 + 2·(max R 1)²)`. This is
 NOT a claim about a fan over all of `{0..7,20}`. No hole, no `hnull` — the elder's input-pivot node
 layer, at the REAL clearing `shearH`, W3-clean (born from `bornSiblings`, NOT the K-orbit). -/
-theorem node_cover_334 {R : ℝ} (hR : 0 ≤ R) :
+theorem keptSubsetBornFan_cover_334 {R : ℝ} (hR : 0 ≤ R) :
     closedBall (0 : Fin 21 → ℝ) R ⊆
       ⋃ p : {p // p ∈ ({0, 1, 2, 3, 20} : Finset (Fin 21))},
         (bornSiblings ({0, 1, 2, 3, 20} : Finset (Fin 21)) clearing334 kept334 p.1 p.2).stepMap ''
@@ -78,6 +86,6 @@ theorem node_cover_334 {R : ℝ} (hR : 0 ≤ R) :
   rw [clearing334_shear_eq_shearH]
   exact Corank2FanCover334.shearH_covers
 
-#assert_banked_clean_batch [node_cover_334]
+#assert_banked_clean_batch [keptSubsetBornFan_cover_334]
 
 end DLNFibre.DLN.Aoyagi.NodeCover334
