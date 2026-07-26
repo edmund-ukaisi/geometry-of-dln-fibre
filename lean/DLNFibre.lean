@@ -1754,3 +1754,9 @@ import DLNFibre.DLN.Aoyagi.ImageTreeCover
 --   uses the FULL-center pivotChart/flatCube (flatCube_subset_leafPathImages, the value/cover substrate);
 --   this kept-subset born-fan (card 5) can't carry the value-Jacobian, so it banks as cover-side de-risk only.
 import DLNFibre.DLN.Aoyagi.NodeCover334
+-- ChartValueLower (R3, VALUE-side first brick): chart_rlct_ge_half_chartMin = the per-chart R>0-sandwich
+--   RLCT lower bound (the V-lower ≥-half crux). F1-INDEPENDENT (sandwich as hypothesis; imports only Core
+--   MonomialRLCT — structurally cannot reach the Engine F1 lemmas); clean-three; reviewer+elder SURVIVED
+--   (vindicated R>0, not forward-only; G1 honored). The (i)(a) leafPullback_sandwich discharge is separate +
+--   F1-gated (FRESH pivotChart blow-up sandwich, NEVER ChartBridgeFaithful).
+import DLNFibre.Core.Aoyagi.ChartValueLower
