@@ -25515,3 +25515,30 @@ THE FORK (re-convened the elder, its (B)-territory): (1) is the wall genuine or 
 Formaliser HELD (STEP 0 banked; no monument-grind); re-engage once the elder rules the path.
 OPERATOR SURFACE PENDING: on the elder's verdict — Option-C → re-scope (proceed, surface async); STOP-FALLBACK →
   a destination change (cite-free payoff → objects-only+cite) = wait-for-explicit-go, I surface to the operator.
+
+## 2026-07-26 (cont.) — WALL SHARPENED (formaliser addendum): A/C both bottom out at the per-leaf ideal equality = the MONUMENT; (A) bypass fails at cover level → STOP-FALLBACK in view (operator-gated)
+The formaliser's addendum materially sharpens the wall — and likely KILLS Option C:
+- The value spine IS proven ideal-level: Object A / Aoyagi Lemma 1 (Core.Aoyagi.IdealInvariance) LANDED sorry-free
+  BOTH forms (wrlctAt_sumSqFam_eq_of_germ_eq, rlctAt_sumSqFam_eq_of_germ_eq, wLocalAdmissibleExponents_...).
+- CANONICAL leaf: hideal_coreGen_fwd/bwd + Object A gives wrlctAt(loss∘gWrap) 0 = wrlctAt(monomial) 0 = chartMin
+  DIRECTLY — NO pointwise sandwich hpull needed. The sandwich + the ideal route are two roads to the same
+  per-chart value; the ideal road is PAVED (for the canonical leaf).
+- BUT the wall is the per-leaf ideal equality (RegionRepresents (loss∘chartMap_c)(monomial_c)) for the NON-
+  canonical geoAtlas leaves, TRANSPORT-FREE: (a) hideal_coreGen rides gFaithful's shearH shear (load-bearing —
+  pure blow-up gives coreGen∘sigmaPiv=c₁₁·Pmat, residual NOT single-monomial until the shear reduces
+  ⟨Pmat∘gFaithful⟩=⟨E⟩); (b) the geoAtlas chartMap is SHEAR-FREE (gauge=id); (c) the shear-free det-1 normal
+  form is REFUTED (leafDiagFrob_geoAtlasNorm, F1 hole). 
+- KEY: Object A is COORDINATE-FIXED — it can't resolve the DLN loss without the CoV (Object B = the charts/cover);
+  the charts are UNAVOIDABLE, hence the per-leaf ideal equality is UNAVOIDABLE. So Options A AND C BOTH bottom out
+  at that per-leaf ideal equality = the (B)-wall / aoyagi_learning_coefficient_gen MONUMENT. NO bounded formaliser
+  brick between STEP 0 and the wall (without gWrap+transport [forbidden] or the monument).
+DEEP REASON the (A) bypass fails at the COVER level: you can't get the loss's rlct without RESOLVING its ideal
+  (the charts), and resolving it IS exists_coreResolution. The sandwich/ideal-equality PER LEAF ≈ the monument it
+  was meant to bypass. The merged abstract wire is TRUE but VACUOUS-for-our-cover (hpull undischargeable
+  transport-free) = a SPIKE. (Canonical leaf's value IS proven; the cover is the wall.)
+STOP-FALLBACK IN VIEW: the honest landing = charter §1.B STOP-FALLBACK (OBJECTS-ONLY close: objects A-E proven [A
+  LANDED] + cite cited_aoyagi_lower_ax for the payoff; charter-faithful #94/§0, NOT a defeat). This is a
+  DESTINATION change (cite-free payoff → cited-payoff) = WAIT-FOR-EXPLICIT-GO (operator-gated).
+NEXT: elder adjudicates (confirm Option-C-dead + the wall, or find a reroute; a decorrelated verify if it wants)
+  → on confirmation I SURFACE to the operator (the STOP-FALLBACK destination call). Formaliser stood down (STEP 0
+  banked, no grind). This is the pivotal fork of the expedition's endgame.
