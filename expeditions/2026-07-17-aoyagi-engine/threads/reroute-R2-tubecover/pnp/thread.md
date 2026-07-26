@@ -272,3 +272,12 @@ wire captures only monomialThreshold(b_{k₀}), needing U a unit — false here 
 direction suffices; Fubini: rlct(∑_{j=1}^r z_j²)=r/2 × product-of-disjoint-blocks rlct=min). General
 hypotheses (both hold all 16): invertible r=8 Jacobian minor at 0 on jac-0 coords disjoint from supp(vm);
 threshold(vm²)≥4. Other dominants = σ_{p1}-transport (r, threshold, value invariant).
+
+**F11e (per-dominant + 12 vf_k for the (ii) formaliser).** `emit_ii_perdominant.py` → `ii_perdominant.out`:
+(2) all 12 residual factors vf_k explicit per canonical type (reg-seq k + drop k marked); (1) the full
+9-dominant × 16-type table computed DIRECTLY from whole_conj, with the σ_{p1}-transport verified EXACT
+for all 144 (144/144: vm_dom=σ_{p1}(vm_canon), z_dom=σ_{p1}(z_canon), threshold & value invariant) — so
+the formaliser may build canonical-16 + apply σ_{p1} uniformly, OR read the explicit table. Reg-seq index
+set depends only on p2: p2∈{1,5} → reg k={0,1,3,4,6,7,9,10} (drop {2,5,8,11}); p2∈{6,7} → reg k=
+{0,2,3,5,6,8,9,11} (drop {1,4,7,10}). Pure-monomial reg vf always {0,3,6,9}=(u0,u2,u3,u4); the 4 dropped
+are the degree-2/3 "deep" generators (subset_le_sum drops their nonneg squares).
