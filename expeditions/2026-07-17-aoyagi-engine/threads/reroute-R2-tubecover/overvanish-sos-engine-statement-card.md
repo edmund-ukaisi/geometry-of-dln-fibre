@@ -33,7 +33,7 @@ Module `lean/DLNFibre/Core/Aoyagi/MonomialSumSqRLCT.lean`.
 > - **Axioms.** `#print axioms` = `[propext, Classical.choice, Quot.sound]` on all three.
 > - **Status.** sorry-free.
 
-> **Claim (the weighted product-RLCT integrability engine — STATEMENT-LOCKED, one tracked hole).**
+> **Claim (the weighted product-RLCT integrability engine — PROVED sorry-free, clean-three).**
 > `monoSumSq_integrableAtFilter_of_lt`: for a weight `W =ᶠ jacWeight jac · unit` near `p`
 > (`unit` continuous nonvanishing measurable) and `cc` below BOTH `monomialThreshold a jac` AND
 > `|Z|/2` (`2·cc < |Z|`), with `Z` disjoint from `supp(vm)` and `jac`-0 on `Z` (`hZa`, `hZjac`), the
@@ -43,14 +43,19 @@ Module `lean/DLNFibre/Core/Aoyagi/MonomialSumSqRLCT.lean`.
 > - **Gloss.** The ≥-direction (convergence) the V-lower wire consumes; per-chart, at an arbitrary
 >   base point (needed for the blow-up cover). The value read-off is `min(threshold(vm²), |Z|/2)` (all
 >   16 over-vanishing types: `threshold(vm²) ∈ {4, 9/2}`, `|Z|/2 = 8/2 = 4` ⟹ min = 4).
-> - **Proof mechanism (locked, the hole).** Bound `unit` by its `sup` near `p` (elder amendment A: the
->   unit COUPLES the blocks, does NOT factor); the unit-free box integral then factors over the
->   coordinate partition `Z ⊔ Zᶜ` (Tonelli via `MeasurableEquiv.piEquivPiSubtypeProd`,
->   `measurePreserving_piEquivPiSubtypeProd`): the `Z`-block sum-of-squares integral is finite for
->   `2·cc < |Z|` (`RLCT.SumSq`: `integrableOn_ball_norm_rpow_iff` transported to the `Z`-subtype), the
->   complement pure-power monomial box integral is finite below the threshold
->   (`MonomialBox.prodRpow_boxSymm_lt_top`). `-- map: ov-sos-tonelli`.
-> - **Status.** tracked-open (`sorry`); the ONE analytic crux. Statement-locked.
+> - **Proof mechanism (BUILT).** Bound `unit` by its `sup` near `p` (elder amendment A: the unit
+>   COUPLES the blocks, does NOT factor — dominate the coupled integrand by `Mub·g`, `g` unit-free);
+>   the unit-free integrand `g =ᵐ H ∘ e` factors over `Z ⊔ Zᶜ` (Tonelli via
+>   `MeasurableEquiv.piEquivPiSubtypeProd` + `measurePreserving_piEquivPiSubtypeProd`; combine with
+>   `Integrable.mul_prod` + `Measure.prod_restrict`, transport back via
+>   `MeasurePreserving.integrableOn_comp_preimage`): the `Z`-block sum-of-squares integral is finite
+>   for `2·cc < |Z|` (`RLCT.SumSq`: `integrableOn_ball_norm_rpow_iff` transported to the `Z`-subtype
+>   via `PiLp.volume_preserving_ofLp`), the complement pure-power monomial box integral is finite
+>   below the threshold (`MonomialBox.prodRpow_boxSymm_lt_top`, un-privated). `-- map: ov-sos-tonelli`.
+>   Packaged as three reusable private atoms (`boxSumSqNegPow_integrableOn_fin` /
+>   `boxSumSqNegPow_integrableOn` / `boxProdRpow_lintegral_lt_top`).
+> - **Status.** sorry-free; `#print axioms` = `[propext, Classical.choice, Quot.sound]`. Fidelity
+>   review of the (unchanged) LOCKED statement pending (controller's parallel reviewer).
 
 > **Direction warning banked in the module.** The toric-LP over the term-ideal `M ⊇ I` is an UPPER
 > bound on the true RLCT (SoS-RLCT is monotone INCREASING under ideal inclusion), NOT a lower bound —
@@ -60,10 +65,9 @@ Module `lean/DLNFibre/Core/Aoyagi/MonomialSumSqRLCT.lean`.
 ---
 
 **Remaining build ladder (handed back — multi-tide unit).**
-1. **[Core] `ov-sos-tonelli`** — the disjoint-block Tonelli finiteness (est. ~150–250 lines): the
-   `Z`-block SumSq transport to a coord subtype + the `Zᶜ` MonomialBox (may need un-`private`-ing
-   `MonomialBox.prodRpow_boxSymm_lt_top`) + the unit-sup reduction + the arbitrary-`p` box (mirror
-   `monomialSumSq_integrableAtFilter_of_lt` lines 777–888). Closes the Core engine sorry-free.
+1. **[Core] `ov-sos-tonelli`** — ✅ DONE (branch `expedition/aoyagi-ov-sos-tonelli`): the disjoint-block
+   Tonelli finiteness, sorry-free clean-three. `MonomialBox.prodRpow_boxSymm_lt_top` un-privated (one
+   commit, grep-clean, no clash). Closed the Core engine sorry-free.
 2. **[Core, optional bedrock]** the two-sided `rlctAt … = min` equality (elder (B), `_eq` form): the
    `≤` half via the unit `inf > 0` marginalization. Not needed for the payoff (`≥` suffices).
 3. **[DLN] the over-vanishing pullback identity** `∑_i (coreGen … i (gFlat idx w))² = vm²·∑_{k} vf_k²`

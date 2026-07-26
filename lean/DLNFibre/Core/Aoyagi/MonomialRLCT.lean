@@ -356,8 +356,9 @@ private theorem exists_boxSymm_subset {D : ℕ} {s : Set (Fin D → ℝ)} (hs : 
   obtain ⟨ε, hε, hsub⟩ := Metric.mem_nhds_iff.1 hs
   exact ⟨ε, hε, (ball_eq_boxSymm hε) ▸ hsub⟩
 
-/-- **Symmetric box convergence.** All axis exponents `> −1` ⟹ finite box lintegral. -/
-private theorem prodRpow_boxSymm_lt_top {D : ℕ} (hε : 0 < ε) (e : Fin D → ℝ)
+/-- **Symmetric box convergence.** All axis exponents `> −1` ⟹ finite box lintegral. (Public: the
+`Core.Aoyagi.MonomialSumSqRLCT` disjoint-block Tonelli consumes it for the `Zᶜ` pure-power factor.) -/
+theorem prodRpow_boxSymm_lt_top {D : ℕ} (hε : 0 < ε) (e : Fin D → ℝ)
     (he : ∀ j, -1 < e j) :
     ∫⁻ u in Set.univ.pi (fun _ : Fin D => Ioo (-ε) ε),
         ENNReal.ofReal (∏ j, |u j| ^ (e j)) < ⊤ :=
