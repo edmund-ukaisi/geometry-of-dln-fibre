@@ -24932,3 +24932,33 @@ re-entry? (favorable ground-truth prior); (2) guardrail-0 recontextualized (born
 (3) the rename. Plus the surfaced question: if flatCube already covers, is R3's remaining work just the
 LEAF/value side (R>0 sandwich + #172 {R=0} recursion + RLCT-value wiring)? Builder tracing nodes 2,3 +
 confirming flatCube's status. Reviewer confirmed the first-brick CLEAN at c1ddd9928 (post-hoc; matches @a1dad113).
+
+## 2026-07-26 (cont.) — BOTH R3 fold gates CLEARED; flatCube ADOPTED as the value/cover substrate; born-fan renamed cover-only; R3 remaining = the VALUE side (#184)
+
+**BOTH fold gates CLEARED (elder + builder + controller verify):**
+- **W3: elder ruled CLEAN** (verified TWO ways: (i) grep — the ENTIRE DLNFibre/DLN/RLCT/Engine/ has ZERO
+  transportChart/K-orbit/gauge/conjResolution/σ-transport; (ii) definitions — pivotChart (PivotCover:43) = the
+  canonical max-modulus blow-up `fun k => if k=i then u i else u i*u k`, geoChartMap = direct pivotChart
+  conjugated by a center-split RELABEL, tGeo = root→leaf COMPOSITION of direct per-node charts; siblings from
+  DIFFERENT pivots each built directly = born-not-transported). + #183 def-grounded MATCH. The K-orbit tombstone
+  (Corank2Chart334:122-123) is a DIFFERENT object flatCube never touches. Elder re-authored charter §3 W3 to
+  the ESSENTIAL anti-transport form (direct-from-buildTree, NOT 'must be bornSiblings'); guardrail-0
+  recontextualized (over-scoped for value; born-fan = cover de-risk, pivotChart = value substrate).
+- **flatCube clean-three: CONFIRMED** (builder force-elab, GeoCoverSpec fresh 2820 jobs): flatCube_subset_
+  leafPathImages + geoAtlas_imageCover = [propext, Classical.choice, Quot.sound], NO RLCT cite, NO forecast.
+
+**#183 RESOLVED — the {9,4,1}≠{9,8,4} finding is IMMATERIAL.** buildTree's per-node decomposition is per-pivot
+({9,4,1}, one pivot cleared per node) vs route-P's composite ({9,8,4}); SAME terminal resolution. Operative
+conclusion = MATCH: buildTree uses FULL centers (dCenterOfNode = full residual block, def-grounded for ALL
+nodes); the cover is GENERIC over buildTree; atlasRealizesExponents_334 Lean-proves the TERMINAL exponents. The
+intermediate decomposition doesn't affect the generic cover or the terminal value. No #eval needed (elder concur).
+
+**RENAME LANDED @3b0fb7c37:** node_cover_334 → keptSubsetBornFan_cover_334 (elder-ruled, name=content) —
+recontextualized as the COVER-ONLY de-risk brick (NOT buildTree's node; can't carry the value-Jacobian). Module
+green, 1 root clean-three, no cites.
+
+**R3 remaining = the VALUE side (#184):** the V-lower on flatCube — R>0 sandwich + #172 {R=0} recursion + G2
+superadditivity + the RLCT-value wire (→ 2rlct=cCodim, BYPASSING exists_coreResolution). Cover+value ride the
+SAME pivotChart/flatCube charts (elder: natural marriage, old-W1 dissolved). GATES: reviewer F1-hole-free check
+(in flight) + a reviewed PLAN before the build. Elder authoring the compass F-entry (value-home-move) + final
+charter §3 (I commit). Builder specifying the value-side plan.
