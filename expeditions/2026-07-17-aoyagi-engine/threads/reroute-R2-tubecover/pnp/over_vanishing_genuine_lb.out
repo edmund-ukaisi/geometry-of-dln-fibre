@@ -1,0 +1,32 @@
+==================================================================================================
+(ii) GENUINE lower bound rlct >= min(threshold(vm^2), r/2) for the 16 over-vanishing types (p1=20)
+==================================================================================================
+  leaf(20,1,1): vm=u1^1*u20^1       threshold(vm^2)=  9/2 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,1,5): vm=u1^1*u5^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,1,6): vm=u1^1*u6^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,1,7): vm=u1^1*u7^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,5,1): vm=u1^1*u5^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,5,5): vm=u5^1*u20^1       threshold(vm^2)=  9/2 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,5,6): vm=u5^1*u6^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,5,7): vm=u5^1*u7^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,6,1): vm=u1^1*u6^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,6,5): vm=u5^1*u6^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,6,6): vm=u6^1*u20^1       threshold(vm^2)=  9/2 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,6,7): vm=u6^1*u7^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,7,1): vm=u1^1*u7^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,7,5): vm=u5^1*u7^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,7,6): vm=u6^1*u7^1*u20^1  threshold(vm^2)=    4 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+  leaf(20,7,7): vm=u7^1*u20^1       threshold(vm^2)=  9/2 reg-seq r= 8  r/2=   4  =>  rlct >= min =    4 (=4.00)  [>=4 OK]
+
+-- NATIVE check: genuine LB on ACTUAL whole-conjugate g_c (dominant p1=5) --
+  g_c(dom5;canon 1,1): vm=u2^1*u5^1        thr(vm^2)=  9/2 r= 8 => rlct>=min=4 [>=4 OK]
+  g_c(dom5;canon 5,5): vm=u5^1*u20^1       thr(vm^2)=  9/2 r= 8 => rlct>=min=4 [>=4 OK]
+  g_c(dom5;canon 6,7): vm=u3^1*u5^1*u6^1   thr(vm^2)=    4 r= 8 => rlct>=min=4 [>=4 OK]
+
+==================================================================================================
+VERDICT (ii) GENUINE: every over-vanishing leaf-type has r>=8 regular-sequence coords (jac-0,
+   disjoint from vm) AND threshold(vm^2)>=4, so rlct >= min(threshold(vm^2), r/2) >= 4.
+   min genuine lower bound over all 16 types = 4 (=4.00).
+   This is CITE-FREE + elementary (single_le_sum on a REGULAR SEQUENCE, not one monomial;
+   product-of-disjoint-blocks rlct).  Corrects the single-M mechanism (was threshold 1/2).
+==================================================================================================

@@ -164,3 +164,111 @@ Script: `seam_all9_dominants_334.py`. For EVERY A0-dominant entry, the per-pivot
 NO A0-dominant is a genuine monument — the RED (fixed-shear rlct 1.0 on Δ-block dominants, F8)
 is a MIS-SHEAR, fully repaired by the per-pivot native born-α. #188 (value family = per-pivot
 native) is UNIFORMLY sound. Value-side certificate F5–F9 COMPLETE for the right family.
+
+## F10 — ALL 288 born-native leaves divisorMin ≥ 8 / rlct ≥ 4: SURVIVED (inner-pivot F8-analog de-risk)
+
+Extends F8/F9 from the 9 node-1 dominants (at canonical inner pivots) to ALL 288 born-native
+leaves (node-1 ∈ C0 (9) × node-2 ∈ C1 (8) × node-3 ∈ C2 (4)). Two independent constructions, both
+via the exact toric-LP `rlct = min_{w≥0}(w·κ+Σw)/(2·min_m w·m)`; both SURVIVED (no RED).
+
+Scripts (exact sympy jac + integer value-monomial + toric LP; scipy float LP for search only, then
+rational-dual EXACT certification): `true_rlct_bornnative_all288.py` (Option A, shear-only conjugate),
+`whole_conjugate_all288.py` (Option B, whole-conjugate — the coordinator's sharpened target),
+`exact_cert_bornnative_tight.py` (exact rational dual cert). Codex `codex/bornnative-all288-*`,
+`codex/native-vs-transport-*`.
+
+**F10a (WHOLE-CONJUGATE fan = the W3-clean target — the primary result).** g_c = σ_p1⁻¹∘g_leaf(20,p2,p3)∘σ_p1
+(σ_p1 = the loss symmetry mapping the canonical dominant slot 20 → p1). ALL 288: rlct dist {4.0:252, 4.5:36}
+(min EXACTLY 4.0, never below), divisorMin dist {8:252, 9:36} (min 8), 144 clean SINGLE-entry
+pivot-cross survivors + 144 over-vanishing (all still ≥4), **min jac over EVERY survivor-support axis
+= 7** (the survivor NEVER lands on a low-jac coord). The 9 dominants at inner (0,1) reproduce F9
+exactly (rlct 4, single survivor, binding on a {jac 7, jac 8} pivot-cross).
+
+**F10b (loss-symmetry invariance — the PROOF, not just the sweep).** Each of the 9 σ_p1 is an EXACT
+loss symmetry (L∘σ − L = 0, verified). Hence rlct(loss∘g_c) = rlct(loss∘g_leaf(20,p2,p3)) EXACTLY
+(288/288 numerically confirmed) — the whole-conjugate rlct collapses to the 32 canonical-node-1
+values, all ≥4. Codex-confirmed the invariance is clean for the WHOLE-conjugate (and flagged it does
+NOT cover a shear-only conjugate — see F10c).
+
+**F10c (Option A = the literal (A)-fan-seat construction — secondary cross-check, also SURVIVED).**
+g_native = bb(C0,p1)∘nativeSel(p1)∘bb(C1,p2)∘bb(C2,p3) with nativeSel(p1)=σ_p1⁻¹∘(shearH∘permP)∘σ_p1
+(SHEAR-only conjugate, FIXED inner blow-ups). This reproduces the (A)-fan seat's exact jac vectors
+(canonical (20,0,1)→{0:7,1:3,20:8}; (0,1,5)→{0:8,1:15,5:18}; (20,1,5)→{1:7,5:10,20:8}). ALL 288:
+rlct {4.0:48, 4.167:12, 4.25:196, 4.5:32} (min 4.0), divisorMin min 8, but 272/288 OVER-VANISH
+(only 16 survivors) — the shear-only frame mismatch. Codex's structural prior was "failure more
+likely"; the exact sweep OVERRODE it (all ≥4). The whole-conjugate (F10a) is cleaner and is the
+build target.
+
+**F10d (EXACT certification).** The 252 tight (rlct=4.0) whole-conjugate leaves are EXACTLY certified
+rlct ≥ 4 by rational LP duality: a rational dual y ≥ 0 with Σ_m y_m·m ≤ κ+1 (per coord) and Σy_m = 8,
+verified with `fractions.Fraction` (float only proposes y; the certificate is exact). 252/252 pass;
+the remaining 36 sit at rlct 4.5 (margin >> tol). So "min rlct = 4.0 exactly" is load-bearing-exact,
+not float.
+
+**F10e (native-vs-transport, obstruction).** The whole-conjugate DECOMPOSES into DIRECT native atoms
+(the (C)-seat decomposition, verified): σ⁻¹∘bb(C,p)∘σ = bb(σC,σp) [permuted-centre blow-up],
+σ⁻¹∘shearH∘σ = native shear, σ⁻¹∘permP∘σ = a direct permutation — emitted per dominant (node-1/2/3
+native centres σ(C0)/σ(C1)/σ(C2) + the conj-permP index map; see script [1] output). Codex: this is
+genuinely NATIVE (not canonical-relabeled transport) PROVIDED stepUpdate is G-equivariant
+(stepUpdate(σS)=σ·stepUpdate(S)); the conditions it needs — unique dominance + Cross(σp)=σ·Cross(p) —
+are met by the exact loss symmetry + the bb(σC,σp) decomposition. RESIDUAL (belongs to the
+fan/formaliser seat, NOT toric-LP-checkable here): the stepUpdate-equivariance audit that these 288 =
+the COMPLETE native leaf set with no extra tie-induced leaves. My seat certifies the VALUE
+(rlct/divisorMin) + the direct-atom decomposition; the "complete native leaf set" is a distinct
+algorithm-level claim.
+
+**KILL-CONDITION: NOT tripped. NO RED leaves in either construction.** The born-native family
+uniformly gives divisorMin ≥ 8 (rlct ≥ 4) across all 288 leaves. The scope of the cover lane (P2 —
+whether the 144 over-vanishing whole-conjugate leaves are inside the value cover) is DISTINCT and
+out of this seat's value mandate.
+
+## F11 — (ii) OVER-VANISHING leaves genuinely ≥4 via a REGULAR-SEQUENCE nested bound (elder single-M CORRECTED)
+
+The 144 over-vanishing whole-conjugate leaves are now REQUIRED in the cover (restrict-to-clean-144
+DEAD; feeder DEAD). Their threshold ≥4 must be a GENUINE lower bound. Scripts: `over_vanishing_nested.py`
+(single-M test), `over_vanishing_genuine_lb.py` (the correct mechanism). Codex `codex/genuine-lb-*`.
+
+**F11a (TWO corrections — soundness, load-bearing).** (i) The **toric LP is an UPPER bound** on the
+true rlct: it computes rlct of the monomial ideal ⟨all monomials of the gᵢ⟩ ⊇ ⟨gᵢ⟩. For SURVIVOR
+leaves it is EXACT (there ⟨gᵢ⟩=⟨vm⟩ locally, I=M, monomial threshold exact — the 144 survivor leaves
++ their F10d rational-dual cert stand). For OVER-VANISHING leaves it does NOT certify rlct≥4 — the F10d
+"exact cert" on the over-vanishing tight leaves proved only `toric-LP ≥ 4` (the upper bound ≥4), NOT
+the true rlct ≥4. (ii) The elder's single-M nested bound (`∑vf² ≥ M²`, M a pure-monomial residual
+factor) is INSUFFICIENT: the pure-monomial residual factors are u0,u2,u3,u4 (jac-0 coords), so
+`loss ≥ (vm·M)²` gives threshold **1/2**, useless.
+
+**F11b (the CORRECT genuine mechanism — regular-sequence single_le_sum, Codex-confirmed sound).**
+Factor `loss∘g_c = vm²·∑vf²`. The residual factors contain a REGULAR SEQUENCE of **r=8** members whose
+differentials at 0 are 8 distinct jac-exponent-0 coordinate 1-forms, disjoint from supp(vm) (for the
+canonical over-vanishing types: `du0,du2,du3,du4` (pure-monomial vf's) + `du16,du17,du18,du19` (the
+linear vf's `u0·u10+u1·u12+u16`, … whose degree-1 part is a fresh A1-coord)). A jac-det-1 unipotent
+change Ψ (block-triangular, leaves u1,u5,u20 untouched) turns these 8 vf's into coords z₁..z₈, so
+    loss ≥ vm²·(z₁²+…+z₈²),  vm in {u1,u5,u20} (jac>0),  z's jac-0, disjoint from vm.
+Product-of-disjoint-blocks (Fubini): `rlct(vm²·|z|²) = min(threshold(vm²), r/2)`. Hence
+    **rlct(loss) ≥ min(threshold(vm²), 8/2) = min(≥4, 4) = 4** — GENUINE (monotonicity + change of
+    vars), CITE-FREE, elementary. NO #172 recursion needed: the residual is a smooth complete
+    intersection (regular sequence at degree 1) — a SINGLE terminal nested single_le_sum, not iterated
+    blow-up.
+
+**F11c (all 16 canonical over-vanishing types verified; native + all-144 confirmed).** Every canonical
+over-vanishing type (p2∈{1,5,6,7}×p3∈{1,5,6,7}) has r=8, threshold(vm²)∈{4, 9/2}, genuine LB = 4
+(tight for the 12 true-4.0 types, valid non-tight for the 4 diagonal true-4.5 types). Verified NATIVE
+on actual whole-conjugate charts (dominant p1=5 etc.); by the exact loss-symmetry (F10b) it transports
+to all 144 (r, threshold, LB invariant under σ). Consistent with — and now the GENUINE justification
+for — the over-vanishing half of the all-288 ≥4 verdict.
+
+**(ii) BUILD DATA per over-vanishing leaf-type:** {vm; threshold(vm²); the r=8 regular-sequence
+residual factors + the 8 jac-0 coords they pin (the Ψ purification); genuine LB = min(threshold(vm²),
+4) = 4}. The Lean shape: `subset_le_sum` (drop the non-regular vf²) → jac-1 CoV Ψ → product rlct =
+`min(threshold(vm²), r/2)`. The elder's single_le_sum is the right SHAPE; the fix is it runs on the
+8-member regular sequence, not one monomial.
+
+**F11d (formaliser hand-off — the full per-type table).** `emit_ii_builddata.py` → `ii_builddata.out`:
+all 16 canonical over-vanishing types with vm exponent vector, the 8 (vf-index → pinned coord z_j) map,
+the Ψ block-triangular det-1 shear per z, disjoint-from-vm + jac-0 = True, threshold(vm²)∈{4,9/2},
+value=min=4. The NEW Lean lemma the (ii) formaliser needs (their `rlctAt_ge_iInf_threshold_of_sandwich_cover`
+wire captures only monomialThreshold(b_{k₀}), needing U a unit — false here since U=∑vf² vanishes):
+`rlctAt(vm²·∑_{j=1}^r z_j²) = min(threshold(vm²), r/2)` for disjoint x⊥z blocks with z jac-0 (the ≥
+direction suffices; Fubini: rlct(∑_{j=1}^r z_j²)=r/2 × product-of-disjoint-blocks rlct=min). General
+hypotheses (both hold all 16): invertible r=8 Jacobian minor at 0 on jac-0 coords disjoint from supp(vm);
+threshold(vm²)≥4. Other dominants = σ_{p1}-transport (r, threshold, value invariant).

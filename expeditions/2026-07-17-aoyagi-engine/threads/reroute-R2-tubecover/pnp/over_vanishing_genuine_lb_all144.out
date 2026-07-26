@@ -1,0 +1,5 @@
+over-vanishing whole-conjugate leaves: 144
+genuine-LB distribution: {Fraction(4, 1): 144}
+min reg-seq r over all: 8  min threshold(vm^2): 4
+leaves failing genuine LB >=4: NONE (all >=4)
+EXIT 0
