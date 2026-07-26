@@ -26644,3 +26644,11 @@ hentry holds on the clean 144, may fail on the over-vanishing 144 (still ≥4); 
 (if they cover) vs the feeder DomainSandwich.sandwich_on_domain_of_survivor → rework/(B).
 NET: STOP-SHIP RESOLVED (bounded, value DOUBLE-CERTIFIED, route not threatened). Rework building; elder re-convene at the
 rework def landing (grep-gate) + ek₀ + assembled (3,3,4).
+
+## 2026-07-26 — continuity nuance: seats read a STALE compass (F8) in their Lean worktrees
+The compass/charter/journal F-notes (F12-F14) live on the docs branch expedition/aoyagi-engine; the Lean seat branches
+(r2headline -> r2assembly -> r2native-fan) are the BUILD lineage and do NOT carry the docs commits. So seats reading
+compass.md from their own worktree get a STALE compass (tops out at F8; pnp flagged it). NOT harmful (the briefs carry
+the authoritative framing + the thread F5-F10 have the substantive notes) but: FUTURE BRIEFS should point seats to the
+ROOT compass absolute path (/home/ubuntu/.../aoyagi-engine/root/expeditions/.../compass.md) or the thread F-notes, NOT
+"compass F12/F13/F14" (absent on their branch).
