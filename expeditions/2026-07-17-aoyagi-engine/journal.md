@@ -26620,3 +26620,27 @@ STATE: elder confirm LANDED. pnp (a468883f26dac7a88) emitting the permuted atoms
 gate/build-data). On the pnp emission → spawn the FRESH fan-rework seat with this W3-spec (direct blockBlowupMap at native
 centres + the char-lemma) + the permuted-atom data. Re-convene elder at the chart def landing (grep-gate) + the pnp
 verdict + the assembled (3,3,4).
+
+## 2026-07-26 — pnp ALL-288 VERDICT: SURVIVED (NO RED) — STOP-SHIP value RESOLVED POSITIVE (divisorMin≥8 double-certified) → fresh rework seat spawned
+The pnp all-288 de-risk: SURVIVED — all 288 born-native leaves rlct ≥ 4 (min EXACTLY 4.0), divisorMin ≥ 8 (min 8),
+survivor NEVER on a low-jac coord (min jac over every survivor-support axis = 7). Kill-condition NOT tripped. Both the
+whole-conjugate target AND the literal (A)-shear-only fan pass.
+DOUBLE-CERTIFIED: (i) exact loss-symmetry PROOF — each σ_p1 is an EXACT loss symmetry (L∘σ−L=0 verified) ⟹ rlct(g_c) =
+rlct(canonical g_leaf(20,p2,p3)) EXACTLY ⟹ the 288 collapse to the 32 canonical-node-1 values, all ≥4 (a PROOF, not a
+sweep); (ii) exact rational-dual LP cert (Fraction, no float): 252 tight at rlct=4.0, 36 at 4.5 → 'min=4.0 exactly'
+load-bearing-exact. rlct dist {4.0:252, 4.5:36}; divisorMin {8:252, 9:36}; 144 clean single-entry pivot-cross survivors
++ 144 over-vanishing (all ≥4). The 9 dominants at inner (0,1) reproduce F9. [pnp F10a-e]
+So the (C) divisorMin ≥8 CITE-FREE FINITE DECIDE is TRUE — the STOP-SHIP value question RESOLVED POSITIVE.
+EMISSION DONE: per-dominant native direct-atom data (node-1/2/3 permuted centres σ(C0)/σ(C1)/σ(C2) + conj-permP) in
+whole_conjugate_all288.out §[1] — the rework build data.
+BOTH GATES CLEARED (elder W3-confirm + pnp emission) → SPAWNED the FRESH fan-rework seat: rebuild the whole-conjugate fan
+(direct atoms per emission; elder W3-spec: direct blockBlowupMap at native centres + char-lemma + controller grep-gate) +
+re-derive hcover + define ek₀ (pivot-cross) + hjac + divisorMin≥8 → land ek₀ early → fire B.
+TWO RESIDUALS (routed): (1) COMPLETENESS — stepUpdate-equivariance audit ('288 = complete native leaf set, no extra
+tie-induced leaves'; pnp: conditionally-native PROVIDED stepUpdate G-equivariant [conditions met: unique dominance +
+Cross(σp)=σ·Cross(p)]); belongs to fan/formaliser seat. CONTROLLER READ: subsumed by the rework's hcover (the 288
+provably cover ⟹ rlct ≥ min ≥ 4; a fidelity nuance, not a ≥4-breakage) → elder + fan seat. (2) 144-OVER-VANISHING — exact
+hentry holds on the clean 144, may fail on the over-vanishing 144 (still ≥4); the rework decides restrict-to-clean-144
+(if they cover) vs the feeder DomainSandwich.sandwich_on_domain_of_survivor → rework/(B).
+NET: STOP-SHIP RESOLVED (bounded, value DOUBLE-CERTIFIED, route not threatened). Rework building; elder re-convene at the
+rework def landing (grep-gate) + ek₀ + assembled (3,3,4).
