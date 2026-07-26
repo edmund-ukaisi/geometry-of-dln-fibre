@@ -26050,3 +26050,31 @@ The value formaliser (resting) gave the exact plug-in contracts (bank for the se
 The feeder is AGNOSTIC to which composites supply hpull ⟹ survives EITHER W3 ruling. So the born-α seat is gated on
 the elder's W3 value-family ruling only for WHICH composites (native fan-leaf, not K-orbit); the feeder plugs in
 regardless. NEXT: on the elder's W3 ruling → spawn the extraction + hpull seats (branch off r3fill, these contracts).
+
+## 2026-07-26 (cont.) — ELDER 3 RULINGS: W3+chart-match RESOLVED (g_c = gWrapFan BORN LEAVES, marriage definitional); §3 RE-SCOPED (value SATISFIED, full headline pending the general-d cover); general-d cover probe + (3,3,4) fill FIRED
+The elder ground-truthed + ruled:
+#1 (W3) + #2 (CHART-MATCH) — RESOLVE TOGETHER: the COVER is BORN + W3-CLEAN (gWrapFan = fanOfSteps over BORN steps,
+Corank2FanDef334:36-44; canonical=gWrap; the cover proof exists_ball_subset_gWrapFan_leafImages uses PURE
+box-inflation, NO Transport334 in the proof term; K-orbit lives in the SEPARATE retired Corank2Transport334, only
+NOTED in docstrings). FIX: the value fill uses the gWrapFan BORN LEAVES as g_c (canonical=gWrap, born fanStep
+composites) ⟹ the marriage ⋃_c g_c''dom_c = gWrapFan.leafImages is DEFINITIONAL (g_c literally = the leaves), NOT a
+Transport334 K-orbit ⟹ W3-CLEAN AND chart-matched (hcover+hsandwich on the SAME g_c) in one move. hcover discharges
+as a COROLLARY (definitional image-half + the box-inflation ball-cover). GUARDRAIL: construct g_c as fanOfSteps
+composites, NEVER via Corank2Transport334 (F12-B born-native, at the fill). The W3 flag DISSOLVES into the existing
+born-native guardrail (decorrelated convergence with the hcover scout's "hcover has no independent W3 debt").
+#3 (general-d monument-vs-labor) — no genuine contradiction (scope-confusion: pnp de-risked hsandwich [per-leaf
+VALUE = labor, stands]; cover scout flagged hcover-general-d [the SHEARED COVER = possibly-monument] — DIFFERENT wire
+inputs). BUT catches a §3 OVERCLAIM: §3-as-worded claims the FULL headline (needs BOTH inputs), and the general-d
+SHEARED cover is UNPRICED (NOT covered by F11's shear-free flatCube). §3 RE-SCOPED (not re-opened): VALUE-INPUT
+SATISFIED (de-risked to labor); FULL general-d headline ADDITIONALLY rides the general-d SHEARED cover — a DISTINCT
+obligation (the general-d cover-gate, F11's "biggest monument-adjacent rung"), flagged possibly-monument
+(L7/MonumentAtlas), NOT yet priced. Charter §3 header re-scoped accordingly. At (3,3,4) BOTH inputs are done (value
+de-risked + cover closed clean route-b) ⟹ (3,3,4) rlct=4 is FULLY cite-free.
+ACTIONS: (1) charter §3 re-scoped (value SATISFIED / full-headline PENDING-general-d-cover). (2) FIRED the general-d
+cover-pricing probe (scout af910cf0a0dbcec29 + Codex): does the (3,3,4) route-b box-inflation sheared cover
+GENERALIZE (detail-at-scale) or is it the L7/MonumentAtlas MONUMENT? = the LAST open monument-question (value
+monument bypassed; cover is the remaining one). MONUMENT ⟹ objects-only general-d landing (operator-gated);
+LABOR ⟹ §3 full headline holds. (3) SPAWNED the (3,3,4) V-lower fill (formaliser a6b6239b54dd15f06, off r3fill) with
+the gWrapFan-born-leaves MANDATE + the spine contracts + the W3 guardrail (g_c = fanOfSteps composites, NOT
+Transport334; rewrite recipe STEP-3 off Transport334). The scope-confusion is subsumed by the cover probe.
+Re-convene the elder: the general-d cover verdict + the first born-α fill (guardrail g_c = born fan leaves).

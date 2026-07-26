@@ -180,7 +180,7 @@ category before reporting progress; the elder gates every route and every progre
   at the defect's location — has she already resolved this? For a fidelity project the prior is strong.
   Only then commission elaboration — which VERIFIES her answer, never de-novo-designs an object the source
   already has.
-- **General-d cite-free value headline = SATISFIED (de-risked to detail-at-scale; promoted from the Standing-counsel fidelity
+- **General-d cite-free — VALUE-INPUT SATISFIED (de-risked to labor); FULL-HEADLINE PENDING-GENERAL-D-COVER (elder re-scope 2026-07-26: the per-leaf survivor-sandwich VALUE input is de-risked to labor [pnp: pivot-cross bypass + composition + leaf-type coverage]; the FULL headline ADDITIONALLY rides the general-d SHEARED COVER — a DISTINCT obligation [the general-d cover-gate, F11's "biggest monument-adjacent rung"], flagged possibly-monument [L7/MonumentAtlas], NOT yet priced [probe firing]; NOT covered by F11's shear-free flatCube). At (3,3,4) BOTH inputs are done (value de-risked + cover closed clean route-b), so (3,3,4) rlct=4 is fully cite-free. Promoted from the Standing-counsel fidelity
   tripwire, 2026-07-26; the 3a verdict + general-d discriminator YES, exact r=2,3,4,5 + Codex).** The general-d
   value headline (`rlct = ½·cCodim`) is CITE-FREE reachable — the born single-entry survivor (`Pmat[0][0]=E`,
   the PIVOT CROSS only, never the coupled residual block where the corank-≥2 monument-hardness lives) BYPASSES
