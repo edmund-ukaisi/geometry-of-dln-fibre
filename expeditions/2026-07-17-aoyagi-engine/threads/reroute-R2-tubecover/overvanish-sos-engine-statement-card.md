@@ -83,4 +83,41 @@ Module `lean/DLNFibre/Core/Aoyagi/MonomialSumSqRLCT.lean`.
    `4 ≤ rlctAt (∑ coreGen²) 0` over the mixed 288-chart family with B's clean-144.
 
 **pnp build data:** `expeditions/.../reroute-R2-tubecover/pnp/ii_builddata.out` (16 types: `vm`, the 8
-`vf→z` map, `Ψ` shear per `z`, disjoint+`jac`-0 = True, `threshold(vm²) ∈ {4, 9/2}`, value = 4).
+`vf→z` map, `Ψ` shear per `z`, disjoint+`jac`-0 = True, `threshold(vm²) ∈ {4, 9/2}`, value = 4);
+`ii_perdominant.out` (σ_{p1} EXACT 144/144 → canonical-16 + one relabel).
+
+---
+
+## DLN backbone + STEP-6 skeleton LANDED (`Corank2OverVanish334.lean` / `Corank2OverVanishAssembly334.lean`)
+
+The generic, network-facing scaffolding for pieces (3)–(6), built against the LOCKED Core engine
+(commits `96f735f44` → `fec1909e4`). Merged the rework seat's `Corank2NativeEntry334`
+(`A0_gFlat_factor` / `A1_gFlat_spectator` / `gInner`).
+
+> **`DLN.Aoyagi.OverVanish334` (backbone).** CLEAN-THREE:
+> - `image_comp_blockShear_superset` (5) — fold `Ψ = blockShear φ` into a chart ⟹ the `0`-ball cover
+>   survives (`g '' cB 0 r ⊆ (g∘Ψ) '' cB 0 (r+C·r²)`), via `blockShear_covers_scaled`.
+> - `monoSumSqGerm_le_sumSqFam_comp` (4, full-`hpull` form) and `monoSumSqGerm_le_of_regSeq_entries`
+>   (4, LEAN entry form — reduces the per-type obligation to the 8 reg-seq entry identities
+>   `coreGen k (gFlat idx (Ψ u)) = vm·u_{zc k}`, no full 12-entry pullback).
+> - `jacWeight_fixOn` — `Ψ` fixing `supp(h)` ⟹ `jacWeight h` invariant (the folded weight).
+> - `coreGen_gFlat_factor` (toward 3) — the uniform `u_{p1}` factor of every entry
+>   (`= u_{p1}·resid_k`, via `A0_gFlat_factor` + `Matrix.mul_smul`).
+>
+> TRACKED-OPEN (Core sorry propagates, by design):
+> - `chart_integrableAtFilter_of_monoSumSq_dom` — the per-chart integrability the wire consumes,
+>   routed through the LOCKED `monoSumSq_integrableAtFilter_of_lt` + junk-guarded domination
+>   (`wLocalAdmissibleExponents_subset_of_eventually_le` + `locallyNullZeros_monoSumSqGerm`). The
+>   over-vanishing analogue of `integrableAtFilter_of_sandwich`.
+
+> **`DLN.Aoyagi.OverVanishAssembly334` (STEP-6, P6 skeleton).**
+> `rlctAt_coreGen334_ge_four_of_perchart_integrable` — the mechanism-heterogeneous headline
+> `4 ≤ rlctAt (sumSqFam (coreGen dvec eWrap)) 0`, abstracting the per-chart per-point
+> integrability-below-4 as ONE hyp `hint` (discharged: clean-144 via `hentry`→chain `≥9/2`;
+> over-vanishing-144 via the bridge `=4`; both over the full-288 cover). Body `-- map: step6-assembly`
+> (a refactor of `mem_localAdmissible_of_sandwich_lt`'s spine with `hint` in place of the sandwich;
+> `hbdd` = `bddAbove_localAdmissible_coreGen334`). NEEDS AGGREGATOR WIRING.
+
+**Seat split (controller):** the per-type grind (the pullback + concrete `Ψ` + the 8 reg-seq entry
+identities per canonical type + σ_{p1}) is a SEATED follow-on; the Core Tonelli is a SEATED follow-on;
+this seat owns the backbone + the step-6 assembly (fill on convergence).
