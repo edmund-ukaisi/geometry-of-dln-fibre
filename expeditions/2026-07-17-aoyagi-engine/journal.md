@@ -25233,3 +25233,25 @@ obligation lives, preserved-relocated). The V-lower ≥-half genuinely DEPENDS o
 proceeding to the corrected final assembly (was already building the hbdd-independent helper lemmas + the Ico ⊆
 localAdmissible core, identical either way). Elder informed (reviews the final at landing); calibration banked
 (a typechecking tracked-open skeleton can be FALSE — statement-lock MUST pair with an early semantic check).
+
+## 2026-07-26 (cont.) — R3 V-LOWER WIRE **FILLED** (not tracked-open): rlctAt_ge_iInf_threshold_of_sandwich_cover, hideal_bwd-FREE, clean-three — the exists_coreResolution BYPASS realized in Lean [#187]
+The fresh formaliser FILLED the wire (the one `-- map: R3-wire` hole closed; +hbdd/−hunit1 applied). Delivered
+(namespace DLNFibre.Core.Aoyagi, SandwichCover.lean, 83→283 LoC, UNCOMMITTED — formaliser boundary, controller
+integrates; base @e195fb436 on r3wire):
+- `rlctAt_ge_iInf_threshold_of_sandwich_cover` — the V-LOWER HEADLINE: ⨅_c monomialThreshold(bexp,jac) ≤
+  rlctAt(∑Fᵢ²) x₀, +hbdd (BddAbove), −hunit1, hideal_bwd-FREE.
+- `mem_localAdmissible_of_sandwich_lt` — the BddAbove-FREE membership core (honest hideal_bwd-free analogue of
+  Resolution.mem_localAdmissible_of_lt; sSup factored out; reusable).
+- `integrableAtFilter_of_sandwich` — the ONE hideal_bwd replacement (sandwich → per-point IntegrableOn, via
+  monomialSumSq_integrableAtFilter_of_lt + wLocalAdmissibleExponents_subset_of_eventually_le).
+BONUSES (weakest-hypotheses): Differentiable (NOT analyticity) suffices — weight measurability FREE from
+measurable_fderiv (no analyticity field gap); ALL hypotheses USED (no hideal_bwd, no hunit1 — weakest-fields).
+GATES (formaliser self-report): no sorry/axiom; #print axioms force-elab on all 3 public results = clean-three,
+no route through the 3 F1 lemmas (#184 satisfied); full `scripts/lb DLNFibre` = 9045 jobs exit 0, no clash.
+
+**This is the crux of the (A) strategy realized in Lean:** the V-lower headline PROVED hideal_bwd-free = the
+exists_coreResolution BYPASS (clean-three confirms exists_coreResolution is NOT in the cone). The abstract wire
+takes the per-leaf sandwich + hbdd + cover as hypotheses; the #172 concrete discharge + V-upper hbdd + the
+monomialThreshold→½minAdm conversion (hunit1/k=1) are downstream. NEXT: formaliser commits + reports the SHA →
+decorrelated landing review (elder STATEMENT-soundness-first [delicate statement] + reviewer Lean-fidelity) +
+controller force-elab verify → merge + aggregator wire. Then: the concrete hpull/#172 discharge + the assembly.
