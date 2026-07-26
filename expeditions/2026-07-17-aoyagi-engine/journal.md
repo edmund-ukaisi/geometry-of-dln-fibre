@@ -26078,3 +26078,36 @@ LABOR ⟹ §3 full headline holds. (3) SPAWNED the (3,3,4) V-lower fill (formali
 the gWrapFan-born-leaves MANDATE + the spine contracts + the W3 guardrail (g_c = fanOfSteps composites, NOT
 Transport334; rewrite recipe STEP-3 off Transport334). The scope-confusion is subsumed by the cover probe.
 Re-convene the elder: the general-d cover verdict + the first born-α fill (guardrail g_c = born fan leaves).
+
+## 2026-07-26 (cont.) — GENERAL-D COVER = DETAIL-AT-SCALE (the LAST monument-question, resolved POSITIVELY) → (A) MONUMENT-FREE at FULL generality (value + cover both cleared)
+The general-d cover-pricing probe (scout + xhigh Codex, TWO decorrelated derivations converging) returned:
+DETAIL-AT-SCALE, cite-free reachable — NOT the L7/MonumentAtlas monument.
+REDUCTION: LeafCoverTiling.covers_subset (general Fin D, arbitrary σ, sorry-free) reduces the WHOLE cover to
+per-node box-containment; the only general-d obligation beyond the LANDED shear-free fold
+(flatCube_subset_leafPathImages) = the per-node shear clause, discharged by the GENERAL brick
+blockShear_covers_scaled (‖φ‖≤C·r², any D; sorry-free at C=2 for (3,3,4)).
+WHY: each Aoyagi node's born shear is ALWAYS a triangular QUADRATIC block-shear (degree 2, polynomial, no 1/det,
+det 1 — blow-up makes the pivot a unit; the rational k×k inverse appears ONLY if one wrongly clears a whole block
+at one node, but Aoyagi recurses ONE scalar pivot per node — Codex-confirmed via the Q,Q⁻¹ normalized-I_q frame).
+C_* = max quadratic summands ≤ W(d)=max LAYER width, DEPTH-INDEPENDENT (no local-constant growth; composite box
+radius grows f^[depth]1 but the local C_* doesn't).
+ALL 3 MONUMENT-FLAGS CLEARED: cert-psi-mix (an ambient/TARGET-gauge artifact, NOT the engine's block-blowup-outer/
+shear-inner model — Codex Q3 identical); #145 ~2% (same artifact; thread-35 cert found the escaping set EMPTY);
+non-uniform-C (false — ≤W(d), depth-independent).
+TWO ROUTES, both cite-free: Path A (R-b/source gauge, ~90% LANDED — the sheared cover REDUCES to the landed
+shear-free cover via ShearReconcile.reparam_image; RECOMMENDED, much less work) + Path B (target box-inflation,
+the (3,3,4) route-b generalized, Covers (r↦r+C_*·r²) buildTree-fan 1).
+GUARDRAIL (Codex-caught, actionable): do NOT compress sequential clearings into one fan node (a↦a−bc then d↦d−ae
+composes to cubic d↦d−ae+bce); keep the fan FAITHFUL to buildTree (one clearing per node) or bake same-depth via
+the normalized-block formula. The (3,3,4) fill on gWrapFan already respects this (fanOfSteps = one clearing/node).
+ONE REMAINING RISK (scout, flagged NOT the cover's): the INHERITED next-center-is-coordinate-block-in-sheared-coords
+condition (thread-35 gap-2 / charter §1-B realization) — shared with the ideal-preservation/resolution leaves,
+paper-resolved (Aoyagi's (S,J) maintenance) + instance-GREEN; it is the RESOLUTION's condition, NOT the cover's
+(the cover itself has NO residual frontier). Next clarifier: the per-constructor commuting-square check
+(next-center-coordinate-block ∀-width) = the shared input to leaves 3-5 AND the cover.
+MILESTONE: this is the LAST monument-question, resolved POSITIVELY. Combined with the value monument BYPASSED
+(pnp) + §3 value-SATISFIED, (A) is now MONUMENT-FREE at FULL GENERALITY (both value AND cover priced detail-at-
+scale). The general-d cite-free FULL headline is REACHABLE (de-risked to labor). Routed to the elder for the §3
+re-promote (per its 'LABOR ⟹ §3 full headline holds' criterion). Artifacts: threads/L7/codex/gend-sheared-cover-
+{prompt,answer}.md, threads/L7/schur_degree_check.py.
+Re-convene the elder: the §3 re-promote + the first (3,3,4) fill.
