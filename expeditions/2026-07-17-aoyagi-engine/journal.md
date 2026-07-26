@@ -25410,3 +25410,24 @@ GATE DE-RISK: spawned a fresh buildTree-context scout (ada0fe048dedc6200) for th
 CALIBRATION: front-loaded the load-bearing resRank=0 gate (the highest un-probed risk — could hide an UNBUILT
   Morse-folding brick) with the right-context seat BEFORE committing a formaliser to the full discharge. The
   hunt-precedes-trust move; the recon scout explicitly recommended a fresh buildTree seat for it.
+
+## 2026-07-26 (cont.) — ELDER pricing REFRAME (pre-verdict): a Morse leaf is NOT a wall (it's #172's BUILT job); the enumeration sets SCOPE not wall-or-not
+The elder pre-empted a mis-pricing before the resRank=0 verdict: a NON-DEGENERATE Morse (resRank>0) leaf is not
+a wall. A Morse residual ‖z‖²=∑zᵢ², blown up ONE more level at pivot z_j, becomes z_j²·(1+∑_{i≠j}zᵢ'²) — a UNIT-
+residual with a kept-1-pivot (unit=1+∑z'²≥1), ratio (h+1)/2 ≥ ½·minAdm. That IS the #172 step (ImageTreeCover,
+BUILT). Backed by the #172 WITNESS: the recursion bottoms at L=1 Morse, resolved by one blow-up, ratio ½·codim —
+Morse leaves were always EXPECTED + handled. So a Morse leaf → one born blow-up → unit → the atom (detail-at-
+scale, transport-free), NOT an unbuilt brick.
+THREE-BUCKET classification (relayed to the scout ada0fe048dedc6200): (1) resRank=0 unit-residual → the direct
+survivor atom (cleanest); (2) resRank>0 NON-DEGENERATE Morse → #172 born blow-up → unit (BUILT); (3) resRank>0
+DEGENERATE/non-recursing residual (neither unit nor a clean Morse that recurses — one #172 can't bottom out) →
+the GENUINE (B)-wall, tied to the k≥2/hunit1 HEADLINE-drop. Per the elder bucket-(3) should NOT arise (contra
+#172's termination; bottoms at non-degenerate Morse in ≤L steps).
+CONTROLLER CORRECTION (self-audit): last tick I priced a resRank>0 finding as "an UNBUILT Morse-folding brick (a
+possible wall)" — WRONG. #172 IS the built Morse-folding mechanism; only a degenerate non-recursing residual is
+unbuilt, and that coincides with the k≥2 headline object (not a new monument). So the enumeration is a SCOPE
+check (which buckets, how many), NOT a wall-or-not gate; prior = NO wall.
+RE-CONVENE (updated triggers): all-(1) → direct discharge; (1)+(2) → discharge + #172 refinement for the Morse
+leaves (both delegate to a fresh formaliser); any (3) degenerate-non-recursing → the genuine (B)-wall = k≥2.
+CALIBRATION: don't mis-price a Morse finding as a wall — the built #172 recursion already handles it; the only
+genuine wall is the degenerate/k≥2 residual (contra #172's termination). The elder's priced-vs-monument lens.
