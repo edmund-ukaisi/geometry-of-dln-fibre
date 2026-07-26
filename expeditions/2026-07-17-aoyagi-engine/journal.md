@@ -27418,3 +27418,22 @@ AGGREGATOR: pattern-B's 8 imports noted (navigator producing the full DLNFibre.l
 STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-B DONE (8 leaves, review-gating) + pattern-A (7 leaves,
 building) + transport (a3f030, building) + navigator (merge pre-audit); H3 (ii) resting. 8/15 remaining leaves DONE. NEXT:
 pattern-A + transport land → ∀-144 canon_domination → merge (navigator plan) → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
+
+## 2026-07-26 — σ_p1-transport LOSS-SYMMETRY CRUX landed (green @a6c287f94); transport-assembly seat spawned; a3f030 rests
+a3f030 landed the transport CRUX (the one substantive lemma): sumSq_coreGen_symm (∑coreGen(w∘σ)² = ∑coreGen(w)², GIVEN σ
+a row/col symmetry via hA0/hA1) @a6c287f94, GREEN + axiom-clean (Corank2OverVanishTransport334.lean). Proof: swap-0-i on
+A0-rows cancels swap-0-i on A1-cols ⇒ mult(w∘σ)=mult(w)·P_col ⇒ Frobenius-invariant. + sumSq_coreGen_eq_frob (Fin-12→4×3
+reindex), both clean-three. The HARD PART of the transport is done.
+BUDGET-HONEST (a3f030, excellent judgment): very long session (template + 16-leaf data + label-fix + GREEN probe + crux,
+all green/pushed); the remaining assembly (steps 1-6, ~200-300 LoC) is mechanical + NOT critical-path-urgent (step 6 waits
+for the 16 canonical). Recommended scheduling fresh — don't degrade quality while stretched.
+DECISION: AGREED — a3f030 RESTS (its huge decorrelated-verified unit complete); spawned a DEDICATED transport-assembly seat
+(fresh budget) with a3f030's blueprint + the @a6c287f94 crux. Steps: (1) σ_p1 defs (9 make_sigma Equiv.Perm) (2) per-p1
+hA0/hA1 by-decide (3) nativeChart1-conj 9 identities (4) chart-conj via blockBlowupMap_conj (5) germ/vmExp/Z reindex (6)
+MAIN canon_domination(idx)⟸canon_domination(idx_20) ∀-144. Steps 1-5 NOW (independent of leaves); step 6 GATES on the 16
+canonical (pattern-A building + pattern-B DONE). Owns Corank2OverVanishTransport334.lean.
+The full transport (incl. the crux) gets a decorrelated fidelity review at completion (crux statement faithful + steps 1-2
+discharge hA0/hA1 + step 6).
+STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-B DONE (review-gating) + pattern-A building + transport
+(crux green, assembly seat building steps 1-5) + navigator (merge pre-audit); H3 (ii) resting. NEXT: pattern-A +
+transport-assembly land → ∀-144 canon_domination → merge → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
