@@ -25708,3 +25708,32 @@ TWO LANES IN PARALLEL (elder):
 TRACKED-OPEN: general-d uniform-α stays TRACKED-OPEN until the probe rules — (3,3,4) de-risks the MECHANISM, not the
   uniform construction ("the ledger is not the geometry" at general-d). §3-promote as SATISFIED if YES / as the
   general-d landing caveat if NO. Elder drafting the compass F-entry (route correction); I commit on next landing.
+
+## 2026-07-26 (cont.) — GENERAL-D PROBE = YES: born-α GENERALIZES (the LAST monument-gate CLEARED for the mechanism); cite-free general-d value headline reachable, detail-at-scale, PENDING a bounded fed-form invariant
+The general-d discriminator (pnp, exact algebra r=2,3,4,5 + decorrelated Codex on corank-3) returned YES: born-α
+generalizes = detail-at-scale. Clears the LAST monument-gate for Object B's value headline at FULL generality.
+DECISIVE INSIGHT: Pmat[0][0] = Σ_k C1[0][k]·C2[k][0] touches ONLY the PIVOT CROSS (C1's first row + C2's first
+col), NEVER the coupled residual block (i,j≥1) where the corank-≥2 monument-hardness (iterated block-elim to clear
+the r×r Δ) lives. So the single-entry from-below survivor BYPASSES the residual ⟹ INSENSITIVE to corank (Codex
+VERIFIED). This is WHY the value bound sidesteps the monument.
+EXACT (r=2,3,4,5): shear-free Pmat[0][0] = E + Σ_{k=1..r} p_k·s_k (leading E, r competing cross-terms, NO clean
+survivor; corank-3 shear-free failure confirmed by explicit curve). Born shear = 'clear C2's first row by C1's
+pivot row' (C2[0][j] −= Σ_{k≥1} C1[0][k]·C2[k][j]) = the exact generalization of (3,3,4)'s shearH coord-8..11 ⟹
+Pmat[0][0] = E EXACTLY, whole first row = E·T, for ALL r; |det|=1 UNIFORMLY (blockShear unit-triangular: writes
+only first-row slots, reads only disjoint {couplings, spectators}); cross-term COUNT grows but CONSTRUCTION
+identical — NO per-corank new insight (Codex: 'merely translation by a longer finite sum; no special corank').
+⟹ general-d value headline CITE-FREE via single_le_sum on the born-sheared Pmat[0][0]=E. The full two-sided normal
+form (clearing the growing residual) stays hard/monument-class — but the VALUE bound doesn't need it (the elder's
+mis-priced-wall ruling CONFIRMED at general corank).
+THE ONE CAVEAT (load-bearing scope, pnp=Codex): the uniformity rests on the born general-d recursion PRESERVING the
+pivot-adapted fed form (C1[0][0]=1, C2[0][0]=E, first-row slots independently writable with disjoint non-exceptional
+correction coords, uniform E/Jac exponents = numerator 8). Route-P's SPINE invariant, NOT new math — verified at
+(3,3,4) (Lean 21/21) + #124-instance (3,3,3,2,2). Failure mode: the recursion entangles a shear target with its own
+inputs, or a first-row slot goes exceptional (breaks unit-triangularity/ledger). BOUNDED chart-invariant check, NOT
+a monument. Holds uniformly (expected) ⟹ cite-free; fails ⟹ objects-only.
+STATUS: (A) is now priced SOUND at FULL generality — the map is COMPLETE + MONUMENT-FREE modulo the bounded
+fed-form invariant. Routed to the elder (its re-convene trigger): (1) gate-cleared with the invariant as bounded
+tracked-open, or invariant-de-risk first?; (2) §3-promote SATISFIED (or SATISFIED-PENDING-invariant)?; (3) landing
+(positive recalibration, within (A); operator surface = a positive milestone, not a decision). pnp holding for a
+possible more-instance invariant de-risk. Evidence: /tmp/aoyagi_shearfree/{corank_general.py, corank3_shearfree.py,
+codex/answer_gd.md}.
