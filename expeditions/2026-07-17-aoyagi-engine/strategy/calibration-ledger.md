@@ -1296,3 +1296,33 @@ sensor is the value/atlas-identity side (does `buildTree`'s `conOracle` produce 
 pullback). Gate integration-fidelity on the atlas-identity check, never on the center-agnostic cover's green.
 Also sharpened: the center fixes the whole ATLAS IDENTITY / value pullback (which coords blown up vs
 spectators), not merely a Jacobian exponent — my first framing ("Jacobian-monomial concern") understated it.
+
+### CALIBRATION (2026-07-26, idle-pulse slot) — R3 value-side readiness: how much does the engine already provide?
+**Q (load-bearing):** after the fold re-routes to flatCube, how much of R3's value side is already in the engine
+vs still to-build, and is any of it a monument?
+**EXPECTATION (locked before reading):** value side largely TO-BUILD from scratch (sandwich + #172 recursion +
+G2 additivity + a chart→RLCT-value bridge); cover done via flatCube (HIGH); #109 V-lower done, #110/#111 pending
+(LOW-MED); NO monument (MED-HIGH).
+**FINDING (read AxCheck.lean:1385-1421 + engine grep):**
+- The VALUE MACHINERY is LANDED: `rlctAt_sumSqFam_eq_iInf_charts` (atlas change-of-variables) is gated clean-three;
+  `two_mul_rlctAt_eq_divisorMin` (Core.Aoyagi.Resolution: a Resolution ⟹ 2·rlct = divisorMin) exists. So
+  "Resolution ⟹ value" is BUILT.
+- The cite-free payoff `aoyagi_learning_coefficient_via_engine` ALREADY EXISTS and per AxCheck's recorded
+  footprint carries `sorryAx` from EXACTLY ONE remaining piece — `exists_coreResolution` (the full two-sided
+  Resolution atlas, Object-B monument); the DLN cites are NOT invoked (kill-path). "Summit goes clean-three the
+  day exists_coreResolution lands."
+- The reroute's (A) V-wire is precisely the BYPASS of exists_coreResolution: the R>0-sandwich lower (#109) +
+  V-upper (#110) + Object D (#111). So R3's cover+value (flatCube ✓ + R>0 sandwich + #172 {R=0} recursion + G2
+  superadditivity) IS the construction of the V-LOWER that bypasses the monument — NOT a from-scratch value side.
+- ChartBridgeFaithful (8+ clauses over buildTree, clause A = the flatCube cover) is the engine's fidelity assembly.
+**HIT/MISS:** MISS on "value side to-build from scratch" — the value machinery (Resolution⟹value, atlas CoV) is
+LANDED; the gap is specifically the Resolution-EXISTENCE monument, which the reroute BYPASSES. HIT on "no monument
+to build" (exists_coreResolution is bypassed, not built — the whole point of (A)/the V-wire).
+**WHAT-IT-CHANGES:** my controller model of R3 corrected: R3 = build the V-LOWER (flatCube-cover ✓ + sandwich +
+#172 + G2) → then V-upper (#110, elder: COMPLETE-GENERAL/bankable) + wire (#111) → the cite-free payoff goes
+clean-three (bypassing exists_coreResolution). NARROWER + better-positioned than "build everything," but still
+real labour (the sandwich-over-flatCube-leaves + G2 + #172 + wire) — NOT "nearly done." OPEN (for the elder /
+cartographer): reconcile #109's board-"completed" (the OLD ideal-route lower?) vs the reroute building a NEW
+flatCube-sandwich lower — is #109 superseded, or the same object? CAVEAT: the exists_coreResolution-is-the-only-gap
+claim is AxCheck's recorded comment (a fresh `#print axioms _via_engine` would confirm; it's in the
+informational-DIRTY section, known to carry sorryAx).
