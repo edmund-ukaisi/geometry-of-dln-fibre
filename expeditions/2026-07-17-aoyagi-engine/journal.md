@@ -25153,3 +25153,23 @@ decomposition-nod sought (its V-wire ruling already blesses the bypass; proceed-
 normal form (h0 = survivor->1/others->0), forecloses the wire-hand-model AT THE ATOM ("the survivor fed into the
 sandwich must be the real sumSq_residual output, never a hand-model"); a fidelity-hardening, both sound. r3ia's
 h0 + option-B reinforce: the wire's per-leaf sandwich is literally the R2 survivor. Swap on the reviewer-delta.
+
+## 2026-07-26 (cont.) — h0-ADJUDICATION: kept @8cbebd8c3's h0-FREE survivor_sandwich_lower (weakest hypotheses); took ONLY r3ia's (i)(b) example @ec464127e
+The elder recommended SWAP-ping to r3ia's hardened (h0) survivor_sandwich_lower (fidelity: h0 forecloses the
+wire-hand-model at the atom). The REVIEWER + Codex xhigh delta-review CAUGHT that h0 is REDUNDANT for the
+>=-half: the conclusion needs only R = sum f_i^2 >= (f i0)^2 >= 1/4 (Finset.single_le_sum) — NEITHER hf0 NOR
+h0; h0 enters ONLY via sumSq_residual's SIGNATURE (its R(0)=1 conjunct, unused here). So r3ia's h0 is a
+GENERALITY REGRESSION (spurious hypothesis, zero gain for the >=-half).
+
+CONTROLLER ADJUDICATION (bedrock "weakest hypotheses that suffice" — a charter principle; reviewer+Codex
+decisive; the elder itself conceded @8cbebd8c3 is more general + h0 non-load-bearing): KEEP @8cbebd8c3's
+h0-free form (already in the trunk — NO swap); TAKE ONLY r3ia's (i)(b) non-vacuity example (reviewer: genuine
++ honest) @ec464127e (surgically extracted, h0-free retained; module green, 4 roots clean-three). The elder's
+foreclose-the-hand-model concern is addressed by the WIRE's discipline (it feeds the real sumSq_residual
+survivor per leaf) + the #184 axiom-footprint gate + the reviewer's per-merge reads — not by dead-weight h0.
+Elder concur/object surfaced (non-blocking; it half-conceded already).
+
+Mini-calibration (the decorrelated gating working): a taste/fidelity (elder: swap) vs weakest-hypotheses
+(reviewer+Codex: h0 redundant) tension resolved to the cleaner weakest-hypotheses form by the controller's
+bedrock precedence. WIRE (#187) now builds against the trunk's h0-free chart_rlct_ge_half_of_survivor (builder
+redirected: drop the h0 threading, rebase off trunk). r3ia + r3brick droppable (example taken; h0 not adopted).
