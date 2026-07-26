@@ -1351,3 +1351,20 @@ FRESH. **HIT:** the mandated decorrelated F1 check caught this BEFORE the value 
 **WHAT-IT-CHANGES:** #184 acceptance GATE adopted — the value headline #print axioms must be clean-three AND NOT
 route through {leafPullback_geoAtlasNorm, chartBridgeFaithful_buildTree, leafDiagFrob_geoAtlasNorm}. That single
 kernel check catches any accidental F1 re-wiring. Relayed to the builder (build (i)(a) fresh, never reuse those).
+
+### CALIBRATION (2026-07-26, idle slot) — the V-lower WIRE: how does the per-chart atom compose to rlct ≥ ½minAdm?
+**Q:** after (i)(a) lands, how does rlctAt_sumSqFam_eq_iInf_charts + the per-chart atom compose, and what must the wire supply?
+**EXPECTATION (locked):** it's an EQUALITY rlctAt(∑Fᵢ²) 0 = ⨅_charts (per-chart wrlctAt), consuming the cover +
+chart family; the wire plugs the per-chart ≥ ½chartMin under the inf; min_c chartMin = minAdm (atlasRealizes).
+**FINDING (read ProductResolution.lean:630 + docstring):** HIT. rlctAt_sumSqFam_eq_iInf_charts IS the equality
+(rlct = min/inf over the per-chart weighted values). Docstring makes the load-bearing point explicit: "the
+single point 0 of ONE chart only gives an UPPER bound; the COVERING FAMILY gives EQUALITY." So the flatCube
+COVER is load-bearing for the EQUALITY itself (not merely the bound) — this is precisely why the value must ride
+the same pivotChart family (the elder's natural-W1 marriage). Each chart is a `Chart` structure (g, hg0,
+hg_cont, + Aoyagi's hypotheses as propositional fields).
+**WHAT-IT-CHANGES:** confirms the wire is well-scoped + all pieces in place — rlctAt_sumSqFam_eq_iInf_charts
+(equality, banked) + per-chart atom (i)(b), merged @2c947b0fd) + (i)(a) (building) + atlasRealizes (min=minAdm,
+banked). The wire = composition once (i)(a) lands; the cover (flatCube) supplies the family for the equality. No
+re-plan. Prep for gating/briefing the wire fast. NOTE for the wire build: the Chart-structure fields (Aoyagi's
+per-chart hypotheses) must be supplied for EACH flatCube chart — the "over ALL charts" watch-item is that the
+covering family (not one chart) inhabits the equality.
