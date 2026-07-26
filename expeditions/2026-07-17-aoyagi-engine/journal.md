@@ -24800,3 +24800,33 @@ earlier "cleared-argmax uncovered" worry was WRONG.
 **GATES:** first-brick MERGE on the reviewer + Q1 + my re-verify; the FOLD on the buildTree-fidelity. Then the
 3-node fold + the leaf/value side (SurvivorFanCover + the reused existing poly-null brick + the #172 recursion).
 (b) PolyZeroNull dropped (duplicate); R3-hnull/G2 reuse MvPolynomial.volume_zeroSet_eq_zero (existing, bedrock).
+
+## 2026-07-26 (cont.) — ELDER RULING on the R3 first brick: Q1 HONEST modulo name=content; Q2 (buildTree-centers) is the PRIMARY fold gate
+
+**Q1 — kept-subset {0,1,2,3,20} born-fan: HONEST node cover, faithful per guardrail-0.** The elder checked
+the lift: a spectator-max point is hit with w_pivot=0 (spectators passed through); a kept-coord-max point is
+hit by the argmax-over-{0,1,2,3,20} pivot — so the kept-fan genuinely covers closedBall 0 R, no coverage
+over-claim. And guardrail-0 is architecturally correct: the one-object PivotStep REQUIRES hpivot_keep, so
+the cleared 4..7 genuinely cannot be born-pivots — "born-fan over the KEPT pivots" IS the reroute's own
+faithful node-cover object, not a convenience. HONEST modulo:
+  1. **NAME=CONTENT (merge condition):** the theorem must READ as "born-fan over {0,1,2,3,20}, 4..7
+     SPECTATORS", NOT "node cover for center {0..7,20}". Statement already names {0,1,2,3,20} → docstring
+     check. Added to the reviewer's mandate.
+  2. Contingent on Q2.
+
+**Q2 — THE PRIMARY FOLD GATE (elder: required, not optional):** the builder read the node centers off gWrap
+(Corank2GWrapDecomp = the PRE-reroute route-P composite), a DIFFERENT object from buildTree (the reroute's
+ACTUAL fold substrate). Before the fold, a buildTree(3,3,4)-centers READ is MANDATORY. Two reasons:
+  (a) correctness — the fold runs over buildTree; a gWrap-grounded brick discharges the WRONG object (motion,
+      not progress, §2 progress bar);
+  (b) drift (the sharper worry) — gWrap IS route-P's composite, so grounding the reroute's node cover on it
+     risks quietly re-grounding on the RETIRED route-P object — the SAME CLASS as the K-orbit W3 tripwire
+     (charter §3). The reroute's whole identity is the one-object recursion over buildTree.
+buildTree ≡ gWrap centers → the first brick transfers + Q1 fully honest; DIFFER → re-ground on buildTree
+before the fold. = task #183 (owner reroute-R2build).
+
+**SEQUENCING (elder-confirmed my split):** first-brick MERGE gates on reviewer-clean (Lean soundness + W3 +
+axioms) + name=content — does NOT wait on Q2 (it banks as reusable node-cover infra even if the center-
+identity needs Q2 confirming). FOLD gates on Q2 + node-cover + leaf-monomialisation shown over buildTree's
+ACTUAL nodes. Elder re-convene at: (i) the buildTree-centers read; (ii) leaf-monomialisation over buildTree
+leaves; (iii) the R3 fold landing; (iv) any (B)-fallback wall; (v) the operator destination call.
