@@ -26576,3 +26576,24 @@ divisorMin≥8 all 288; (2) adjudicate native-buildable (W3-clean) vs transport-
 + ek₀/(C) + B until the elder re-pin + the pnp full-chart. The discipline caught it (exact sympy before B fired — the
 wire-false-but-typechecks trap). POTENTIAL operator-surface IF the elder rules transport-resurfacing (route-threatening);
 else a bounded fix (extract full chart + rebuild).
+
+## 2026-07-26 — STOP-SHIP fix-direction: the value-correct chart σ⁻¹∘gWrap∘σ DECOMPOSES into DIRECT ATOMS (W3-clean, bounded); transport-risk LOW
+The (C) seat (before standing down, budget-consumed ~535K tokens) handed over the fix-direction:
+- The WHOLE-chart σ-conjugate σ⁻¹∘gWrap∘σ IS the value-correct born chart per dominant: clean degree-2 pivot-cross
+  survivor (both coords exceptional jac 7/8 → per-dominant divisorMin=8). Verified (0,0)piv20→u0·u20; (1,1)piv4→u2·u4;
+  (1,0)piv0→u0·u20; (2,2)piv7→u6·u7; (0,2)piv3→u3·u6. Each = u_{node1-pivot}·u_{node2-pivot}. ek₀ = pivot-cross
+  [1@node1-pivot,1@node2-pivot], divisorMin≥8 — CONDITIONAL on the fan = whole-conjugate (not §2-shear-only).
+- W3 (GOOD NEWS): σ⁻¹∘gWrap∘σ DECOMPOSES into DIRECT ATOMS: σ⁻¹∘blowup(C,p)∘σ = blowup(σ⁻¹C, σ⁻¹p) [permuted-centre,
+  direct, no σ-symbol]; σ⁻¹∘shearH∘σ = §2 shear [have]; σ⁻¹∘permP∘σ = permutation [direct]. Value-correct fan stays
+  W3-clean via direct atoms (NOT conjResolution machinery) — candidate (ii) constructible. Extraction must emit per
+  dominant: the PERMUTED centres/pivots (nodes 1/2/3) + conj-permP (the §2 extraction only did the shear).
+- Re-pin: node-1 = blockBlowupMap(σ⁻¹C0)(σ⁻¹·20) ∘ §2-shear ∘ (σ⁻¹∘permP∘σ); nodes 2/3 = σ-permuted-centre blow-ups.
+CONTROLLER READ: transport-resurfacing RISK LOW — the resolution at dominant p blows up at p's OWN centre/pivot (stepUpdate
+produces natively); the σ-relabel is the DESCRIPTION-TOOL for computing them (elder's extract-explicit-build-direct). NOT
+the conjResolution MACHINERY. Native, W3-clean, BOUNDED fix. Elder confirming (permuted-centre blow-up = native?).
+ACTIONS: elder update (W3 confirm). pnp (a468883f26dac7a88) SHARPENED: emit the per-dominant permuted centres/pivots +
+conj-permP (rework build data) + verify all-288 divisorMin≥8 + confirm native-not-transport. (C) seat STOOD DOWN (budget;
+(A) clean-three + STOP-SHIP catch + fix-direction all banked; qdisp engine + FanTree/Fin plumbing + native_hcover +
+numeric harnesses reusable). On the pnp emission + elder confirm → spawn a FRESH fan-rework seat (rebuild node maps from
+the permuted atoms + re-derive hcover [transfers] + define ek₀). NET: the STOP-SHIP is a BOUNDED fix (incomplete
+extraction → extend it), route NOT threatened. B held for the reworked fan + ek₀.
