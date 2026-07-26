@@ -26146,3 +26146,29 @@ CITE-FREE PAYOFF (the first fully-cite-free landing = the genuine next operator 
 NO operator DECISION needed — the objects-only fork is MOOT (cover = labor, not monument); this is milestone-news,
 within (A) (the destination was always cite-free full generality; this confirms it REACHABLE). Elder authoring F14
 + the §3-FULL line (I commit on delivery).
+
+## 2026-07-26 — (3,3,4) V-LOWER HEADLINE **REDUCED** clean-three (milestone) + the born-α family scoped as the next seat
+FORMALISER (a6b6239b54dd15f06) landed, branch expedition/aoyagi-r2headline (off r3fill), SHA 19e5fb640, pushed.
+FILE: DLNFibre/DLN/Aoyagi/Corank2Headline334.lean (+130, no edits to existing files). Build green (8484 jobs);
+#assert_banked_clean_batch passed (confirms chart334 + the spine wire/joint are clean-three too).
+TWO theorems, both sorry-free + #print axioms = [propext, Classical.choice, Quot.sound]:
+  1. bddAbove_localAdmissible_coreGen334 — the wire's hbdd (V-upper #110 genuine-pole guard) from chart334, no atlas/cover.
+  2. rlctAt_coreGen334_ge_four_of_family — reduces `4 ≤ rlctAt (sumSqFam (coreGen dvec eWrap)) 0` to the born-α
+     chart-FAMILY (the wire's per-chart hypotheses) + hdivisorMin (⨅=8 EXACTLY), discharging hFmeas/hbdd/the STEP-4→5
+     joint/the ½·8=4 arithmetic CONCRETELY. Composes the LANDED spine: wire → SandwichCoverValue joint → value read-off.
+STATUS: the (3,3,4) headline is REDUCED to the born-α family (CONDITIONAL, honest — name ends `_of_family`, conclusion
+is the plain 4 ≤ rlctAt, conditionality entirely in the hypotheses). NOT unconditional. The reduction's hypothesis
+list = the EXACT born-α seat contract (the clean handoff). Reviewer spawned (a008938bea2475c6d) for its fidelity
+(steered: verify hdivisorMin is the EQUALITY =8, and name=content conditional).
+THE REMAINING SEAT — the born-α FAMILY (×6 deep per-leaf hpull, over the 288 gWrapFan leaves = 9·8·4): for the
+canonical leaf, coreGen_gWrap_flat exposes only the pivot factor u20; the 2nd survivor E=u0 lives INSIDE
+flat(Pmat)∘gFaithful (the hideal_faithful content), so hpull = (u0·u20)²·∑resid² is the deep recoord-shear algebra
+per leaf-type (T4-T9 singular + T1-T3 smooth). Aggregator wiring DEFERRED to the complete-headline merge.
+RADIUS TENSION (new design constraint, resolved BOUNDED by TWO decorrelated reads — mine + the formaliser's): the
+gWrapFan fold's default leaf box is closedBall 0 903 (f=r+2r², 1→3→21→903), but hpos needs ∑resid²>0 on the whole
+dom + the survivor is only a unit near 0. RESOLUTION: the wire needs only U∈𝓝 0 + hcover a.e. on U, so the seat takes
+SMALL dom (residual-unit radius) + re-runs covers_fanOfSteps at that ρ; the 903 is NOT load-bearing. → the L2 (cover
+completion) ledger item, the radius join = bounded. Elder's comprehension read pending (low risk).
+NEXT: reviewer fidelity clean + elder radius read → spawn the born-α family seat (contract = the reduction's
+hypothesis list; opening constraints = deep-hpull + bounded-radius-join). Then unconditional (3,3,4) headline → merge
+r2headline + aggregator wiring → + V-upper → summit → the (3,3,4) CITE-FREE PAYOFF.
