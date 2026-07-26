@@ -141,6 +141,14 @@ category before reporting progress; the elder gates every route and every progre
   bound is therefore **not** a chart change-of-variables — it is IDEAL-level. **STATE THE RESOLUTION FOR
   THE OBJECT** — the ideal identity `⟨A⟩=⟨diag(b)⟩` (polynomial cofactors), NEVER a coordinate-support
   predicate. A value-computing chart passes det/cover/measure gates and fails at the consumer, late.
+  > **CONCRETE LEAN TRIPWIRE (the F1 α-atlas hole, dead-isolated — 2026-07-26).** `ChartBridgeFaithful` /
+  > `chartBridgeFaithful_buildTree` / `GeoInvVal` / `leafDiagFrob_geoAtlasNorm` ARE the F1 hole (sorryAx,
+  > det-1 category-false; ⛔-headered, NOT aggregator-imported). The clean cover/value substrate
+  > (`GeoChart`/`FlatCubeLeaf`/`tGeo`/`pivotChart`/`flatCube_subset_leafPathImages`) is a DIFFERENT,
+  > clean-three object (F11). RESURRECTION TRAP: the ONLY existing `LeafPullback` discharge IS the F1 sorry —
+  > so any value-side `leafPullback_sandwich` must be built FRESH (LeafPullback kept OPEN), NEVER reusing it.
+  > GATE (every value headline): `#print axioms` clean-three AND not routed through
+  > `{leafPullback_geoAtlasNorm, chartBridgeFaithful_buildTree, leafDiagFrob_geoAtlasNorm}`.
 - **The b-chain is LOAD-BEARING for the MAINTENANCE, not only the read-off.** `b₁|b₂|…|b_M`
   (worked.tex:484) is what makes the non-unit `diag(b)` step an IDEAL EQUALITY — the divisibility absorbs
   the block-elim cross-terms (L-B, rev-render-verified). Do NOT treat the b-chain as read-off bookkeeping.
