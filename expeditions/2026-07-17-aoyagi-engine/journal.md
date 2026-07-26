@@ -27389,3 +27389,18 @@ gWrap dominant u₀·u₂₀ (different charts, no conflict; threshold-matching 
 STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + leaves (pattern-A/B, per-true-φ cover) + transport (a3f030,
 loss-symmetry crux) — all monument-free; H3 (ii) resting. NEXT: 15 leaves + transport → ∀-144 canon_domination → merge →
 wake (ii) H3 → 4 ≤ rlctAt → unconditional (3,3,4).
+
+## 2026-07-26 — HEARTBEAT drift-glance: all 3 H2 build threads alive; navigator convened for the merge-topology pre-audit
+Drift-glance (19:27): a3f030 (σ_p1-transport) ACTIVE + progressing (Corank2OverVanishTransport334.lean building + pushed
+to aoyagi-r2overvanish-pertype 7min ago). Pattern-A/B worktrees too fresh (~1hr) for the .lean-mtime signal (checkout-
+touched); both reported cross-checks recently → alive + mid-leaf-grind (no push yet, normal). No stall.
+NAVIGATOR convened (merge-topology + aggregator-wiring PRE-audit — good idle-slot use + due per the endgame office
+cadence): the (3,3,4) V-lower converges across 7 branches (r2wholeconj-fan [(A-rework)+(C)], r2-clean144-hentry, ov-sos-
+tonelli [Core], r2overvanish-regseq [(ii) backbone+step-6], r2overvanish-pertype [template+transport], r2ov-patternA,
+r2ov-patternB). KEY merge risk to pre-plan: the Core-file conflict — Tonelli's CLOSED MonomialSumSqRLCT (off aadc0c271)
+must REPLACE the (ii)/pertype branches' OLDER SORRIED MonomialSumSqRLCT. Navigator produces: merge ORDER (base-DAG),
+name-clash audit, DLNFibre.lean aggregator import order, the final AxCheck/#print-axioms gate plan (which tracked-open
+sorries stay [bridge + step-6 spine until H3] vs must close for the headline), + merge risks.
+STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED-CLEAN + pattern-A/B leaves (building, per-true-φ cover) + transport
+(a3f030, building) — all monument-free; H3 (ii) resting. Merge pre-audit in flight. NEXT: 15 leaves + transport → ∀-144
+canon_domination → merge (per the navigator plan) → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
