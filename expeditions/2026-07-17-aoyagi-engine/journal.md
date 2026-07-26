@@ -26369,3 +26369,23 @@ ball ⊆ ⋃ c,(charts c).g''dom. The bridge leafImages = ⋃ charts.g''dom (cha
 construction, avoiding the bridge; the assembly formaliser has the wire-contract context to resolve it).
 NITS: cosmetic linter warnings on pre-existing untouched atom code (not this diff). Non-blocking.
 Assembly (a6b6239b54dd15f06) building (deep, 1.3MB transcript). Elder resting; re-convene at the 2 assembly triggers.
+
+## 2026-07-26 — ASSEMBLY: hsandwich-discharge brick LANDED (contract tightened) + concrete born-native family = remaining build ('monument' → elder classification)
+The assembly (a6b6239b54dd15f06) landed a real advance; honestly did NOT close the unconditional headline.
+LANDED (branch aoyagi-r2assembly off r2headline, sorry-free clean-three, 8468 jobs): rlctAt_coreGen334_ge_four_of_survivor_entries
+— discharges the reduction's hsandwich from the elder's fact #2 via Finset.single_le_sum: given the exact per-leaf
+entry-equality hentry (∀ c w, coreGen dvec eWrap (k0 c) (g c w) = ∏_d (w d)^(ek₀ c d)), loss dominates the survivor
+monomial² GLOBALLY (cst=1/Mn, Mn=12, RLCT-invisible; hchain=le_refl; ρ=∞). Contract now TIGHTER: NO measure-theoretic
+sandwich — only hentry + area-formula data (hgdiff/hg_inj/hjac) + a.e.-hcover + divisorMin=8. Reviewer spawned.
+THE REMAINING = the concrete born-native family (formaliser honest scope call): (A) born-native σ_p fan def (F5
+explicit block-recoord shears, W3-native) + hcover (reuse SurvivorFanCover + ImageTreeCover + L2 scaling at native
+leaves); (B) the ×9 hentry entry-equalities (coreGen∘g_c = monomial exactly, all singular leaves; STRONGER than the
+landed ideal-equality ⟨…⟩=⟨E⟩ — needs the born-native recoord gWrap's fixed shear doesn't do) — the P1-cert core
+algebra; (C) per-leaf jac + divisorMin=8.
+CLASSIFICATION: formaliser flagged (B) 'genuine monument.' CONTROLLER READ: DETAIL-AT-SCALE, NOT a monument — the pnp
+CERTIFIED the exact ×9 algebra (F5-F9, all 9 dominants, exact sympy + Codex); insight FOUND, remaining = patient LEAN
+construction of certified math (pnp-template→formaliser). 'Not-yet-Lean-landed' = timidity-disguised-as-rigor, not a
+monument. Formaliser wants to DELEGATE (not cite) — agree on building. → ELDER for the decorrelated classification read
+(mandated: scope-classification / pre-deferral). On 'detail-at-scale' confirm → delegate A/B/C. The concrete (3,3,4)
+BUILD phase engaging (memo's 'territory, ~10-16 tides'). Value-side bridges LANDED (reduction + hsandwich-discharge);
+(B)'s output plugs straight to the headline.
