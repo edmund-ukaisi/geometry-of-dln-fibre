@@ -25173,3 +25173,32 @@ Mini-calibration (the decorrelated gating working): a taste/fidelity (elder: swa
 (reviewer+Codex: h0 redundant) tension resolved to the cleaner weakest-hypotheses form by the controller's
 bedrock precedence. WIRE (#187) now builds against the trunk's h0-free chart_rlct_ge_half_of_survivor (builder
 redirected: drop the h0 threading, rebase off trunk). r3ia + r3brick droppable (example taken; h0 not adopted).
+
+## 2026-07-26 (cont.) — WIRE fill = BOUNDED adaptation (recipe complete); elder NODs option B + concurs h0; FRESH FORMALISER spawned for the fill [#187]
+**Elder h0-CONCUR (clean):** weakest-hypotheses WINS — h0 spurious for the >=-half (a theorem carrying an
+unused hypothesis is ugly by the elder's own beauty instrument); it over-weighted fidelity-safety-at-the-atom.
+Its foreclose-the-hand-model invariant RELOCATES to the wire landing (verify the survivor structurally rides the
+REAL sumSq_residual term — tighter than h0, which only shaped the atom). Trunk keeps @8cbebd8c3 h0-free + the
+(i)(b) example @ec464127e. Adjudication settled, both seats aligned.
+
+**Elder decomposition NOD on OPTION B** (three, two precisions): (a) B is the HONEST route — it BYPASSES
+exists_coreResolution (does NOT discharge it; exists_coreResolution goes DEAD/unused in the cone as the headline
+rides the V-wire). Correct name=content. (b) The cover-assembly is ONE new sub-lemma, BUT #172 is a DISTINCT
+input, NOT subsumed: the per-chart sandwich on a nbhd of {R=0}∩dom holds ONLY because the recursion's DEEPER
+charts are there (near {R=0}, R→0 and THIS chart's sandwich FAILS; deeper charts supply it) — NOT "the germ
+extending" (the ⟨δx,δy⟩ over-vanishing trap). Honest count: one cover-assembly + the #172 input. (c) TRACKED-OPEN
+skeleton OK, but the "V-lower done/cite-free" CLAIM gates on the FILL + clean-three + F1-gate + exists_
+coreResolution DEAD-in-cone.
+
+**WIRE FILL = BOUNDED adaptation (builder recon, recipe complete):** mem_localAdmissible_of_lt has EXACTLY ONE
+hideal_bwd touchpoint (the per-chart hdom_int); everything else reuses verbatim. FILL = (1) integrableAtFilter_
+of_sandwich (~25 lines: sandwich + monomialSumSq_integrableAtFilter_of_lt + subset_of_eventually_le); (2)
+rlct_ge_half_minAdm_of_cover (~60 lines: the body with hdom_int re-derived via (1), NO hideal_bwd field) →
+rlctAt >= inf threshold = ½minAdm via Object D. ~1-2 tides + a durable Core API (the SandwichChart per-leaf
+record — WEAKEST fields, per the h0 lesson).
+
+**DELEGATION:** builder recommended handing the fill to a FRESH formaliser (scoping = its comparative advantage,
+DONE + captured; the durable API design deserves fresh context, not a rushed design at its session depth). I
+CONCUR + spawned a fresh lean-formaliser with the complete recipe + the elder precisions + the gates; reroute-
+R2build STOOD DOWN + resting. Statement-lock first (early API check) → fill/TRACKED-OPEN → elder + reviewer +
+controller force-elab verify → merge. This is the last substantive new sub-lemma of the V-lower.
