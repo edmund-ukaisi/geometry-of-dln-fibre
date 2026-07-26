@@ -26405,3 +26405,22 @@ the landed NodeCover334/bornSiblings shape); (ii) hnull (cheap). BOUNDED.
 STRENGTHENS the detail-at-scale classification: BOTH value (pnp F5-F9 certified) AND cover (landed SurvivorFanCover
 flat + cheap hchart/hnull) are bounded; the ×9 hentry is the only deep piece + pnp-certified. Forwarded to the elder
 (supplement). Formaliser standing by for A/C. Assembly reviewer (ab5f5c0e0051ac0f2) running (hsandwich-brick fidelity).
+
+## 2026-07-26 — ELDER RULING: the ×9 hentry is DETAIL-AT-SCALE (not a monument) → A/B/C delegated; (3,3,4) BUILD phase engaged
+Elder RULED (applied the discriminator + a confound check, did NOT rubber-stamp): DETAIL-AT-SCALE, BUILD via seats, do NOT cite.
+- Discriminator = deep UN-FOUND insight (cite) vs standard patient-decomposable material (build). The ×9 hentry
+  (coreGen∘g_c = ∏w^ek EXACTLY, all 9 born-native leaves) are EXACT-CERTIFIED polynomial identities (pnp F5-F9, exact
+  sympy + Codex) — insight FOUND + CHECKED ⟹ not a monument. Remaining = patient decomposable LEAN construction of
+  certified math (pnp-template→formaliser) = the team's comparative advantage.
+- The formaliser's 'monument' markers = timidity-disguised-as-rigor: 'stronger than the ideal-equality' (strength ≠
+  depth — a more explicit computation), 'needs new construction' (found via F5), 'not-yet-Lean-landed' (verbatim the mode).
+- CONFOUND CHECK (elder hunted for a hidden monument IN THE CONSTRUCTION): σ_p explicit (F5), blockBlowupMap landed,
+  composition = finite polynomial expansion — NO hidden hard general lemma. Detail-at-scale in identity AND machinery.
+DELEGATED the A/B/C split (the (3,3,4) BUILD phase):
+  (A) born-native σ_p fan def (F5) + hcover (SurvivorFanCover flat) → a6b6239b54dd15f06 (GO); W3 grep-clean gate on σ_p.
+  (C) per-leaf jac + divisorMin=8 → a6b6239b54dd15f06 (with A).
+  (B) ×9 hentry entry algebra → a FRESH pnp-template→formaliser, fired when a6b6239b54dd15f06 lands the σ_p def (shared).
+L1 NOT RETIRED (elder name=content note): the ×9 (3,3,4) hentry is the CONCRETE INSTANCE + pattern of L1, NOT a
+retirement of general-d L1. The general-d UNIFORM hentry (all leaves) stays the ledger's PRIMARY audit target
+(detail-at-scale per F13's 'one scalar pivot per node', but a LARGER build — the inferred-not-proven L1). (3,3,4) =
+witness; general-d L1 = the larger labor ('monument-free ≠ nearly done').

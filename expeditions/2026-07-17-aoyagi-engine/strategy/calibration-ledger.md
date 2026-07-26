@@ -1439,3 +1439,11 @@ Exact size needs a #print axioms on the current headline (how DEEP the monument 
 WHAT IT CHANGES: scope piece (4) as a real (monument-free) re-wiring integration task, not a trivial flip; at the
 summit rung FIRST #print axioms the current headline to size the cone, THEN re-point. (Retired monument-route files
 MonumentAtlas/Assembly/GeoAtlas likely OUT of the headline cone — the #print axioms confirms which are load-bearing.)
+
+## 2026-07-26 — build-vs-cite discriminator: 'monument' (builder) → detail-at-scale (decorrelated) CAUGHT
+The assembly formaliser flagged the ×9 hentry entry-algebra as a 'genuine monument.' Controller read = DETAIL-AT-SCALE
+(pnp F5-F9 exact-certified ⟹ insight FOUND; patient Lean construction of certified math). Routed to the elder for a
+decorrelated read: elder CONFIRMED detail-at-scale + did a confound check (no hidden hard general lemma in the σ_p
+construction). LESSON: a builder's 'monument/too-hard-to-land' flag is often timidity-disguised-as-rigor (the disposition's
+named failure); the discriminator is FOUND-vs-UNFOUND insight, never in-Mathlib-vs-not or Lean-landed-vs-not. When a
+builder flags a monument, apply the discriminator + confound-check the CONSTRUCTION before believing it — build-the-buildable.
