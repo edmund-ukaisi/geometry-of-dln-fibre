@@ -1767,3 +1767,8 @@ import DLNFibre.Core.Aoyagi.ChartValueLower
 --   monomial sets the sum's RLCT, resurrection risk AVOIDED). hunit1 (squarefree binding = k=1) + hpull are the
 --   WIRE's obligations (watch: a binding-axis multiplicity >= 2 would need the (h+1)/(2e) form).
 import DLNFibre.DLN.Aoyagi.SurvivorSandwich
+-- SandwichCover (R3, V-lower WIRE): rlctAt_ge_iInf_threshold_of_sandwich_cover — the hideal_bwd-FREE
+--   cover-assembly lower bound (⨅_c monomialThreshold ≤ rlctAt(∑Fᵢ²) x₀), the concrete exists_coreResolution
+--   BYPASS (F10/(A)). Imports only Core ProductResolution; clean-three (elder+reviewer+controller verified,
+--   #184 F1-gate); +hbdd (= V-upper content, one-directional) / −hunit1 (moves to the downstream conversion).
+import DLNFibre.Core.Aoyagi.SandwichCover
