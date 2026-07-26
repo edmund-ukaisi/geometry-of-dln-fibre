@@ -24902,3 +24902,33 @@ green is a WEAK sensor for geometric fidelity; the real sensor is the atlas-iden
 the center fixes the whole ATLAS IDENTITY / value pullback (which coords blown up vs spectators), not merely a
 Jacobian exponent — sharpened the FIDELITY NOTE + the charter §3 companion accordingly. #178 CLOSED; #183
 (cover-center identity) governs whether node_cover_334 IS buildTree's node cover — the fold gate.
+
+## 2026-07-26 (cont.) — Q2 DETERMINED: born-fan is COVER-ONLY (elder #183(B) confirmed); the FOLD re-routes to buildTree's full-center flatCube/pivotChart. [RECALIBRATION — operator-facing]
+
+**THE FINDING (builder trace, rigorous — the elder's #183(B) Jacobian-suspicion landing):** buildTree's actual
+first node (conRoot_steps + widthMinUpto + case2Decision) has dCenterOfNode = resRows·resCols = 9 = gWrap's
+outer {0..7,20}; jac = card−1 = 8 = |u20|^8. Centers/sizes MATCH gWrap (node 1 confirmed; 2,3 in progress). NO
+route-P drift on centers — buildTree IS the substrate.
+
+**THE CRUX:** the BORN-fan (node_cover_334, KEPT center {0,1,2,3,20} card 5) gives |u20|^4, NOT the correct
+|u20|^8 (card 9). Guardrail-0 (born fan pivots must be KEPT) FORBIDS the cleared 4..7 in the center; the inner
+nodes blow up 0,1 — NOT 20. So the born kept-subset cascade accumulates |u20|^4·|u0|^7·|u1|^3, WRONG on the
+value side. **The born route is COVER-ONLY — guardrail-0 STRUCTURALLY blocks its value-Jacobian at the shear
+node.**
+
+**RECALIBRATION (operator-facing — a knowing decision-in-progress):** the value SUBSTRATE for the fold is NOT
+the born-fan (R1's StepConstructor.bornSiblings) but buildTree's FULL-center flatCube/pivotChart. Controller
+ground-truth (re-derived): flatCube_subset_leafPathImages (GeoCoverSpec.lean:297, PRE-reroute RLCT Engine) is a
+GENUINE sorry-free full cover over buildTree via the per-node pivotChart (node_selfCover + fannedEdges_covers +
+dCenterOfNode_edgeSum), with ZERO gWrap/K-orbit/transport refs in GeoCoverSpec/PivotCover (W3-clean pre-signal;
+pivotChart is a direct coordinate blow-up, NOT K-orbit transport). NOT yet #print-axioms clean-three-confirmed.
+So this is a clean RE-ROUTE within the build (arguably a simplification — the engine already has the full
+cover), NOT a wall/(B)-trigger. The born-fan is recontextualized as cover-side de-risk (node_cover_334 → to be
+renamed keptSubsetBornFan_cover_334). DESTINATION (A) 2·rlct=cCodim cite-free UNCHANGED; definition of done
+UNCHANGED — this is a LADDER re-scope (which object the fold runs over), within the closed loop.
+
+**ELDER RULINGS PENDING (fold HELD):** (1) W3 — is pivotChart buildTree-native (W3-clean) or a route-P/K-orbit
+re-entry? (favorable ground-truth prior); (2) guardrail-0 recontextualized (born=cover-only, pivotChart=value);
+(3) the rename. Plus the surfaced question: if flatCube already covers, is R3's remaining work just the
+LEAF/value side (R>0 sandwich + #172 {R=0} recursion + RLCT-value wiring)? Builder tracing nodes 2,3 +
+confirming flatCube's status. Reviewer confirmed the first-brick CLEAN at c1ddd9928 (post-hoc; matches @a1dad113).
