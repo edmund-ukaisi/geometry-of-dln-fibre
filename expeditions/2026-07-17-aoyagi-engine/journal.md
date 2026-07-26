@@ -27028,3 +27028,29 @@ relay.
 STATE otherwise unchanged: clean-144 B DONE (reviewing); over-vanishing (ii)-DLN (3)-(5) + Core-Tonelli building on the
 now-verified interface; A0_gFlat_factor (rework seat). NEXT: clean_hentry reviewer + Tonelli + (ii)(3)-(5) land → step-6
 mixed-288 assembly → unconditional (3,3,4).
+
+## 2026-07-26 — clean_hentry FIDELITY CLEAN (kernel-verified) — clean-144 half locked; the COVER-UNION step-6 guardrail
+Reviewer (a5b773...) SURVIVED/CLEAN, KERNEL-verified (fresh worktree, DELETED the 3 target oleans + force-re-elaborated,
+explicit #print axioms; 2 decorrelated Codex xhigh: census + reduction-logic):
+(a) CENSUS independent (hand + Codex): 288 total, 144 clean (36 pairs × 4 p3), all 36 cleanPairs admissible, p3-indep,
+  0 k0-collisions; k0=finProdFinEquiv(ijpair) KERNEL-verified the right survivor entry (simp+ring on concrete 4×3
+  matrices, NOT author sympy).
+(b) ENTRY ALGEBRA: 9 per-pivot lemmas KERNEL-prove coreGen(k0)(leafMap p1 p2 p3 w)=w p1·w p2 for every clean pair,
+  every p3, GLOBALLY in w; non-vacuous, non-degenerate (36 distinct monomials), leafMap = genuine whole-conjugate composite.
+(c) DISCHARGE TYPE EXACT: clean_hentry's conclusion IS an instance of the reduction's hentry field (example typechecks),
+  single defs no shadowing, sumSqFam(coreGen dvec eWrap) proven = the REAL (3,3,4) DLN Frobenius loss; single-entry
+  SUFFICIENT for the LB (L ≥ m² ⟹ L^{-z} ≤ |m|^{-2z}, Codex-confirmed).
+(d) CLEAN-THREE: force #print axioms on clean_hentry/clean_entry/exists_isClean AND the reduction = clean-three; no cites.
+(e) SCOPE honest (clean-144 IN, over-vanishing + family-restriction OUT).
+⟹ the CLEAN-144 half is DECORRELATED-VERIFIED + locked.
+★ COVER-UNION STEP-6 GUARDRAIL (reviewer co-locate, Codex-flagged — PIN next to any "4 ≤ rlct" headline): the reduction's
+hentry is ∀c; clean_hentry is only ∀ clean c. Discharging it by RESTRICTING to clean-144 requires the clean-144
+sub-family to ITSELF cover a nbhd of 0 — but native_hcover proves the FULL 288 cover, NOT clean-144 alone. So the
+over-vanishing-144 CANNOT be dropped from the cover (positive-measure holes). CORRECT mixed-288 assembly: FULL 288
+native_hcover + per-chart threshold ≥ 4 for ALL 288 (clean-144 via clean_hentry→chain-wire; over-vanishing-144 via the
+(ii) SoS engine on their covered region), combined via the cover union → iInf ≥ 4. A wrong restrict-to-clean assembly
+would be UNSOUND.
+Lints (unused simp args, maxHeartbeats-comment, show→change) → merge cleanup.
+STATE: clean-144 (B + clean_hentry) DONE+verified+locked; interface CLEAN; over-vanishing (Core-Tonelli + (ii)-DLN)
+building; A0_gFlat_factor landed. NEXT: Tonelli + (ii)(3)-(6) → step-6 mixed-288 assembly (honoring the cover-union
+guardrail) → unconditional (3,3,4).
