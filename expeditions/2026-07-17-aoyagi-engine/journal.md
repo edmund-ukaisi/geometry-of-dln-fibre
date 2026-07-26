@@ -27120,3 +27120,19 @@ STATE: clean-144 COMPLETE+locked; interface CLEAN; over-vanishing = backbone CLE
 step-6 skeleton (tracked-open, (ii) building) + per-type grind (re-scoped to 8 entries, a3f030) + Tonelli (Core crux,
 ab996 — active, drift-pinged). NEXT: per-type 8-entry identities + Tonelli close → discharge the bridge + step6-assembly
 → 4 ≤ rlctAt → unconditional (3,3,4).
+
+## 2026-07-26 — cross-lane caution (pnp-fan, sector-count lane): verify the per-type canonical template isn't coinciding
+pnp-fan (sector-count / gwrap_fan_model lane, distinct from main pnp a468) relayed (couldn't reach the seat by name) a
+cross-check + caution for the per-type seat:
+- Shear Ψ displacement (writes {4..11}): explicit 8 formulas (Ψ_4=w0·w2 … Ψ_11=−w0·w15−w1·w19) — cross-check on Ψ_c.
+- Folded-jac vmExp (TRUE gWrap canonical, bbA0 pivot 0): u0^7·u1^3·u20^8, vmExp [0↦7,1↦3,20↦8].
+- LOAD-BEARING CAUTION: the seat's (20,1,1) template — if p2=bbA0-pivot=1 (not 0) it's a COINCIDING leaf where exponents
+  STACK (u1^10·u20^8) ≠ the canonical (u0^7·u1^3·u20^8); confirm the template is the representative non-coinciding canonical.
+HANDLING (controller): relayed to the per-type seat (a3f030) FRAMED as a decorrelated cross-check — VERIFY against the
+AUTHORITATIVE main-pnp (a468) ii_perdominant.out (current whole_conj charts) + Corank2CoreGenWrap.lean (coreGen vf/reg-seq),
+do NOT override. The template-representativeness check is genuine (a degenerate template wastes the grind) — the seat
+confirms + templates on the non-coinciding canonical if needed. CORRECTED the stale part: pnp-fan's #144/#145 COVER
+concerns are RETIRED-route (gwrap-fan) — SUPERSEDED by native_hcover (reviewer-verified GENUINE full 288 cover, diff EMPTY);
+do NOT inherit. Acked pnp-fan with the #145-superseded note.
+Non-blocking; the seat checks the template before sinking the grind. STATE unchanged: Tonelli active (drafted, no gap),
+per-type active (re-scoped 8 entries + now a template-representativeness check), (ii) scaffolding step-6.
