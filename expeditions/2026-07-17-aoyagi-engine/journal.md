@@ -25947,3 +25947,26 @@ F11. Honest edges (pnp): 5 mechanism-inferred types (boundary can shift, never a
 NET: de-risk arc COMPLETE (all probes positive; (A) monument-free at full generality; §3 SATISFIED); the phase is
 now BUILD — the (3,3,4) V-lower fill in flight → then V-upper (proven) → summit re-point → cite-free payoff at
 (3,3,4). Pinning pnp rested ("good expedition").
+
+## 2026-07-26 (cont.) — ELDER COVER-GATE RULING: the hcover needs its OWN bounded gate (W1 re-opened by the born-α shear); PRE-ARMED the value formaliser (hcover OPEN, not stubbed) + spawned the hcover scout
+The elder re-derived from ground truth (its first instinct "bounded by F11" did NOT survive): the V-lower wire needs
+hcover AND hsandwich on the SAME g_c. F11's LANDED cover (geoAtlas_imageCover / flatCube_subset_leafPathImages) is
+SHEAR-FREE (gauge=id). But F12 moved the VALUE onto the SHEARED charts (the shear-free chart FAILS the sandwich), so
+g_c = the SHEARED value-chart ⟹ hcover now needs the SHEARED cover, NOT F11's shear-free flatCube. Shears MOVE images
+(image(shear∘blowup) ≠ blowup-image) ⟹ the sheared cover ≠ F11's cover. This is the OLD W1 (cover-value marriage)
+RE-OPENED by the born-α, with cert-psi-mix (ShearReconcile:16 — per-leaf TARGET shears open a fundamental interior
+cover gap for mixed nodes) as the KNOWN failure mode = the cover-risk lane (a) surfaced.
+THE TRAP I NEARLY SET: my value-fill STEP-4 said "hcover via F11 flatCube" — stubbing hcover with the shear-free
+cover while the wire needs the SHEARED cover = the wire-FALSE-but-TYPECHECKS trap (the BddAbove-miss failure mode).
+The elder caught it. PRE-ARMED the value formaliser: hcover is now an OPEN HYPOTHESIS (NOT stubbed with F11); the
+fill supplies hsandwich/hjac/hbdd/conversion; hcover stays a hypothesis the hcover seat discharges. Wire kept honest.
+HCOVER GATE (elder ruling): own bounded gate, SPAWNED NOW, parallel + decorrelated (a scout + Codex). THE CRUX =
+target-vs-source shear: gFaithful's shearH is the OUTERMOST (target-side) shear = the cert-psi-mix danger. Resolve
+route (a) R-b SOURCE-reparam (α in source; domains = α-images of flatCube domains → reduce to the flatCube cover,
+ownCover_transport-clean — the adopted cert-psi-mix mitigation) vs (b) TARGET-shear fan cover (#142/#145 sheared
+route that reconciled the (3,3,4) ~2%). Verify ⋃ sheared-images ⊇ U up to null (corank-2 first, then general-d).
+PRICING (elder): detail-at-scale, NOT a monument (ownCover_transport + R-b atoms + #142/#145 exist) — but must NOT be
+ASSUMED (cert-psi-mix documented gap; #145 ~2% gaps). NOT a §3 re-open (§3 = value, de-risked; cover = distinct).
+STATUS: two parallel BUILD/probe lanes — the (3,3,4) V-lower VALUE fill (a69bf1080af66f602, hcover now open) + the
+hcover cover-gate scout (route + sheared-cover-closes?). Re-convene the elder: the hcover verdict + the first value
+fill + any cert-psi-mix gap.
