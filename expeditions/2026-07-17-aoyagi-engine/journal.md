@@ -25030,3 +25030,27 @@ requested from the builder. #185 CLOSED.
 NEXT (builder): (i)(a) leafPullback_sandwich — DERIVE the sandwich from the kept-survivor SUM (never assert; the
 mirage's last hiding place), FRESH, F1-gated; then the wire (rlctAt_sumSqFam over flatCube, ALL charts + #172 →
 rlct ≥ ½minAdm → 2rlct=cCodim). The V-lower crux ≥-half is now banked in the trunk.
+
+## 2026-07-26 (cont.) — (i)(a) leafPullback_sandwich DELIVERED @8cbebd8c3 (survivor => R>0-sandwich lower half); the M=1 "k=1 via kept-survivor" finding [#186]
+
+**DELIVERED [reroute-R2build] @8cbebd8c3** (branch aoyagi-r3brick, NEW DLN/Aoyagi/SurvivorSandwich.lean, pushed
+NOT merged). survivor_sandwich_lower: kept survivor f i0 cts at 0 with f i0 0 = 1; hpull (K = monomial^2 *
+sum_i f_i^2, OPEN — never discharged here) => (1/4) monomial^2 <= K near 0 (continuity => f > 1/2 => f^2 >= 1/4;
+SUM >= kept term via Finset.single_le_sum). chart_rlct_ge_half_of_survivor chains it into (i)(b). Clean-three
+(4-root #assert at kernel — meets the #184 F1 gate; F1 lemmas carry sorryAx so a green gate PROVES no route
+through them), F1-hole-free (hpull OPEN as FlatCubeLeaf.hpull, survivor FRESH from sumSq_residual, NOT
+ChartBridgeFaithful), G1 honored (sum lower-bounded by ONE summand, never a product), in-file non-vacuity
+witness (D=1). 
+
+**KEY MATH FINDING (name=content, routed to elder+reviewer as the honesty crux):** the sandwich is discharged
+at the SINGLE-survivor family M=1, NOT the full family — c * sum_k monomial_k^2 <= K is FALSE for the full
+family (non-survivor ratios vanish at the center). It doesn't need to hold: the RLCT is set by the DOMINANT
+(divisibility-minimal) monomial, so the M=1 lower bound gives the correct chartMin. Builder: this IS the elder's
+"k=1 via the kept-survivor"; so (i)(b), stated over a general family e, is USED at M=1. The decorrelated reads
+scrutinize: is M=1 sound, giving half minAdm (not something smaller)?
+
+MERGE gated on reviewer (Lean-fidelity) + elder (math, esp. the M=1 crux) + my axiom re-verify → then cherry-pick
++ wire + verify. NEXT (builder GO'd): the WIRE abstract (hpull per-leaf open) — rlctAt_sumSqFam_eq_iInf_charts +
+chart_rlct_ge_half_of_survivor over ALL flatCube leaves => rlct >= half minAdm, gated on hpull-per-leaf + #172;
+this makes the hpull obligation PRECISE, then discharge hpull (real (3,3,4) pullback algebra + #172) fills it.
+The V-lower now has BOTH halves (i)(b)+(i)(a) proven (i)(b) merged; (i)(a) delivered) — the wire + hpull remain.
