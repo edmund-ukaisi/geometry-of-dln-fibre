@@ -1326,3 +1326,28 @@ cartographer): reconcile #109's board-"completed" (the OLD ideal-route lower?) v
 flatCube-sandwich lower — is #109 superseded, or the same object? CAVEAT: the exists_coreResolution-is-the-only-gap
 claim is AxCheck's recorded comment (a fresh `#print axioms _via_engine` would confirm; it's in the
 informational-DIRTY section, known to carry sorryAx).
+
+### F1 CHECK caught a resurrection RISK (2026-07-26; reviewer kernel #print axioms + Codex xhigh; the elder's mandated contingency paid off)
+The elder mandated a decorrelated F1-hole-free check on the value substrate before the value build relies on it.
+VERDICT: the elder's structural read CONFIRMED (F1 inapplicable to a monomial blow-up — pivotChart det =
+monomial VANISHING on the divisor, not det-1; value rides the sandwich, not diagonalisation), BUT a precision +
+a live risk:
+- The COVER (flatCube_subset_leafPathImages / cubeBox_subset_iUnion_pivotChart_image / flatCubeLeafData_
+  perLeafClause) is genuinely CLEAN-THREE (kernel-verified). ✓
+- BUT leafPullback_geoAtlasNorm / chartBridgeFaithful_buildTree / leafDiagFrob_geoAtlasNorm (a `by sorry`,
+  category-FALSE for det-1) / GeoInvVal ARE the RETIRED F1 α-atlas hole — they carry sorryAx. Dead-isolated
+  (⛔ "DO NOT FILL" header, not aggregator-imported; the live deliverable uses the ideal-level route). A
+  declared frontier, not a hidden live hole.
+- RESURRECTION RISK: the ONLY built discharge of LeafPullback today is the F1 one (sorryAx). If #184 reaches for
+  leafPullback_geoAtlasNorm / chartBridgeFaithful_buildTree instead of proving the sandwich FRESH, it resurrects
+  the hole (Codex: "regardless of later blow-up terminology"). Correct posture (FlatCubeLeaf already follows):
+  keep LeafPullback OPEN until the blow-up-sandwich discharge is built from R2 (SurvivorFanCover.sumSq_residual).
+**MISS (mine + the elder's, mild):** I/the elder framed "the value substrate" loosely as flatCube/pivotChart/
+ChartBridgeFaithful, and my prior idle-tick calibration said "value machinery landed." PRECISE truth: the COVER
++ the value SPINE (rlctAt_sumSqFam_eq_iInf_charts etc.) are landed/clean, but the per-chart LeafPullback
+DISCHARGE (the sandwich) is NOT built — the only existing discharge is the F1 sorry, and #184 must build it
+FRESH. **HIT:** the mandated decorrelated F1 check caught this BEFORE the value build wired the hole in — the
+"hunt precedes trust" discipline working; a green cover ≠ a clean value discharge.
+**WHAT-IT-CHANGES:** #184 acceptance GATE adopted — the value headline #print axioms must be clean-three AND NOT
+route through {leafPullback_geoAtlasNorm, chartBridgeFaithful_buildTree, leafDiagFrob_geoAtlasNorm}. That single
+kernel check catches any accidental F1 re-wiring. Relayed to the builder (build (i)(a) fresh, never reuse those).

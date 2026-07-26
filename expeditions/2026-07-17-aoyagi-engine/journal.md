@@ -24982,3 +24982,13 @@ R>0-sandwich lower bound (takes the sandwich as hypothesis); building NOW in par
 F1-hole-free check. (i)(a) leafPullback_sandwich + downstream HELD on the F1 confirm. The build LANDING is the
 elder's decorrelated-read trigger. IN FLIGHT: builder (first value brick), reviewer (F1-hole-free on
 LeafPullback/ChartBridgeFaithful), scout (G2 rlct-additivity-scope build-vs-cite, general-d).
+
+## 2026-07-26 (cont.) — F1-check VERDICT: cover CLEAN-THREE, but ChartBridgeFaithful/leafPullback_geoAtlasNorm = the LIVE F1 hole (sorryAx); #184 must build the sandwich FRESH (resurrection-risk gate adopted)
+Reviewer (kernel #print axioms + Codex xhigh): elder's structural read CONFIRMED (F1 inapplicable to the
+monomial blow-up sandwich). The COVER (flatCube etc.) is clean-three ✓; but leafPullback_geoAtlasNorm /
+chartBridgeFaithful_buildTree / leafDiagFrob_geoAtlasNorm (by-sorry) / GeoInvVal ARE the retired F1 α-atlas hole
+(sorryAx, dead-isolated). RISK: the only existing LeafPullback discharge is the F1 sorry → #184's
+leafPullback_sandwich MUST be built FRESH from R2 (SurvivorFanCover.sumSq_residual), LeafPullback kept OPEN,
+never reuse the F1 discharge. ADOPTED #184 GATE: value headline #print-axioms clean-three + NO route through the
+3 F1 lemmas. Codex corroborated the plan: blow-up det-vanishing alone ≠ sandwich; #172 recursion load-bearing.
+(i)(b) chart_rlct_ge_half_chartMin [#185, F1-independent] unaffected. Elder + builder informed; calibration banked.
