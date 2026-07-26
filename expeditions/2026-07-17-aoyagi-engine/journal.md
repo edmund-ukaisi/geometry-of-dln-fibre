@@ -24992,3 +24992,21 @@ leafPullback_sandwich MUST be built FRESH from R2 (SurvivorFanCover.sumSq_residu
 never reuse the F1 discharge. ADOPTED #184 GATE: value headline #print-axioms clean-three + NO route through the
 3 F1 lemmas. Codex corroborated the plan: blow-up det-vanishing alone ≠ sandwich; #172 recursion load-bearing.
 (i)(b) chart_rlct_ge_half_chartMin [#185, F1-independent] unaffected. Elder + builder informed; calibration banked.
+
+## 2026-07-26 (cont.) — FIRST VALUE BRICK delivered: chart_rlct_ge_half_chartMin (the per-chart V-lower ≥-half, the crux new content) — proven green, F1-independent, clean-three [#185]
+
+**DELIVERED [reroute-R2build] @58ac4e460** (branch expedition/aoyagi-r3brick, Core/Aoyagi/ChartValueLower.lean,
+network-free): chart_rlct_ge_half_chartMin — the PER-CHART V-LOWER ≥-half. With W = jacWeight·unit + the
+sandwich lower half (c·∑monomialₖ² ≤ K, c>0): chartMin = (bindingAxes (e k₀)).inf'(h+1) ≤ 2·wrlctAt W K 0.
+Proven green (full proof, NOT a skeleton), F1-INDEPENDENT (sandwich as hypothesis — no LeafPullback/
+ChartBridgeFaithful), 1-root clean-three, no clashes. 3-lemma composition (monomialSumSq_two_mul_wrlctAt_eq_min
++ wrlctAt_const_mul + wrlctAt_mono_of_eventually_le) — the banked spine lemmas WIRE (confirms the calibration).
+G1 honored (R a SUM, R(0)=1≥c, NOT a product); {monomial=0} null-guard = explicit hypothesis (discharged
+downstream by the Core poly-null brick).
+
+This is the CRUX new content of the whole V-lower (the ≥-half the entire route rests on) — so it's audited
+hardest: reviewer Lean-fidelity (statement=content, non-vacuous, sandwich-hyp-honest, clean-three + no F1
+lemmas, G1) + elder decorrelated math read (vindicated R>0 route not forward-only? right ≥-half?) + controller
+axiom re-verify (force-elab, no F1 route). On all-clean → merge to trunk. Builder GO'd on the NEXT piece: (i)(a)
+leafPullback_sandwich FRESH from R2 (discharges this atom's sandwich hypothesis; F1-gated-then-fresh), then the
+wire (rlctAt_sumSqFam over flatCube, per chart → rlct ≥ ½minAdm → 2rlct=cCodim). The value assembly is moving.
