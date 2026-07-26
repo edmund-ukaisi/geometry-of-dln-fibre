@@ -26856,3 +26856,23 @@ generically UPPER bounds.
 ACTIONS: elder acked + GIVEN THE WORD to author the compass calibration note (I commit). Rework seat: (ii) UNBLOCKED (build
 regular-seq + Ψ, or a separate (ii) formaliser; the Ψ-W3-gate + g_c∘Ψ-cover at the def landing). NEXT: (ii) build + B's
 clean-144 + hjac/divisorMin → the all-288 wire case-split assembly → (3,3,4).
+
+## 2026-07-26 — SIGNAL(3): (A-rework)+(C) COMPLETE (clean-three, W3-verified) — whole-conjugate fan + hcover + ek₀ + hjac + divisorMin≥8
+The rework seat (a071ddb87a8c32348) landed (A-rework)+(C), clean-three, pushed @2583a6bd1 (aoyagi-r2wholeconj-fan):
+- Corank2NativePerm334: 9 conj-permP atoms + nativeChart1 + covers/|jacDet|=1/differentiable.
+- Corank2NativeFan334: whole-conjugate fan (permuted native centres sigmaC1Fs/sigmaC2Fs), nativeFan_covers, gFin over the
+  DEPENDENT Σ p1,σC1×σC2 (=288), native_hcover (full cover ball 0 1), blockBlowupMap_conj characterization.
+- Corank2NativeValue334: ek₀ (pivot-cross) + hbind/hunit_mult/bindingAxes_ek₀/pivots_distinct.
+- Corank2NativeJac334: abs_jacDet_gFlat (=|u_p1|^8·|(bb σC2 p3 u)_p2|^7·|u_p3|^3), jacExp, hjac_gFlat/hjac_gFin (unit≡1),
+  divisorMin_ge_eight (8 ≤ inf').
+- WEAKENED (reviewer-blessed, no external consumers): rlctAt_ge_four_of_half_divisorMin/_of_family/_of_survivor_entries
+  hdivisorMin =8 → 8≤ (matches divisorMin_ge_eight).
+VALUE-FIDELITY: gFin == whole_conj 288/288 (sympy); W3 grep-gate clean (controller pre-verified the fan). = the COVER +
+DATA side of the (3,3,4) V-lower, a MAJOR clean-three landing (the STOP-SHIP recovery's cover/data half done).
+ACTIONS: (1) FIDELITY REVIEWER spawned (load-bearing gFin = whole_conj [NOT the value-broken §2 fan] + divisorMin≥8 +
+weakened reduction + native_hcover + W3 + clean-three). (2) (ii) SEPARATE FORMALISER spawned (agreed: (A-rework)+(C) a
+clean unit; (ii) = regular-sequence + Ψ, parallelizes; from the pnp 16-type table + the substrate gFin/hcover/jacExp;
+over-vanishing charts = gFin∘Ψ; def-gates Ψ-W3 grep + g_c∘Ψ cover). (3) AGGREGATOR (4 modules → DLNFibre.lean, single-writer)
+DEFERRED to the complete-headline merge.
+NEXT: reviewer clean + (ii) regular-sequence + B's clean-144 → the all-288 wire case-split assembly (per-chart hsandwich:
+clean-exact via B OR over-vanishing-nested via (ii)) → unconditional (3,3,4) → merge + aggregator → +V-upper → summit → payoff.
