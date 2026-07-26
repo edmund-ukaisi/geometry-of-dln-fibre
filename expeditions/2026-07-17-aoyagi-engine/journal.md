@@ -25995,3 +25995,14 @@ hcover OPEN. NOT re-opened §3 (the pnp's exact value de-risk stands until the e
 tension). The (3,3,4) cover geometry is GOOD; the open items are W3-cleanliness of the marriage + the general-d (ii)
 value question. Re-convene the elder: W3 marriage + chart-match + general-d (ii). Value fill (a69bf1080af66f602)
 continues (hcover open).
+
+## 2026-07-26 (cont.) — hcover scout sharpening: hcover has NO independent W3 debt; flags 1+2 collapse to ONE value-side W3 question
+The hcover scout sharpened the W3 scoping: hcover (volume(U ∖ ⋃_c g_c''dom_c)=0) reads ONLY the chart IMAGES, never
+the survivor. The marriage splits: IMAGE half (⋃_c g_c''dom_c = gWrapFan.leafImages) = cover-only, W3-CLEAN + FREE
+once g_c is fixed to the exact fan-leaf composites (image-equality DEFINITIONAL); SURVIVOR half (the sandwich) =
+hsandwich, the value seat's SEPARATE per-chart obligation. ⟹ flags 1+2 COLLAPSE into ONE VALUE-SIDE W3 question: is
+the VALUE family (g_c) = the exact BORN survivor-carrying fan-leaf composites (native), NOT a K-orbit skeleton? If
+the elder rules that family W3-clean, hcover discharges as a COROLLARY (recipe steps 1-2-4 + the definitional image
+half) — the cover side has NO independent W3 debt. So the W3 verdict is a VALUE-side verdict, tied to the born-α
+being NATIVE (the value gate); flag (1) is NOT a cover risk (mis-scoping avoided). Flag 3 (general-d (ii)
+monument-vs-labor) remains the separate reconciliation. Forwarded to the elder. hcover scout resting.
