@@ -26691,3 +26691,17 @@ feeder needed, prefer (a) native over-vanishing hentry (B scope → full 32); (b
 NET: both residuals non-blocking for soundness; (B) hentry scope EXPANDS from ×9 to the full 32-canonical (native, per the
 elder lean) — bigger detail-at-scale, bounded. Re-convene elder at chart def landing (grep-gate) + (B) hentry (full 32) +
 assembled (3,3,4).
+
+## 2026-07-26 — elder: grep-gate STANDS (W3 closure) + pnp-diff upgraded to RECOMMENDED (both at the def landing)
+Elder confirmed the residual de-escalation + held firm on ONE thing: the W3 GREP-GATE at the rework's chart def landing
+STANDS as the load-bearing W3 verification. The de-escalation of residual (1) is 'not a VALUE gate' — do NOT read it as
+'W3 closed'; the grep-gate is NOT relaxed (native construction; no ∘gWrap∘/canonical-conjugation in the def; centres
+native or σ⁻¹C + the native-match theorem; no Transport334/conjResolution/resolution334_of_fanCover).
+Over-vanishing (2) = BENIGN (higher-order + HIGHER jac ⟹ threshold ≥4.5, the OPPOSITE of the F8 low-jac poison) — the 144
+are valid ≥4 feeders; restrict-or-keep both sound (rlct≥4 either way), a cover-mechanism call.
+The pnp-diff (fan seat's stepUpdate NATIVE signatures vs the pnp's 288 conjugated signatures) UPGRADED from optional to
+RECOMMENDED — a cheap W3-FIDELITY closure (native leaves MATCH conjugated signatures ⟹ native build = the intended charts
+= description ↔ construction agree), complementary to the grep-gate. CONTROLLER: run BOTH (grep-gate + pnp-diff) at the
+rework chart def landing; the pnp holds the conjugate side (ready).
+NET: STOP-SHIP value CLOSED; both residuals downstream/non-blocking; the ONLY load-bearing W3 check remaining = the
+grep-gate (+ the pnp-diff) at the def landing. Nothing to re-litigate.
