@@ -154,6 +154,27 @@ theorem monoSumSqGerm_le_sumSqFam_comp {D Mn : ℕ}
     _ ≤ ∑ k, (vf k (Ψ u)) ^ 2 :=
         Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ S) (fun k _ _ ↦ sq_nonneg _)
 
+/-- **The lean regular-sequence domination (piece 4, entry form).** Reduces the per-type obligation
+to just the 8 REGULAR-SEQUENCE entry identities `F k (gΨ u) = vm(u) · u_{zc k}` (`hentry`, `k ∈ S`)
+— each bundling the pullback and the `Ψ`-straightening for one reg-seq entry. With `zc` mapping `S`
+bijectively onto the `jac`-free block `Z` (`hzc_inj`, `hzc_img`), the product germ `vm²·∑_Z z²`
+equals `∑_{k∈S} (F k (gΨ u))²`, which is `≤` the full loss `∑_k (F k (gΨ u))²` (drop the non-reg-seq
+squares). No full 12-entry pullback needed — only the 8 nice entries. -/
+theorem monoSumSqGerm_le_of_regSeq_entries {D Mn : ℕ}
+    {F : Fin Mn → (Fin D → ℝ) → ℝ} {gΨ : (Fin D → ℝ) → (Fin D → ℝ)}
+    {vmExp : Fin D → ℕ} {S : Finset (Fin Mn)} {Z : Finset (Fin D)} {zc : Fin Mn → Fin D}
+    (hentry : ∀ u, ∀ k ∈ S, F k (gΨ u) = (∏ d, (u d) ^ (vmExp d)) * u (zc k))
+    (hzc_inj : ∀ x ∈ S, ∀ y ∈ S, zc x = zc y → x = y) (hzc_img : S.image zc = Z)
+    (u : Fin D → ℝ) :
+    monoSumSqGerm vmExp Z u ≤ sumSqFam (fun i ↦ F i ∘ gΨ) u := by
+  have hstep : monoSumSqGerm vmExp Z u = ∑ k ∈ S, (F k (gΨ u)) ^ 2 := by
+    unfold monoSumSqGerm
+    rw [Finset.mul_sum, ← hzc_img, Finset.sum_image hzc_inj]
+    exact Finset.sum_congr rfl fun k hk ↦ by rw [hentry u k hk]; ring
+  rw [hstep]
+  simp only [sumSqFam, Function.comp_apply]
+  exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ S) (fun i _ _ ↦ sq_nonneg _)
+
 /-- **`jacWeight` is invariant under a map fixing every binding axis.** If `Ψ u d = u d` at every
 `d` with `h d > 0`, then `jacWeight h (Ψ u) = jacWeight h u` (the non-binding axes contribute
 `|·|^0 = 1` regardless). Feeds the `Ψ`-folded chart weight: the over-vanishing `Ψ` keeps `supp(vm)`,
