@@ -24962,3 +24962,23 @@ superadditivity + the RLCT-value wire (→ 2rlct=cCodim, BYPASSING exists_coreRe
 SAME pivotChart/flatCube charts (elder: natural marriage, old-W1 dissolved). GATES: reviewer F1-hole-free check
 (in flight) + a reviewed PLAN before the build. Elder authoring the compass F-entry (value-home-move) + final
 charter §3 (I commit). Builder specifying the value-side plan.
+
+## 2026-07-26 (cont.) — Elder F11 + §3 COMMITTED; value-side PLAN approved; first value brick GO'd (chart_rlct_ge_half_chartMin, F1-independent)
+
+**Elder artifacts committed (elder-authored, controller-committed per ownership protocol):** compass F11 (the
+value-substrate move → pivotChart/flatCube; cover done via the engine; W3-clean verified 2 ways; born-fan =
+cover de-risk; R3 remaining = value side) + charter §3 consolidated (the essential anti-transport W3 tripwire,
+superseding both the CONCRETE-LEAN-TRIPWIRE and the VALUE-SIDE-COMPANION blockquotes; GUARDRAIL-0 + RETIRED
+paragraphs left as-is). §3 net one paragraph shorter.
+
+**Value-side PLAN approved (#184):** the spine 2rlctAt=cCodim rides a BANKED chain (rlctAt_sumSqFam_eq_iInf_
+charts + two_mul_rlctAt_eq_divisorMin + atlasRealizesExponents_334 + Object D + V-upper); V-LOWER = the new
+content = the R>0 sandwich (G1-honored: R_c a SUM with kept survivor, not a product) + the #172 {R=0} recursion
+(null via the existing Core poly-null brick). Cover+value on the SAME pivotChart charts (elder's natural-W1).
+G2 superadditivity DEFERRED (general-d only; not needed for the (3,3,4) single-chain).
+
+**FIRST VALUE BRICK GO'd:** (i)(b) chart_rlct_ge_half_chartMin — the F1-INDEPENDENT abstract per-chart
+R>0-sandwich lower bound (takes the sandwich as hypothesis); building NOW in parallel with the reviewer
+F1-hole-free check. (i)(a) leafPullback_sandwich + downstream HELD on the F1 confirm. The build LANDING is the
+elder's decorrelated-read trigger. IN FLIGHT: builder (first value brick), reviewer (F1-hole-free on
+LeafPullback/ChartBridgeFaithful), scout (G2 rlct-additivity-scope build-vs-cite, general-d).
