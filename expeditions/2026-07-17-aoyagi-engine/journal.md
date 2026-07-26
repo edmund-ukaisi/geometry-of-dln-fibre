@@ -27492,3 +27492,33 @@ per-true-φ cover + firm the final merge plan [patternA @834574953, patternB @94
 STATE: H1 VERIFIED+LOCKED; H2 = ALL 16 canonical built (template VERIFIED + A/B review-gating) + transport (crux green +
 assembly steps 1-5 + step-6 scaffold); H3 = only the step-6 spine. NEXT: A/B reviews clean + transport step 6 (∀-144
 canon_domination) → merge (navigator plan) → close step-6 spine → 4 ≤ rlctAt → unconditional (3,3,4).
+
+## 2026-07-26 — NAVIGATOR FINAL MERGE PLAN (firmed, all SHAs live; both convergence risks CLEAN across all 16 canonical)
+Navigator (aaec01) closed the A-half + firmed the plan. ALL 16 canonical over-vanishing leaves verified source-level:
+- RISK-2 (namespace) CLEAN: all 15 leaf namespaces (7 OverVanishA_20_* + 8 OverVanishB_20_*) distinct + ≠ OverVanishCanon334;
+  zero qualified-name collision across the 16-canonical set.
+- RISK-1 (cover-atom labels) CLEAN, no under-cover: per-true-φ degrees match the corrected labels exactly (A: 5 cubic
+  [1_6,1_7,5_5,5_6,5_7] + 2 quadratic [1_5,5_1]; B: 6 cubic + 2 quadratic [6_7,7_6]). All 15 sorry=0. Both pattern seats
+  off 8113eb62c pre-label-fix but used the correct degrees INDEPENDENTLY (the MD-only fix never needed).
+★ FINAL MERGE PLAN (firmed, conflict-free by construction):
+  BASE = pertype tip 27d6d8284 (carries wholeconj A-rework+C, SPECIFY Core, NativeEntry334, OverVanish334, Canon334,
+  Transport334; leaves depend on Canon334/OverVanish334 → pertype is the correct base). Then merge:
+  1. tonelli 674f682f6 — Core CLOSE; 3-way AUTO-takes the closed file (byte-identical sorried base); auto-discharges the
+     bridge's propagated Tonelli hole.
+  2. regseq 8a687824e — OverVanishAssembly334 (step-6 spine, the SOLE remaining sorry Assembly334:65) + skeleton.
+  3. clean144 ec9ab4f60 — 3 Clean files (independent lane).
+  4. patternA 834574953 — 7 OverVanishA_* leaves.
+  5. patternB 940224c42 — 8 OverVanishB_* leaves.
+  6. CONVERGENCE (controller + (ii)): close Assembly334:65 (wire the 16 leaves via Transport334's ∀-144 canon_domination +
+     clean_hentry into the spine's hint); register chain-tops in DLNFibre.lean + AxCheck.lean; force-rebuild + #print axioms
+     on the unconditional headline (clean-three; sorryAx GONE).
+FINAL AGGREGATOR (16-canonical + wiring): Corank2OverVanishCanon334 + 7 A + 8 B + Transport334 + Assembly334; chain-tops:
+HeadlineValue334, CleanHentry334, OverVanishTransport334, OverVanishAssembly334 (+ the 16 leaves, or let Transport334/
+Assembly334 pull them).
+CONVERGENCE SEQUENCE (once the transport step-6 lands + the 2 pattern reviews clear): (a) execute the merge (base=pertype
++ 5, conflict-free); (b) WAKE (ii) to close Assembly334:65 (the step-6 spine) on the merged trunk [it built the skeleton];
+(c) aggregator wiring; (d) force-rebuild #print axioms on the unconditional headline `4 ≤ rlctAt(sumSqFam(coreGen dvec
+eWrap)) 0` = clean-three, sorryAx gone.
+STATE: H1 VERIFIED+LOCKED; H2 = all 16 canonical built (source-clean per navigator; A/B fidelity reviews running) +
+transport (crux green + assembly steps 1-6 in build); H3 = close Assembly334:65 at convergence. Merge plan FIRMED +
+conflict-free. NEXT: transport step-6 + A/B reviews clear → execute merge → (ii) close the spine → unconditional (3,3,4).
