@@ -25900,3 +25900,23 @@ the acyclicity for the PROPOSED α shape (interior schurCells + cross-layer flat
 BUILT (construction labor), but its composition-acyclicity — the elder's specific worry — is now verified, row 0
 included. ⟹ LANE B IS FULLY CLEARED (composition CLEAN + the acyclicity confirm airtight). §3 remains
 PENDING-LANE-A (the leaf-type-coverage co-gate = the ONE open §3 gate; lane a running).
+
+## 2026-07-26 (cont.) — ELDER: (ii) α-construction CREDITED; §3 = PENDING-LANE-A with PRE-AUTHORIZED auto-promote (non-blocking); 3 gates, one open
+The elder credited (ii) [the general-d α = within-layer schurCells + a cross-layer flatElemShear fold, entanglement-
+clean] as clean construction LABOR (not a risk) — a real strengthening. SHARP DISTINCTION locked: α-BUILDS-cleanly
+(construction, CLEARED) ≠ α-EXPOSES-a-survivor-at-every-leaf (GEOMETRY = lane a). The α can be flawless det-1 AND
+still fail to clean-expose a survivor at an S2-survives-shear leaf (the residual genuinely survives the shear =
+geometry, not a construction defect) — there the bound comes from #172, not the shear. So (ii) CANNOT substitute for
+lane (a). THREE gates for §3-SATISFIED: (1) entanglement CLEARED (lane b + acyclicity airtight); (2) α-construction
+CLEARED (clean labor); (3) LEAF-TYPE COVERAGE (does {one-born-shear ∪ #172} cover all singular types?) = lane a, the
+ONE still open.
+PRE-AUTHORIZED AUTO-PROMOTE (elder ruling, NON-BLOCKING — recorded as a controller standing instruction): the MOMENT
+lane (a) confirms ALL S2-survives-shear types INSIDE #172 (bounded), the controller flips charter §3 → SATISFIED
+DIRECTLY, no re-convene (elder-approved on clean lane-a). If lane (a) finds an OUTSIDE-#172 type → surface the
+objects-only decision (operator-gated) + re-convene the elder. WHY not promote-now-with-lane-a-tracked-open: this is
+the fidelity tripwire's OWN promotion ("the ledger is not the geometry"); declaring SATISFIED while its last hunt is
+in flight = the visible-progress trap. The asymmetry: the hold costs a short wait; a mislabeled fidelity-SATISFIED
+that lane a then contradicts costs a walk-back of the expedition's biggest claim. Cheap insurance.
+STATUS: the de-risk arc is complete but for lane (a): 3a + general-d YES + composition CLEAN (+ acyclicity airtight)
++ α-construction clean labor. §3 = PENDING-LANE-A, one gate short, auto-promote pre-authorized. Lane (a) pinning
+(a7857e48490cadc97) is the SINGLE pivotal remaining lane (decides §3-promote AND the formaliser fill scope).
