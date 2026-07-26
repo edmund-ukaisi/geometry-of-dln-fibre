@@ -1255,3 +1255,16 @@ all-findings-in, merge-ready SHA = X" (not just "fixes done"); (b) `git fetch` +
 immediately before merging; (c) if I've routed a NEW finding after the seat's last push, that push is NOT
 final — wait for the re-push. Cheap, and it closes the crossing-race that bit twice. (Generalizes the
 calibrate-the-sensor rule to the MERGE boundary: confirm the artifact identity, not just its greenness.)
+
+---
+
+## 2026-07-26 — PROCESS WIN: a SEPARATE decorrelated seat caught a de-risk's framing error
+
+The #177 hchart-derisk (one seat) framed hchart as the OUTPUT-generator survivor cover (ι = 12 coreGen
+entries). The corr-derisk (#180) — a SEPARATE decorrelated seat I fired for the correspondence, NOT a
+re-engage of #177 — found ι=12 is the WRONG index family for a NODE (hchart is false for any many-to-one
+output-gen→pivot map; the node cover is the pivot-COORDINATE full-cover, 2↔2). Had I re-engaged the #177 seat
+for the correspondence, it would likely have carried its own output-generator framing; the fresh decorrelated
+seat caught it. LESSON (reinforces decorrelated-gating): for a de-risk that REFINES a prior de-risk's framing,
+use a FRESH seat, not a re-engage — the decorrelation is the sensor, and same-seat continuation correlates the
+error. Cost: one extra spawn. Value: caught a wrong-index-family build before the builder specified it.

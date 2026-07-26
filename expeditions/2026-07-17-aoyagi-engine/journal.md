@@ -24684,3 +24684,33 @@ zero-set of a coreGen product-poly is null) AND is the exact brick G2 (direct-su
 Fidelity review re-engaged [#182, r2build-review] → on clean, controller FF-merges to trunk + aggregator import.
 The R3 first-brick #178 (correspondence + hchart) lands later on the same branch (after corr-derisk #180
 adjudicates + this brick discharges hnull). Parallel: (a) corr-derisk #180 still adjudicating the crux.
+
+## 2026-07-26 (cont.) — R3 (a) corr-derisk: CORRECTS #177 framing — node cover = pivot-coord FULL cover (not output-gen); node/leaf layering; {0,1}=toy center
+
+**#180 [corr-derisk, decorrelated exact-algebra + Codex converged; threads/reroute-R3-corr/corr-derisk.md].
+Kill-condition NOT triggered (R3 = build, (A) unchanged) — but it CORRECTS the #177 hchart-derisk's framing
+(a decorrelated catch; exactly why I ran a SEPARATE seat, not a re-engage of the ideal-side one).**
+- **THE NODE COVER is indexed by the PIVOT COORDINATES** (at the {0,1} node, ι = {x0,x1}, identity map 2↔2),
+  NOT the 12 output coreGen generators. Output-gen index = WRONG family: a col-1 gen X[i][1] is independent
+  of x0,x1, its survivor region straddles BOTH thin sets ({x0=0,x1≠0} and {x1=0,x0≠0}), each pivot's image
+  misses one ⟹ hchart FALSE for any many-to-one assignment (explicit witnesses). Codex: "wrong-index-family,
+  not need-more-charts."
+- **NODE FAN COVERS: YES, 2 charts, FULL cover** — image(pivot0)∪image(pivot1) = whole box (each thin set
+  covered by the OTHER pivot). First brick = CoverFold.bornSiblings_union_covers_closed + shearH_covers,
+  fR=R+2R² → ImageTree node clause TRIVIALLY (empty diff, no hnull, no output generators). Cleaner + simpler
+  than #177 framed.
+- **ARCHITECTURE LAYERING (flag 1):** the born charts do NOT monomialise the loss at a node (loss lowest-deg-4,
+  a SUM of square-monomials). The sandwich R(0)=1 is a LEAF property (full-composite gWrap), NOT a node
+  property. So node_clause_of_survivorAtom (SurvivorFanCover's OUTPUT-gen form) is the LEAF/VALUE side,
+  MISMATCHED for the node ⟹ add a FULL-COVER node-clause variant. NODE = input-pivot full-cover; LEAF
+  monomialisation (SurvivorFanCover output-gen + tube-cover #169 loss-regularity) = the value layer. (Nothing
+  merged is wrong — SurvivorFanCover re-understood as leaf/value; the fold engine is general.) Routed to the
+  ELDER (architecture gate).
+- **FIDELITY (flag 2):** {0,1} is NOT a real gWrap node center (gWrap: {0..7,20},{0..7},{1,5,6,7}). A single
+  {0,1} node = a legit SET-cover first brick but doesn't resolve (3,3,4) alone. Builder confirming the REAL
+  node centers + leaves-monomialise (productive prep, doesn't need the elder).
+- W3 CLEAN (born route, never gWrapFan/K-orbit).
+
+**ACTIONS:** first brick [#178] RE-SCOPED to the full-cover node clause, HELD for the elder's architecture-
+confirm; builder doing the flag-2 real-centers recon meanwhile; corr-derisk released (on-call). The (b) brick
+[#181] + its review [#182] proceed (hnull for the LEAF/VALUE side + G2 still use it). Destination (A) unchanged.
