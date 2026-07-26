@@ -26652,3 +26652,20 @@ compass.md from their own worktree get a STALE compass (tops out at F8; pnp flag
 the authoritative framing + the thread F5-F10 have the substantive notes) but: FUTURE BRIEFS should point seats to the
 ROOT compass absolute path (/home/ubuntu/.../aoyagi-engine/root/expeditions/.../compass.md) or the thread F-notes, NOT
 "compass F12/F13/F14" (absent on their branch).
+
+## 2026-07-26 — pnp clarification: both STOP-SHIP residuals are NON-VALUE-GATING (value CLOSED)
+The pnp sharpened the two residuals (both downstream, non-blocking; the STOP-SHIP value question CLOSED — double-certified
+≥4 all 288):
+(1) COMPLETENESS/EQUIVARIANCE = a BUILD-FIDELITY question (is the fan the native stepUpdate output vs a transport/
+conjugate), NOT a value gate — the ≥4 bound needs only (valid charts ≥4 [done]) + (they cover [hcover's job]); neither
+needs '288 = the algorithm's native output'. SUBSUMED by the rework's W3-clean direct-at-native-centres build + the
+controller grep-gate. Optional pnp-diff (288 conjugated leaf signatures vs the fan seat's stepUpdate native signatures) =
+the cheapest build-fidelity closure test, if the fan seat wants it (pnp holds the conjugate side).
+(2) 144-OVER-VANISHING do NOT threaten the value — each exact-certified rlct ≥ 4 (over-vanishing here = higher-order +
+higher jac, LP-confirmed ≥4, UNLIKE the F8 mis-shear rlct 0.5). Only a COVER-mechanism question: clean-144-cover →
+restrict; else the over-vanishing 144 are VALID ≥4 feeder charts (keep, via DomainSandwich.sandwich_on_domain_of_survivor).
+rework/(B) call, both fine.
+ACTIONS: elder updated (residuals de-escalated, likely non-blocking); rework seat (a071ddb87a8c32348) forwarded
+(over-vanishing valid ≥4 feeders; equivariance subsumed by W3-build); pnp ready-assets noted (the signature-diff closure
+test). NET: STOP-SHIP fully CLOSED on the value; the rework proceeds; the residuals are downstream mechanism/fidelity,
+not gates.
