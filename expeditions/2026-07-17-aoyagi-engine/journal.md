@@ -27217,3 +27217,26 @@ branch → the over-vanishing trunk (aoyagi-r2overvanish-regseq) → (ii) discha
 facts → the bridge closes → 4 ≤ rlctAt → (3,3,4).
 STATE: clean-144 COMPLETE+locked; interface CLEAN; H1 CLOSED (review-gating); H2 building; H3 resting. 2 holes left
 (H2 per-type, H3 spine), both detail-at-scale, both owned.
+
+## 2026-07-26 ★ H1 VERIFIED — Tonelli PROOF review CLEAN (kernel force-recompile + Codex SOUND); the analytic crux locked
+The Tonelli-proof fidelity reviewer (a10d53) returned CLEAN — KERNEL-verified (olean DELETED + SOURCE HASH CHANGED to
+force FULL re-elaboration; transitive collectAxioms) + decorrelated Codex red-team SOUND:
+(a) AXIOM ground-truth: monoSumSq_integrableAtFilter_of_lt + all 3 atoms = clean-three, transitive (whole closure
+    sorry-free), no sorryAx/cite/native_decide.
+(b) STATEMENT byte-identical to the SPECIFY-locked base (aadc0c271); only the -- map comment moved. No silent weakening.
+(c) AMENDMENT A honest: coupled integrand W·(vm²·∑z²)^{-cc} = g·unit on B (hival), dominated g·|unit| ≤ g·Mub
+    (Mub=|unit p|+1 from ContinuousAt), Integrable.mono' off g; the UNIT-FREE g factors over Z⊔Zᶜ (piEquivPiSubtypeProd +
+    prod_restrict + Integrable.mul_prod). NO product-of-integrals through the unit. Codex concurs.
+(d) 3 atoms sound (boxSumSqNegPow_integrableOn_fin via sumSq_ofLp+ofLp+integrableOn_ball_norm_rpow_iff;
+    boxSumSqNegPow_integrableOn piCongrLeft reindex; boxProdRpow_lintegral_lt_top via prodRpow_boxSymm_lt_top).
+(e) un-privating (only prodRpow_boxSymm_lt_top, one decl, no clash) + Core dependents build clean (8264 jobs).
+(f) diamond-dodge (letI Subtype.fintype) legit, mathematically inert (hcardN bridges).
++ FIDELITY SHARP: monomialThreshold a jac, the 2 absorbing vm²'s squaring (kexp=a); the two strict hyps = cc<monoSumSqThreshold
+  = full open convergence region; non-vacuous (Codex witness).
+⟹ H1 (the analytic crux) is DECORRELATED-VERIFIED + LOCKED: seat-closed + reviewer-CLEAN-kernel + Codex-SOUND.
+MINOR (agreed, no action): (1) hunit0 unused — LEAVE AS-IS (removing = a fidelity edit on the locked signature; the future
+two-sided =min needs it; a genuine chart-unit IS nonvanishing). (2) cosmetic lints (push_cast noop L180, show→change L349,
+long lines in MonomialRLCT) → merge cleanup.
+HOLES: H1 ✓ VERIFIED+LOCKED; H2 (per-type + cubic-cover) building (a3f030); H3 (step-6 spine) (ii) resting. 2 holes left,
+both detail-at-scale, both owned. The analytic crux (the hardest) is behind us.
+NEXT: per-type facts (H2) land → merge Tonelli + per-type → wake (ii) for H3 → 4 ≤ rlctAt → unconditional (3,3,4).
