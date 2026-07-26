@@ -25354,3 +25354,32 @@ CONVERSION ⨅ monomialThreshold → ½·minAdm=4: SEPARATE + LIGHT downstream b
 BANKED-CLEAN provenance (scout-verified clean-three): the 5 hideal/jac atoms above + exists_ball_subset_gWrapFan_
   leafImages + flatCube_subset_leafPathImages + the ImageTreeCover fold. F1-plan: every recipe atom routes through
   these, NONE through {leafPullback_geoAtlasNorm, chartBridgeFaithful_buildTree, leafDiagFrob_geoAtlasNorm}.
+
+## 2026-07-26 (cont.) — ELDER W3 RULING: Strategy A (K-transport) FORBIDDEN + UNNECESSARY; the discharge is TRANSPORT-FREE (general-d V-wire at (3,3,4)) → pre-delegation scout check
+The elder ruled the concrete-discharge crux fork (decisive, clear):
+  Q2 (W3, decisive): Strategy A (K-conjugate TRANSPORT of the Bézout via Corank2Transport334/MonumentAtlas) is
+    W3-FORBIDDEN — the exact §3 tombstone move, the retired route-P/O1 re-entering (the gate-routeB WALL, the dead
+    route a THIRD time). Do NOT delegate ANY K-conjugation lane. Full stop.
+  AND — the crucial simplification: Strategy A is UNNECESSARY. Every wire per-leaf hyp is supplied W3-clean,
+    general-d, BORN: hpull DEFINITIONAL (∑(Fᵢ∘g)²=loss∘g); hsandwich ← R2 survivor_sandwich_lower/sumSq_residual
+    (kept survivor, general-d, merged); hjac/hg_inj ← pivotChart (jacDet_comp, general-d); hcover ← flatCube
+    (flatCube_subset_leafPathImages); hbdd ← V-upper; {R=0} ← #172 ImageTreeCover recursion (born, per-node). So
+    the discharge is the GENERAL-d V-wire route AT (3,3,4), transport-free — gWrap's fan is NOT on the crit path.
+  Q1 (cover): runs over flatCube/pivotChart (W3-clean, #183/F11), NOT gWrapFan (K-orbit fan = retired). gWrap
+    (SINGLE chart) is itself W3-clean; its proven hideal is usable for the canonical leaf ONLY IF that flatCube
+    leaf = gWrap up to a RELABEL (qNodeOf-style, W3-clean), NOT K-conjugation (confirm).
+  Q3 (bwd vs sandwich): for (3,3,4) gWrap's bwd is PROVEN+F1-clean ⟹ a banked lemma, NOT the avoided monument
+    (the monument is GENERAL-d principality). But it's not the general-d route + masks whether the sandwich route
+    discharges general-d (shallow-instance confound). RULING: discharge the canonical leaf via the SURVIVOR
+    SANDWICH too (general-d faithful); bwd/global-R>0 OK only as a separately-labeled "(3,3,4) milestone via the
+    proven instance," never conflated, never travelling as "recursion-free."
+  Q4 ((B)-fallback): the ImageTreeCover recursion for genuine {R=0} strata IS the route (Strategy B, W3-clean,
+    terminates, born). Strategy A is not a fallback — it's the dead route.
+DELEGATION GATE (elder-mandated pre-check, re-engaged the recon scout): (a) does R2-survivor cover ALL flatCube
+  (3,3,4) leaves (flag any {R=0}-miss → #172)? (b) canonical↔gWrap = relabel (qNodeOf) not K-conjugation? On the
+  scout's confirmation → delegate the transport-free discharge to a fresh formaliser (survivor + pivotChart +
+  flatCube + V-upper + #172), NO K-transport/gWrapFan lane. gWrap's proven hideal = a CONFIDENCE bonus, not a dep.
+CALIBRATION: the crux fork surfaced by the recon (its Strategy A recommendation) was W3-forbidden — the elder
+  overruled it AND simplified (transport-free was always available via R2-survivor). The controller HELD the grind
+  (didn't delegate the dead-route-adjacent lane) → the closed loop + W3 damping worked. 3rd K-orbit dead-route
+  sighting; the tombstone holds.
