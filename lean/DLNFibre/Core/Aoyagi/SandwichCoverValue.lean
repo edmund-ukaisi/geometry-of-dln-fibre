@@ -47,13 +47,15 @@ theorem rlctAt_ge_half_divisorMin_of_iInf_threshold
     (fun c ↦ bexp c (k₀ c)) jac hbind hunit_mult] at hwire
 
 /-- **The `(3,3,4)` headline value read-off**: once the joint gives `½·divisorMin ≤ rlctAt`, a
-`divisorMin = 8` yields `4 ≤ rlctAt`. The `divisorMin = 8` is Object D (`minAdm ![3,3,4] = 8`),
-supplied downstream. Pure arithmetic (no new content) — the last step of the payoff read-off. -/
+`divisorMin ≥ 8` yields `4 ≤ rlctAt`. The `8 ≤ divisorMin` is Object D (`minAdm ![3,3,4] = 8`,
+weakened to a LOWER bound so the born-native family — whose per-leaf `divisorMin ∈ {8, 9}` — feeds
+it directly). Pure arithmetic (`4 = 8/2 ≤ v/2 ≤ rlctAt`) — the last step of the payoff read-off. -/
 theorem rlctAt_ge_four_of_half_divisorMin
     {F : Fin Mn → (Fin D → ℝ) → ℝ} {x₀ : Fin D → ℝ} {v : ℝ}
-    (hdiv : v = 8) (h : v / 2 ≤ rlctAt (sumSqFam F) x₀) :
+    (hdiv : 8 ≤ v) (h : v / 2 ≤ rlctAt (sumSqFam F) x₀) :
     (4 : ℝ) ≤ rlctAt (sumSqFam F) x₀ := by
-  rw [hdiv] at h; norm_num at h; exact h
+  have : (4 : ℝ) ≤ v / 2 := by linarith
+  linarith
 
 -- Forced axiom gate: the STEP 4→5 joint rests only on `[propext, Classical.choice, Quot.sound]`.
 #assert_banked_clean_batch [rlctAt_ge_half_divisorMin_of_iInf_threshold,

@@ -69,8 +69,8 @@ theorem rlctAt_coreGen334_ge_four_of_survivor_entries
     (hU : U ∈ 𝓝 (0 : Fin 21 → ℝ))
     (hcover : volume (U \ ⋃ c, g c '' dom c) = 0)
     (hunit_mult : ∀ c, ∀ d ∈ bindingAxes (ek₀ c), ek₀ c d = 1)
-    (hdivisorMin : Finset.univ.inf' hne
-        (fun c ↦ (bindingAxes (ek₀ c)).inf' (hbind c) (fun d ↦ (jac c d + 1 : ℝ))) = 8) :
+    (hdivisorMin : (8 : ℝ) ≤ Finset.univ.inf' hne
+        (fun c ↦ (bindingAxes (ek₀ c)).inf' (hbind c) (fun d ↦ (jac c d + 1 : ℝ)))) :
     (4 : ℝ) ≤ rlctAt (sumSqFam (coreGen dvec eWrap)) (0 : Fin 21 → ℝ) := by
   -- `Mn = dvec(last)·dvec 0 = 12 > 0` (the number of `coreGen` entries; the `1/Mn` scale base).
   have hMnR : (0 : ℝ) < ((dvec (Fin.last 2) * dvec 0 : ℕ) : ℝ) := by

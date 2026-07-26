@@ -95,8 +95,8 @@ theorem rlctAt_coreGen334_ge_four_of_family
     (hU : U ∈ 𝓝 (0 : Fin 21 → ℝ))
     (hcover : volume (U \ ⋃ c, g c '' dom c) = 0)
     (hunit_mult : ∀ c, ∀ d ∈ bindingAxes (bexp c (k₀ c)), bexp c (k₀ c) d = 1)
-    (hdivisorMin : Finset.univ.inf' hne
-        (fun c ↦ (bindingAxes (bexp c (k₀ c))).inf' (hbind c) (fun d ↦ (jac c d + 1 : ℝ))) = 8) :
+    (hdivisorMin : (8 : ℝ) ≤ Finset.univ.inf' hne
+        (fun c ↦ (bindingAxes (bexp c (k₀ c))).inf' (hbind c) (fun d ↦ (jac c d + 1 : ℝ)))) :
     (4 : ℝ) ≤ rlctAt (sumSqFam (coreGen dvec eWrap)) (0 : Fin 21 → ℝ) := by
   have hFmeas : ∀ i, Measurable (coreGen dvec eWrap i) := chart334.hFmeas
   have hbdd := bddAbove_localAdmissible_coreGen334
