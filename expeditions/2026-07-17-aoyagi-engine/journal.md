@@ -25054,3 +25054,24 @@ MERGE gated on reviewer (Lean-fidelity) + elder (math, esp. the M=1 crux) + my a
 chart_rlct_ge_half_of_survivor over ALL flatCube leaves => rlct >= half minAdm, gated on hpull-per-leaf + #172;
 this makes the hpull obligation PRECISE, then discharge hpull (real (3,3,4) pullback algebra + #172) fills it.
 The V-lower now has BOTH halves (i)(b)+(i)(a) proven (i)(b) merged; (i)(a) delivered) — the wire + hpull remain.
+
+## 2026-07-26 (cont.) — ELDER read on (i)(a): M=1 SOUND+TIGHT, F1-INDEPENDENT (resurrection risk AVOIDED, not just gated) — the strongest outcome; merge-OK on math
+Elder decorrelated read (source @8cbebd8c3): (i)(a) is MERGE-OK on the math. THREE findings:
+- **M=1 SOUND + TIGHT (the honesty crux RESOLVED):** the RLCT of a sum-of-squares K=∑f_k² is set by the
+  divisibility-DOMINANT (slowest-vanishing) monomial f_{k0}; ∑f² ≥ f_{k0}² ⟹ rlct(K) ≥ ½·chartMin_{k0}, and
+  the non-survivors vanish FASTER (subdominant) so do NOT lower the RLCT. So the single-dominant (M=1) lower
+  bound is TIGHT (correct ½·chartMin, not smaller); the full-family sandwich being FALSE is EXPECTED + harmless.
+  IS "k=1 via kept survivor"; per-leaf value ½·chartMin_{k0} correct; wire inf = ½·minAdm (Object D). Matched
+  by V-upper (not too weak), proven lower bound (not over-claim).
+- **Vindicated-V DERIVED + F1-INDEPENDENT:** K ≥ ¼·monomial² DERIVED from the kept-survivor SUM
+  (Finset.single_le_sum + f²≥¼ from f(0)=1+continuity), never a product (G1). F1-INDEPENDENT — fresh from
+  SurvivorFanCover.sumSq_residual, imports only SurvivorFanCover + ChartValueLower, NOT ChartBridgeFaithful/
+  LeafPullback; hpull kept OPEN. **The resurrection risk is AVOIDED (not just gated) — the mirage's last
+  hiding place is genuinely CLEAN. Strongest possible outcome.**
+- **Next-brick: elder CONCURS wire-abstract-then-discharge-hpull.** Two watch-items (relayed to builder):
+  (1) WIRE = inf over ALL flatCube leaves + #172 (not the minimiser), inf = ½·minAdm via Object D; (2) the
+  hpull discharge must STAY F1-INDEPENDENT (loss∘g = ∑(∏C∘g)² near-definitional / from R2, NOT
+  ChartBridgeFaithful; #184 gate applies) — if F1-independent THROUGHOUT, the whole V-lower avoids resurrection.
+
+#186 merge now gates on the reviewer's Lean-fidelity + my force-elab verify (elder math = merge-OK). Both
+V-lower halves proven ((i)(b) merged, (i)(a) delivered + elder-clean); the wire + hpull discharge remain.
