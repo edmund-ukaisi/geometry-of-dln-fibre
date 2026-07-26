@@ -25920,3 +25920,30 @@ that lane a then contradicts costs a walk-back of the expedition's biggest claim
 STATUS: the de-risk arc is complete but for lane (a): 3a + general-d YES + composition CLEAN (+ acyclicity airtight)
 + α-construction clean labor. §3 = PENDING-LANE-A, one gate short, auto-promote pre-authorized. Lane (a) pinning
 (a7857e48490cadc97) is the SINGLE pivotal remaining lane (decides §3-promote AND the formaliser fill scope).
+
+## 2026-07-26 (cont.) — LANE A PINNING = CLEAN (N_singular=6, NO monument) → §3 AUTO-PROMOTED SATISFIED; (3,3,4) V-lower fill DELEGATED (phase shift: de-risk → BUILD)
+The pinning verdict (pnp, exact-sympy + Codex): N_singular = 6 (T4-T9, all S=2), N_smooth = 3 (T1-T3, all S=1);
+HIDDEN MONUMENT = NONE, not even a hidden-#172 — the (3,3,4) discharge is a CLEAN BOUNDED FILL (one self-similar
+recoord born-α × 6 instantiations, pivot=E·1, ratio=½·minAdm=4). Discriminant: the survivor needs BOTH layers
+cleared ⟹ born at S=2 (S=1 clearing alone leaves P∘g vanishing ⟹ no survivor ⟹ SMOOTH). Exact anchors both-
+directions: T6 (corank-2 gWrap, Lean maps verbatim: both shears ON ⟹ GCD=u0·u20, pivot residual=1; drop either ⟹
+over-vanishes) + T8/T9 (deep corank-1: recoord ON ⟹ M[0,0]=E exactly — PIN 2 settled, no deep {R=0}). No-monument
+is cover-INDEPENDENT (pivot always a nonzero recoorded B-pivot; T-row deg-1 binding < Δ-block deg-2 ⟹ Δ-descendants
+≥9 non-binding) + Codex-corroborated.
+§3 AUTO-PROMOTED → SATISFIED (per the elder's pre-authorization; clean lane-a; meaning pre-baked = DE-RISKED to
+detail-at-scale, NOT proven/α-built; the general-d α build + uniform invariant remain construction labor). Charter
+§3 updated (header SATISFIED; (2) leaf-type-coverage CLEARED). Three gates all clear: entanglement (lane b) +
+acyclicity (airtight) + leaf-type coverage (lane a).
+(3,3,4) V-LOWER FILL DELEGATED (a69bf1080af66f602, fresh formaliser — the PHASE SHIFT to BUILD): the ONE parametric
+born-α feeder (recoord S[0,·]=E·radial−d01·residual → pivot=E·1, one-sided single_le_sum), instantiated ×6 at
+T4-T9 (NOT 6 proofs — pnp note) + T1-T3 smooth (direct survivor_sandwich_lower; T3 1×1 = freebie) + the wire
+(hcover via F11 flatCube; hbdd via V-upper #110 proven) + the conversion (⨅ monomialThreshold → ½·minAdm=4, k=1 +
+Object-D). F1-clean, no K-transport; born-α = fresh one-sided (F12 conditions A/B/C, typed guardrail).
+NEW DISTINCT OBLIGATION (non-blocking, flagged to the elder + for the hcover seat): a COVER risk (pnp + Codex) —
+does every case12/Δ/zero-pivot branch route to a finite chart with a CONTINUOUS unimodular recoord (route-a hcover)?
+ORTHOGONAL to the value gate (a survivor-present chart can still fail coverage). NOT a §3-value gap (§3 is value);
+kept separate from the born-α fill. Elder to rule if it needs its own gate (a corank-2 hcover probe) vs bounded by
+F11. Honest edges (pnp): 5 mechanism-inferred types (boundary can shift, never adds a monument, cover-independent).
+NET: de-risk arc COMPLETE (all probes positive; (A) monument-free at full generality; §3 SATISFIED); the phase is
+now BUILD — the (3,3,4) V-lower fill in flight → then V-upper (proven) → summit re-point → cite-free payoff at
+(3,3,4). Pinning pnp rested ("good expedition").
