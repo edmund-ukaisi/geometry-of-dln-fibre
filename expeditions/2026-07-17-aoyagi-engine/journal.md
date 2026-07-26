@@ -25111,3 +25111,19 @@ r3brick until then. WIRE (#187) GO'd against the hardened r3ia interface (chart_
 — abstract (hpull per-leaf open) => rlct >= half minAdm over ALL leaves + #172. Both versions clean, so no risk;
 this is an improvement-swap, not a fix. (i)(b)'s non-vacuity is covered either way — by @8cbebd8c3's (i)(a)
 witness now, by the direct example post-swap.
+
+## 2026-07-26 (cont.) — ELDER sharpening: hunit1/k=1 is HEADLINE-LOAD-BEARING (corrects my "not a wall" understatement); the wire's 4-obligation checklist [#187]
+The elder corrected my framing of the reviewer's hunit1 watch-item. I'd told the builder a binding
+multiplicity >= 2 "needs the (h+1)/(2e) form — a generalization, NOT a wall." The elder sharpens: hunit1/k=1
+(squarefree binding) is HEADLINE-LOAD-BEARING, not a soft form choice — the headline rlct = half*minAdm NEEDS
+e=1 on the binding axes (min (h+1)/e = min (h+1) = minAdm); a genuine e >= 2 binding axis gives
+rlct = half*min(h+1)/e < half*minAdm, so the HEADLINE FAILS — a RED-FLIP to surface, not a shrug-and-generalize.
+It is not a WALL only because #172 GUARANTEES k=1 (kept-survivor SUM => join = E^2*unit => squarefree binding),
+so hunit1 is PROVABLE — but it must be PROVEN for the real charts, and a genuine k>=2 finding is a headline-drop.
+(Mini-calibration: I understated a headline-load-bearing hypothesis as a soft generalization; the elder's
+decorrelated read caught it — the gating discipline working.) Relayed to the builder.
+
+ELDER 4-OBLIGATION WIRE ACCEPTANCE CHECKLIST (registered on #187; each PERFORMED over ALL flatCube leaves, not
+assumed): (a) the M=1 per-chart bound; (b) hunit1/k=1 (squarefree binding = the #172 result); (c) the #172
+{R=0} recursion for the deep survivor-less leaves; (d) inf = half*minAdm via Object D. The wire lands when all
+four hold over all leaves + hpull discharged (F1-clean). That's the full priced V-lower-wire content.
