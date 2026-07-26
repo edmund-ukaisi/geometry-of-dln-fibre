@@ -27568,3 +27568,31 @@ STATE: H1 VERIFIED+LOCKED; H2 = ALL 16 canonical FULLY GATED + transport (crux g
 ONLY remaining gate); H3 = close Assembly334:65 at convergence. Merge plan firmed. NEXT (ONE gate left): transport step-6
 lands → execute merge (base=pertype + 5, conflict-free) → wake (ii) to close the step-6 spine → aggregator + #print axioms
 → unconditional 4 ≤ rlctAt = (3,3,4).
+
+## 2026-07-26 ★ σ_p1-TRANSPORT (steps 1-6) LANDED — GREEN sorry-free clean-three; the LAST H2 build gate DONE
+Transport-assembly seat (a9244e9a) LANDED steps 1-6 @6dcd8c171 (aoyagi-r2ov-sigma-transport, off a6c287f94):
+Corank2OverVanishTransport334.lean 818 lines (+751), sorry-free, #assert_banked_clean_batch 18 roots banked-clean (no
+cites, clean-three).
+DELIVERED (all 8 non-canonical dominants P0..P7): step 1 sigC0..7 involutions → sigP0..7 (Involutive.toPerm); step 2
+hA0_Pn/hA1_Pn + loss_symm_Pn (∑coreGen(w∘σ)²=∑coreGen(w)², consumes a3f030's crux); step 3 conjChart engine +
+nativeSel/nativePerm/nativeChart1_conj_Pn; step 4 gComposite + gFlat_eq_gComposite (rfl) + gComposite_conj_Pn; step 5
+monoSumSqGerm_conj; step 6 domination_transport (generic) + leaf_domination_P0..P7 (FULLY sorry-free — takes
+canon_domination as hbase; EXCEEDS the tracked-open-sorry plan).
+DEVIATIONS (flagged, sound): (1) Involutive.toPerm (computable σ.symm=σ → decide-discharge) — improves the plan. (2) [KEY]
+the qdisp-SUM (not per-family) shear-conjugation: the σ-conj MIXES the t1/t2 signed-term families (a term slides between
+slots), so t1P_p1 ≠ conjTermData σ t1P20 INDIVIDUALLY — only the qdisp DISPLACEMENT SUM matches (proved per-coord). The
+block-shear depends on the total displacement per coord → the sum-match is the honest invariant. Flagged to the review as
+THE key check. (3) step 6 sorry-free; gComposite_conj centre-image decides CROSS-VALIDATE the σ derivation vs the fan
+sigmaC1Fs/C2Fs + cperm.
+⟹ the LAST H2 BUILD GATE done: leaf_domination_Pn : canon_domination(P_n leaf) ⟸ canon_domination(20-counterpart).
+ACTIONS: (1) FIDELITY REVIEWER spawned (@6dcd8c171: σ_p1-loss-symmetry [a] + the qdisp-sum reading [b, KEY] +
+leaf_domination honesty [c] + clean-three [d] + cross-validation [e]). (2) CONVERGENCE plan set (below).
+CONVERGENCE (on transport-review-clean): I execute the merge (base=pertype 27d6d8284 + {tonelli 674f682f6, regseq
+8a687824e, clean144 ec9ab4f60, patternA 834574953, patternB 940224c42, transport 6dcd8c171} → all 16 leaves +
+leaf_domination_Pn co-present) → the transport seat writes the ∀-over-Idx assembly (A) [apply leaf_domination_Pn over 144
+= 16 base + 8×16, hbase:=canon_domination via gFlat_eq_gComposite] on the merged branch → (ii) closes the step-6 spine
+(B, Assembly334:65) → aggregator wiring (DLNFibre.lean + AxCheck.lean) → force-rebuild #print axioms on the unconditional
+headline = clean-three, sorryAx GONE.
+STATE: H1 VERIFIED+LOCKED; H2 = all 16 canonical FULLY GATED + transport steps 1-6 (sorry-free, review-gating) = ALL H2
+BUILD DONE; H3 = (A) ∀-over-Idx + (B) step-6 spine, at convergence. NEXT: transport review clean → merge → (A)+(B) →
+aggregator + #print axioms → unconditional (3,3,4) V-lower.
