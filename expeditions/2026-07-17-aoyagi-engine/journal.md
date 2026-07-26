@@ -25635,3 +25635,15 @@ CLOSED LOOP (the win, twice-over): the fidelity gate + the elder's mis-pricing c
    CONFIRMED TRUE. "The ledger is not the geometry" fired exactly: the ledger exponent (u0, jac 7) is FAITHFUL,
    realized by the born SHEARED geometry (not the shear-free one). The controller's over-amplified wall bank was
    corrected by two decorrelated seats (elder + pnp).
+
+## 2026-07-26 (cont.) — PNP precision: born-α is W3-CLEAN (native shearH in gFaithful, gauge slot at construction), NOT transport; (3,3,4) essentially built
+The pnp's exact computation SETTLES the elder's Q4 (route-P-residual W3 flag) in favour of BORN-α-FILL, not
+transport: the exposing shear is shearH in the BORN decomposition gFaithful = shearH∘permP∘bbA0∘bbA1
+(reconstructed from atoms, matched Lean gFaithful_decomp 21/21); α is NATIVE (|det|=1, unimodular,
+Jacobian-neutral — jac stays [E:7,α:3,c11:8]), sitting in the GAUGE SLOT of geoChartMapNorm AT CONSTRUCTION — NOT
+a reconciliation/transport artifact. So born-α-fill is W3-CLEAN, not route P's retired transport. Q3: (3,3,4) is
+ESSENTIALLY ALREADY BUILT — the sheared chart's two-sided content proven sorry-free (crux_radial_monomialise,
+hideal_faithful_fwd/bwd, peeled_comp_gFaithful); the value bound = those + ONE single_le_sum line (loss ≥
+(P[0][0]∘gFaithful)²=u0²). OPEN = general-d (the per-leaf born-α = route P's realization residual; pnp offers an
+exact-algebra probe: does born-α generalize to a wider dim-vector, or is general-d α a monument? = §3-promote
+territory). Forwarded to the elder for the path ruling; pnp standing by for the general-d probe.
