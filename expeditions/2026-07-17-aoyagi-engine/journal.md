@@ -26389,3 +26389,19 @@ monument. Formaliser wants to DELEGATE (not cite) — agree on building. → ELD
 (mandated: scope-classification / pre-deferral). On 'detail-at-scale' confirm → delegate A/B/C. The concrete (3,3,4)
 BUILD phase engaging (memo's 'territory, ~10-16 tides'). Value-side bridges LANDED (reduction + hsandwich-discharge);
 (B)'s output plugs straight to the headline.
+
+## 2026-07-26 — hcover wiring RESOLVED (formaliser): SurvivorFanCover flat route, unlanded bridge OFF the critical path
+The formaliser resolved the relayed hcover-bridge concern from its wire-contract context:
+- The wire's hcover = volume(U \ ⋃ c, g c '' dom c) = 0 (a FLAT Fin-indexed up-to-null union).
+  SurvivorFanCover.volume_box_diff_charts_eq_zero produces EXACTLY that shape (Finite+Nonempty ι, given hchart + hnull).
+  So the fact-#2 native fan (a flat Fin family by construction) discharges hcover DIRECTLY — no tree leafImages.
+- The enumeration bridge leafImages = ⋃ charts.g''dom (crux B/#143) is NOT landed (docstring-only) AND NOT needed on
+  the flat route — OFF the critical path (the L2 tree route would require building it; the flat route sidesteps it).
+- BONUS: iUnion_survivorRegion (R≥1) ⟹ ⋃ survivorRegion = (commonZero)ᶜ ⟹ the hole is null EVERYWHERE (not just near 0)
+  ⟹ hnull cheap (one nonzero generator via volume_commonZero_eq_zero_of_single); no radius shrink — cover global too.
+  The radius tension is FULLY DISSOLVED (both value + cover global under fact #2).
+Cover obligations reduce to: (i) hchart (each born chart's image ⊇ its survivor region ∩ box — block-blowup argmax,
+the landed NodeCover334/bornSiblings shape); (ii) hnull (cheap). BOUNDED.
+STRENGTHENS the detail-at-scale classification: BOTH value (pnp F5-F9 certified) AND cover (landed SurvivorFanCover
+flat + cheap hchart/hnull) are bounded; the ×9 hentry is the only deep piece + pnp-certified. Forwarded to the elder
+(supplement). Formaliser standing by for A/C. Assembly reviewer (ab5f5c0e0051ac0f2) running (hsandwich-brick fidelity).
