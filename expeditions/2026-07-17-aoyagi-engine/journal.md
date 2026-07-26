@@ -25737,3 +25737,27 @@ tracked-open, or invariant-de-risk first?; (2) §3-promote SATISFIED (or SATISFI
 (positive recalibration, within (A); operator surface = a positive milestone, not a decision). pnp holding for a
 possible more-instance invariant de-risk. Evidence: /tmp/aoyagi_shearfree/{corank_general.py, corank3_shearfree.py,
 codex/answer_gd.md}.
+
+## 2026-07-26 (cont.) — PNP sharpening: general-d YES cleared the CORANK axis, NOT step-COMPOSITION (the real failure mode) → deeper-L composition de-risk FIRED (controller correction to the over-stated "gate cleared")
+Honest pnp scope precision (name=content correction): the general-d probe proved the MECHANISM corank-uniform
+(r=2..5) by MODELLING the born fed matrices on the (3,3,4) pattern — it did NOT re-derive them from the actual
+general-d stepUpdate/buildTree recursion. The pivot-adapted fed form was ASSERTED as route-P's spine invariant
+(verified at (3,3,4) 1-step 21/21 + #124-instance (3,3,3,2,2)), not stepUpdate-derived. So the caveat is precisely:
+IS THE PIVOT-ADAPTED FED FORM AN OUTPUT OF THE REAL RECURSION, UNIFORMLY (through composition)?
+THE FAILURE MODE LIVES IN STEP COMPOSITION, NOT CORANK WIDTH: the recursion entangling a shear-target coord with
+its own inputs, or a first-row (C2[0][j]) slot going exceptional/constrained, can only appear when the fed form is
+THREADED THROUGH SEVERAL stepUpdates (multi-step + rollover). (3,3,4) is ONE step (t=(1,0)); (4,4,5) is a wider
+SINGLE step — NEITHER exercises the real risk. So a wider-CORANK de-risk adds little.
+THE SHARPEST DE-RISK (FIRED, controller executive call within (A), maximal-push): a deeper-L leaf (L≥3, minimiser
+branch ≥2 coupled block-elim steps + a rollover) — the pnp reads the ACTUAL general-d stepUpdate spine (not the
+(3,3,4)-pattern model), derives the fed matrices at the leaf, and checks the fed-form invariant survives COMPOSITION:
+(a) C2[0][0]∘g = ledger monomial EXACTLY (not entangled/exceptional); (b) the first-row-clearing shear still
+unit-triangular reading DISJOINT non-exceptional coords; (c) Pmat[0][0]∘g = ledger monomial EXACTLY. + decorrelated
+Codex. YES → composition axis DE-RISKED (general-d cite-free de-risked, not just "expected"); NO → the invariant
+fails through composition = a REAL risk → general-d further-construction/objects-only.
+CONTROLLER SELF-CORRECTION: my prior "last monument-gate CLEARED" over-stated — it cleared the CORANK axis, NOT the
+COMPOSITION axis (the real failure mode). Named for what it is: general-d is cleared for corank-uniformity; the
+composition axis is firing now. The fidelity tripwire ("the ledger is not the geometry") firing once more — is the
+fed form an OUTPUT of the recursion, or an assertion? The pnp caught its own modelling assumption (excellent
+honesty). Routed to the elder (refined gate-cleared ruling + §3-promote-pending-composition). (3,3,4) lane (a)
+census unaffected (continues).
