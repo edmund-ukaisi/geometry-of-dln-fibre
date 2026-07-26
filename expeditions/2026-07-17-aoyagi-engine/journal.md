@@ -26958,3 +26958,21 @@ REPORT-ONLY RESIDUALS (none block; all disclosed in docstrings):
    (loss∘gFin=vm²·∑vf², B's hentry + (ii)), not blockBlowupMap_conj. Disclosed. COVERED by B+ii.
 4. COSMETIC lint (Jac334:80 >100 chars; NativeValue334 unused or_true L43, deprecated push_neg L79) — fold into MERGE.
 NEXT: (ii) + B land → all-288 wire case-split assembly → at merge: aggregator wiring + residual-2 cert-path + residual-4 lint.
+
+## 2026-07-26 — HEARTBEAT tick: (ii) checkpoint + SPLIT decision + wire-calibration HIT
+Placement ✓ (aoyagi-engine), pulse ✓ (cron 512bfff9 hourly :17). Drift-glance: (ii) progressing (commit 39s ago); B
+(a765...) output stale ~50min → pinged for liveness.
+(ii) CHECKPOINT @aadc0c271 (aoyagi-r2overvanish-regseq): MonomialSumSqRLCT.lean (new Core engine, 150 LoC) —
+monoSumSqGerm + monoSumSqThreshold=min(monomialThreshold a jac, |Z|/2) + nonneg/measurable/locallyNullZeros SORRY-FREE
+clean-three; monoSumSq_integrableAtFilter_of_lt = 1 TRACKED-OPEN sorry (map: ov-sos-tonelli, the disjoint-block Tonelli,
+~150-250 lines). Elder amendments A (unit-sup not Fubini-through-unit) + toric-LP warning + (C) fold-Ψ baked in.
+DECISION — SPLIT (maximal-push parallelism): seated a dedicated Core-Tonelli seat (close ov-sos-tonelli + un-private
+MonomialBox.prodRpow_boxSymm_lt_top; OWNS MonomialSumSqRLCT.lean); (ii) proceeds on DLN concrete (3)-(5) [pullback
+loss∘gFin=vm²∑vf² 16 types + reg-seq Ψ + subset_le_sum + cover-transport blockShear] against the LOCKED statement (do NOT
+touch the Core file — conflict-free merge). Converge at step (6) the mixed-288 wire-variant assembly.
+FIDELITY REVIEWER spawned on the LOCKED monoSumSq_integrableAtFilter_of_lt statement NOW (interface for 2 seats;
+checks threshold encoding incl. the vm² exponent-doubling + the wire-consumption shape + the elder unit-sup honesty).
+CALIBRATION (idle-pulse slot): the wire hardcodes the chain engine (HIT) → the mixed assembly needs the abstract
+per-chart-threshold wire = (ii) step 6. Banked in calibration-ledger.
+STATE: (A-rework)+(C) verified+locked; (ii)-DLN + Core-Tonelli + B-clean-144 in build; fidelity-review on the interface.
+NEXT: interface-clean + the 3 build seats land → mixed-288 assembly → (3,3,4).

@@ -1515,3 +1515,19 @@ I=⟨x²⟩ ⊆ M=⟨x⟩ gives rlct 1/4 ≤ 1/2. Equality iff I already monomia
 ACTION: relayed to (ii) for one explicit direction-line in the writeup; the compass cert-direction tripwire to gain
 this mechanism line at the next elder convening (elder-owned). This CLOSES the "upper-vs-lower" as a settled domain call
 (not a re-derivable ambiguity).
+
+## 2026-07-26 — CALIBRATION (comprehension cadence, idle-pulse slot): the V-lower WIRE hardcodes the chain engine — HIT
+QUESTION: does rlctAt_ge_iInf_threshold_of_sandwich_cover (SandwichCover.lean:237) compute the per-chart threshold via a
+hardcoded chain engine, or take it as an input? (decides whether the all-288 mixed [chain clean-144 + SoS
+over-vanishing-144] assembly needs a NEW abstract wire).
+EXPECTATION (first, MEDIUM-HIGH): hardcodes the chain engine internally (that's why (ii) needs a variant); the mixed
+assembly needs an abstract 'iInf of per-chart rlct lower bounds' wire, built fresh or by refactoring.
+ACTUAL (read the signature): HIT. The wire REQUIRES per-chart hchain (∀ c k d, bexp c (k₀ c) d ≤ bexp c k d — a
+divisibility chain PER chart) + per-chart hsandwich (cst c · sumSqFam(monomialFam (bexp c)) ≤ loss), and concludes
+inf'_c monomialThreshold(bexp c (k₀ c), jac c) ≤ rlctAt. Per-chart threshold = monomialThreshold, CHAIN-computed.
+Over-vanishing charts (SoS RHS, no chain-min) CANNOT feed it (hchain fails).
+CONSEQUENCE: the mixed-288 assembly needs an abstract per-chart-threshold wire (generalize the wire's
+mem_localAdmissible_of_sandwich_lt core by abstracting the per-chart integrability into an INPUT hyp; clean-144 supplies
+t_c=4 via the chain engine, over-vanishing via the (ii) SoS engine, iInf ≥ 4). This IS (ii)'s ladder step (6)
+'wire-variant assembly → 4 ≤ rlctAt over the mixed 288.' Confirms the assembly is a real BUILD (not a case-split of the
+existing wire), already in-plan. NOT a monument (RLCT.SumSq + MonomialBox + the existing wire's cover/area spine).
