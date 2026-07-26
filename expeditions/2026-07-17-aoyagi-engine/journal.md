@@ -25458,3 +25458,25 @@ DELEGATED: a fresh formaliser (branch off reroute; F1-clean; NO K-transport/gWra
 V-lower rlctAt ≥ ½·minAdm=4, via: step 0 gate-atom bank → step 1 hpull PRE-MORTEM (one non-canonical leaf, first
 de-risk gate) → hpull all leaves → survivor_sandwich_lower → area-formula + V-upper(hbdd) → wire → conversion
 (k=1 + Object-D). Internal gates + surface-on-wall. Elder re-convened (verdict + #172-out); scout released.
+
+## 2026-07-26 (cont.) — ELDER fidelity flag (decorrelated convergence): resRank=0 = LEDGER, hpull = GEOMETRY; the pre-mortem is THE fidelity gate
+The elder confirmed the #172-drops-out + exact-cover simplification SOUND, modulo one fidelity flag — which
+matches my own last-tick ledger note (decorrelated convergence): leaves_resRank_zero PROVEN-clean proves the
+LEDGER FIELD is 0 (read off the hardcoded leafOfState def), NOT that the GEOMETRY (K∘g) is unit-residual. Ledger
+and geometry meet ONLY at hpull (K∘g = monomial²·R, R=unit, unit(0)≠0). resRank=0 is geometrically FAITHFUL iff
+each leaf's actual hpull has the unit-residual shape. A non-canonical leaf whose real hpull is HARD (a
+Morse/degenerate residual the hardcoded ledger doesn't reflect) ⟹ leaves_resRank_zero is a def-shortcut
+DISAGREEING with the geometry ⟹ #172/(B)-wall/k≥2 re-enters. §3 source-fidelity: the ledger must reflect the
+geometry; exercise the actual geometry, not a hand-model.
+TRIPWIRE (do not let it travel): "leaves_resRank_zero PROVEN clean" ≠ "the geometry is unit-residual" — the
+former is the LEDGER, the hpull is the GEOMETRY.
+OPERATIONALIZED (no re-brief): the formaliser's hpull PRE-MORTEM (one non-canonical full-block leaf) is THE
+load-bearing fidelity gate — it gates the WHOLE simplification, not one leaf (it checks the hardcoded ledger
+against the actual geometry). Clean hpull (K∘g=monomial²·unit, unit(0)≠0) → resRank=0 faithful → simplification
+holds. Hard hpull → the ledger is a def-shortcut, real residual → (B)-wall/k≥2 (elder territory, surface-on-wall).
+The scout's pointer #2 (relayed) already mandates deriving bexp/k₀ from the concrete pullback, not resRank.
+STANDING SUMMIT-FIDELITY DEPENDENCY (new, from the elder's scope note): if the engine hardcodes resRank:=0
+general-d, the SUMMIT headline (general-d) INHERITS the same hpull-fidelity — the (3,3,4) pre-mortem is the
+instance; general-d hpull is a summit-scoping concern (flagged for when the summit is scoped). Asked the elder to
+record it in the compass (§3 source-fidelity; it owns the compass + framed it). Not bloating the charter
+pre-resolution (the (3,3,4) instance resolves at the pre-mortem).
