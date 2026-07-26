@@ -26744,3 +26744,19 @@ ROUTED: elder (confirm restrict-if-cover + the (ii) mechanism if split); rework 
 proceed hjac + divisorMin≥8 [needed by both] + HOLD (ii) for the elder). B builds the clean-144 hentry regardless.
 NET: ek₀ landed + B firing (clean-144); the over-vanishing needs restrict-or-(ii) (feeder-(a) dead, decorrelated catch);
 value SOUND (all 288 ≥4 double-certified) — this is a per-chart-MECHANISM question for the over-vanishing, not a value gate.
+
+## 2026-07-26 — W3 CLOSED at (3,3,4) (elder-affirmed MILESTONE) + pnp-diff SUPERSEDED (skipped)
+Elder AFFIRMED the W3 grep-gate PASS as a MILESTONE: the deepest invariant of the expedition (born-NOT-transported, W3)
+is VERIFIED-CLOSED at (3,3,4), controller-re-verified on ground truth (all 3 criteria + the blockBlowupMap_conj char-lemma).
+The char-lemma + grep-gate = the STRONGEST W3 closure — the description-vs-construction line ENFORCED BY LEAN (def built
+direct [grep-gate] + the σ-conjugate a proven-equal DESCRIPTION [char-lemma]), not just a grep.
+pnp-diff SUPERSEDED — SKIPPED (elder actively confirmed): (1) the char-lemma PROVES description↔construction in Lean
+(stronger than the numerical signature-diff); (2) what the diff would ADDITIONALLY close ('def = engine stepUpdate native
+output' = equivariance/completeness) is NON-LOAD-BEARING — rlct is a property of the LOSS, met by ANY valid resolution
+cover; the def's charts provably resolve the actual coreGen (hentry 288/288 sympy), cover (native_hcover), give ≥4
+(double-certified) ⟹ rlct(coreGen)≥4 holds whether or not the charts match buildTree's algorithm. 'def = engine-native' =
+a build-fidelity/reuse nicety, not soundness/deliverable. (Cheap later for reuse-doc if wanted; not gating.)
+NOTE: this elder message CROSSED my over-vanishing feeder-(a)-dead crux (in the elder's inbox, awaiting its read).
+NET: W3 CLOSED at (3,3,4) — a milestone (the born-native discipline held + verified, strongest form). Remaining for the
+(3,3,4) headline: (B) clean-144 hentry (firing) + the over-vanishing (restrict-or-(ii), elder-pending) + hjac +
+divisorMin≥8 → assembled.
