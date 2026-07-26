@@ -27136,3 +27136,22 @@ concerns are RETIRED-route (gwrap-fan) — SUPERSEDED by native_hcover (reviewer
 do NOT inherit. Acked pnp-fan with the #145-superseded note.
 Non-blocking; the seat checks the template before sinking the grind. STATE unchanged: Tonelli active (drafted, no gap),
 per-type active (re-scoped 8 entries + now a template-representativeness check), (ii) scaffolding step-6.
+
+## 2026-07-26 ★ MILESTONE — STEP-6 skeleton landed: the ENTIRE (3,3,4) V-lower architecture scaffolded (3 named holes)
+(ii) @8a687824e landed Corank2OverVanishAssembly334.lean — rlctAt_coreGen334_ge_four_of_perchart_integrable: the
+full-288 mechanism-heterogeneous headline `4 ≤ rlctAt(sumSqFam(coreGen dvec eWrap)) 0`, abstracting per-chart per-point
+integrability-below-4 as ONE hyp `hint` (clean-144 hentry→chain ≥9/2 + over-vanishing bridge =4, over the shared full-288
+cover). Green; body tracked-open (map:step6-assembly; refactor of mem_localAdmissible_of_sandwich_lt's spine with hint in
+place of the sandwich; hbdd = bddAbove_localAdmissible_coreGen334).
+⟹ the (3,3,4) V-lower is now a NAMED headline theorem (skeleton) with EXACTLY 3 tracked-open holes, each owned/in-progress:
+  H1. monoSumSq_integrableAtFilter_of_lt (Core Tonelli) — Tonelli seat (ab996), drafted+building, NO gap.
+  H2. chart_integrableAtFilter_of_monoSumSq_dom (over-vanishing bridge) — discharged by the per-type facts (a3f030) + H1.
+  H3. rlctAt_coreGen334_ge_four_of_perchart_integrable spine (the assembly refactor) — (ii) on wake + wire hint
+      (clean via clean_hentry [DONE] + over-vanishing via H2).
+(ii) SEAT COMPLETE (backbone + re-scope + skeleton = 6 lemmas clean-three: monoSumSqGerm(+nonneg/measurable/LocallyNullZeros),
+image_comp_blockShear_superset, monoSumSqGerm_le_sumSqFam_comp, monoSumSqGerm_le_of_regSeq_entries, jacWeight_fixOn,
+coreGen_gFlat_factor); RESTING (WAITING FOR WAKE); I wake at convergence to discharge step-6.
+AGGREGATOR checklist +Corank2OverVanishAssembly334 +Corank2OverVanish334 (+ the per-type module + MonomialSumSqRLCT).
+STATE: clean-144 COMPLETE+verified+locked; interface CLEAN; over-vanishing architecture FULLY SCAFFOLDED (backbone
+clean-three + 3 named holes). Remaining = H1 (Tonelli, drafted) + H2 (per-type facts) + H3 ((ii) on wake) → unconditional
+(3,3,4) → merge. The recovery arc's END is in sight: 3 holes, all owned/in-progress, NO monument.
