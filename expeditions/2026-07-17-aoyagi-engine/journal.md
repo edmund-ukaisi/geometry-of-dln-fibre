@@ -26992,3 +26992,20 @@ SEATS: (ii)-DLN (3)-(5) [woken, a0aa...]; Core-Tonelli [ab996..., close ov-sos-t
 on-locked-stmt [ac1cc...]; B-clean-144 [a765..., essentially done, pushing]. Mixed-288 value = clean-144 (B, ~done) +
 over-vanishing-144 ((ii)+Tonelli). NEXT: B push → reviewer; interface-clean; (3)-(5)+Tonelli land → step-6 mixed-288
 assembly → unconditional (3,3,4).
+
+## 2026-07-26 — B clean-144 hentry DONE + PUSHED (clean-three); fidelity reviewer spawned; assembly structure clarified
+B (a765...) DONE: clean_hentry green sorry-free clean-three, cordon OK, @ec9ab4f60 (aoyagi-r2-clean144-hentry off
+aoyagi-r2wholeconj-fan). 3 modules (Corank2CleanEntryBase334 140 + CleanEntry334 242 + CleanHentry334 73 = +455 LoC).
+Deliverable clean_hentry (c)(IsClean c)(w): coreGen dvec eWrap (k0 c)(gFin c w) = ∏ w^ek₀ = the exact CLEAN-144
+single-entry survivor (= w p1·w p2, born-native shear cancels the block-elim cross-term); k0=finProdFinEquiv(ijpair p1 p2),
+cleanPairs 36 pairs, 144/288 clean unique-k0 p3-indep (author re-derived all 288 in sympy vs the EXACT Lean atoms). Entry
+equality holds GLOBALLY in w (∀w, matches Finset.single_le_sum). No DLNFibre.lean edit.
+FIDELITY REVIEWER spawned (decorrelated census fidelity + entry algebra + reduction-field-type match + clean-three + scope).
+ASSEMBLY STRUCTURE clarified (B's wiring note + the wire-calibration HIT): rlctAt_coreGen334_ge_four_of_survivor_entries
+takes hentry ∀ c (chain-shaped) = the CLEAN-144 tool; the mixed-288 (step 6) is the ABSTRACT per-chart-threshold wire
+dispatching clean_hentry (chain, clean-144 → 4) vs (ii)'s SoS engine (over-vanishing-144 → min(threshold(vm²),r/2)=4) →
+iInf ≥ 4. NOT restrict-to-clean (drops the over-vanishing 144 = positive-measure holes, DEAD).
+A0_gFlat_factor (reusable uniform u_p1 factoring) delegated to the rework seat (a071..., building) for (ii)'s pullback (3).
+STATE: mixed-288 value = clean-144 (B DONE, reviewing) + over-vanishing-144 ((ii)-DLN (3)-(5) + Core-Tonelli, in build).
+NEXT: clean_hentry reviewer clean + SoS-stmt interface-review clean + (ii)(3)-(5)+Tonelli+A0_gFlat_factor land → step-6
+abstract-wire assembly → unconditional (3,3,4) → merge (aggregator all modules + lint).
