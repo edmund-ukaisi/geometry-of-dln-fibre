@@ -26331,3 +26331,26 @@ covers_fanOfSteps); + hsandwich (P1 cert F5-F9); + hbdd + hdivisorMin=8 → disc
 UNCONDITIONALLY → (3,3,4) headline. Guardrails: born-native σ_p (W3, never Transport334), W1-unified g_c, NOT
 fixed-shear (F8 RED). Reports at 2 elder triggers: (1) box-containment brick + hcover; (2) assembled (3,3,4).
 pnp stood down (value cert done); available for the per-pivot COVER probe if the elder flags a gap.
+
+## 2026-07-26 — elder CONFIRMS the rulings + 3 refinements (RED = vindicated near-miss caught); (3,3,4) endgame clean-bounded
+Elder closed the seam with confirmations + 3 refinements (no new decision):
+- The F8 RED is a VINDICATION + near-miss CAUGHT: the elder's ORIGINAL 'g_c = gWrapFan born leaves' ruling, had it
+  stood, would have BROKEN the headline (fixed-shear rlct=1.0, min over charts breaks rlct≥4). The seam scrutiny
+  (P1 over-vanishing → correction to per-leaf-native → the pnp toric-LP RED) caught it. W1 + ledger-is-not-geometry
+  discipline paying off concretely. Headline SAFE (per-pivot family = 4).
+- Description-vs-construction (deepest W3 rule): the per-pivot family is DESCRIBABLE via K-orbit (σ⁻¹∘shearH∘σ) but
+  must be BUILT NATIVELY (explicit F5 shears); K-orbit = description/verification tool ONLY.
+- 3 REFINEMENTS (forwarded to the assembly a6b6239b54dd15f06):
+  (1) W3 GREP-CLEAN gate: σ_p Lean def must NOT import Corank2Transport334/resolution334_of_fanCover; ZERO
+      transportChart/K-orbit/conjResolution in the CONSTRUCTION (description in comments OK). [Controller verifies at
+      the box-containment brick landing = elder trigger 1.]
+  (2) COVER FRAMING: the cover is NOT 'does the K-orbit of gWrap's image cover?' (retired route-P, dead); under fact #2
+      it's the native fan's images (blockBlowupMap∘σ_p) via the engine covers_fanOfSteps + the box-containment.
+      Over-vanishing is VALUE-only (poisons rlct), does NOT affect the COVER (images) — no gap. My 'Path A closes it'
+      read CONFIRMED (refined: fact #2 covers the sheared native fan directly, not reparam_image).
+  (3) ALL-LEAVES MIN: rlct = min over charts ⟹ the native family must range over ALL singular leaves (p1∈{4,5,6,7}),
+      min ≥ 4, not just the worst. F9 (all 9 dominants sound) ANSWERS this — the elder retired its min-over-charts flag.
+- REMINDER (banked §3/F14): the clean-bounded endgame is the (3,3,4) HEADLINE; the GENERAL-d build (L1/L2/L3,
+  ~10-16 tides) remains the larger labor ('monument-free ≠ nearly done' governs there). (3,3,4) = concrete witness +
+  pattern; general-d = reuse at scale.
+Elder resting; re-convene at the 2 assembly triggers (box-containment brick + σ_p grep-clean; assembled (3,3,4) all-leaves).
