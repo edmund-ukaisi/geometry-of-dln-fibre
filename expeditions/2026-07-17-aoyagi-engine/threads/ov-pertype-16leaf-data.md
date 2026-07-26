@@ -32,7 +32,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
 
 ---
 
-### leaf (20,1,1) — pattern A (COINCIDING, vm degree 2, φ has a CUBIC term ⇒ cubic-cover atom)
+### leaf (20,1,1) — pattern A COINCIDING  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 1 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 1 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u12, (1,0)→u2, (1,1)→u13, (2,0)→u3, (2,1)→u14, (3,0)→u4, (3,1)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -42,7 +42,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 1 * u 18 * u 5 + u 10 * u 3)
     if i = 15 then -(u 1 * u 19 * u 5 + u 10 * u 4)
 
-### leaf (20,1,5) — pattern A (vm degree 3, φ quadratic)
+### leaf (20,1,5) — pattern A  [φ max-deg ⇒ QUADRATIC cover atom]
 - `vmExpCanon d := if d = 1 ∨ d = 5 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 1 * u 5 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u12, (1,0)→u2, (1,1)→u13, (2,0)→u3, (2,1)→u14, (3,0)→u4, (3,1)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -52,7 +52,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 10 * u 3 + u 18 * u 5)
     if i = 15 then -(u 10 * u 4 + u 19 * u 5)
 
-### leaf (20,1,6) — pattern A (vm degree 3, φ quadratic)
+### leaf (20,1,6) — pattern A  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 1 ∨ d = 6 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 1 * u 6 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u12, (1,0)→u2, (1,1)→u13, (2,0)→u3, (2,1)→u14, (3,0)→u4, (3,1)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -62,7 +62,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 10 * u 3 + u 18 * u 5 * u 6)
     if i = 15 then -(u 10 * u 4 + u 19 * u 5 * u 6)
 
-### leaf (20,1,7) — pattern A (vm degree 3, φ quadratic)
+### leaf (20,1,7) — pattern A  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 1 ∨ d = 7 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 1 * u 7 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u12, (1,0)→u2, (1,1)→u13, (2,0)→u3, (2,1)→u14, (3,0)→u4, (3,1)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -72,7 +72,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 10 * u 3 + u 18 * u 5 * u 7)
     if i = 15 then -(u 10 * u 4 + u 19 * u 5 * u 7)
 
-### leaf (20,5,1) — pattern A (vm degree 3, φ quadratic)
+### leaf (20,5,1) — pattern A  [φ max-deg ⇒ QUADRATIC cover atom]
 - `vmExpCanon d := if d = 1 ∨ d = 5 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 1 * u 5 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u16, (1,0)→u2, (1,1)→u17, (2,0)→u3, (2,1)→u18, (3,0)→u4, (3,1)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
@@ -82,7 +82,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 18 then -(u 1 * u 14 + u 10 * u 3)
     if i = 19 then -(u 1 * u 15 + u 10 * u 4)
 
-### leaf (20,5,5) — pattern A (COINCIDING, vm degree 2, φ has a CUBIC term ⇒ cubic-cover atom)
+### leaf (20,5,5) — pattern A COINCIDING  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 5 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 5 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u16, (1,0)→u2, (1,1)→u17, (2,0)→u3, (2,1)→u18, (3,0)→u4, (3,1)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
@@ -92,7 +92,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 18 then -(u 1 * u 14 * u 5 + u 10 * u 3)
     if i = 19 then -(u 1 * u 15 * u 5 + u 10 * u 4)
 
-### leaf (20,5,6) — pattern A (vm degree 3, φ quadratic)
+### leaf (20,5,6) — pattern A  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 5 ∨ d = 6 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 5 * u 6 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u16, (1,0)→u2, (1,1)→u17, (2,0)→u3, (2,1)→u18, (3,0)→u4, (3,1)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
@@ -102,7 +102,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 18 then -(u 1 * u 14 * u 6 + u 10 * u 3)
     if i = 19 then -(u 1 * u 15 * u 6 + u 10 * u 4)
 
-### leaf (20,5,7) — pattern A (vm degree 3, φ quadratic)
+### leaf (20,5,7) — pattern A  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 5 ∨ d = 7 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 5 * u 7 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,1)→u16, (1,0)→u2, (1,1)→u17, (2,0)→u3, (2,1)→u18, (3,0)→u4, (3,1)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
@@ -112,7 +112,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 18 then -(u 1 * u 14 * u 7 + u 10 * u 3)
     if i = 19 then -(u 1 * u 15 * u 7 + u 10 * u 4)
 
-### leaf (20,6,1) — pattern B (vm degree 3, φ quadratic)
+### leaf (20,6,1) — pattern B  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 1 ∨ d = 6 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 1 * u 6 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u12, (1,0)→u2, (1,2)→u13, (2,0)→u3, (2,2)→u14, (3,0)→u4, (3,2)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -122,7 +122,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 1 * u 18 * u 7 + u 11 * u 3)
     if i = 15 then -(u 1 * u 19 * u 7 + u 11 * u 4)
 
-### leaf (20,6,5) — pattern B (vm degree 3, φ quadratic)
+### leaf (20,6,5) — pattern B  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 5 ∨ d = 6 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 5 * u 6 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u12, (1,0)→u2, (1,2)→u13, (2,0)→u3, (2,2)→u14, (3,0)→u4, (3,2)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -132,7 +132,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 11 * u 3 + u 18 * u 5 * u 7)
     if i = 15 then -(u 11 * u 4 + u 19 * u 5 * u 7)
 
-### leaf (20,6,6) — pattern B (COINCIDING, vm degree 2, φ has a CUBIC term ⇒ cubic-cover atom)
+### leaf (20,6,6) — pattern B COINCIDING  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 6 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 6 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u12, (1,0)→u2, (1,2)→u13, (2,0)→u3, (2,2)→u14, (3,0)→u4, (3,2)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -142,7 +142,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 11 * u 3 + u 18 * u 6 * u 7)
     if i = 15 then -(u 11 * u 4 + u 19 * u 6 * u 7)
 
-### leaf (20,6,7) — pattern B (vm degree 3, φ quadratic)
+### leaf (20,6,7) — pattern B  [φ max-deg ⇒ QUADRATIC cover atom]
 - `vmExpCanon d := if d = 6 ∨ d = 7 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 6 * u 7 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u12, (1,0)→u2, (1,2)→u13, (2,0)→u3, (2,2)→u14, (3,0)→u4, (3,2)→u15
 - `Zcanon = {0, 12, 2, 13, 3, 14, 4, 15}`  (straightened block = [12, 13, 14, 15] + pure [0, 2, 3, 4])
@@ -152,7 +152,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 14 then -(u 11 * u 3 + u 18 * u 7)
     if i = 15 then -(u 11 * u 4 + u 19 * u 7)
 
-### leaf (20,7,1) — pattern B (vm degree 3, φ quadratic)
+### leaf (20,7,1) — pattern B  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 1 ∨ d = 7 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 1 * u 7 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u16, (1,0)→u2, (1,2)→u17, (2,0)→u3, (2,2)→u18, (3,0)→u4, (3,2)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
@@ -162,7 +162,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 18 then -(u 1 * u 14 * u 6 + u 11 * u 3)
     if i = 19 then -(u 1 * u 15 * u 6 + u 11 * u 4)
 
-### leaf (20,7,5) — pattern B (vm degree 3, φ quadratic)
+### leaf (20,7,5) — pattern B  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 5 ∨ d = 7 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 5 * u 7 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u16, (1,0)→u2, (1,2)→u17, (2,0)→u3, (2,2)→u18, (3,0)→u4, (3,2)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
@@ -172,7 +172,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 18 then -(u 11 * u 3 + u 14 * u 5 * u 6)
     if i = 19 then -(u 11 * u 4 + u 15 * u 5 * u 6)
 
-### leaf (20,7,6) — pattern B (vm degree 3, φ quadratic)
+### leaf (20,7,6) — pattern B  [φ max-deg ⇒ QUADRATIC cover atom]
 - `vmExpCanon d := if d = 6 ∨ d = 7 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 6 * u 7 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u16, (1,0)→u2, (1,2)→u17, (2,0)→u3, (2,2)→u18, (3,0)→u4, (3,2)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
@@ -182,7 +182,7 @@ only the node-2 pivot p2, node-3 pivot p3, vmExp, and φ change. c=0 entries are
     if i = 18 then -(u 11 * u 3 + u 14 * u 6)
     if i = 19 then -(u 11 * u 4 + u 15 * u 6)
 
-### leaf (20,7,7) — pattern B (COINCIDING, vm degree 2, φ has a CUBIC term ⇒ cubic-cover atom)
+### leaf (20,7,7) — pattern B COINCIDING  [φ max-deg ⇒ CUBIC cover atom]
 - `vmExpCanon d := if d = 7 ∨ d = 20 then 1 else 0`   (∏ u^vmExp = u 7 * u 20)
 - reg-seq pairs → zc: (0,0)→u0, (0,2)→u16, (1,0)→u2, (1,2)→u17, (2,0)→u3, (2,2)→u18, (3,0)→u4, (3,2)→u19
 - `Zcanon = {0, 16, 2, 17, 3, 18, 4, 19}`  (straightened block = [16, 17, 18, 19] + pure [0, 2, 3, 4])
