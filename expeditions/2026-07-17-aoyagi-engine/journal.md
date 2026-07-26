@@ -26424,3 +26424,24 @@ L1 NOT RETIRED (elder name=content note): the ×9 (3,3,4) hentry is the CONCRETE
 retirement of general-d L1. The general-d UNIFORM hentry (all leaves) stays the ledger's PRIMARY audit target
 (detail-at-scale per F13's 'one scalar pivot per node', but a LARGER build — the inferred-not-proven L1). (3,3,4) =
 witness; general-d L1 = the larger labor ('monument-free ≠ nearly done').
+
+## 2026-07-26 — (A) GO-started: 9 native σ_p shears EXTRACTED (W3-clean) + STRUCTURAL fan-shape question (→ elder) + budget handoff
+The (A) formaliser (a6b6239b54dd15f06) GO-started + extracted the exact W3-CLEAN explicit native F5 shears for all 9
+A0-dominants (DIRECT coordinate corrections, NOT the σ⁻¹∘shearH∘σ conjugate — W3-clean by construction). Each = a
+quadratic block-shear (≤2 products/coord ⟹ ‖φ‖≤2r² ⟹ blockShear_covers_scaled at C=2 per pivot). Anchor (canonical
+dom(0,0) = landed shearH): g4+=u0u2, g5+=u1u2, g6+=u0u3, g7+=u1u3, g8+=−u0u12−u1u16, g9+=−u0u13−u1u17,
+g10+=−u0u14−u1u18, g11+=−u0u15−u1u19; the other 8 (dom(0,1)…(2,2), pivots 2,3,0,4,6,1,5,7) = analogous permuted
+displacements, extracted in full.
+STRUCTURAL QUESTION (must pin before the def — sets the W3 grep target + jac + cover): the FAN SHAPE. (a) 1-node outer
+fan (9 leaves) RULED OUT (one node can't give jac(E)=7 & jac(pivot)=8 ⟹ divisorMin=8 needs multi-node); (b) 3-step
+fanOfSteps with per-pivot native σ_p replacing the fixed (shearH∘permP,id,id), leaves=pivot-paths 9×8×4=288; (c)
+whole-gWrap-conjugate unfolded per dominant, 9 leaves. CONTROLLER READ (→ elder for confirm): (b) — it IS the elder's
+fact-#2 engine (FanStep.shear=σ_p per-pivot, blockBlowupMap outer, hcover via covers_fanOfSteps); the 3 steps give the
+multi-node jac 7&8; 288 leaves cover (like the original fan); W3-clean (native σ_p at node 1 per node-1 pivot; nodes 2,3
+id). (a) misreads the shorthand; (c) risks W3-conjugate-drift + under-covers (9 vs 288).
+BUDGET HANDOFF: the (A) formaliser's context is heavily consumed; it recommends (honest, not a wall) a FRESH seat build
+the def from its extraction rather than half-build a large ambiguous-structure def + risk the W3 gate. ACCEPTED: asked it
+to BANK the full extraction (9 shears + hcover route + cert pointers) to a durable thread artifact
+(threads/reroute-R2-tubecover/assembly-extraction.md); on the elder's shape confirm + the bank → a FRESH formaliser
+builds (A)+(C). (B) still gated on the σ_p def landing. Bricks (reduction + hsandwich-discharge) + hcover route + shear
+extraction all banked — the math is detail-at-scale, just sizable (multi-file build).
