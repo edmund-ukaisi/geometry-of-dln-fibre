@@ -25127,3 +25127,29 @@ ELDER 4-OBLIGATION WIRE ACCEPTANCE CHECKLIST (registered on #187; each PERFORMED
 assumed): (a) the M=1 per-chart bound; (b) hunit1/k=1 (squarefree binding = the #172 result); (c) the #172
 {R=0} recursion for the deep survivor-less leaves; (d) inf = half*minAdm via Object D. The wire lands when all
 four hold over all leaves + hpull discharged (F1-clean). That's the full priced V-lower-wire content.
+
+## 2026-07-26 (cont.) — WIRE = OPTION B: the V-lower bypasses hideal_bwd via the SUM-level sandwich (the (A) bypass made CONCRETE, F1-clean throughout) [#187]; elder recommends the r3ia SWAP
+**LOAD-BEARING architectural finding (builder recon, GO'd):** the V-lower WIRE needs only the ⊇-direction —
+sum-level sandwich (c*monomial^2 <= loss) => rlct >= threshold, via the BANKED wLocalAdmissibleExponents_subset_
+of_eventually_le (already used in V-upper:537) — NOT the FAMILY-level hideal_bwd (each monomial_k in <F∘g>),
+which is exactly exists_coreResolution's per-chart MONUMENT. survivor_sandwich_lower delivers sum-level, which
+is precisely (and only) what the ≥-leg needs. So OPTION B = a NEW cover-assembly lower bound, hideal_bwd-FREE
+=> F1-CLEAN throughout => the CONCRETE Lean realization of the compass-F10/(A) bypass (the R>0 sandwich suffices
+for the lower bound; the two-sided principality/hideal_bwd is avoided). A full cite-free Resolution would need
+hideal_bwd (survivor can't discharge family-level) — so B is the honest route, NOT a Resolution.
+
+SKELETON: rlct_ge_half_minAdm_of_cover (chart family + hcover + per-chart area-formula + per-chart SANDWICH on a
+nbhd of dom^c + hunit1) => (⨅ chartMin) <= 2*rlctAt = minAdm <= 2*rlct via Object D. The ONE new sub-lemma =
+the cover-assembly measure-theory (∫ over dom + area formula + subadditivity, mirroring mem_localAdmissible_of_lt,
+sandwich-fed via subset_of_eventually_le). #172 enters PRECISELY as the sandwich on a NBHD of {R=0}∩dom (not
+just the origin germ) — the neighbourhood-sandwich near the deep zero IS the #172 recursion content.
+
+CONTROLLER CALLS (to builder): GO option B (the honest bypass); statement-lock the skeleton first; prefer
+fill-before-commit if the cover-assembly is a bounded adaptation of mem_localAdmissible_of_lt, else TRACKED-OPEN
+(#187, not in the clean-batch); build against the r3ia interface (h0); hunit1 in the concrete discharge. Elder
+decomposition-nod sought (its V-wire ruling already blesses the bypass; proceed-on-silence).
+
+**Elder r3ia SWAP ruling: RECOMMEND the swap** (on reviewer-Lean-delta + my force-elab) — r3ia = the literal R2
+normal form (h0 = survivor->1/others->0), forecloses the wire-hand-model AT THE ATOM ("the survivor fed into the
+sandwich must be the real sumSq_residual output, never a hand-model"); a fidelity-hardening, both sound. r3ia's
+h0 + option-B reinforce: the wire's per-leaf sandwich is literally the R2 survivor. Swap on the reviewer-delta.
