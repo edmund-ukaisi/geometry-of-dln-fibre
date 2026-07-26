@@ -25846,3 +25846,21 @@ intricate, α not-yet-live). This is the general-d VALUE-BUILD's FIRST verificat
 scoping (post-(3,3,4)); NOT needed for §3-SATISFIED (the elder's CLEAN-on-entanglement + uniform criterion is met).
 Forwarded to the elder for the §3-promote ruling. Lane (a) pinning (a7857e48490cadc97) still running (the immediate
 critical path: the (3,3,4) fill). pnp (all 3 probes + this scoping) standing by.
+
+## 2026-07-26 (cont.) — pnp closing note: the general-d build's SINGLE geometry watch-point (the fed-form "pivot = ledger factor" clause)
+The pnp closed its dispatch (all 3 probes + the α scoping banked). FINAL RECORD — the ONE clause NOT yet computed
+end-to-end (the staged deep-L check's falsifier, for the general-d build to watch): does the ACTUAL qNodeOf
+center-split at a deep-L node feed the pivot slot the intended SINGLE exceptional divisor — vs something else (a
+PRODUCT E·α, or a constrained/coupled coord)? = the fed-form invariant's "pivot slot = intended ledger factor"
+clause failing at a reachable node after accumulated substitutions. EVERYTHING ELSE is established (entanglement-
+clean, |det|=1, single-entry survivor persistence, cross-layer α disjointness). If the pivot-slot clause HOLDS at
+the first deep-L instance, the general-d cite-free value-build is FULLY GREEN-LIT on the geometry side. This is the
+general-d value-build's FIRST verification (staged post-(3,3,4), NOT a §3-SATISFIED gate). pnp holding for the
+elder/build call.
+SUMMARY OF THE DE-RISK ARC (all banked): (1) (3,3,4) = 3a (headline rlct=4=½·codim TRUE, red-flip excluded); (2)
+general-d corank = YES (born-α generalizes, corank-insensitive — the survivor entry touches only the pivot cross,
+never the residual monument); (3) composition = CLEAN (entanglement structurally excluded — rollover carries no
+shear + acyclic layer-order); + the general-d α scoped (schurCells + cross-layer flatElemShear, entanglement-clean).
+NET: the (A) cite-free value headline is priced SOUND at full generality, monument-free — remaining = construction
+labor (the (3,3,4) bounded fill [pinning in flight] + the general-d α build + the fed-form invariant, all
+detail-at-scale). The biggest de-risks of the expedition are all CONFIRMED positive.
