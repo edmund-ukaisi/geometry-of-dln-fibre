@@ -1447,3 +1447,21 @@ decorrelated read: elder CONFIRMED detail-at-scale + did a confound check (no hi
 construction). LESSON: a builder's 'monument/too-hard-to-land' flag is often timidity-disguised-as-rigor (the disposition's
 named failure); the discriminator is FOUND-vs-UNFOUND insight, never in-Mathlib-vs-not or Lean-landed-vs-not. When a
 builder flags a monument, apply the discriminator + confound-check the CONSTRUCTION before believing it — build-the-buildable.
+
+## 2026-07-26 — CALIBRATION (idle, assembly-completeness): all reduction hyps assigned to A/B/C, NO orphan
+QUESTION: are ALL hypotheses of rlctAt_coreGen334_ge_four_of_survivor_entries assigned to A/B/C or landed, or is there
+an ORPHAN that would strand the assembly?
+EXPECTATION (first): all assigned (hentry→B, area-data + hcover→A, divisorMin→C, hunit_mult/hbind def-level); conf HIGH;
+risk = a non-routine area-data field.
+ACTUAL (read the signature @r2assembly): full hyp list —
+  (A) fan def + analytic fields: g/dom/nbhd/excep/unit/jac + hgdiff/hdomcpt/hnbhd_open/hdom_sub/hexcep_meas/hexcep_null/
+      hg_inj/hunit_cont/hunit_ne/hjac + hU/hcover.
+  (B) hentry (∀ c w, coreGen(k0 c)(g c w) = ∏ w^ek₀).
+  (C) hdivisorMin (⨅=8) + hbind (binding axes nonempty) + hunit_mult (ek₀=1 on binding axes) + the jac exponents.
+RESULT: HIT — every hyp maps to A/B/C or def-level; NO ORPHAN. Assembly-complete.
+REFINEMENTS: (i) hunit_mult (ek₀ d=1 on binding axes) is the load-bearing G1 fact (kexp=1 ⟹ divisorMin the right
+threshold; k≥2=red-flip) — covered by (C)/ek₀-def per the pnp cert (unit folded as exponent-1); (ii) hjac (|jacDet g|
+= jacWeight jac × |unit|) needs (A)/(C) to compute the born-native 3-node blow-up Jacobian → jac exponents → the
+multi-node divisorMin=8 (detail-at-scale, blow-up Jacobians landed); (iii) the entry's unit=1 (exact hentry) is SEPARATE
+from the Jacobian's unit (in hjac, nontrivial) — no conflict. CHANGES: assembly de-risked (no orphan); at (C) ensure
+hunit_mult (G1) + the 3-node jac; the assembly = pure wiring once A/B/C land.

@@ -26483,3 +26483,5 @@ as an exponent-1 binding axis, consistent with hunit_mult) ⟹ exact SHOULD hold
 VERIFY the concrete born-native chart gives EXACT coreGen = monomial (not monomial × nontrivial-unit); if only
 monomial × unit, hentry is FALSE + this brick strands → route (B) through sandwich_on_domain_of_survivor (graceful
 feeder fallback). Carried to #188 (B) + the (B) brief. Gate PASSED; the landed brick is clean (conditional on hentry).
+
+## 2026-07-26 — CALIBRATION tick (idle): assembly-completeness HIT (no orphan hyp; all reduction hyps -> A/B/C; hunit_mult=G1 covered by C; entry-unit=1 vs jac-unit separate). (A)+(C) seat building (925KB transcript, alive). Detail in strategy/calibration-ledger.md.
