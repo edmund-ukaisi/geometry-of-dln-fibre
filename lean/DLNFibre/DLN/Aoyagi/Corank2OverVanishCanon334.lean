@@ -83,8 +83,9 @@ def phiCanon : (Fin 21 → ℝ) → (Fin 21 → ℝ) := fun u i =>
 /-- The canonical straightening `Ψ = blockShear φ`. -/
 noncomputable def psiCanon : (Fin 21 → ℝ) → (Fin 21 → ℝ) := blockShear phiCanon
 
-/-- The kept coordinates of `φ`: everything outside the straightened block `{12,13,14,15}`. -/
-def keepCanon : Fin 21 → Prop := fun i => i ≠ 12 ∧ i ≠ 13 ∧ i ≠ 14 ∧ i ≠ 15
+/-- The kept coordinates of `φ`: everything outside the straightened block `{12,13,14,15}`.
+Reducible so `Decidable (keepCanon i)` synthesizes (the `by decide` proofs in `phiCanon_read`). -/
+abbrev keepCanon : Fin 21 → Prop := fun i => i ≠ 12 ∧ i ≠ 13 ∧ i ≠ 14 ∧ i ≠ 15
 
 /-- `φ` fixes every kept coordinate (`= 0` off `{12,13,14,15}`). -/
 theorem phiCanon_keep (u : Fin 21 → ℝ) (i : Fin 21) (hi : keepCanon i) : phiCanon u i = 0 := by
@@ -109,7 +110,7 @@ theorem differentiable_phiCanon : Differentiable ℝ phiCanon := by
   apply differentiable_pi.2
   intro i
   fin_cases i <;>
-    simp only [phiCanon, Fin.reduceEq, if_true, if_false, reduceIte] <;>
+    simp (config := { decide := true }) only [phiCanon, Fin.isValue, if_true, if_false] <;>
     fun_prop
 
 /-- `Ψ = blockShear φ` is differentiable. -/
