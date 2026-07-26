@@ -25010,3 +25010,23 @@ lemmas, G1) + elder decorrelated math read (vindicated R>0 route not forward-onl
 axiom re-verify (force-elab, no F1 route). On all-clean → merge to trunk. Builder GO'd on the NEXT piece: (i)(a)
 leafPullback_sandwich FRESH from R2 (discharges this atom's sandwich hypothesis; F1-gated-then-fresh), then the
 wire (rlctAt_sumSqFam over flatCube, per chart → rlct ≥ ½minAdm → 2rlct=cCodim). The value assembly is moving.
+
+## 2026-07-26 (cont.) — FIRST VALUE BRICK MERGED: chart_rlct_ge_half_chartMin @2c947b0fd (the per-chart V-lower ≥-half, crux) — both decorrelated reads CLEAN + F1 gate PASSES
+
+**MERGED @2c947b0fd** (cherry-picked ChartValueLower.lean from aoyagi-r3brick @58ac4e460 — the only diff vs
+merge-base, no NodeCover334 conflict; MonomialRLCT already in trunk). Full aggregator green (9044 jobs, no
+clash); in-file assert fires clean-three on force-elab (my controller verify). BOTH decorrelated reads CLEAN:
+- ELDER (math): vindicated R>0 route (hsandwich = the from-below content as explicit HYPOTHESIS, not smuggled —
+  the opposite of the forward-only mirage); direction correct (chartMin ≤ 2·wrlctAt = the ≥-half); merge-OK.
+- REVIEWER (Lean-fidelity, kernel + Codex xhigh): #184 F1 GATE PASSES — #print axioms clean-three, NO route
+  through the 3 F1 lemmas, structurally F1-IMPOSSIBLE (imports only Core.Aoyagi.MonomialRLCT). statement=content
+  (hand-checked the 3-lemma composition); sandwich hypothesis HONEST (non-circular; monotonicity direction
+  correct); G1 honored in shape. "The CORRECT resolution of the F1 risk."
+Scope-note CORRECTED at merge: the (i)(a) "rides ChartBridgeFaithful" yellow flag → discharge LeafPullback via
+the FRESH blow-up sandwich, NEVER ChartBridgeFaithful (the F1-holed det-1 discharge) + the axiom-footprint gate.
+FAST-FOLLOW (non-blocking bedrock polish): the in-file non-vacuity `example` (reviewer's D=M=1 instance) —
+requested from the builder. #185 CLOSED.
+
+NEXT (builder): (i)(a) leafPullback_sandwich — DERIVE the sandwich from the kept-survivor SUM (never assert; the
+mirage's last hiding place), FRESH, F1-gated; then the wire (rlctAt_sumSqFam over flatCube, ALL charts + #172 →
+rlct ≥ ½minAdm → 2rlct=cCodim). The V-lower crux ≥-half is now banked in the trunk.
