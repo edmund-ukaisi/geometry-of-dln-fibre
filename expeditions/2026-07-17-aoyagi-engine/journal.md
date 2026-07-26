@@ -26760,3 +26760,20 @@ NOTE: this elder message CROSSED my over-vanishing feeder-(a)-dead crux (in the 
 NET: W3 CLOSED at (3,3,4) — a milestone (the born-native discipline held + verified, strongest form). Remaining for the
 (3,3,4) headline: (B) clean-144 hentry (firing) + the over-vanishing (restrict-or-(ii), elder-pending) + hjac +
 divisorMin≥8 → assembled.
+
+## 2026-07-26 — COVER-COUNT gate ANSWERED: restrict-to-clean-144 DEAD → (ii) over-vanishing FORCED
+The rework seat answered the gating question (structural, from the fan): the CLEAN-144 do NOT cover a nbhd of 0. For EVERY
+p1, the clean-p2native set = 4 elements ⊊ σC1(p1) = 8 (each p1 drops 4 node-2 pivots → the max-modulus sectors of those
+coords UNCOVERED, positive measure). So the over-vanishing 144 CANNOT be dropped; restrict-to-clean-144 is DEAD; the
+(i)+(ii) split (or a unified all-288 route) is FORCED (elder's earlier 'likely fails' CONFIRMED).
+The (ii) over-vanishing MECHANISM is needed (not optional). Feeder (a) DEAD (0 single-entry survivors, ≥4.5 toric).
+CONTROLLER READ (routed to elder): the over-vanishing discharge the WIRE's hsandwich (rlctAt_ge_iInf_threshold_of_sandwich_
+cover — needs only cst·∑monomial² ≤ loss, NOT an exact entry) via a HIGHER-ORDER/NESTED bound: loss = vm²·∑vf² ≥
+(vm·nested-survivor)² if a vf is a pure monomial (nested single_le_sum → higher monomial², threshold ≥4.5). The clean-144
+discharge hsandwich via B's exact-hentry. BOTH feed the SAME wire over all-288 (per-chart hsandwich, two derivations); the
+LANDED exact-hentry reduction covers only the clean-144 sub-derivation. So the ASSEMBLY = the wire over all-288 with
+per-chart hsandwich (clean-exact OR over-vanishing-nested), NOT the exact-hentry reduction over all-288. Elder rules the
+(ii) mechanism (may need a pnp to pin the nested-survivor per over-vanishing leaf-type).
+jacDet (rework, both families): |jacDet gFlat u| = |u_p1|^8·|(bb σC2 p3 u)_p2|^7·|u_p3|^3, unit≡1 (single monomial) → the
+per-leaf jac exponents feeding divisorMin. The seat proceeds hjac + divisorMin≥8 GENERICALLY (adapts to the final structure).
+NEXT: elder (ii) ruling + B clean-144 hentry + hjac/divisorMin → the assembled (3,3,4). value SOUND (all 288 ≥4 double-cert).
