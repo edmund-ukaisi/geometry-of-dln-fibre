@@ -25542,3 +25542,45 @@ STOP-FALLBACK IN VIEW: the honest landing = charter §1.B STOP-FALLBACK (OBJECTS
 NEXT: elder adjudicates (confirm Option-C-dead + the wall, or find a reroute; a decorrelated verify if it wants)
   → on confirmation I SURFACE to the operator (the STOP-FALLBACK destination call). Formaliser stood down (STEP 0
   banked, no grind). This is the pivotal fork of the expedition's endgame.
+
+## 2026-07-26 (cont.) — ELDER RULING: the WALL is MIS-PRICED (factorization≠inequality); STOP-FALLBACK NOT confirmed + HELD; ONE computation decides it
+CORRECTION to the prior "wall / STOP-FALLBACK-in-view" bank (it over-reached): the elder found the confound at the
+(pessimistic) confident-headline moment. THE MIS-PRICING: the wire (rlctAt_ge_iInf_threshold_of_sandwich_cover,
+SandwichCover.lean:257-259) demands only a FROM-BELOW INEQUALITY per chart (cst·∑ₖ monomialₖ² ≤ loss∘g_c,
+eventually, up-to-null) — NOT the exact factorization K=monomial²·∑fᵢ² (hpull). The exact factorization is only
+what the CURRENT producer (survivor_sandwich_lower) consumes. The formaliser's wall proves the EXACT-FACTORIZATION
+/ two-sided-normal-form route dead shear-free (F1: leafDiagFrob_geoAtlasNorm category-false for det-1 — CONFIRMED,
+retired). It does NOT prove the WEAKER from-below inequality dead. The addendum's "per-leaf ideal EQUALITY
+unavoidable" CONFLATES the equality (dead, F1) with the inequality (the wire's need). On the given (born, W3-clean)
+charts the inequality is strictly WEAKER — that is F10's vindicated content.
+THE REROUTE R-α (un-priced): produce the from-below inequality DIRECTLY on the born shear-free leaf — loss =
+∑(product entries)² ≥ (ledger-exponent entry)² ≥ c·monomial² near the center, by Finset.single_le_sum + continuity
+on the RAW entry, NOT via factoring/diagonalizing. Bypasses F1 (no normal form) AND W3 (born geoAtlas leaf, no
+transport). NOT a new monument — re-aims the EXISTING survivor argument at the raw product entry.
+THE DECISIVE FACT (uncomputed, now firing): does the entry carrying the LEDGER exponent survive as a kept survivor
+(G1, nonzero leading coeff) on the born shear-free (3,3,4) pivotChart near the center — or does the shear-free
+leading term cancel (forcing the shear)? Bounded, decidable pen-and-paper computation. Steelman (accepted): it
+must be the LEDGER-exponent entry (else wrong monomialThreshold/hchain = red-flip), not just "some entry."
+FIDELITY TRIPWIRE FIRED as banked: "the ledger is not the geometry" — the ledger gives the exponent; whether the
+shear-free geometry realizes it with a survivor is the hpull-fidelity question. The formaliser HELD correctly
+(didn't grind a possibly-false hpull — the gate working); only the CONCLUSION over-reached.
+PRICING CORRECTION (elder): even worst-case (survivor cancels → need the shear), re-deriving the CONCRETE (3,3,4)
+sheared value bound = finite explicit = DETAIL-AT-SCALE, NOT the monument. The MONUMENT (exists_coreResolution) is
+GENERAL-d resolving-cover EXISTENCE — already discharged geometrically (geoAtlas, W3-clean, F11); what's open is a
+per-leaf VALUE bound. "Reprove Corank2*Proto" = re-deriving PROVEN algebra in other coordinates = the ARCHETYPE of
+detail-at-scale IF true; calling it "the monument" = TIMIDITY-DISGUISED-AS-RIGOR (the named failure mode). The
+monument genuinely lives only at general-d (the banked §3-promote tripwire).
+RULINGS: (1) Do NOT confirm the wall / Option-C-dead — dead = the exact-factorization route (F1); NOT dead = the
+from-below inequality on shear-free leaves. (2) YES to the decorrelated verify but as a COMPUTATION: a pen-and-paper
+WITNESS (a9a355c394db96cb1, FIRED) computes the born shear-free (3,3,4) blown-up loss + checks the ledger-exponent
+survivor + its own Codex on the sharpened inequality-vs-normal-form question. (3) HOLD the operator surface until the
+computation lands — the STOP-FALLBACK (definition-of-done change) must NOT rest on the factorization-vs-inequality
+conflation; surface only WITH the computed verdict.
+DECISION TREE: survivor EXISTS shear-free → wall DISSOLVES, R-α feeds the wire, continue (detail-at-scale build), no
+operator surface; survivor CANCELS → R-α needs the shear → price (3,3,4)-sheared [detail-at-scale] + general-d [the
+monument] → if general-d=monument, objects-only IS the honest general-d landing (#94/§0; A LANDED; cite
+cited_aoyagi_lower_ax; (3,3,4) as concrete witness), NOT a defeat = the operator surface WITH the verdict.
+CONTROLLER SELF-AUDIT: I amplified the formaliser's wall (banked "STOP-FALLBACK in view") without catching the
+equality-vs-inequality conflation myself — the decorrelated elder seat caught it. Validates "get the decorrelated
+comprehension read BEFORE the destination surface"; I did HOLD the surface (didn't over-reach to the operator).
+Lesson: even a thorough formaliser wall-diagnosis can conflate a stronger dead route with the weaker live need.
