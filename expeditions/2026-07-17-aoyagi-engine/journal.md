@@ -27596,3 +27596,30 @@ headline = clean-three, sorryAx GONE.
 STATE: H1 VERIFIED+LOCKED; H2 = all 16 canonical FULLY GATED + transport steps 1-6 (sorry-free, review-gating) = ALL H2
 BUILD DONE; H3 = (A) ∀-over-Idx + (B) step-6 spine, at convergence. NEXT: transport review clean → merge → (A)+(B) →
 aggregator + #print axioms → unconditional (3,3,4) V-lower.
+
+## 2026-07-26 ★★ σ_p1-TRANSPORT REVIEW CLEAN — the LAST H2 build gate CLEARED; convergence merge STARTED
+Transport fidelity reviewer (af005ff6, re-spawn after the overload death) CLEAN/survived — decorrelated (fresh worktree +
+Codex xhigh + hand-verification of sigC0/sigC4 vs the A0 grid !![u20,u2,u3;u0,u4,u6;u1,u5,u7] / A1[a,b]=u(8+4b+a); exit-0):
+(a) σ_p1 = the DLN Weyl-permutation LOSS-SYMMETRY (hidden-swap 0↔i A0-rows+A1-cols + input-swap 0↔j A0-cols; p1→A0[0,0]=20);
+crux sumSq_coreGen_symm minimal+sound (needs only hA0/hA1; reindex shared hidden idx b → Frobenius-invariant); hA0/hA1 by
+fin_cases+simp/decide. (b) [KEY] qdisp-SUM reading CORRECT+honest (blockShear sees only the per-coord SUM → sum-equality
+IS function-equality; t1/t2 slot-swap a visible encoding artifact; srcKept/jacDet/injective/covers proved SEPARATELY so a
+slot mismatch can't leak; hand-verified P0+P4, Codex coords 2/12/14). (c) leaf_domination_Pn honest (traced the chain);
+hbase matches the canonical export. (d) clean-three ground-truth (crux genuinely consumed). (e) cross-validation REAL
+(sigmaC1Fs 0≠20, cperm0≠cperm20).
+⟹ the LAST H2 BUILD GATE CLEARED. The whole over-vanishing value (H1 Tonelli + 16 canonical + transport) is
+DECORRELATED-VERIFIED, monument-free.
+NOTE 1 (reviewer scope): the transport certifies native = σ_p1-conjugate(canonical) but does NOT re-certify the CANONICAL
+tables encode the paper's (3,3,4) chart (a simultaneous canonical+native mis-encoding would build clean). DISPOSITION:
+CLOSED upstream — the canonical (gFin/gCanon = value-correct whole-conjugate) was DECORRELATED-verified in the (A-rework)
+review (independent σ re-derivation + 9-dominant sympy + blockBlowupMap_conj) + whole_conjugate_all288 + the template
+review → NOT self-certified (a wrong canonical would've been caught). RE-CONFIRM chart↔paper at the close (standing
+fidelity layer). NOTE 2 immaterial (generic engine, no count). Cosmetic 12 longLine → merge.
+CONVERGENCE STARTED: spawned an INTEGRATION seat — merge the 6 verified branches (base=pertype 27d6d82842 + {tonelli
+674f682f6, regseq 8a687824e, clean144 ec9ab4f60, patternA 834574953, patternB 940224c42, transport 6dcd8c171},
+conflict-free; Core-file auto-resolves to tonelli's closed) + BUILD the trunk green (all 16 leaves + transport + Core +
+backbone compile together; bridge now Tonelli-free; only Assembly334:65 spine open) + push + report. THEN (A) [transport
+seat] + (B) [(ii)] on the trunk → aggregator [me, DLNFibre.lean single-writer] + #print axioms gate.
+STATE: H1 VERIFIED; H2 = ALL VERIFIED (16 canonical + transport reviewed CLEAN, monument-free); convergence merge in
+flight; H3 = (A)+(B) after the merge. NEXT: merge-build green → (A) ∀-over-Idx → (B) step-6 spine → aggregator + #print
+axioms → unconditional 4 ≤ rlctAt(sumSqFam(coreGen dvec eWrap)) 0 = the (3,3,4) V-lower.
