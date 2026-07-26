@@ -1283,3 +1283,16 @@ FIX: before dispatching ANY "build brick X, not in Mathlib" task, grep OUR Core/
 mandate the builder do so as step 0) — a nonzero-cost build was spent re-deriving banked Core API. Cheap check,
 avoids a duplicate. (The review is the backstop; the grep is the front-stop.) Not a soundness issue — a
 reuse/efficiency one — but exactly the Core-bedrock discipline (stand on it, don't re-open it).
+
+### Green center-agnostic cover ≠ correct geometry (2026-07-26, R3 first brick; reviewer + Codex xhigh)
+The R3 first-brick reviewer flagged (load-bearing): `node_cover_334`'s green build is CENTER-AGNOSTIC — the
+block-blowup argmax atom covers `closedBall 0 R` for ANY nonempty center (every point has an argmax coord
+among the center; non-center coords are spectators). So the theorem is EQUALLY TRUE with center `{0}`,
+`{0,1,2,3,20}`, or the full `{0..7,20}`. CONSEQUENCE: a green cover build certifies NOTHING about whether the
+center is the geometrically-correct one — center/node-structure fidelity is a SEPARATE atlas-identity matter
+(#183), NOT evidenced by the cover's green. LESSON (calibrate the sensor): a passing cover-existence build is
+a WEAK sensor for geometric fidelity; do NOT read "the cover compiles" as "the geometry is right". The real
+sensor is the value/atlas-identity side (does `buildTree`'s `conOracle` produce this center + the right
+pullback). Gate integration-fidelity on the atlas-identity check, never on the center-agnostic cover's green.
+Also sharpened: the center fixes the whole ATLAS IDENTITY / value pullback (which coords blown up vs
+spectators), not merely a Jacobian exponent — my first framing ("Jacobian-monomial concern") understated it.

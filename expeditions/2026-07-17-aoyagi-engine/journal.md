@@ -24879,3 +24879,26 @@ builder tracing conOracle(![3,3,4])'s node sequence + each dCenterOfNode (gWrap 
 gWrap's {0..7,20}/{0..7}/{1,5,6,7} (noncomputable → a trace/lemma, not #eval). MATCH ⟹ node_cover_334 IS
 buildTree's actual node cover (fully faithful cover+value+centers), brick+fold transfer; DIFFER ⟹ re-ground the
 fold's node clause on buildTree's centers (the merged brick stays a valid standalone cover, renamed).
+
+## 2026-07-26 (cont.) — R3 FIRST BRICK MERGED (node_cover_334 → reroute trunk @a1dad113); reviewer SURVIVED; center-agnostic calibration lesson banked
+
+**MERGED.** node_cover_334 (real (3,3,4) born-fan over the KEPT center {0,1,2,3,20} covers closedBall, 4..7
+spectators) merged into the reroute trunk (expedition/aoyagi-engine-reroute): merge commit dc0b5694 +
+aggregator-wire/docstring-fix a1dad113. FULL aggregator build GREEN (9043 jobs, NO name-clash); AxCheck +
+the in-file #assert_banked_clean_batch [node_cover_334] fire clean-three on FORCE-ELAB (touched → re-elab).
+Clean-three confirmed THREE ways: reviewer independent force-elab #print axioms, byte-identical proof
+(21bc03007→c1ddd9928 diff = docstring/title ONLY), my forced re-elaboration. R3's FIRST PROVEN RUNG.
+
+**Reviewer verdict (r2build-review, Codex xhigh corroborated):** SURVIVED as a COVER brick — true FULL cover
+(shearH verified a genuine unipotent bijection, no hidden hole), sound, axiom-clean, W3-clean (born via
+bornSiblings + a plain CleanClearing clearing334, NOT a gWrapFan/K-orbit wrapper — no K-orbit in the proof
+cone), name=content honest (literally quantifies over {0,1,2,3,20}, no textual {0..7,20} claim), non-trivial.
+The deeper fidelity does NOT bear on the STATEMENT (true+honest for any center) — it bears entirely DOWNSTREAM
+(is this cover the geometrically-faithful one for the VALUE side).
+
+**THE CALIBRATION LESSON (banked to the ledger):** the cover is CENTER-AGNOSTIC — the argmax atom covers for
+ANY nonempty center, so the green build certifies NOTHING about the center's correctness. A cover-existence
+green is a WEAK sensor for geometric fidelity; the real sensor is the atlas-identity/value side (#183). And
+the center fixes the whole ATLAS IDENTITY / value pullback (which coords blown up vs spectators), not merely a
+Jacobian exponent — sharpened the FIDELITY NOTE + the charter §3 companion accordingly. #178 CLOSED; #183
+(cover-center identity) governs whether node_cover_334 IS buildTree's node cover — the fold gate.
