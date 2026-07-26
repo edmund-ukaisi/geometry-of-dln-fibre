@@ -1760,3 +1760,10 @@ import DLNFibre.DLN.Aoyagi.NodeCover334
 --   (vindicated R>0, not forward-only; G1 honored). The (i)(a) leafPullback_sandwich discharge is separate +
 --   F1-gated (FRESH pivotChart blow-up sandwich, NEVER ChartBridgeFaithful).
 import DLNFibre.Core.Aoyagi.ChartValueLower
+-- SurvivorSandwich (R3, VALUE (i)(a)): survivor_sandwich_lower + chart_rlct_ge_half_of_survivor — the
+--   survivor => R>0-sandwich lower half (K = monomial^2 * sum f^2, kept survivor f(0)=1 => (1/4)monomial^2 <= K),
+--   chained into (i)(b) => chartMin <= 2*wrlctAt. F1-INDEPENDENT (FRESH from SurvivorFanCover.sumSq_residual,
+--   hpull kept OPEN, NOT ChartBridgeFaithful); clean-three; reviewer+elder SURVIVED (M=1 tight = dominant
+--   monomial sets the sum's RLCT, resurrection risk AVOIDED). hunit1 (squarefree binding = k=1) + hpull are the
+--   WIRE's obligations (watch: a binding-axis multiplicity >= 2 would need the (h+1)/(2e) form).
+import DLNFibre.DLN.Aoyagi.SurvivorSandwich
