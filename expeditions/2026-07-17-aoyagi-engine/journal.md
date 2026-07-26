@@ -27009,3 +27009,22 @@ A0_gFlat_factor (reusable uniform u_p1 factoring) delegated to the rework seat (
 STATE: mixed-288 value = clean-144 (B DONE, reviewing) + over-vanishing-144 ((ii)-DLN (3)-(5) + Core-Tonelli, in build).
 NEXT: clean_hentry reviewer clean + SoS-stmt interface-review clean + (ii)(3)-(5)+Tonelli+A0_gFlat_factor land → step-6
 abstract-wire assembly → unconditional (3,3,4) → merge (aggregator all modules + lint).
+
+## 2026-07-26 — INTERFACE GATE CLEARED: the locked SoS statement fidelity-CLEAN (reviewer + Codex xhigh)
+The BAKE-time fidelity reviewer (ac1cc...) ruled monoSumSq_integrableAtFilter_of_lt + monoSumSqThreshold + monoSumSqGerm
+(MonomialSumSqRLCT.lean @aadc0c271) CLEAN — survived all 6 points; decorrelated Codex xhigh corroborates (artifact
+threads/r2build-review/codex/doubling-unit-*). Bake-ready, NO repair.
+KEY: (2) the HIGH-risk exponent-DOUBLING VERIFIED CORRECT — the statement feeds `a` (UNDOUBLED) to monomialThreshold,
+whose 2·a_d denominator IS the doubling (per-axis exponent jac_d − 2·a_d·cc; feeding 2•a → 4·a_d = halve the threshold,
+wrong). monoSumSqThreshold = min(monomialThreshold a jac, |Z|/2) = min(threshold(vm²), |Z|/2). (5) unit-honesty (elder
+amendment A): ONE IntegrableAtFilter of the single coupled integrand, unit via hW=jacWeight·unit, ContinuousAt unit p ⟹
+the sup-bound domination (|unit|) — NO false product-of-integrals eq. (1) germ faithful (disjointness enters via
+hZa/hZjac at the theorem, not baked in the def — same design as the chain engine). (3) quantifiers sound + non-vacuous.
+(4) conclusion matches integrableAtFilter_of_sandwich per-arg; the clean-three helpers supply the const_mul +
+LocallyNullZeros the sandwich transfer needs. (6) sorry-free parts clean-three.
+⟹ the interface for the ENTIRE over-vanishing value engine is fidelity-verified BEFORE the seats sink deep proof
+(fix-wrong-statements-first paying off). Confirmed to Core-Tonelli (prove as-locked, full confidence) + (ii). No fix to
+relay.
+STATE otherwise unchanged: clean-144 B DONE (reviewing); over-vanishing (ii)-DLN (3)-(5) + Core-Tonelli building on the
+now-verified interface; A0_gFlat_factor (rework seat). NEXT: clean_hentry reviewer + Tonelli + (ii)(3)-(5) land → step-6
+mixed-288 assembly → unconditional (3,3,4).
