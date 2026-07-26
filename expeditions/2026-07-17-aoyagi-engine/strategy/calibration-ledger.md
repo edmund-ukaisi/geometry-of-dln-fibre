@@ -1421,3 +1421,21 @@ divisorMin ≥ 8 already suffices (v≥8 ⟹ v/2≥4); the ≤8 belongs to the S
 (Object-D exact =8), correct + satisfiable — NOT a defect, but 'ONLY via =8' overstated necessity. LESSON: when
 steering a reviewer on a ONE-SIDED bound, name the load-bearing DIRECTION (≥ for a lower bound), not the two-sided
 equality, unless the equality is genuinely needed. ≥8-fallback relayed to the born-α seat.
+
+## 2026-07-26 — CALIBRATION (phase-transition de-risk→build): sizing piece (4), the summit re-point
+QUESTION: does the summit/headline route through exists_coreResolution (the monument), and how big is piece (4)
+[via_engine re-point → exists_coreResolution DEAD in the headline cone]?
+EXPECTATION (first): (i) the payoff (LearningCoefficient/via_engine) EXISTS + currently routes through
+exists_coreResolution — conf MEDIUM-HIGH; (ii) the re-point to the cite-free V-lower+V-upper is MOSTLY bookkeeping —
+conf MEDIUM.
+ACTUAL (grep @aoyagi-r3wire): exists_coreResolution in ~9 files incl. LearningCoefficient.lean (the payoff) +
+RecursionAdapter / Corank2Realize334 / MonumentAssembly / MonumentAtlas / GeometricAtlasD12 / Corank2GeoAtlas +
+Core/BlowupResolution (def site). HIT on (i): the payoff file references the monument.
+REFINEMENT on (ii): 'mostly bookkeeping' is UNVERIFIED — exists_coreResolution threads through MULTIPLE
+headline-adjacent files, so the re-point may be a genuine dependency-cone RE-WIRE (re-point LearningCoefficient's path
+onto the cite-free wire + verify #print axioms drops exists_coreResolution from the headline cone), not a one-liner.
+Exact size needs a #print axioms on the current headline (how DEEP the monument sits in the cone) — deferred
+(summit rung is downstream of #188; proportionate).
+WHAT IT CHANGES: scope piece (4) as a real (monument-free) re-wiring integration task, not a trivial flip; at the
+summit rung FIRST #print axioms the current headline to size the cone, THEN re-point. (Retired monument-route files
+MonumentAtlas/Assembly/GeoAtlas likely OUT of the headline cone — the #print axioms confirms which are load-bearing.)
