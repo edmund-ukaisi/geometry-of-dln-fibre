@@ -1475,3 +1475,23 @@ Codex red-team of its OWN cert. FIX: the regular-sequence LB (genuine lower boun
 LESSON: for a LOWER-bound claim (rlct ≥ c), verify the cert is a LOWER bound. Toric/LP/relaxation certs are generically
 UPPER bounds on the true rlct — an upper bound ≥ c does NOT give true ≥ c. Check the DIRECTION, not just the number.
 Vindicates decorrelated review (red-team the OWN cert, don't just accept 'double-certified').
+
+## 2026-07-26 — CALIBRATION (caught by the (ii) seat reading the engine; controller-verified on ground truth; pnp-confirmed): the chain-wire cannot deliver the SoS r/2
+QUESTION: does the named V-lower wire rlctAt_ge_iInf_threshold_of_sandwich_cover deliver the over-vanishing threshold 4
+when fed the from-below family {vm·z_1,…,vm·z_8}?
+FINDING (3-way: (ii) seat + controller reading Core/Aoyagi/MonomialRLCT.lean + pnp exact algebra): NO. The wire's
+integrability engine monomialSumSq_integrableAtFilter_of_lt REQUIRES a divisibility CHAIN (hchain: ∀ k d, e k₀ d ≤ e k d
+— one monomial dividing all) and, via exists_unit_sumSqFam_monomial_strong, collapses ∑bₖ² = b_{k₀}²·U with 1≤U, then
+bounds U^{-c} ≤ 1 — structurally DISCARDING the extra vanishing of the non-k₀ monomials. {vm·z_j} has NO chain-min (each
+carries its own z_j) ⟹ hchain fails; the vm-repair (k₀=vm) yields monomialThreshold(vm) = 1/2 (the 'single-M dead' case).
+The 'feed the 8-monomial family to the wire → threshold 4' plan is DEAD.
+CORRECTED ROUTE (authorized): a NEW monomial × nondegenerate-sum-of-squares Core engine
+rlctAt(vm²·∑_{j=1}^r z_j²) = min(threshold(vm²), r/2), from RLCT.SumSq rlctAt_sumSq (=C/2) + MonomialBox
+prodRpow_boxSymm_lt_top + Fubini over DISJOINT coord blocks (vm-support ⊥ z-coords; product integral converges iff both
+factors do → the min). Over-vanishing: min(≥4, 8/2)=4. The Ψ making the vf into coords is a blockShear (unipotent det-1
+[[I₄,0],[B,I₄]]).
+LESSON: before feeding a from-below sandwich RHS to the chain-based sandwich-cover wire, verify the RHS is CHAIN-SHAPED
+(a divisibility chain with a min-element monomial). A sum-of-squares improvement (rlct r/2 from a nondegenerate quadratic
+in r vars) is INVISIBLE to the chain collapse (U^{-c}≤1 discards the non-min vanishing) — it needs the SoS engine.
+Sibling to the cert-DIRECTION tripwire (both: a plausible reading the decorrelated read exposed). Vindicates the seat
+reading the engine BEFORE building the statement.

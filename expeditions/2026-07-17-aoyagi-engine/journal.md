@@ -26887,3 +26887,23 @@ the cover. ⟹ the (ii) over-vanishing regular-sequence build is MANDATORY (vali
 STATE: 3 seats running — fidelity reviewer (a26dd606912e2f6be), (ii) regular-sequence (a0aa73a4a513883b2), B clean-144
 hentry (a765ae612a809cb18). They cover the remaining (3,3,4) work. On reviewer-clean + (ii) + B → all-288 wire case-split
 assembly → unconditional (3,3,4) → merge + aggregator wiring.
+
+## 2026-07-26 — (ii) STRUCTURAL FINDING + route-adoption: chain-wire caps at 1/2; NEW monomial×SoS engine authorized
+The (ii) seat (a0aa73a4a513883b2), setting up, found the named V-lower wire cannot deliver the over-vanishing threshold
+(chain-based; discards the SoS gain). CONTROLLER VERIFIED on ground truth (read MonomialRLCT.lean:
+monomialSumSq_integrableAtFilter_of_lt needs hchain + collapses to b_{k₀}²·U, U^{-c}≤1); pnp CONFIRMED (3-way). The
+'8-monomial family → wire → threshold 4' plan is DEAD.
+AUTHORIZED (executive call; LADDER re-scope, NOT destination — the math bound over-vanishing≥4 unchanged + pnp-certified):
+a NEW monomial×nondeg-SoS Core engine rlctAt(vm²·∑z_j²)=min(threshold(vm²), r/2)=4, from RLCT.SumSq rlctAt_sumSq(=C/2) +
+MonomialBox prodRpow_boxSymm_lt_top + Fubini over disjoint blocks. Detail-at-scale, reusable Core. In scope for (ii); if
+the Core engine grows large it hands back as its own unit.
+SUBSTRATE handed to (ii): the RLCT.SumSq/MonomialBox lemma names; pnp's ii_builddata.out (16 types) + F11d + the 5-step
+reduction (loss=vm²·∑vf² → subset_le_sum keep|S|=8 → Ψ=blockShear[[I₄,0],[B,I₄]] Ψ*vf_k=z_{j(k)} → rlctAt-monotone +
+|detDΨ|=1 CoV → the new product-RLCT lemma); general hyps (i) invertible 8×8 minor on jac-0 coords ⊥ supp(vm), (ii)
+threshold(vm²)≥4 (both hold all 16, Codex-confirmed). Q2 pullback (loss∘gFin=vm²·∑vf²) is (ii)'s deliverable via
+mult_eWrap + lossDLN_zero_eq_coreLoss.
+ELDER convened (a094f466b66658e87; route-adoption trigger): rule minimal/sound/ladder-not-destination + rising-sea
+counsel + the compass tripwire framing (advisory, non-blocking).
+GATES at (ii) def landing: (W3) Ψ native grep-clean; (cover) g_c∘Ψ blockShear cover; (NEW) SoS-engine Fubini
+factorization honest (rlctAt_sumSq at C=8, no hidden cross-term), clean-three.
+CALIBRATION banked (chain-wire caps at 1/2; SoS gain needs the SoS engine).
