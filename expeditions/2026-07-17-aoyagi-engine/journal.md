@@ -26307,3 +26307,27 @@ Transport334, W3-clean; K-orbit = description-only). → routed to the ELDER: co
 source-reparam close 'does the per-pivot family cover?') + the W3-fork ruling. ASSEMBLY HELD pending the elder.
 P2's fixed-shear gWrapFan cover likely moot for Path A (not the value family); its SCALING infra transfers to flatCube
 (fact #1). L2 reviewer (a8e2056dadb55eacb) continues (verifies the reusable scaling).
+
+## 2026-07-26 — ELDER: fact #2 ADOPTED (engine-native mechanism) + W3 native + L2 §3/F14 refined; pnp F9 = ALL 9 dominants sound → assembly LAUNCHED
+ELDER ruled both seam calls (from the pnp F8 RED):
+COVER-RECONCILIATION → ADOPT fact #2 (cleaner than reparam_image): per-leaf native born-α carried DIRECTLY in the fan
+— FanStep.shear = σ_p per-pivot (INNER/source), blockBlowupMap OUTER. g_c = blockBlowupMap∘σ_p = ONE object (W1-unified)
+carrying BOTH hcover (engine covers_fanOfSteps ∀R LANDED + per-pivot box-containment reusing blockShear_covers_scaled
+general-D; native shears are det-1 quadratic block-shears = that brick's shape) AND hsandwich (inner σ_p exposes
+survivor entry_0=E exactly, per L1). Cleaner (fully-landed engine + bounded brick, no ~90% reparam_image residual);
+reparam_image SUPERSEDED (same source-inner principle). Path B DEAD for W1. Elder confound-checked: box-containment
+genuinely bounded (reuses landed machinery; shape matches) — no hidden cost.
+W3 FORK → NATIVE: σ_p BORN-NATIVE (from the node's atoms via shared stepUpdate/F5), NEVER Transport334 (F12-B). The
+K-orbit conjugate = DESCRIPTION-tool only; write the explicit native shear; verify FanStep.shear = born σ_p at the fill.
+VALUE-GLOBAL: ρ_leaf=∞ ⟹ no value shrink; only the cover ρ constrains.
+L2 §3/F14 REFINED (elder-authored clause committed, both files): W1 unification rides ONE engine-native per-pivot object.
+pnp F9 (seam_all9_dominants_334.py, exact toric-LP): ALL 9 A0-dominants restore to true rlct=4.000, single-entry
+survivor, divisorMin=8 via their per-pivot native born-α ([0,0]/[1,0]→u0·u20 idx0; [0,1]/[1,1]→u2·u4 idx1;
+[0,2]/[1,2]→u3·u6 idx2; [2,0]→u0·u1 idx0; [2,1]→u4·u5 idx1; [2,2]→u6·u7 idx2). So the F8 RED is a MIS-SHEAR fully
+repaired — NO A0-dominant is a monument; #188 (per-pivot native family) is UNIFORMLY sound. Value cert F5-F9 COMPLETE.
+ASSEMBLY LAUNCHED: re-engaged the reduction formaliser (a6b6239b54dd15f06) — per-pivot born-native fan
+(FanStep.shear=σ_p from F5) + per-pivot box-containment brick (reuse blockShear_covers_scaled) → hcover (engine
+covers_fanOfSteps); + hsandwich (P1 cert F5-F9); + hbdd + hdivisorMin=8 → discharge rlctAt_coreGen334_ge_four_of_family
+UNCONDITIONALLY → (3,3,4) headline. Guardrails: born-native σ_p (W3, never Transport334), W1-unified g_c, NOT
+fixed-shear (F8 RED). Reports at 2 elder triggers: (1) box-containment brick + hcover; (2) assembled (3,3,4).
+pnp stood down (value cert done); available for the per-pivot COVER probe if the elder flags a gap.
