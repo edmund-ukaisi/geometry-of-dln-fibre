@@ -26669,3 +26669,25 @@ ACTIONS: elder updated (residuals de-escalated, likely non-blocking); rework sea
 (over-vanishing valid ≥4 feeders; equivariance subsumed by W3-build); pnp ready-assets noted (the signature-diff closure
 test). NET: STOP-SHIP fully CLOSED on the value; the rework proceeds; the residuals are downstream mechanism/fidelity,
 not gates.
+
+## 2026-07-26 — elder: all-288 caveat DISCHARGED POSITIVE + residual sharpening (R2 feeder needed, prefer native over-vanishing hentry)
+Elder confirmed the pnp all-288 SURVIVED = the critical caveat ('don't claim ≥8 from 9') DISCHARGED POSITIVE, stronger
+than required (a PROOF — exact loss-symmetry collapse 288→32 all ≥4 — + a rational-dual LP cert). (C) divisorMin≥8
+cite-free finite decide TRUE; STOP-SHIP value RESOLVED POSITIVE; min-over-charts retired.
+RESIDUAL (1) COMPLETENESS — subsumed by hcover, NON-BLOCKING: the lower bound needs the 288 to COVER (covers_fanOfSteps
+over the 288), NOT a separate enumeration audit; any uncovered region fails hcover. ONE CHECK: covers_fanOfSteps genuinely
+ranges over the ACTUAL 288 leaf set → rework def-landing check.
+RESIDUAL (2) 144-OVER-VANISHING — downstream/bounded, NON-BLOCKING for soundness (rlct≥4 PROVEN all 288), sharpened:
+- restrict-to-clean-144 LIKELY FAILS: the clean 144 are max-modulus SECTORS (positive-measure); dropping the 144
+  over-vanishing sectors leaves positive-measure HOLES ⟹ they don't cover up to null. So the FEEDER is NEEDED.
+- FEEDER (W3 lens): (a) NATIVE over-vanishing hentry (per-chart exact entry-equality with the higher over-vanishing
+  monomial ⟹ threshold ≥4.5) — W3-CLEAN, bounded, EXPANDS (B) hentry from ×9 to the FULL 32-canonical (still
+  detail-at-scale). (b) loss-symmetry value-transport (rlct(g_c)=rlct(canonical) via σ) — cheaper, needs W3-SCRUTINY (the
+  value-level description-vs-construction line: σ as cert-tool fine; σ wrapping the value-transport = the W3 line).
+- ELDER LEAN: (a). σ-loss-symmetry for the pnp CERTIFICATION is fine (value-fact for the PROOF); the W3-relevant choice is
+  the LEAN discharge's VALUE mechanism.
+ACTIONS: elder acked; R2 sharpening + R1 check forwarded to the rework (a071ddb87a8c32348) — restrict likely fails →
+feeder needed, prefer (a) native over-vanishing hentry (B scope → full 32); (b) → elder W3-scrutiny.
+NET: both residuals non-blocking for soundness; (B) hentry scope EXPANDS from ×9 to the full 32-canonical (native, per the
+elder lean) — bigger detail-at-scale, bounded. Re-convene elder at chart def landing (grep-gate) + (B) hentry (full 32) +
+assembled (3,3,4).
