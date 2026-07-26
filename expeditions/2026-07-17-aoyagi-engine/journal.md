@@ -25864,3 +25864,26 @@ shear + acyclic layer-order); + the general-d α scoped (schurCells + cross-laye
 NET: the (A) cite-free value headline is priced SOUND at full generality, monument-free — remaining = construction
 labor (the (3,3,4) bounded fill [pinning in flight] + the general-d α build + the fed-form invariant, all
 detail-at-scale). The biggest de-risks of the expedition are all CONFIRMED positive.
+
+## 2026-07-26 (cont.) — ELDER: §3 narrowed PENDING-COMPOSITION → PENDING-LANE-A (lane b CLEARED; the co-gate = leaf-type coverage, lane a running)
+The elder caught a CONFOUND in the pnp's "SATISFIED with (i) tracked-open": (i) the fed-form invariant rests on TWO
+distinct residuals, not one. (1) COMPOSITION/entanglement = genuinely CLEARED (lane b — the uniform level-order
+acyclicity [shear reads level J, writes strictly-higher ⟹ acyclic DAG ⟹ unit-triangular ⟹ |det|=1] + the
+adversarial rollover-after-Case-2 pattern STRUCTURALLY VACUOUS [rollover carries no shear, Lean-verified] +
+flatCoordOf-injective; Codex). (2) LEAF-TYPE COVERAGE = STILL RUNNING (lane a): does {one-born-shear ∪ #172} cover
+ALL singular leaf types? An S2-survives-shear leaf = a chart where ONE born shear does NOT clean-expose the survivor
+(the fed-form's core promise FAILS there) — INSIDE #172 = bounded (hidden-#172 recursion); OUTSIDE #172 = a genuine
+gap (a possible monument / objects-only trigger). Promoting §3-SATISFIED while lane a's monument-hunt is in flight =
+the anti-pattern the tripwire prevents. F13 named only #1; #2 is the sharper one lane a surfaced.
+RULING: §3 = HOLD SATISFIED-PENDING, NARROWED PENDING-COMPOSITION → PENDING-LANE-A. Credit lane b (composition
+CLEARED, structural + Lean-verified). PROMOTE to SATISFIED when lane a confirms ALL S2-survives-shear types INSIDE
+#172 (then only (ii) the general-d α = construction labor remains, correctly a tracked-open). OUTSIDE-#172 → surface
+the objects-only flip (operator-gated) with the finding. Charter §3 updated (two-residuals framing).
+CONTROLLER SELF-CORRECTION: I forwarded the pnp's "SATISFIED with (i)+(ii)" read without catching that (i) ALSO
+rests on lane a (leaf-type coverage), not composition alone — the elder's decorrelated comprehension caught it. The
+fidelity tripwire damping its OWN promotion (don't declare SATISFIED while a co-gate monument-hunt runs). Good loop.
+LIGHT CONFIRM (re-engaged the composition pnp): the acyclicity's write-strictly-above-reads must hold WITHIN row 0
+(pivot + cleared first-row slots both at min(i,j)=0 — needs the FINER flatCoordOf ordering, not coarse min(i,j)).
+Likely YES via flatCoordOf-injective; confirm → the uniform argument is airtight.
+NET: §3 = PENDING-LANE-A (one gate short of SATISFIED — lane a's leaf-type-coverage/S2-inside-#172 check, running).
+Re-convene the elder: lane a verdict + the acyclicity confirm + first born-α fill.
