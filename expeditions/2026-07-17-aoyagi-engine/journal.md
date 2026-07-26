@@ -24641,3 +24641,30 @@ from `StepConstructor.bornSiblings`, never wires the cover as a K-orbit. A desig
 **FIRST BRICK + DESTINATION: elder CONCURS.** First brick gated on sandwich+cover+hnull AS THEOREMS (M1/M2-
 style). Destination (A) = the V-wire (binv-free), recursion-{R=0} composed. (B) = the two-sided binv route
 (localizes, inherits R1) as fallback.
+
+## 2026-07-26 — R3 first-brick RECON: 3 obstacles → decomposed into (a) correspondence p&p + (b) poly-null brick (parallel), then specify+prove
+
+reroute-R2build recon'd the R3 first brick (branch expedition/aoyagi-r3brick) BEFORE committing to a statement
+(well-scoped-first discipline) + surfaced 3 concrete obstacles:
+- **(1) CORRESPONDENCE:** ι = 12 coreGen entries (the 4×3 product; commonZero coreGen = {mult=0}), but
+  bornSiblings334 = only 2 charts (center {0,1}). The map chart:Fin 12→{2 born} (many-to-one) + whether it
+  makes hchart hold = the "genuine content" = pen-and-paper-shaped.
+- **(2) hchart DISCHARGE:** the block-blow-up atom's argmax cover is over INPUT pivots; connecting it to the
+  OUTPUT-generator survivor region (survivorRegion(coreGen) a ∩ box ⊆ born-chart-a.g''dom a) = the core build.
+- **(3) hnull NOT cheap for real coreGen:** {mult=0} = zero-set of the 12 product-POLYNOMIALS; needs the
+  "zero-set of a nonzero multivariate poly is null" brick — CONFIRMED NOT in Mathlib (builder grep) = a
+  genuine build, the SAME brick G2 needs.
+- Machinery confirmed: gWrapFan (Corank2FanDef334) = the K-ORBIT route = W3's DEAD route (correctly avoided);
+  Chart.hcover = the atom's shape; node_clause_of_survivorAtom = the assembly point.
+
+**DECOMPOSITION (controller steer): (a) + (b) IN PARALLEL, then specify+prove; NOT (c) skeleton (violates
+theorem-gated done).**
+- **(a) [#180, corr-derisk fired]:** the correspondence p&p — the ι(12)↔born(2) map + does the 2-chart node
+  fan cover up-to the deeper strata (branching handles the rest) or need a richer fan (the potential
+  surprise) + hchart-discharge-shape (input-argmax↔output-survivor) + W3-clean.
+- **(b) [#181, reroute-R2build GO'd]:** the poly-null brick (zero-set of a nonzero multivariate poly is
+  Lebesgue-null) — self-contained, reusable (R3-hnull AND G2), Mathlib-grade Core lemma.
+- **Then [#178]:** specify+prove the one-node hchart theorem (hchart from (2)/(a), hnull from (b)), gated on
+  the THEOREM (M1/M2-style). Fold-rung reminder: composes #172 (hnull ≠ #172).
+The recon is the disposition working — decompose before committing a substantial build; parallelize the
+independent reusable brick; adjudicate the crux with a decorrelated p&p.
