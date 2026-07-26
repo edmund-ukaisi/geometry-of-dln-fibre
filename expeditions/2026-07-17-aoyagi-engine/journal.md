@@ -26876,3 +26876,14 @@ over-vanishing charts = gFin∘Ψ; def-gates Ψ-W3 grep + g_c∘Ψ cover). (3) A
 DEFERRED to the complete-headline merge.
 NEXT: reviewer clean + (ii) regular-sequence + B's clean-144 → the all-288 wire case-split assembly (per-chart hsandwich:
 clean-exact via B OR over-vanishing-nested via (ii)) → unconditional (3,3,4) → merge + aggregator → +V-upper → summit → payoff.
+
+## 2026-07-26 — rework seat COMPLETE echo + DEAD-ROUTE confirmed: clean-144 restrict is dead
+The (A-rework)+(C) seat (a071ddb87a8c32348) finished + delivered its final report — reconfirms the 4 modules
+(Perm/Fan/Value/Jac) + reduction weakening, all clean-three (#assert_banked_clean_batch = enforcing gate, green),
+pushed @2583a6bd1; direct-atom composite == whole_conj 288/288 (sympy). Files/theorems as banked above.
+NEW definitive DEAD-ROUTE finding (bank so not re-probed): **restrict-to-clean-144 is DEAD** — clean-p2 is a strict
+4⊊8 subset of the node-2 centre per dominant ⟹ positive-measure holes; the over-vanishing 144 CANNOT be dropped from
+the cover. ⟹ the (ii) over-vanishing regular-sequence build is MANDATORY (validates the (ii) spawn), not an optimization.
+STATE: 3 seats running — fidelity reviewer (a26dd606912e2f6be), (ii) regular-sequence (a0aa73a4a513883b2), B clean-144
+hentry (a765ae612a809cb18). They cover the remaining (3,3,4) work. On reviewer-clean + (ii) + B → all-288 wire case-split
+assembly → unconditional (3,3,4) → merge + aggregator wiring.
