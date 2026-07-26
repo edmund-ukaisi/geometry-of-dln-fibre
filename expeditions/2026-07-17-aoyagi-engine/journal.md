@@ -26551,3 +26551,28 @@ Elder confirmed my read + sharpened:
 CITE-BOUNDARY (crisp, load-bearing): perm-invariance of (C,θ) = the DELIVERABLE (prove, cite-free); ONLY Aoyagi
 rlct=½·codim is the sanctioned cite. STATE: pnp all-288 de-risk RUNNING (required gate); NOT claiming ≥8 from the 9;
 HOLD the ≥8 Lean decide + (A) review for the verdict. Re-convene the elder at the pnp verdict + the assembled (3,3,4).
+
+## 2026-07-26 — STOP-SHIP: the §2 native-direct shears do NOT monomialise (value-broken); value needs the full σ-conjugated resolution — W3 TENSION (elder re-pin) + pnp redirected
+The (C) seat (a7405cab46737ede5), exact sympy on the real (3,3,4) A0/A1, caught a STOP-SHIP BEFORE B fired:
+- §2 native-direct shear ALONE (node-1 nativeSel, no permP, as built in (A)): canonical leaf (20,0,1) → entry 0 = u20·u8
+  (u8 = A1-SPECTATOR, jac 0) → divisorMin = min(9,1) = 1 → rlct 0.5. VALUE-BROKEN (survivor empty). vs shearH∘permP (fixed
+  gWrap shear) → entry 0 = u0·u20 = PIVOT-CROSS (jac 7,8) → divisorMin=8 → rlct 4, VALUE-CORRECT.
+- DIAGNOSIS: the §2 extraction captured the σ-conjugate of shearH but DROPPED the permP factor. WORSE: (§2 ∘ σ-conj-permP)
+  with canonical inner pivots STILL doesn't monomialise — the INNER pivots also need σ-conjugating. Value-correct leaf =
+  the WHOLE σ-conjugated resolution.
+IMPACT: (A) native_hcover is a TRUE cover (blockShear bijective + box-contains regardless of permP), but the fan's SHEARS
+are VALUE-INCOMPLETE — B's hentry FAILS on the current gFin; ek₀/divisorMin can't be defined. COVER-fit, NOT VALUE-fit.
+Reusable infra (qdisp engine, FanTree Covers+flatten, Fin plumbing) STANDS + transfers. Value bricks (reduction,
+hsandwich-discharge) stand.
+W3 TENSION (elder re-pin): value-correct chart = σ⁻¹∘resolution∘σ = the conjResolution form W3 FORBIDS in construction.
+Candidates: (i) nativeSel∘permP [seat tested, insufficient — inner also needs conj]; (ii) extract the FULL per-dominant
+chart (conj-permP + conj-inner) as EXPLICIT DIRECT maps + build native [elder's extract-explicit pattern applied to the
+full chart — controller read: W3-clean]; (iii) relax W3 via conjResolution [forbidden]. CONTROLLER READ: (ii), BUT flag
+the RISK — if the value REQUIRES the transport MACHINERY (not just an explicit coordinate-relabel), this is the retired
+route-P/O1 transport RESURFACING (route-threatening). Elder re-pins the W3 line + value geometry.
+ACTIONS: elder convened (W3 re-pin + native-vs-transport). pnp (a468883f26dac7a88) REDIRECTED (§2 all-288 superseded —
+value-broken): (1) extend extraction to the FULL per-dominant chart (conj-permP + conj-inner, explicit) + verify rlct=4/
+divisorMin≥8 all 288; (2) adjudicate native-buildable (W3-clean) vs transport-resurfacing. (C) seat: HOLD (A)-value-rework
++ ek₀/(C) + B until the elder re-pin + the pnp full-chart. The discipline caught it (exact sympy before B fired — the
+wire-false-but-typechecks trap). POTENTIAL operator-surface IF the elder rules transport-resurfacing (route-threatening);
+else a bounded fix (extract full chart + rebuild).
