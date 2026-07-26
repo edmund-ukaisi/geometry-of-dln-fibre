@@ -92,6 +92,19 @@ theorem geoAtlas_leaf_update (t : ResolutionTree M) :
       c = { l with chartMap := f } := by
   rw [geoAtlas]; exact tGeo_leaf_update id t
 
+/-- **Every geoAtlas leaf has `resRank = 0`** (general `M`, `s`) — the STEP 0 gate atom. The build
+emits only `leafOfState` leaves (`resRank = 0`, both `dite` branches, `leaves_resRank_zero`), and
+`geoAtlas` only rewrites `chartMap` (`geoAtlas_leaf_update`), so the inherited `resRank` is `0` on
+every geoAtlas piece. Hence the residual side is empty on the atlas — NO Morse term, and
+`terminalExponents` reads only the divisor exponents. This is the survivor-route precondition: the
+Morse residual carries no `#172` recursion, the cover is exact. -/
+theorem geoAtlas_resRank_zero {L : ℕ} {M : Fin (L + 1) → ℕ} (s : ConState L) :
+    ∀ c ∈ geoAtlas (buildTree M (conOracle M) s), c.resRank = 0 := by
+  intro c hc
+  obtain ⟨l, hl, f, hf⟩ := geoAtlas_leaf_update _ c hc
+  subst hf
+  exact leaves_resRank_zero s l hl
+
 /-! ## The transfers — the (B) ledger props + (C) exponents over `geoAtlas` -/
 
 /-- **Every built-tree leaf's source box is the flat unit cube** (mirrors `leaves_srcBox_nonempty`,
