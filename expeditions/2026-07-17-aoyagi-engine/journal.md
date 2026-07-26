@@ -27522,3 +27522,23 @@ eWrap)) 0` = clean-three, sorryAx gone.
 STATE: H1 VERIFIED+LOCKED; H2 = all 16 canonical built (source-clean per navigator; A/B fidelity reviews running) +
 transport (crux green + assembly steps 1-6 in build); H3 = close Assembly334:65 at convergence. Merge plan FIRMED +
 conflict-free. NEXT: transport step-6 + A/B reviews clear → execute merge → (ii) close the spine → unconditional (3,3,4).
+
+## 2026-07-26 — PATTERN-B FIDELITY REVIEW CLEAN (decorrelated: fresh sympy + Codex + kernel) — pattern-B fully verified
+Pattern-B reviewer (a33e165) SURVIVED/CLEAN — decorrelated (own FRESH sympy reconstruction of the whole gFlat pipeline
+from the Lean source [blockBlowupMap/blockShear/A0/A1/coreGen/cperm20/t1P20/t2P20/sigmaC1Fs-C2Fs] + Codex xhigh, NOT the
+seat's script):
+(a) FAITHFUL: all 8 leaves encode idx=(20,p2,p3) correctly, distinct; all 8×8=64 reg-seq entries collapse exactly to
+vm·u_zc (fresh recompute); Codex independently re-derived (6,1)'s entries. Green build = ring proofs close.
+(b) COVER-ATOM per-true-φ: (6,7),(7,6) deg-2 quadratic; the other 6 deg-3 cubic — each atom matches its ACTUAL φ degree.
+The deviation (per-φ-degree, not coinciding) documented + correctly implemented.
+(c) canon_domination FEEDS the (ii) backbone (monoSumSqGerm_le_of_regSeq_entries).
+(d) CLEAN-THREE ground-truth: all 8 GREEN from a FRESH worktree (no stale-olean); forced #print axioms on 9 roots across
+3 leaves = clean-three; NO Tonelli leak. Grep 0 sorry/axiom/native_decide.
+(e) NAME-CLASH CLEAN (8 distinct OverVanishB_20_*). FORWARD NOTE: at wiring register the roots in AxCheck.lean (batched
+cordon gate) — convergence registers the chain-tops incl. the headline root (transitively covers the leaves).
+(f) SCOPE CLEAN. MINOR NIT (cosmetic, leave-as-is): pattern-B leaves reuse the template's …Canon def names
+(idxCanon/phiCanon/etc. — harmless/namespaced, docstrings correct; template-family rename only if a later pass).
+⟹ PATTERN-B DECORRELATED-VERIFIED (seat + reviewer fresh-reconstruction + Codex + navigator source-level + seat cross-check).
+STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED + pattern-B VERIFIED (this) + pattern-A (reviewer aada0b running) +
+transport (crux green + assembly steps 1-6 building); H3 = close Assembly334:65 at convergence. Merge plan firmed. NEXT:
+pattern-A review + transport step-6 → merge → (ii) close spine → (3,3,4).
