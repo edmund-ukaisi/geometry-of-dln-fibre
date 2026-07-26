@@ -26111,3 +26111,13 @@ scale). The general-d cite-free FULL headline is REACHABLE (de-risked to labor).
 re-promote (per its 'LABOR ⟹ §3 full headline holds' criterion). Artifacts: threads/L7/codex/gend-sheared-cover-
 {prompt,answer}.md, threads/L7/schur_degree_check.py.
 Re-convene the elder: the §3 re-promote + the first (3,3,4) fill.
+
+## 2026-07-26 (cont.) — cover-verdict calibration (scout, for the §3 re-promote): monument-free = LABOR (reachable), NOT built
+The cover scout's closing calibration (name=content): the general-d cover verdict removes the MONUMENT-CLASS risk
+(cover → LABOR, cite-free reachable) but "priced detail-at-scale" ≠ "Lean-inhabited" — the general-L reproduction is
+REAL BUILD LABOR (charter's "paper-resolved ≠ built" / "render-verified ≠ Lean-inhabited"). So the §3 re-promote =
+full headline REACHABLE / de-risked-to-labor / MONUMENT-FREE, NOT "built" (consistent with the pre-baked §3-SATISFIED
+meaning). The build honors 2 conditions (neither new): (1) the no-clearing-compression guardrail; (2) the inherited
+next-center-coordinate-block (the resolution's realization condition, shared with the ideal-preservation leaves,
+paper-resolved + instance-green — NOT the cover's residual). Forwarded to the elder for the §3 re-promote wording.
+Cover scout rested (task complete).
