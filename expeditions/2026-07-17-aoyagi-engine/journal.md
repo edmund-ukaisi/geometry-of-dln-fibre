@@ -25970,3 +25970,28 @@ ASSUMED (cert-psi-mix documented gap; #145 ~2% gaps). NOT a §3 re-open (§3 = v
 STATUS: two parallel BUILD/probe lanes — the (3,3,4) V-lower VALUE fill (a69bf1080af66f602, hcover now open) + the
 hcover cover-gate scout (route + sheared-cover-closes?). Re-convene the elder: the hcover verdict + the first value
 fill + any cert-psi-mix gap.
+
+## 2026-07-26 (cont.) — HCOVER GATE verdict: (3,3,4) sheared cover CLOSES (route b, landed sorry-free) — but W3 concern (marriage via Corank2Transport334) + general-d (ii) tension (cover=monument vs pnp=labor) → elder
+The hcover scout (+ Codex xhigh) adjudicated the cover-gate. THE GOOD: the (3,3,4) SHEARED value-chart cover CLOSES
+via ROUTE (b) (the #142/#145 TARGET-fan box-inflation), NOT route (a) R-b source-reparam. LANDED SORRY-FREE:
+Corank2FanCover334.exists_ball_subset_gWrapFan_leafImages (∃ρ>0, ball 0 ρ ⊆ (gWrapFan 1).leafImages — SET-
+containment, STRONGER than the up-to-null hcover the wire needs). cert-psi-mix STRUCTURALLY sidestepped: the
+FanTree places shearH as the SOURCE-inner gauge of sigmaPiv's node + covers by (block-blowup argmax) ∘ (full-ball
+radius-inflation shearH_covers, C=2) — ONE per-NODE source-inner shear + argmax, NO common-ψ factoring (vs the
+retired per-EDGE ambient/target ψ). Codex Q1 concurs. Recipe: gWrapFan_covers → covers_subset →
+exists_ball_subset → [marriage] → diff_eq_empty → up-to-null hcover.
+CONCERNS (routed to the elder — NOT controller-resolvable; W3/comprehension/§3 territory):
+1. W3 (critical): the recipe's STEP 3 (marriage ⋃_c g_c''dom_c = gWrapFan.leafImages) references crux-B / #143 /
+   Corank2Transport334 = the RETIRED K-orbit transport (W3-forbidden). Is the marriage W3-CLEAN (fan leaves ARE the
+   value charts, born) or a RE-ENTRY? Scout flags "every fan leaf a survivor-carrying transport of gWrap, NOT via
+   K-orbit" as the value-side risk.
+2. CHART-MATCH: does gWrapFan (route b) cover the SAME charts the value fill uses (geoAtlas/flatCube + born-α)? The
+   wire needs hcover + hsandwich on the SAME g_c.
+3. GENERAL-D (ii) TENSION (bears on §3): the cover scout reads the uniform general-d survivor sandwich as "a
+   plausible genuine MONUMENT (L7/MonumentAtlas frontier)" — TENSIONS with the pnp's general-d de-risk (construction
+   labor, on which §3-SATISFIED rests). Decorrelated seats DISAGREE; elder reconciles. If monument → §3 may re-open.
+CONTROLLER HOLDS: NOT fed the hcover recipe to the value formaliser (W3 marriage unresolved); value fill keeps
+hcover OPEN. NOT re-opened §3 (the pnp's exact value de-risk stands until the elder reconciles the general-d (ii)
+tension). The (3,3,4) cover geometry is GOOD; the open items are W3-cleanliness of the marriage + the general-d (ii)
+value question. Re-convene the elder: W3 marriage + chart-match + general-d (ii). Value fill (a69bf1080af66f602)
+continues (hcover open).
