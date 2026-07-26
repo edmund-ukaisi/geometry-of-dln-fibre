@@ -27240,3 +27240,24 @@ long lines in MonomialRLCT) → merge cleanup.
 HOLES: H1 ✓ VERIFIED+LOCKED; H2 (per-type + cubic-cover) building (a3f030); H3 (step-6 spine) (ii) resting. 2 holes left,
 both detail-at-scale, both owned. The analytic crux (the hardest) is behind us.
 NEXT: per-type facts (H2) land → merge Tonelli + per-type → wake (ii) for H3 → 4 ≤ rlctAt → unconditional (3,3,4).
+
+## 2026-07-26 — per-type seat (H2) ALIVE + progressing; CUBIC-COVER BUILT (caveat resolved); drift-glance false-alarm
+Drift-glance flagged the per-type seat output frozen ~62 min (16:25) → pinged (diagnostic: deep-build vs kernel-stuck).
+Response: ALIVE, NOT kernel-stuck. The ~62 min = the fresh-worktree 25-min full-closure build (229 modules, now cached)
++ ~7-8 min module recompiles per wiring-fix iteration — legit long builds. Recipe VALIDATED: the 8 heavy reg-seq entries
+compile fine under decide-simp (~30-60s each, no runaway — the pathological-decide concern was WRONG).
+LANDED-and-compiling (branch expedition/aoyagi-r2overvanish-pertype off @56ebed343, worktree ov-pertype): the 8 entry
+identities (entry_00..entry_31), Ψ facts (jacDet=1, keep/read/differentiable), hfix_jacExp, phiCanon_norm_bound.
+★ CUBIC-COVER BUILT (the load-bearing NEW sub-requirement RESOLVED): blockShear_covers_cubic + psiCanon_cubic_cover +
+image_comp_psiCanon_cubic_superset (r↦r+2r³) — detail-at-scale, NOT harder than quadratic (as flagged to confirm). The
+coinciding-leaf cubic-cover concern is CLOSED.
+REMAINING: clear trivial wiring bugs (single-vs-Matrix.single [fixed], fin_cases-through-Scanon [→ simp+rcases]) →
+canon_hentry → canon_domination/canon_foldedJac assemble trivially. ETA ~2-3 rebuild cycles to sorry-free. On green +
+#print axioms clean → report + fidelity reviewer.
+CALIBRATION (drift-glance false-positive, banked): a FROZEN output-mtime alone ≠ stall for a Lean-BUILD-heavy seat — long
+builds (fresh-worktree full-closure ~25min, module recompiles ~7-8min) don't write the transcript frequently, so the mtime
+freezes mid-build. The RELIABLE diagnostic = the ping (queued = active-task) + the seat's own status. Process was correct
+(pinged + investigated before any kill — the hunt preceded trust); the mtime signal is just noisy for build-heavy seats.
+(B 50min + Tonelli 51min were the SAME pattern — deep builds, alive.)
+STATE: H1 VERIFIED+LOCKED; H2 nearly done (8 entries + Ψ + cubic-cover landed, ~2-3 cycles to sorry-free); H3 (ii) resting.
+NEXT: H2 green + review → merge Tonelli + per-type → wake (ii) for H3 → 4 ≤ rlctAt → unconditional (3,3,4).
