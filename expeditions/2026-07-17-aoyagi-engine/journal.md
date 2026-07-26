@@ -26976,3 +26976,19 @@ CALIBRATION (idle-pulse slot): the wire hardcodes the chain engine (HIT) → the
 per-chart-threshold wire = (ii) step 6. Banked in calibration-ledger.
 STATE: (A-rework)+(C) verified+locked; (ii)-DLN + Core-Tonelli + B-clean-144 in build; fidelity-review on the interface.
 NEXT: interface-clean + the 3 build seats land → mixed-288 assembly → (3,3,4).
+
+## 2026-07-26 — HEARTBEAT tick (cont): B clean-144 ALIVE + essentially done; (ii) WOKEN onto DLN (3)-(5)
+B (a765...) ALIVE (ping caught it mid-build, NOT stalled): clean_hentry GREEN sorry-free on aoyagi-r2-clean144-hentry
+(off aoyagi-r2wholeconj-fan) — 3 modules (Corank2CleanEntryBase334 / CleanEntry334 / CleanHentry334);
+clean_hentry (c)(hc:IsClean c)(w): coreGen dvec eWrap (k0 c)(gFin c w) = ∏ w^ek₀ = the exact CLEAN-144 single-entry
+survivor feeding the chain-wire; k0 via cleanPairs (36 pivot pairs), 144/288 clean p3-indep (matches pnp census + elder
+fact-#2 M[i0][j0]=w(p1)·w(p2) exactly). Finishing axiom gate + linter + push → will request a fidelity reviewer;
+controller wires the 3 modules at merge (single-writer).
+(ii) tide report echoed the checkpoint + recommended fresh-context Tonelli (aligns with SPLIT); it had STOPPED at the
+checkpoint → WOKEN onto DLN (3)-(5). Relayed to Core-Tonelli seat (ab996...) the (ii) coordination note: un-private the
+3 MonomialBox helpers in MonomialRLCT.lean in ONE commit; Tonelli seat OWNS both Core files (MonomialSumSqRLCT +
+MonomialRLCT un-privating); (ii) won't touch either.
+SEATS: (ii)-DLN (3)-(5) [woken, a0aa...]; Core-Tonelli [ab996..., close ov-sos-tonelli + un-private]; fidelity-reviewer-
+on-locked-stmt [ac1cc...]; B-clean-144 [a765..., essentially done, pushing]. Mixed-288 value = clean-144 (B, ~done) +
+over-vanishing-144 ((ii)+Tonelli). NEXT: B push → reviewer; interface-clean; (3)-(5)+Tonelli land → step-6 mixed-288
+assembly → unconditional (3,3,4).
