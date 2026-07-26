@@ -26241,3 +26241,25 @@ Taxonomy: 9 node-1 pivots perm-equivalent ⟹ ONE parametrized born-α + 6 insta
 Codex residual D (local block census ≠ composite-leaf cert; native born-α composite jac per non-canonical dominant =
 formaliser's instantiation step, closes by the confirmed jac-exponent perm-transport) noted for the assembly.
 ACTIONS: elder re-convened (L1 CLEAN + the seam); P2 flagged (hold fixed-shear-specifics, surface state); pnp acked.
+
+## 2026-07-26 — ELDER SEAM RULING: cover/value unification RESOLVED → Path A (R-b source reparam), P2 re-aimed
+The pnp's cover/value seam is RESOLVED (elder, decisive; CORRECTS the earlier W3 'gWrapFan-leaves = value charts' ruling
+— the fixed-shear gWrapFan over-vanishes on non-canonical leaves, so it is NOT the value charts).
+THE RIGHT {g_c} = Path A / R-b SOURCE REPARAM: g_c = (shear-free cover chart) ∘ (per-leaf native α_c⁻¹), domains
+D_c = α_c(shear-free domain). Then:
+  - IMAGES = the shear-free cover's images (α_c⁻¹ is a SOURCE bijection) ⟹ hcover = the ESTABLISHED shear-free cover
+    (W3-clean box-inflation; NO re-derivation).
+  - VALUE = loss∘g_c = loss∘β∘α_c⁻¹ sees the per-leaf shear ⟹ survivor exposed ⟹ hsandwich (GLOBAL, per L1).
+  - SAME g_c both (W1-clean); per-leaf born-native α_c (W3-clean, F12-B, never Transport334).
+= option (i) [flatCube cover-substrate] COMBINED with per-leaf SOURCE shears — NOT fixed-shear gWrapFan (over-vanishes),
+NOT cover-re-derived (R-b PRESERVES the shear-free cover).
+PATH-A vs PATH-B RESOLVED: W1 (same g_c carrying BOTH hcover + hsandwich) REQUIRES Path A. Path B (target box-inflation
+/ fixed-shear gWrapFan) covers but can't carry the per-leaf value ⟹ can't unify. P2 = Path A DEFINITIVELY.
+GUARDRAIL (P2 + assembly): substrate = flatCube shear-free cover (PREFERRED — reusable, general-d needs it;
+flatCube_subset_leafPathImages landed) + per-leaf born-α R-b (reparam_image; ~90% landed, ~10% = L2 labor);
+gWrapFan-shear-free = (3,3,4)-local fallback only. Per-leaf born-native shears (shared stepUpdate), W3-clean.
+VALUE-GLOBAL SIMPLIFIES L2: ρ_leaf=∞ ⟹ NO value radius-shrink; only the cover's ρ matters — the L2 radius-join now
+EASIER than the earlier bounded-shrink (mooted on the value side). BOUNDED, NOT a re-open.
+ACTIONS: P2 (a6eaa743b08f63e44) re-aimed to Path A (bank R-scaling + pivot, or hand off); elder acked (offered light
+L2-refinement of §3/F14 on its word); assembly (re-engage reduction formaliser a6b6239b54dd15f06) gated on P2 Path-A
+landing + the P1 cert.
