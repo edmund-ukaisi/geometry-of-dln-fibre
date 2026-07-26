@@ -26794,3 +26794,19 @@ M + ek₀ + threshold per leaf-type (the (ii) build data). Rework seat: HOLD the
 hjac + divisorMin≥8 (both families). The over-vanishing discharge the WIRE's hsandwich (all-288 wire, per-chart hsandwich:
 clean-exact via B OR over-vanishing-nested); NOT the exact-hentry reduction over all-288.
 NEXT: pnp (ii)-verify (+ any #172 leaves) + B clean-144 hentry + hjac/divisorMin → build (ii) + the all-288 assembly → (3,3,4).
+
+## 2026-07-26 — elder CONFIRMS (ii) + assembly structure (WIRE over all-288, per-chart CASE-SPLIT hsandwich — NOT exact-reduction-extended)
+Elder confirmed the (ii) mechanism + the assembly structure (matches the controller read); the restrict-fails prior HELD
+(cover-count computed it, not assumed — contra the (a) over-generalization). CONFIRMED:
+- (ii) = nested single_le_sum (loss = vm²·∑vf² ≥ (vm·M)² on a pure-monomial residual factor M, native W3-clean, higher
+  ek₀=vm·M, threshold ≥4.5); #172 fallback if a type lacks a nested monomial. pnp (ii)-verify already FIRED (crossed).
+- ASSEMBLY (name=content, HARD constraint for the assembly seat): the WIRE (rlctAt_ge_iInf_threshold_of_sandwich_cover)
+  over ALL 288 with per-chart-TYPE CASE-SPLIT hsandwich (clean-144 → B's exact-hentry sub-derivation; over-vanishing-144 →
+  the nested single_le_sum) + per-chart bexp (E-based=4 clean, vm·M-based=4.5 over-vanishing); inf over 288 = 4 (the
+  clean-144 bind) → rlct ≥ 4. NOT the landed exact-hentry reduction (rlctAt_coreGen334_ge_four_of_survivor_entries)
+  EXTENDED over all-288 — exact hentry is FALSE on the over-vanishing (0 single-entry survivors), so extending it =
+  overclaim/false. The landed reduction covers ONLY the clean-144 sub-derivation; the wire's hsandwich is ∀c so it
+  SUPPORTS the case-split.
+CONTROLLER: baked the assembly name=content constraint into #188 (for the assembly seat). NEXT: pnp nested-survivor
+verdict (per over-vanishing type + #172-flags) + B clean-144 hentry + hjac/divisorMin → build (ii) + the WIRE-over-all-288
+assembly (case-split) → the assembled (3,3,4).
