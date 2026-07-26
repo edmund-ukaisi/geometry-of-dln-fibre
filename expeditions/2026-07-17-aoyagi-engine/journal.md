@@ -27542,3 +27542,29 @@ cordon gate) — convergence registers the chain-tops incl. the headline root (t
 STATE: H1 VERIFIED+LOCKED; H2 = template VERIFIED + pattern-B VERIFIED (this) + pattern-A (reviewer aada0b running) +
 transport (crux green + assembly steps 1-6 building); H3 = close Assembly334:65 at convergence. Merge plan firmed. NEXT:
 pattern-A review + transport step-6 → merge → (ii) close spine → (3,3,4).
+
+## 2026-07-26 ★ PATTERN-A FIDELITY REVIEW CLEAN → ALL 16 CANONICAL over-vanishing leaves FULLY GATED
+Pattern-A reviewer (aada0b) SURVIVED/CLEAN — decorrelated (fresh worktree r2ov-patternA-fidrev + Codex xhigh + independent
+sympy vs the 16leaf-data @4ceface15):
+(d) GROUND TRUTH: build GREEN from fresh checkout (8484 jobs); #print axioms on a quad (1_5) + cubic (5_5) sample across
+all 4 deliverables + all 7 canon_domination + foldedJac samples = clean-three, ZERO sorryAx; NO Tonelli leak (the Tonelli
+sorry [MonomialSumSqRLCT:148] is consumed only by chart_integrableAtFilter_of_monoSumSq_dom [OverVanish334:79], which the
+leaves NEVER call). Zero sorry/native_decide/axiom in all 7.
+(a) FAITHFUL: all 7 idxCanon=⟨20,p2,p3⟩ match filename+namespace; gFlat=gCanon by rfl; 8 entries collapse by ring; vm/Z/zc/φ
+match the sympy data EXACTLY; Codex confirmed the (vm,Z,zc) split is FORCED (gcd of the 8 entry polys) — green cannot hide
+a wrong-but-self-consistent split.
+(b) COVER per-true-φ: (1,5),(5,1) deg-2 quadratic (no 1≤r); the other 5 cubic (1≤r genuinely needed); Codex confirmed the
+degree arithmetic + the 1≤r necessity.
+(c) canon_domination FEEDS the backbone (correctly-oriented lower bound, no sign trap; cols c∈{0,1}; keepCanon per-block).
+(e) NAME-CLASH NONE (7 unique OverVanishA_20_* disjoint from template/backbone/pattern-B). (f) SCOPE honest.
+⟹ ★ ALL 16 CANONICAL over-vanishing leaves now FULLY GATED: template(1) [VERIFIED] + pattern-A 7 [this] + pattern-B 8
+[reviewed]. Each: seat-built + reviewer-CLEAN (fresh-kernel + Codex) + the seats' cross-checks + the navigator source-level.
+The σ_p1-transport base is fully verified.
+NITS (cosmetic, merge-cleanup, no soundness fix): (1) the 2 quadratic leaves' docstring 'blockShear_covers_cubic reused'
+boilerplate (they use the quadratic atom). (3) the 16leaf-data.md SUMMARY mislabels the 4 non-coinciding cubic leaves
+(1_6,1_7,5_6,5_7) 'φ quadratic' — the cubic φ BODIES + the Lean are correct (the Lean is MORE correct than the label; no
+error propagated).
+STATE: H1 VERIFIED+LOCKED; H2 = ALL 16 canonical FULLY GATED + transport (crux green + assembly steps 1-6 building, the
+ONLY remaining gate); H3 = close Assembly334:65 at convergence. Merge plan firmed. NEXT (ONE gate left): transport step-6
+lands → execute merge (base=pertype + 5, conflict-free) → wake (ii) to close the step-6 spine → aggregator + #print axioms
+→ unconditional 4 ≤ rlctAt = (3,3,4).
