@@ -25682,3 +25682,29 @@ REMAINING MONUMENT-RISK (price separately, NOT now): the GENERAL-d uniform born-
 NEXT: the (3,3,4) leaf census (scout, in flight) → the born-α fill (formaliser, gated on the Q4 typed guardrail).
 Elder authoring a compass F-entry (the route correction: R-α-shear-free refuted → born-α-riding-shear, one-sided,
 W3-clean) — I commit on next landing. NO operator surface (within (A)).
+
+## 2026-07-26 (cont.) — ELDER: Q4 born-α W3-CLEAN confirmed; PARALLELIZE — (a) (3,3,4) brick GO (scoped, name=content) + (b) general-d probe FIRED NOW
+Q4 CONFIRMED: born-α-fill is W3-CLEAN — (B) native (shearH in gFaithful_decomp, at-construction in the gauge slot,
+NOT transport — the tombstone was K-orbit TRANSPORT of a chart; a shear born from the leaf's own atoms is the
+opposite); (A) one-sided (single_le_sum, not the two-sided squeeze); |det|=1 (Jacobian-neutral). BUILD-GUARD: the
+DEAD obligation is leafDiagFrob_geoAtlasNorm (two-sided LeafPullback squeeze, F1 category-false) — do NOT fill
+GeoAlphaGauge's sorries; the born-α is a NEW one-sided object (moot for (3,3,4): uses the concrete proven gFaithful).
+TWO LANES IN PARALLEL (elder):
+  (a) (3,3,4) BRICK — GO (formaliser). Mechanism DONE (crux_radial_monomialise + hideal_faithful_fwd/bwd +
+    peeled_comp_gFaithful, sorry-free); canonical value bound = one single_le_sum line. STERN CAVEAT (name=content):
+    rlct = MIN over charts; a single covering chart of a blow-up does NOT cover the exceptional fibre. The FULL
+    (3,3,4) V-lower needs the sandwich on ALL leaves (the wire ranges ∀ c; hcover = full cover). So the brick EITHER
+    closes ALL leaves (honest rlct=4) OR is NAMED the canonical-sector bound with remaining leaves TRACKED-OPEN.
+    Remaining leaves = bornSiblings (same born-shearH pattern, bounded) + smooth siblings (trivial). The census
+    (scout in flight) decides nearly-done vs bounded-fill; formaliser follows it, scoped.
+  (b) GENERAL-d PROBE — FIRED NOW, parallel (pnp corank-3/(4,4,5) + Codex). Independent of the brick; the general-d
+    uniform born-α is load-bearing for Object B at FULL GENERALITY (charter §0) = the LAST monument-gate; front-load
+    the risk (discovering non-generalization at the summit = the confident-headline confound). Within-(A) (a de-risk,
+    controller's executive call, no destination change). DISCRIMINATING criteria: does the born stepUpdate shear
+    expose ONE entry = the ledger monomial EXACTLY, |det|=1, UNIFORMLY (no per-corank new insight)? YES → born-α
+    generalizes = detail-at-scale → general-d headline CITE-FREE; NO (new per-corank construction / no single entry /
+    det≠1 / non-uniform cancellation = the monument-tell) → objects-only IS the honest general-d landing (with the
+    (3,3,4) witness) [operator-gated later; the probe itself is within-(A) now].
+TRACKED-OPEN: general-d uniform-α stays TRACKED-OPEN until the probe rules — (3,3,4) de-risks the MECHANISM, not the
+  uniform construction ("the ledger is not the geometry" at general-d). §3-promote as SATISFIED if YES / as the
+  general-d landing caveat if NO. Elder drafting the compass F-entry (route correction); I commit on next landing.
