@@ -25600,3 +25600,38 @@ KEY: 3a and 3b both look like "cancels" but are OPPOSITE — 3a = buildable-with
 ½·cCodim headline is FALSE as stated (the deepest kill-condition). The seat MUST separate them. This is the sharpest
 edge of "the ledger is not the geometry": a build cost (3a) vs a wrong claim (3b). Only 3b is a real emergency;
 1/2/3a are all "continue" or "honest landing." Relayed the 4-way contract to the seat (a9a355c394db96cb1).
+
+## 2026-07-26 (cont.) — PNP VERDICT = 3a: headline TRUE (rlct=4, NO red-flip); wall mis-priced FOR THE INEQUALITY but shear-free R-α REFUTED (shear load-bearing); value rides the BORN shear
+The decisive computation landed (pen-and-paper, exact-sympy + Codex-corroborated, chart verified vs Lean
+gFaithful_decomp 21/21). Elder 4-way call = 3a (shear EXPOSES the ledger exponent; buildable-with-shear =
+detail-at-scale, ledger FAITHFUL). DEFINITIVELY NOT 3b (no headline red-flip). NOT 1, NOT 2.
+COMPUTATION:
+- SHEAR-FREE: the ledger entry P[0][0]∘g = u0 + u8u12 + u9u16 CANCELS (E=u0 present, coeff 1, but two degree-2
+  terms make a cancellation locus; u0∤entry). Only P[0][0] carries a degree-1 u0 term; the other 11 entries are
+  u0·(order≥2) or not u0-divisible. And the SUM bound ∑(F∘g)² ≥ c·u0² FAILS — explicit curves (pnp's on {u1=0}
+  + a STRONGER Codex one with ALL 21 coords ≠0, re-verified at t=½) zero all 12 entries with u0≠0 ⟹ the
+  singularity has a hidden branch off EVERY coordinate hyperplane ⟹ NO coordinate monomial of any exponent
+  lower-bounds the loss SHEAR-FREE. The shear is load-bearing even for the WEAK inequality.
+- WITH shear: P[0][0]∘gFaithful = u0 EXACTLY (shearH's coord-8 = u0−u8u12−u9u16 cancels the competing terms)
+  ⟹ single_le_sum ⟹ loss=∑(F∘gFaithful)² ≥ u0² everywhere ⟹ threshold ≥4; + proven V-upper ≤4 ⟹ rlct=4=½·codim.
+  HEADLINE TRUE, no red-flip.
+IMPLICATIONS:
+1. The elder's "mis-priced" ruling CONFIRMED *for the inequality*: the from-below bound IS achievable
+   (single_le_sum on the sheared P[0][0]=u0) = DETAIL-AT-SCALE, not a monument (Codex concurs). The
+   "normal-form-dead ⟹ lower-bound-is-monument" wall is mis-priced.
+2. BUT R-α AS STATED (produce it SHEAR-FREE) is REFUTED — the shear cannot be dropped even for the weak sum
+   inequality. R-α must RIDE the born shear. (The shear-free geoAtlas = cover/Jacobian; the born α = value.)
+3. Net: the (3,3,4) from-below bound = the ALREADY-PROVEN sheared chart (gFaithful, crux_radial_monomialise,
+   hideal_faithful) + a one-line single_le_sum. The only genuine labour is GENERAL-d: the per-leaf incidence
+   shear (the geoAtlas gauge slot α, left =id) that exposes each leaf's E = "exactly route P's realization
+   residual, NOT a new wall" (pnp).
+ROUTED TO ELDER (its trigger): confirm + rule (Q3 the (3,3,4) scope — canonical sheared chart + Object A enough,
+   or all leaves' α?; Q4 the pivotal W3 flag — is the BORN per-leaf α W3-clean/detail-at-scale, or does "route P
+   realization residual" re-enter route P's retired wall?; Q5 within-(A)).
+NO OPERATOR SURFACE: 3a ⟹ no red-flip ⟹ the held STOP-FALLBACK is MOOT (no destination change). The (A) strategy
+   is NOT walled — it needs the born α fill (detail-at-scale). Proceed-on-silence within (A) once the elder rules.
+CLOSED LOOP (the win, twice-over): the fidelity gate + the elder's mis-pricing catch + the pnp's exact computation
+   turned a claimed strategic wall (STOP-FALLBACK-in-view) into a priced, buildable step with the headline
+   CONFIRMED TRUE. "The ledger is not the geometry" fired exactly: the ledger exponent (u0, jac 7) is FAITHFUL,
+   realized by the born SHEARED geometry (not the shear-free one). The controller's over-amplified wall bank was
+   corrected by two decorrelated seats (elder + pnp).
