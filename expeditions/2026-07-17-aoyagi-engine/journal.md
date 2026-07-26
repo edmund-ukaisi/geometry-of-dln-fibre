@@ -27261,3 +27261,18 @@ freezes mid-build. The RELIABLE diagnostic = the ping (queued = active-task) + t
 (B 50min + Tonelli 51min were the SAME pattern — deep builds, alive.)
 STATE: H1 VERIFIED+LOCKED; H2 nearly done (8 entries + Ψ + cubic-cover landed, ~2-3 cycles to sorry-free); H3 (ii) resting.
 NEXT: H2 green + review → merge Tonelli + per-type → wake (ii) for H3 → 4 ≤ rlctAt → unconditional (3,3,4).
+
+## 2026-07-26 — per-type seat (H2) GROUND-TRUTH: alive + actively editing (18:26), close; .output mtime DEFINITIVELY broken
+Drift-glance: a3f030.output mtime STILL 16:25 (2hr frozen) — but the seat RESPONDED at 17:27, so the .output mtime is
+DEFINITIVELY unreliable. GROUND-TRUTH investigation of the ov-pertype worktree:
+- Corank2OverVanishCanon334.lean (26KB) mtime = 18:26 (1 min before the glance) — the seat is ACTIVELY editing NOW.
+- NO sorry in the module (grep empty) — building REAL proofs (not sorry-scaffolding); the remaining work is clearing
+  COMPILE errors (wiring bugs), not sorries.
+- UNCOMMITTED: the per-type module is untracked (?? Corank2OverVanishCanon334.lean); local branch head still 838d5c261
+  (the (ii) re-scope). ~2hr of uncommitted work = a CONTINUITY RISK — pinged the seat to PUSH a checkpoint.
+⟹ the seat is ALIVE + close (no sorry, mid-wiring), just longer than the ~2-3-cycle estimate (wiring bugs multiply).
+CALIBRATION UPDATE (stronger than last tick): the background-agent .output-mtime is BROKEN as a liveness signal for this
+seat (2hr frozen while the .lean file is edited at 18:26). RELIABLE ground-truth signals = (1) the .lean FILE mtimes in
+the seat's worktree, (2) the ping queued-vs-resumed. Use those, NOT the .output mtime.
+STATE: H1 VERIFIED+LOCKED; H2 alive + close (no sorry, mid-wiring, uncommitted — push requested); H3 (ii) resting.
+NEXT: H2 green + push → fidelity review → merge Tonelli + per-type → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
