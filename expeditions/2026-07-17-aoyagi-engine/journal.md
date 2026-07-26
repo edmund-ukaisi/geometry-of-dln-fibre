@@ -27344,3 +27344,24 @@ anywhere; all remaining is detail-at-scale labor in flight.
 STATE: H1 VERIFIED+LOCKED; H2 = template GREEN (review-gating) + 16 leaves (pattern-A/B) + transport (green, a3f030
 building); H3 (ii) resting. NEXT: leaves + transport land → compose ∀-144 canon_domination → merge Tonelli + per-type →
 wake (ii) H3 → 4 ≤ rlctAt → unconditional (3,3,4).
+
+## 2026-07-26 — DECORRELATION PAYOFF: pattern-A cross-check catches a cover-atom LABEL error (coinciding↔cubic rule WRONG)
+Pattern-A seat (a0b6cc45): (1) CROSS-CHECK PASSED — its independent sympy derivation of all 8 pattern-A φ matches a3f030's
+data file (@4ceface15) EXACTLY term-by-term (two decorrelated derivations agree → per-leaf φ VALUES doubly-verified).
+(2) DEVIATION caught: the "coinciding↔cubic, else quadratic" cover-atom rule is WRONG. The atom depends on each leaf's
+TRUE φ MAX-DEGREE, not coinciding-ness: only 2/8 per pattern are genuinely quadratic. Pattern-A degrees:
+(20,1,1)3[coinc],(20,1,5)2,(20,1,6)3,(20,1,7)3,(20,5,1)2,(20,5,5)3[coinc],(20,5,6)3,(20,5,7)3 — 4 NON-coinciding leaves
+carry a cubic φ that a3f030's file LABELED quadratic. φ VALUES correct; only the quad/cubic LABEL wrong. Pattern-B same
+((20,6,1),(20,7,1),(20,7,5) cubic-but-labeled-quadratic). Rule of thumb: quadratic iff the p3-blowup doesn't add a factor
+to the block-correction (2/8 per pattern).
+SOUNDNESS: caught IN TIME (before building with a wrong atom — the quadratic atom's ‖φx‖≤C·r² is FALSE for a cubic φ,
+would fail/be-unsound). The decorrelated cross-check surfaced it. φ values (hence the entry identities + canon_domination)
+are sound.
+HANDLING: pattern-A uses the CUBIC atom per each leaf's true φ (6 cubic + 2 quadratic) — faithful. RELAYED to pattern-B
+(per-true-φ-degree, ignore a3f030's labels) + a3f030 (cross-check passed on VALUES; fix the cover-atom labels;
+transport/assembly expects cubic for those). The step-6 assembly does NOT require uniform inflation — per-leaf cover
+(cubic r+2r³ / quadratic r+C·r²) transports each chart by its own atom over native_hcover.
+NOTE FOR (ii)/H3: at the step-6 discharge, the over-vanishing charts' cover-transport is PER-LEAF (cubic for most,
+quadratic for 2/8 per pattern), NOT uniformly quadratic — use each leaf's atom.
+STATE: H1 VERIFIED+LOCKED; H2 = template GREEN + leaves (pattern-A/B, per-true-φ cover) + transport (a3f030,
+loss-symmetry crux) — all monument-free; H3 (ii) resting. The cross-check decorrelation working as designed.
