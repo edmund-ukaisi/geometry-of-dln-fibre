@@ -27298,3 +27298,25 @@ coinciding deg 2; all 16 p1=20 shearOK; σ_p1→9).
 AGGREGATOR +Corank2OverVanishCanon334 (mine to wire at merge).
 STATE: H1 VERIFIED+LOCKED; H2 = (20,1,1) template GREEN+clean-three (review-gating) + the general form in build; H3 (ii)
 resting. NEXT: template review clean + general canon_domination → merge Tonelli + per-type → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4).
+
+## 2026-07-26 — H2 plan: parametrization UNREACHABLE → 16 concrete canonical + σ_p1-transport; PARALLELIZED (2 pattern seats + transport)
+Per-type seat (a3f030) probed + reported (sound, honest — NOT MVP-timidity): TRUE parametrization is UNREACHABLE — the
+entry-identity recipe (decide-simp+ring) unfolds blockBlowupMap (sigmaC1Fs 20) p2, and blockBlowupMap's `if j=p2` CANNOT
+reduce for a symbolic pivot → every leaf needs CONCRETE pivots; fin_cases-16-in-one-module = ~128 heavy decide-simps =
+compile-prohibitive. So the general object is 16 CONCRETE canonical (p1=20) leaves + a σ_p1-TRANSPORT lemma ⇒ ∀-144.
+The σ_p1-transport is the real parametric leverage (16→144) but UNPROBED (coreGen-loss + monoSumSqGerm + vmExp/Z must ALL
+transport under the permutation; possibly a small monument — PROBE before trusting).
+Budget: the (20,1,1) ~600k was ~80% discovery friction (now resolved + carded); remaining leaves mechanical but
+compile-serial-bound (~8min/rebuild); a3f030 has budget for ONE more focused piece, not 16 solo → PARALLELIZE.
+DECISION (approved the seat's recommendation): PARALLELIZE by pattern + a3f030 takes the transport.
+- Pattern-A seat (NEW): p1=20, p2∈{1,5}, 7 remaining leaves (drop col c=2), off @8113eb62c + card + a3f030's data.
+- Pattern-B seat (NEW): p1=20, p2∈{6,7}, 8 leaves (drop col c=1), same.
+- a3f030: (1) emit the full 16-leaf data file (for the pattern seats), (2) take the σ_p1-TRANSPORT PROBE-FIRST
+  (green/red before the full lemma; if monument, surface — don't grind). Highest-leverage + it has the σ_p1 machinery.
+The 16 concrete leaves are needed REGARDLESS (transport or not), so no wasted work; the probe front-loads the 16→144 risk.
+Each pattern seat: replicate the PROVEN template recipe per leaf (canon_hentry 8 entries + canon_domination via
+monoSumSqGerm_le_of_regSeq_entries + canon_foldedJac + Ψ facts + cubic-cover[coinciding]/quadratic[non]); unique modules;
+clean-three per leaf. Cover-rule: coinciding p2=p3 → cubic (image_comp_psiCanon_cubic_superset), else quadratic.
+STATE: H1 VERIFIED+LOCKED; H2 = (20,1,1) template GREEN+clean-three (review-gating ada0b47e) + pattern-A/B seats (15
+leaves) + a3f030 σ_p1-transport probe, in build; H3 (ii) resting. NEXT: 16 leaves + transport-green → merge Tonelli +
+per-type (all) → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4). (RISK: σ_p1-transport probe reds = a small monument → re-plan 16→144.)
