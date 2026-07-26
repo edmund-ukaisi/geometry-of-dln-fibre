@@ -1,0 +1,393 @@
+import DLNFibre.DLN.Aoyagi.Corank2OverVanishCanon334
+
+/-!
+# `DLN.Aoyagi.Corank2OverVanishA_20_5_6` — the per-type CONCRETE facts, leaf `(20,5,6)`
+
+Pattern-A over-vanishing leaf `(p1,p2,p3) = (20,5,6)`. Mirrors the proven `(20,1,1)` template
+`Corank2OverVanishCanon334`; shared leaf-independent lemmas `coreGen_eWrap_entry`, `A1_··`,
+`blockShear_covers_cubic` reused from there. The 8 reg-seq entry values are `sympy`-verified
+END-TO-END against the Lean `gFlat` (independent derivation matching `ov-pertype-16leaf-data.md`).
+Reg-seq drops column `c = 2` (pattern A); straighten block `{16,17,18,19}`;
+CUBIC straightening term (needs the cubic-cover atom).
+-/
+
+open Matrix MeasureTheory Set Metric
+open DLNFibre.Core.Aoyagi
+open DLNFibre.DLN.Aoyagi.NativeFan334
+open DLNFibre.DLN.Aoyagi.NativePerm334
+open DLNFibre.DLN.Aoyagi.NativeShear334
+open DLNFibre.DLN.Aoyagi.NativeJac334
+open DLNFibre.DLN.Aoyagi.OverVanish334
+open DLNFibre.DLN.Aoyagi.Corank2CoreGenWrap
+open DLNFibre.DLN.Aoyagi.OverVanishCanon334 (coreGen_eWrap_entry blockShear_covers_cubic
+  A1_00 A1_01 A1_02 A1_10 A1_11 A1_12 A1_20 A1_21 A1_22 A1_30 A1_31 A1_32)
+
+namespace DLNFibre.DLN.Aoyagi.OverVanishA_20_5_6
+
+/-! ## §0 — the leaf and the composite -/
+
+def idxCanon : Idx := ⟨⟨20, by decide⟩, ⟨5, by decide⟩, ⟨6, by decide⟩⟩
+
+noncomputable def gCanon : (Fin 21 → ℝ) → (Fin 21 → ℝ) := fun w =>
+  blockBlowupMap S1 20 (nativeChart1 20
+    (blockBlowupMap (sigmaC1Fs 20) 5 (blockBlowupMap (sigmaC2Fs 20) 6 w)))
+
+theorem gFlat_idxCanon : gFlat idxCanon = gCanon := by funext w; rfl
+
+/-! ## §1 — the straightening shear `Ψ = psiCanon` -/
+
+def phiCanon : (Fin 21 → ℝ) → (Fin 21 → ℝ) := fun u i =>
+  if i = 16 then -(u 0 * u 10 + u 1 * u 12 * u 6)
+  else if i = 17 then -(u 1 * u 13 * u 6 + u 10 * u 2)
+  else if i = 18 then -(u 1 * u 14 * u 6 + u 10 * u 3)
+  else if i = 19 then -(u 1 * u 15 * u 6 + u 10 * u 4)
+  else 0
+
+noncomputable def psiCanon : (Fin 21 → ℝ) → (Fin 21 → ℝ) := blockShear phiCanon
+
+abbrev keepCanon : Fin 21 → Prop := fun i => i ≠ 16 ∧ i ≠ 17 ∧ i ≠ 18 ∧ i ≠ 19
+
+theorem phiCanon_keep (u : Fin 21 → ℝ) (i : Fin 21) (hi : keepCanon i) : phiCanon u i = 0 := by
+  obtain ⟨h16, h17, h18, h19⟩ := hi
+  simp only [phiCanon, if_neg h16, if_neg h17, if_neg h18, if_neg h19]
+
+set_option linter.unusedSimpArgs false in
+theorem phiCanon_read (u v : Fin 21 → ℝ) (h : ∀ i, keepCanon i → u i = v i) :
+    phiCanon u = phiCanon v := by
+  have h0 := h 0 (by decide)
+  have h1 := h 1 (by decide)
+  have h2 := h 2 (by decide)
+  have h3 := h 3 (by decide)
+  have h4 := h 4 (by decide)
+  have h6 := h 6 (by decide)
+  have h10 := h 10 (by decide)
+  have h12 := h 12 (by decide)
+  have h13 := h 13 (by decide)
+  have h14 := h 14 (by decide)
+  have h15 := h 15 (by decide)
+  funext i
+  simp only [phiCanon]
+  split_ifs <;> simp only [h0, h1, h2, h3, h4, h6, h10, h12, h13, h14, h15]
+
+set_option linter.unusedSimpArgs false in
+theorem differentiable_phiCanon : Differentiable ℝ phiCanon := by
+  apply differentiable_pi.2
+  intro i
+  fin_cases i <;>
+    simp (config := { decide := true }) only [phiCanon, Fin.isValue, if_true, if_false] <;>
+    fun_prop
+
+theorem differentiable_psiCanon : Differentiable ℝ psiCanon := by
+  unfold psiCanon blockShear
+  exact differentiable_id.add differentiable_phiCanon
+
+theorem jacDet_psiCanon (u : Fin 21 → ℝ) : jacDet psiCanon u = 1 := by
+  unfold psiCanon
+  exact jacDet_blockShear phiCanon keepCanon differentiable_phiCanon phiCanon_keep phiCanon_read u
+
+theorem psiCanon_apply_offblock (u : Fin 21 → ℝ) (d : Fin 21) (hd : keepCanon d) :
+    psiCanon u d = u d := by
+  unfold psiCanon blockShear
+  simp only [Pi.add_apply, phiCanon_keep u d hd, add_zero]
+
+/-! ## §2 — the per-type data -/
+
+def vmExpCanon : Fin 21 → ℕ := fun d => if d = 5 ∨ d = 6 ∨ d = 20 then 1 else 0
+
+theorem prod_vmExpCanon (u : Fin 21 → ℝ) : (∏ d, (u d) ^ vmExpCanon d) = u 5 * u 6 * u 20 := by
+  have h1 : ∀ d : Fin 21, u d ^ vmExpCanon d
+      = if d = 5 ∨ d = 6 ∨ d = 20 then u d else 1 := fun d => by
+    simp only [vmExpCanon]; split_ifs <;> simp
+  simp_rw [h1]
+  rw [Finset.prod_ite, Finset.prod_const_one, mul_one,
+    show Finset.filter (fun d : Fin 21 => d = 5 ∨ d = 6 ∨ d = 20) Finset.univ
+        = {5, 6, 20} from by decide,
+    Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]
+  ring
+
+def pairsCanon : Finset (Fin 4 × Fin 3) :=
+  {(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1)}
+
+def Scanon : Finset (Fin (dvec (Fin.last 2) * dvec 0)) := pairsCanon.image finProdFinEquiv
+
+def zcPair : Fin 4 × Fin 3 → Fin 21 := fun p =>
+  if p = (0, 0) then 0 else if p = (0, 1) then 16 else if p = (1, 0) then 2
+  else if p = (1, 1) then 17 else if p = (2, 0) then 3 else if p = (2, 1) then 18
+  else if p = (3, 0) then 4 else 19
+
+def zcCanon : Fin (dvec (Fin.last 2) * dvec 0) → Fin 21 := fun k => zcPair (finProdFinEquiv.symm k)
+
+def Zcanon : Finset (Fin 21) := {0, 2, 3, 4, 16, 17, 18, 19}
+
+theorem hzc_inj : ∀ x ∈ Scanon, ∀ y ∈ Scanon, zcCanon x = zcCanon y → x = y := by decide
+
+theorem hzc_img : Scanon.image zcCanon = Zcanon := by decide
+
+/-! ## §3 — the 8 reg-seq entry identities -/
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_00 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((0 : Fin 4), (0 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 0 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_01 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((0 : Fin 4), (1 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 16 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_10 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((1 : Fin 4), (0 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 2 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_11 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((1 : Fin 4), (1 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 17 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_20 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((2 : Fin 4), (0 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 3 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_21 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((2 : Fin 4), (1 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 18 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_30 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((3 : Fin 4), (0 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 4 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option maxHeartbeats 4000000 in
+set_option maxRecDepth 8000 in
+set_option linter.unusedSimpArgs false in
+set_option linter.style.maxHeartbeats false in
+theorem entry_31 (u : Fin 21 → ℝ) :
+    coreGen dvec eWrap (finProdFinEquiv ((3 : Fin 4), (1 : Fin 3))) (gCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u 19 := by
+  rw [prod_vmExpCanon, coreGen_eWrap_entry]
+  simp only [Equiv.symm_apply_apply, Fin.isValue]
+  rw [Matrix.mul_apply, Fin.sum_univ_three]
+  simp (config := { decide := true }) only [gCanon, psiCanon, phiCanon, blockShear,
+    A0, A1_00, A1_01, A1_02, A1_10, A1_11, A1_12, A1_20, A1_21, A1_22, A1_30, A1_31, A1_32,
+    nativeChart1, nativeSel, nativePerm, blockBlowupMap, sigmaC1Fs, sigmaC2Fs, qdisp, sterm,
+    t1P20, t2P20, Function.comp_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const,
+    cpermS20, Equiv.ofBijective_apply, cperm20, Pi.add_apply, Fin.isValue, Option.elim,
+    if_true, if_false]
+  ring
+
+set_option linter.unusedSimpArgs false in
+/-- **The 8 reg-seq entry identities.** -/
+theorem canon_hentry (u : Fin 21 → ℝ) (k : Fin (dvec (Fin.last 2) * dvec 0)) (hk : k ∈ Scanon) :
+    coreGen dvec eWrap k (gFlat idxCanon (psiCanon u))
+      = (∏ d, (u d) ^ vmExpCanon d) * u (zcCanon k) := by
+  rw [gFlat_idxCanon]
+  simp only [Scanon, Finset.mem_image] at hk
+  obtain ⟨p, hp, rfl⟩ := hk
+  simp only [zcCanon, Equiv.symm_apply_apply]
+  fin_cases hp
+  · exact entry_00 u
+  · exact entry_01 u
+  · exact entry_10 u
+  · exact entry_11 u
+  · exact entry_20 u
+  · exact entry_21 u
+  · exact entry_30 u
+  · exact entry_31 u
+
+/-! ## §4 — the assembled per-type domination fact -/
+
+theorem canon_domination (u : Fin 21 → ℝ) :
+    monoSumSqGerm vmExpCanon Zcanon u
+      ≤ sumSqFam (fun i ↦ coreGen dvec eWrap i ∘ (gFlat idxCanon ∘ psiCanon)) u :=
+  monoSumSqGerm_le_of_regSeq_entries (S := Scanon) (zc := zcCanon) canon_hentry hzc_inj hzc_img u
+
+/-! ## §5 — the folded Jacobian -/
+
+set_option linter.unusedSimpArgs false in
+theorem hfix_jacExp (u : Fin 21 → ℝ) :
+    ∀ d, 0 < jacExp idxCanon d → psiCanon u d = u d := by
+  intro d hd
+  apply psiCanon_apply_offblock u d
+  refine ⟨?_, ?_, ?_, ?_⟩ <;>
+    (intro h; subst h;
+     simp (config := { decide := true }) only [jacExp, idxCanon, NativeJac334.single,
+       NativeFan334.sigmaC2Fs] at hd)
+
+theorem canon_foldedJac (u : Fin 21 → ℝ) :
+    |jacDet (gFlat idxCanon ∘ psiCanon) u| = jacWeight (jacExp idxCanon) u := by
+  rw [jacDet_comp u (differentiable_gFlat idxCanon).differentiableAt
+    differentiable_psiCanon.differentiableAt, abs_mul, jacDet_psiCanon, abs_one, mul_one,
+    hjac_gFlat idxCanon (psiCanon u)]
+  exact jacWeight_fixOn (jacExp idxCanon) (hfix_jacExp u)
+
+/-! ## §6 — the CUBIC cover-transport atom (`Ψ` carries a degree-3 term) -/
+
+theorem phiCanon_norm_bound {x : Fin 21 → ℝ} {r : ℝ} (hr1 : 1 ≤ r) (hx : ‖x‖ ≤ r) :
+    ‖phiCanon x‖ ≤ 2 * r ^ 3 := by
+  have hr0 : 0 ≤ r := by linarith
+  have hr23 : r ^ 2 ≤ r ^ 3 := by nlinarith [sq_nonneg r, hr1]
+  have habs : ∀ i : Fin 21, |x i| ≤ r := fun i => by
+    rw [← Real.norm_eq_abs]; exact (norm_le_pi_norm x i).trans hx
+  have hq : ∀ a b : Fin 21, |x a * x b| ≤ r ^ 2 := fun a b => by
+    rw [abs_mul, sq]; exact mul_le_mul (habs a) (habs b) (abs_nonneg _) hr0
+  have hcube : ∀ a b c : Fin 21, |x a * x b * x c| ≤ r ^ 3 := fun a b c => by
+    rw [abs_mul, abs_mul]
+    calc |x a| * |x b| * |x c| ≤ r * r * r :=
+          mul_le_mul (mul_le_mul (habs a) (habs b) (abs_nonneg _) hr0) (habs c) (abs_nonneg _)
+            (by positivity)
+      _ = r ^ 3 := by ring
+  rw [pi_norm_le_iff_of_nonneg (by positivity)]
+  intro i
+  rw [Real.norm_eq_abs]
+  by_cases h16 : i = 16
+  · rw [h16, show phiCanon x 16 = -(x 0 * x 10 + x 1 * x 12 * x 6) from rfl]
+    rw [abs_neg]
+    calc |x 0 * x 10 + x 1 * x 12 * x 6| ≤ |x 0 * x 10| + |x 1 * x 12 * x 6| := abs_add_le _ _
+      _ ≤ r ^ 2 + r ^ 3 := add_le_add (hq 0 10) (hcube 1 12 6)
+      _ ≤ 2 * r ^ 3 := by linarith [hr23]
+  by_cases h17 : i = 17
+  · rw [h17, show phiCanon x 17 = -(x 1 * x 13 * x 6 + x 10 * x 2) from rfl]
+    rw [abs_neg]
+    calc |x 1 * x 13 * x 6 + x 10 * x 2| ≤ |x 1 * x 13 * x 6| + |x 10 * x 2| := abs_add_le _ _
+      _ ≤ r ^ 3 + r ^ 2 := add_le_add (hcube 1 13 6) (hq 10 2)
+      _ ≤ 2 * r ^ 3 := by linarith [hr23]
+  by_cases h18 : i = 18
+  · rw [h18, show phiCanon x 18 = -(x 1 * x 14 * x 6 + x 10 * x 3) from rfl]
+    rw [abs_neg]
+    calc |x 1 * x 14 * x 6 + x 10 * x 3| ≤ |x 1 * x 14 * x 6| + |x 10 * x 3| := abs_add_le _ _
+      _ ≤ r ^ 3 + r ^ 2 := add_le_add (hcube 1 14 6) (hq 10 3)
+      _ ≤ 2 * r ^ 3 := by linarith [hr23]
+  by_cases h19 : i = 19
+  · rw [h19, show phiCanon x 19 = -(x 1 * x 15 * x 6 + x 10 * x 4) from rfl]
+    rw [abs_neg]
+    calc |x 1 * x 15 * x 6 + x 10 * x 4| ≤ |x 1 * x 15 * x 6| + |x 10 * x 4| := abs_add_le _ _
+      _ ≤ r ^ 3 + r ^ 2 := add_le_add (hcube 1 15 6) (hq 10 4)
+      _ ≤ 2 * r ^ 3 := by linarith [hr23]
+  · rw [phiCanon_keep x i ⟨h16, h17, h18, h19⟩, abs_zero]; positivity
+
+theorem psiCanon_cubic_cover {r : ℝ} (hr1 : 1 ≤ r) :
+    closedBall (0 : Fin 21 → ℝ) r ⊆ psiCanon '' closedBall 0 (r + 2 * r ^ 3) := by
+  unfold psiCanon
+  exact blockShear_covers_cubic keepCanon phiCanon_keep phiCanon_read
+    (fun x hx => phiCanon_norm_bound hr1 hx)
+
+/-- **The folded-chart cover survives the cubic fold.** -/
+theorem image_comp_psiCanon_cubic_superset (g : (Fin 21 → ℝ) → (Fin 21 → ℝ)) {r : ℝ}
+    (hr1 : 1 ≤ r) :
+    g '' closedBall 0 r ⊆ (g ∘ psiCanon) '' closedBall 0 (r + 2 * r ^ 3) := by
+  calc g '' closedBall (0 : Fin 21 → ℝ) r
+      ⊆ g '' (psiCanon '' closedBall 0 (r + 2 * r ^ 3)) :=
+        Set.image_mono (psiCanon_cubic_cover hr1)
+    _ = (g ∘ psiCanon) '' closedBall 0 (r + 2 * r ^ 3) := (Set.image_comp g psiCanon _).symm
+
+end DLNFibre.DLN.Aoyagi.OverVanishA_20_5_6
