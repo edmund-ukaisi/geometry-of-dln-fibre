@@ -24772,3 +24772,31 @@ volume_zeroSet_eq_zero AND ae_eval_ne_zero rest on clean-three, sorry-free (a ha
 measure_prod_null_of_ae_null). Reuse target is BEDROCK. Housekeeping owed: wire it into the aggregator once
 R3-hnull/G2 import it (currently reachable only via its 13 importers). Reviewer stood down on (b), ready for
 the R3 first-brick review.
+
+## 2026-07-26 (cont.) — R3 FIRST BRICK delivered (node_cover_334, real outer-node full cover); two fidelity Qs routed (Q1 kept-subset; buildTree-vs-gWrap fold gate)
+
+**R3 first brick [reroute-R2build, #178]:** `NodeCover334.lean` (branch expedition/aoyagi-r3brick @ 21bc03007;
++ @e203545bd drops the duplicate PolyZeroNull — my miss, owned). `node_cover_334`: closedBall 0 R ⊆ ⋃ p,
+bornSiblings {0,1,2,3,20} clearing334 kept334 p |>.stepMap '' (r+2r²-inflated box). The elder NODE layer:
+input-pivot FULL cover, hnull-FREE, at the real (3,3,4) outer node — via CoverFold.bornSiblings_union_covers_
+closed + shearH_covers (C=2), real clearing shearH. Sorry-free, 1 root clean-three, W3-clean (born, NOT
+gWrapFan K-orbit). NOT the toy {0,1}.
+
+**KEY BUILDER CORRECTION (from corr-derisk + re-analysis):** the born-fan bundles guardrail-0 (born-pivots
+must be KEPT); shearKeepH clears the residual {4..11}; so the center is the KEPT subset {0,1,2,3,20} of the
+real outer center {0..7,20}. The block-blowup atom covers closedBall 0 R for ANY nonempty center, passing
+non-center coords as SPECTATORS — so cleared 4..7 are spectators + the kept-center fan fully covers. The
+earlier "cleared-argmax uncovered" worry was WRONG.
+
+**TWO FIDELITY Qs ROUTED:**
+- Q1 (reviewer Lean-soundness + elder architecture): is the KEPT-subset {0,1,2,3,20} born-fan an HONEST node
+  cover (4..7 spectators), or does it over-claim the literal {0..7,20}? Builder: the literal center would need
+  cleared coords as born-pivots (clashes guardrail-0), so the kept-subset is the born route's honest cover form.
+- DEEPER (elder, the FOLD fidelity gate — verify-the-actual-def): the builder read the centers off gWrap
+  (Corank2GWrapDecomp = the PRE-reroute/route-P composite), NOT off buildTree (the reroute's ACTUAL fold
+  substrate). Before the 3-node fold: is buildTree ≡ gWrap's centers, or a real gap to close (a quick
+  buildTree(3,3,4)-centers read)?
+
+**GATES:** first-brick MERGE on the reviewer + Q1 + my re-verify; the FOLD on the buildTree-fidelity. Then the
+3-node fold + the leaf/value side (SurvivorFanCover + the reused existing poly-null brick + the #172 recursion).
+(b) PolyZeroNull dropped (duplicate); R3-hnull/G2 reuse MvPolynomial.volume_zeroSet_eq_zero (existing, bedrock).
