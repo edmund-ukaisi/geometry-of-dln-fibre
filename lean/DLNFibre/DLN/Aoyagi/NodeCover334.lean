@@ -31,9 +31,14 @@ inflated by the real shear factor `f = r ↦ r + 2r²` (`shearH_covers`, the two
 ## Scope (honest)
 - IN: the one-node full-cover clause at the real (3,3,4) outer node (born-fan, real shear).
 - FIDELITY NOTE: the fan center is the KEPT subset `{0,1,2,3,20}` of the geometric center
-  `{0..7,20}`;
-  the cleared coords `4..7` are spectators (block-blow-up atom handles them). Faithful for the COVER
-  (the exact geometric center is a VALUE-side / Jacobian-monomial concern, not the cover).
+  `{0..7,20}`; the cleared coords `4..7` are spectators (block-blow-up atom handles them). Faithful
+  for the COVER, with TWO calibration caveats: (i) this cover is CENTER-AGNOSTIC — the argmax atom
+  covers `closedBall 0 R` for ANY nonempty center, so this theorem's green build certifies NOTHING
+  about whether `{0,1,2,3,20}` is the geometrically-correct center; (ii) the center choice fixes the
+  whole ATLAS IDENTITY / value pullback (which coords are blown up vs spectators), NOT merely a
+  Jacobian exponent. Center/node-structure fidelity (does `buildTree`'s `conOracle` produce this
+  center?) is settled INDEPENDENTLY on the value/atlas-identity side — the `#183` cover-center
+  identity gate, NOT this green cover.
 - OUT: the leaf/value side (sandwich, monomialisation, `{X=0}` recursion — the LEAF hook,
   `SurvivorFanCover`); the 3-node fold over the chain (next brick, via `ImageTreeCover`/`FanTree`).
 

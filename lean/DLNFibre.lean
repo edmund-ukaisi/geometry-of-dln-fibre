@@ -1747,3 +1747,9 @@ import DLNFibre.DLN.Aoyagi.SurvivorFanCover
 --   (R2 cover-infrastructure); the concrete buildTree instantiation + real charts + hchart is R3 (uses the
 --   GENERAL glue_null, per-child domains, not the packaged uniform fold).
 import DLNFibre.DLN.Aoyagi.ImageTreeCover
+-- NodeCover334 (R3, cover-side FIRST BRICK): the real (3,3,4) one-node FULL cover — the born-fan over the
+--   KEPT center {0,1,2,3,20} (cleared 4..7 as spectators) covers closedBall via
+--   CoverFold.bornSiblings_union_covers_closed + Corank2FanCover334.shearH_covers. W3-clean (born, NOT the
+--   K-orbit skeleton); reviewer SURVIVED as a cover brick (sound, axiom-clean, full, honest). The cover is
+--   CENTER-AGNOSTIC — center/node-structure fidelity (buildTree≡gWrap centers) is the #183 gate, NOT this build.
+import DLNFibre.DLN.Aoyagi.NodeCover334
