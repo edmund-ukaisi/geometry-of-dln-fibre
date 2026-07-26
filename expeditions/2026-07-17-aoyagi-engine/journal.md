@@ -26810,3 +26810,27 @@ Elder confirmed the (ii) mechanism + the assembly structure (matches the control
 CONTROLLER: baked the assembly name=content constraint into #188 (for the assembly seat). NEXT: pnp nested-survivor
 verdict (per over-vanishing type + #172-flags) + B clean-144 hentry + hjac/divisorMin → build (ii) + the WIRE-over-all-288
 assembly (case-split) → the assembled (3,3,4).
+
+## 2026-07-26 — pnp (ii) VERDICT: 2 SOUNDNESS CORRECTIONS + the CORRECT (ii) = REGULAR-SEQUENCE bound (all-144 genuine-LB=4, no #172)
+The pnp (ii) nested-survivor verdict = a decorrelated red-team catch of its OWN earlier cert + the elder's single-M:
+CORRECTION 1 (toric-LP DIRECTION): the toric-LP is an UPPER bound on the true rlct (rlct of ⟨all monomials⟩ ⊇ ⟨gᵢ⟩). For
+the CLEAN (survivor) leaves it's EXACT (I=⟨vm⟩=M) — the clean-144 exact-toric + rational-dual cert STANDS. For the
+OVER-VANISHING leaves it does NOT certify ≥4 (the earlier F10d over-vanishing 'exact cert' was toric-LP≥4 = the UPPER
+bound, NOT true rlct≥4). ⟹ RECORD CORRECTED: the earlier 'all-288 double-certified ≥4' held for the CLEAN-144 (exact
+toric); the OVER-VANISHING half needed the GENUINE LB (below), NOT the toric-LP.
+CORRECTION 2 (single-M insufficient): the elder's ∑vf² ≥ M² gives threshold 1/2 — the pure-monomial residuals u0,u2,u3,u4
+are all jac-0 coords ⟹ loss ≥ (vm·M)² useless.
+THE CORRECT (ii) = a REGULAR-SEQUENCE bound (Codex-red-teamed VALID all 3 steps): loss = vm²·∑vf² ≥ ∑_{j=1..8}(vm·z_j)² via
+(1) subset_le_sum on 8 REGULAR-SEQ residual factors (4 pure-monomial u0,u2,u3,u4 + 4 linear vf's [deg-1 = a fresh
+A1-coord], differentials = 8 distinct jac-0 coords DISJOINT from supp(vm)); (2) a jac-1 unipotent CoV Ψ (block-triangular,
+leaves u1,u5,u20) → coords z₁..z₈; (3) product/Fubini rlct(vm²·|z|²) = min(threshold(vm²), r/2) = min(≥4, 8/2) = 4. GENUINE,
+cite-free, NO #172 (smooth complete intersection at degree 1, a SINGLE terminal nested single_le_sum). All-144 verified
+genuine-LB=4 (16 types + native + loss-symmetry; 4 diagonal p2=p3 true-4.5 bound-4, 12 others true-4.0 tight).
+So all-288 ≥4 is now GENUINELY established: clean-144 exact toric + rational-dual; over-vanishing-144 regular-sequence.
+The elder's single_le_sum SHAPE was right; the fix = the 8-member REGULAR SEQUENCE, not one monomial.
+(ii) BUILD (routed to the rework seat): the regular-sequence bound (subset_le_sum on 8 vf + jac-1 CoV Ψ → loss ≥
+∑(vm·z_j)² → the wire's hsandwich, 8-monomial family, threshold 4), NOT single-M; DROP the toric-LP LB for over-vanishing.
+Per-chart verify: 8×8 Jacobian minor invertible at 0 (jac-0 coords disjoint from vm) + threshold(vm²)≥4 (all 16 types).
+Data: pnp F11 + over_vanishing_genuine_lb.out. W3: the Ψ CoV = a NATIVE jac-1 unipotent (another native atom) — elder
+confirming W3-clean. NET: value SOUND ≥4 all 288 (now correctly justified); (ii) = a bounded native build (regular-seq +
+Ψ), no #172, no monument. The decorrelated red-team caught the toric-direction + single-M holes.
