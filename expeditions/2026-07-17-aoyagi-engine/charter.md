@@ -116,20 +116,25 @@ category before reporting progress; the elder gates every route and every progre
 > WALLED at `GateRouteB222` (compass F9; transport-group ⊥ cover-set + unbuildable chart↔leaf bridge).
 > GUARDRAIL-0: NO geometry is constructed outside the one-object step constructor — no composite-then-fan,
 > no transported siblings. Re-entry at design time is the drift; guardrail-0 refuses it.
-> **CONCRETE LEAN TRIPWIRE (R3 cover-wiring, the Lean-level form of guardrail-0/F9):** the banked PRE-reroute
-> skeleton `Corank2Chart334.lean:122-123` proposes the survivor fan as *the K-symmetry ORBIT of gWrap* — that
-> IS the retired O1 two-object transport (gate-routeB WALL, F9). R3 MUST born the survivor charts from
-> `StepConstructor.bornSiblings` (per-pivot, transport-free); NEVER wire the cover through the K-orbit
-> skeleton. Wiring the cover as a K-orbit re-enters O1 = DEAD ROUTE. Born-not-transported is the invariant;
-> the K-orbit skeleton is a tombstone, not a tool.
-> **VALUE-SIDE COMPANION (2026-07-26, R3-first-brick): the kept-subset born-fan COVERS, but its single-node
-> Jacobian is card-DEFICIENT — the value must ACCUMULATE.** Guardrail-0 forces the node's born-fan onto the
-> KEPT pivots (cleared coords can't be born-pivots); the block-blowup Jacobian is `|x_p|^(card−1)`, so a kept
-> sub-center (card 5 at the (3,3,4) outer node) gives `|x_20|^4`, NOT the correct `|x_20|^8` (full card 9);
-> `shearH` is unipotent (det≡1). So the correct total Jacobian (`|u0|^7·|u1|^3·|u20|^8` + its general-d form)
-> is recovered ONLY by ACCUMULATION across `buildTree`'s kept-subset node CASCADE (inner nodes blow up the
-> coords outer nodes clear). "Kept-subset covers" ≠ "the node is value-faithful" — the value-Jacobian is the
-> LEAF gate, verified over `buildTree`'s ACTUAL nodes, never a single node.
+> **W3 — the essential anti-transport invariant (2026-07-26, R3-substrate FINAL; supersedes the R3-first-brick
+> VALUE-SIDE COMPANION).** Every per-node chart is built DIRECTLY from `buildTree`'s node data
+> (`conOracle`/the node center), NEVER conjured by K-symmetry TRANSPORT (the retired route-P/O1;
+> `Corank2Chart334:122-123`'s `resolution334_of_fanCover` K-orbit = the tombstone; wiring ANY chart through
+> it re-enters O1 = DEAD ROUTE). The VALUE/atlas rides the direct full-center `pivotChart`/`flatCube`
+> (`GeoChart`/`FlatCubeLeaf`, the `tGeo` `conRel_wf` fold — VERIFIED transport-free: zero
+> `transportChart`/K-orbit/gauge in the RLCT Engine; `pivotChart` = a direct max-modulus blow-up conjugated
+> by a center-split relabel; `flatCube_subset_leafPathImages` clean-three, GENERIC cover over `buildTree`);
+> the COVER-side born-fan (`bornSiblings`, kept pivots) is a de-risk brick only. **Born-not-transported =
+> DIRECT-from-`buildTree`, NOT "must be `bornSiblings`"** (that was ONE vehicle; the value uses the
+> `tGeo`/`pivotChart` fold — also one-object direct, so guardrail-0's "step constructor" reads broadly = the
+> one-object DIRECT construction, whichever vehicle). **SUPERSEDED — why the value left the born-fan:** the
+> born-fan is card-DEFICIENT for the VALUE (guardrail-0 forces its pivots KEPT ⟹ single-node Jacobian
+> `|x_p|^(card−1)` under-counts: kept card 5 → `|x_20|^4`, not full-center `|x_20|^8`; `shearH` unipotent).
+> That TRUE R3-first-brick observation FORCED the value onto the full-center `pivotChart` (`dCenterOfNode` =
+> the full residual block BY DEFINITION, all nodes; #183 MATCH; `atlasRealizesExponents_334` bridges the
+> exponents). **LAYERING (durable): born-fan = COVER de-risk only; `pivotChart`/`flatCube` = the VALUE + cover
+> substrate; the value-Jacobian is read at the leaf over `buildTree`'s ACTUAL full-center nodes, never a single
+> kept-subset node.**
 - **The recurring category error (KEPT + VINDICATED — the PROOF the ideal route is forced):** no
   det-1 / a.e.-injective chart diagonalises the loss on an open set (each `(∏C)ᵢⱼ` is a nonzero poly,
   ≢0 on a dense open; exact diagonalisation forces ≡0, a non-open det-0 projection). The value LOWER
