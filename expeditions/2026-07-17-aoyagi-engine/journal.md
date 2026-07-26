@@ -26354,3 +26354,18 @@ Elder closed the seam with confirmations + 3 refinements (no new decision):
   ~10-16 tides) remains the larger labor ('monument-free ≠ nearly done' governs there). (3,3,4) = concrete witness +
   pattern; general-d = reuse at scale.
 Elder resting; re-convene at the 2 assembly triggers (box-containment brick + σ_p grep-clean; assembled (3,3,4) all-leaves).
+
+## 2026-07-26 — L2 scale-join reviewer verdict CLEAN (P2 scaling infra verified + reusable)
+L2 reviewer (a8e2056dadb55eacb) + Codex xhigh: CLEAN / survived on all 4 axes for Corank2FanCover334 (4 theorems
+@f3881b370): (a)(i) covered radius = R EXACTLY, no hidden shrink (traced covers_subset chain + Codex-decorrelated: not
+R/(1+2R)/min R 1/f⁻¹(R); f-inflation sizes only leaf boxes, never the covered ball — the fold actually proves the
+STRONGER closedBall 0 R ⊆ leafImages, downgraded to ball for the corollaries); (a)(ii) 𝓝 0 genuine; (b) name=content
+(genuine general-R via covers_fanOfSteps, box-containment ∀t, not R=1-in-disguise); (c) no regression (atoms
+byte-untouched, NodeCover334 green); (d) clean-three (force-elab + cite structurally impossible in the 217-module
+closure). Gate PASSED — P2 scaling infra verified + reusable (transfers to the per-pivot native fan per fact #1).
+SCOPE-HONESTY (not a defect, docstring-flagged): the 4 theorems cover (gWrapFan R).leafImages; the wire consumes
+ball ⊆ ⋃ c,(charts c).g''dom. The bridge leafImages = ⋃ charts.g''dom (chart-enumeration, crux B/#143) is OUT of scope
+→ relayed to the ASSEMBLY for hcover wiring (the fact-#2 native fan may make leafImages = the charts union by
+construction, avoiding the bridge; the assembly formaliser has the wire-contract context to resolve it).
+NITS: cosmetic linter warnings on pre-existing untouched atom code (not this diff). Non-blocking.
+Assembly (a6b6239b54dd15f06) building (deep, 1.3MB transcript). Elder resting; re-convene at the 2 assembly triggers.
