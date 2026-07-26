@@ -130,6 +130,44 @@ theorem witness_survivor_sandwich :
   filter_upwards with u
   simp
 
+/-- **Non-vacuity of `chart_rlct_ge_half_chartMin` (i)(b), in-file witness** (reviewer/Codex
+instance, the bedrock "witness shown" bar). `D = M = 1`, `e = ![![1]]` (`e₀₀ = 1`), `h = 0`,
+`c = 1`, `W = unit ≡ 1`, `K = ∑ₖ monomialₖ² = (u 0)²`: ALL hypotheses discharge (hbdd via
+`monomialSumSq_wLocalAdmissible_eq` + `bddAbove_Ico`; hnull via `Measure.pi_hyperplane` on the
+codim-1 zero set `{u 0 = 0}`), so the theorem fires — `1 ≤ 2·wrlctAt` (the RLCT of `u²` is `½`, so
+the bound holds with equality `1 = 2·½`). -/
+example :
+    (bindingAxes ((![![1]] : Fin 1 → Fin 1 → ℕ) 0)).inf'
+        (by decide : (bindingAxes ((![![1]] : Fin 1 → Fin 1 → ℕ) 0)).Nonempty)
+        (fun d ↦ ((0 : Fin 1 → ℕ) d + 1 : ℝ))
+      ≤ 2 * wrlctAt (fun _ ↦ (1 : ℝ))
+          (sumSqFam (monomialFam (![![1]] : Fin 1 → Fin 1 → ℕ))) 0 := by
+  have hW : ∀ᶠ u in 𝓝 (0 : Fin 1 → ℝ),
+      (fun _ ↦ (1 : ℝ)) u = jacWeight (0 : Fin 1 → ℕ) u * (fun _ ↦ (1 : ℝ)) u :=
+    Filter.Eventually.of_forall (fun u ↦ by simp [jacWeight])
+  refine chart_rlct_ge_half_chartMin (e := (![![1]] : Fin 1 → Fin 1 → ℕ)) (k₀ := 0) (c := 1)
+    one_pos (by decide) (by decide) (by decide)
+    continuousAt_const one_ne_zero measurable_const hW measurable_const ?_
+    (Filter.Eventually.of_forall (fun _ ↦ zero_le_one))
+    (Filter.Eventually.of_forall (fun u ↦ ⟨by rw [one_mul]; exact sumSqFam_nonneg _ u, by
+      rw [one_mul]⟩)) ?_ ?_
+  · -- `K = ∑ₖ monomialₖ²` is measurable (finite sum of squares of monomials)
+    unfold sumSqFam monomialFam; fun_prop
+  · -- hnull: `{1·∑monomialₖ² = 0} = {u 0 = 0}` is codim-1, Lebesgue-null
+    refine ⟨Set.univ, Filter.univ_mem, ?_⟩
+    have hset : {u : Fin 1 → ℝ | (fun u ↦ (1 : ℝ) *
+        sumSqFam (monomialFam (![![1]] : Fin 1 → Fin 1 → ℕ)) u) u = 0} ∩ Set.univ
+        = {u : Fin 1 → ℝ | u 0 = 0} := by
+      ext u
+      simp [sumSqFam, monomialFam, pow_eq_zero_iff]
+    rw [hset, volume_pi]
+    exact Measure.pi_hyperplane _ 0 0
+  · -- hbdd: the weighted-admissible set is `Ico 0 (monomialThreshold …)`, hence bounded above
+    have heq := monomialSumSq_wLocalAdmissible_eq (e := (![![1]] : Fin 1 → Fin 1 → ℕ))
+      (h := (0 : Fin 1 → ℕ)) (k₀ := (0 : Fin 1)) (W := fun _ ↦ (1 : ℝ)) (unit := fun _ ↦ (1 : ℝ))
+      (by decide) (by decide) continuousAt_const one_ne_zero measurable_const hW
+    rw [heq]; exact bddAbove_Ico
+
 -- Forced axiom gate: rests only on `[propext, Classical.choice, Quot.sound]`.
 #assert_banked_clean_batch [survivor_sandwich_lower, sumSqFam_single,
   chart_rlct_ge_half_of_survivor, witness_survivor_sandwich]
