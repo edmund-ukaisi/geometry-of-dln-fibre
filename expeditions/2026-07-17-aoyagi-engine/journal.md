@@ -27067,3 +27067,23 @@ cover-union, NOT the assembly lemma. The step-6 mixed-288 assembly must be MECHA
 Both = cover-union-level combinations of finite z<4 integrals over the FULL 288 native_hcover. GUARDRAIL: don't read the
 ∀c-hentry as an all-288 obligation (fails on over-vanishing) — the existing lemma is one leaf-mechanism of the union.
 Relayed to (ii) for step 6. (Reinforces the COVER-UNION guardrail with the precise mechanism-heterogeneity requirement.)
+
+## 2026-07-26 — (ii) checkpoint @56ebed343: GENERIC (3)-(5) backbone CLEAN-THREE + the step-6 bridge (tracked-open)
+(ii) (a0aa...) @56ebed343 (aoyagi-r2overvanish-regseq, merged rework's NativeEntry334 @ca71bd7c9). Corank2OverVanish334.lean, green:
+CLEAN-THREE: image_comp_blockShear_superset (5: fold Ψ=blockShear into a chart ⟹ 0-ball cover survives r↦r+C·r²);
+monoSumSqGerm_le_sumSqFam_comp (4: pullback + Ψ-straighten + subset ⟹ loss∘(g∘Ψ) ≥ vm²·∑z²; per-type hpull/hvmfix/hstr/hzc
+as hyps); jacWeight_fixOn (Ψ fixes supp(h) ⟹ jacWeight invariant); coreGen_gFlat_factor (coreGen k (gFlat idx w) =
+u_{p1}·resid_k, uniform vm first-factor via NativeEntry334.A0_gFlat_factor + Matrix.mul_smul).
+TRACKED-OPEN (Core sorry propagates by design): chart_integrableAtFilter_of_monoSumSq_dom — per-chart integrability the
+wire consumes, routed through the LOCKED Core monoSumSq engine + junk-guarded domination = THE step-6 bridge. Dischargeable
+once the Tonelli closes + the per-type facts land.
+REMAINING (3)-(5) = per-type grind (16 canonical types + σ_{p1}, pnp ii_perdominant.out): (i) full per-type pullback
+(factor u_{p2}/u_{p3} via blockBlowupMap_center_factor inside gInner + identify the 12 vf_k → hpull); (ii) concrete Ψ_c
+(blockShear straightening the 4 linear vf → z-coords, det-1, keep⊇supp vm); (iii) folded-jac (jacDet_comp +
+jacDet_blockShear + jacWeight_fixOn). Starting (i) on canonical (20,1,1) template. Dropped defeq-stuck loss_comp_gFlat_factor
+(not needed). 
+STEERED: proceed on (i), no pause; canonical-then-σ_{p1} right (σ_{p1} EXACT 144/144); the reg-seq set + Ψ key ONLY on p2
+(2 patterns {1,5} vs {6,7}) ⟹ 16 types collapse to ~2 Ψ/reg-seq shapes × p2/p3 data; flag if (i) too large → parallelize.
+STATE: clean-144 COMPLETE+locked; interface CLEAN; over-vanishing = generic backbone CLEAN-THREE + step-6 bridge
+(tracked-open, awaiting Tonelli) + per-type grind (in build) + Tonelli (in build). NEXT: Tonelli close + per-type
+(i)(ii)(iii) → discharge chart_integrableAtFilter_of_monoSumSq_dom → step-6 mechanism-heterogeneous assembly → (3,3,4).
