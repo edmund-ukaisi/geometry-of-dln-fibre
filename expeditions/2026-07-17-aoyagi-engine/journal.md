@@ -26777,3 +26777,20 @@ per-chart hsandwich (clean-exact OR over-vanishing-nested), NOT the exact-hentry
 jacDet (rework, both families): |jacDet gFlat u| = |u_p1|^8·|(bb σC2 p3 u)_p2|^7·|u_p3|^3, unit≡1 (single monomial) → the
 per-leaf jac exponents feeding divisorMin. The seat proceeds hjac + divisorMin≥8 GENERICALLY (adapts to the final structure).
 NEXT: elder (ii) ruling + B clean-144 hentry + hjac/divisorMin → the assembled (3,3,4). value SOUND (all 288 ≥4 double-cert).
+
+## 2026-07-26 — ELDER (ii) RULING: nested single_le_sum (native W3-clean) + #172 fallback → pnp fired for the (ii) nested-survivor verify
+Elder ruled the (ii) over-vanishing mechanism (owning the feeder-(a) refutation — over-generalized the ×9 clean pattern):
+- feeder (a) DEAD (confirmed): over-vanishing = 0 single-entry survivors (coreGen(k0)=vm×vanishing-factor, exact entry-hentry FALSE).
+- restrict-if-cover SOUND but the cover-count ANSWERED restrict-DEAD (clean-144 don't cover, positive-measure holes; elder prior CONFIRMED) → the SPLIT is FORCED.
+- (ii) = the RIGHT W3-clean shape: loss = vm²·∑vf² ≥ (vm·M)² via a NESTED single_le_sum, IF some residual factor vf = a pure
+  monomial M (⟹ higher ek₀ = vm·M, threshold ≥4.5). NATIVE (M is a residual factor of the ACTUAL coreGen∘g_c, no transport;
+  NOT dead entry-hentry, NOT sandwich-on-domain [vanishing-factor isn't a unit], NOT (b) loss-symmetry). Detail-at-scale, not a monument.
+- #172 FALLBACK: if some over-vanishing leaf's ∑vf² has NO pure-monomial term → RECURSES via the #172 {R=0} recursion
+  (witness-cleared, bounded). So (ii) is BOUNDED either way (nested single_le_sum OR #172), never a monument.
+- NOT (b) loss-symmetry unless (ii)+#172 both fail (route to elder for W3-scrutiny if so).
+CONTROLLER: RE-ENGAGED the pnp (a468883f26dac7a88) for the (ii) nested-survivor VERIFICATION per over-vanishing leaf-type:
+does ∑vf² have a pure-monomial term M (→ nested single_le_sum, higher ek₀=vm·M, threshold ≥4.5), or #172-recurse? Emit
+M + ek₀ + threshold per leaf-type (the (ii) build data). Rework seat: HOLD the (ii) build til the pnp verifies; proceed
+hjac + divisorMin≥8 (both families). The over-vanishing discharge the WIRE's hsandwich (all-288 wire, per-chart hsandwich:
+clean-exact via B OR over-vanishing-nested); NOT the exact-hentry reduction over all-288.
+NEXT: pnp (ii)-verify (+ any #172 leaves) + B clean-144 hentry + hjac/divisorMin → build (ii) + the all-288 assembly → (3,3,4).
