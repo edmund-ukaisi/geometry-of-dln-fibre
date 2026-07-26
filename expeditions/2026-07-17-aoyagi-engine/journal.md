@@ -25431,3 +25431,30 @@ RE-CONVENE (updated triggers): all-(1) → direct discharge; (1)+(2) → dischar
 leaves (both delegate to a fresh formaliser); any (3) degenerate-non-recursing → the genuine (B)-wall = k≥2.
 CALIBRATION: don't mis-price a Morse finding as a wall — the built #172 recursion already handles it; the only
 genuine wall is the degenerate/k≥2 residual (contra #172's termination). The elder's priced-vs-monument lens.
+
+## 2026-07-26 (cont.) — resRank=0 GATE = YES-ALL, PROVEN axiom-clean → the discharge UNBLOCKED + delegated (transport-free, #172 drops out)
+The resRank=0 scout returned a HARD verdict: every (3,3,4) buildTree/geoAtlas leaf is resRank=0 (unit-residual),
+PROVEN axiom-clean (STRONGER than an enumeration — a universal). Kernel: leaves_resRank_zero (EngineConstruction
+:2548; leafOfState:1795/:1811 sets resRank:=0, resCoord:=Fin.elim0 — the engine fully monomializes into the
+DIVISOR ledger, IsFullMonomialization) ∘ geoAtlas_leaf_update (GeoLeafLedger:90). Composed atom
+geoAtlas_resRank_zero_334, #print axioms = clean-three (scout scratch; formaliser re-derives+banks it as step 0).
+THREE-BUCKET: pure bucket-(1) all leaves; buckets (2) non-degenerate Morse + (3) degenerate = EMPTY, structurally
+unreachable (a resRank>0 leaf = one that failed to fully monomialize, but buildTree always terminates at
+leafOfState with resRank=0). CoRank2Spike.corank2Leaf (resRank:=8) = a hand-built coordinate spike, "NOT a
+CanonicalResolution witness," never in geoAtlas — not a counterexample.
+CONTROLLER RE-DERIVE: confirmed the base lemmas exist on the reroute canonical trunk (grep); leafOfState:1795
+mechanism. Branch topology: reroute...r3wire = 1/2 (DIVERGED) — reroute has the wire via cherry-pick @bdc3bf34e;
+r3wire has the 2 original wire commits (stale sibling). reroute is the canonical trunk (has the wire + base
+lemmas); the discharge builds there.
+SIMPLIFICATION: #172 DROPS OUT entirely — all-unit ⟹ no residual-refinement; the cover is EXACT
+(geoAtlas_imageCover full-containment) ⟹ hcover trivial (empty diff). Discharge = survivor + exact cover + hpull
++ area-formula + hbdd + wire (+ conversion), NO recursion. The SIMPLE end.
+WHAT resRank=0 DOES / DOESN'T RESOLVE: resolves the STRUCTURAL gate (no Morse ⟹ the wire applies at every leaf;
+survivor form AVAILABLE). Does NOT resolve the concrete hpull (K=monomial²·survivor, f_i0(0)=1 per leaf) — the
+real chart-algebra, transport-free, detail-at-scale (canonical leaf PROVEN via gWrap; others = the pre-mortem's
+first gate). hpull is "most likely to break next" (both scouts) — a hard non-canonical hpull = the real (B)-wall
+/ k≥2 object (elder territory).
+DELEGATED: a fresh formaliser (branch off reroute; F1-clean; NO K-transport/gWrapFan) for the concrete (3,3,4)
+V-lower rlctAt ≥ ½·minAdm=4, via: step 0 gate-atom bank → step 1 hpull PRE-MORTEM (one non-canonical leaf, first
+de-risk gate) → hpull all leaves → survivor_sandwich_lower → area-formula + V-upper(hbdd) → wire → conversion
+(k=1 + Object-D). Internal gates + surface-on-wall. Elder re-convened (verdict + #172-out); scout released.
