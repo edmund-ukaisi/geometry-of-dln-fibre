@@ -1465,3 +1465,13 @@ threshold; k≥2=red-flip) — covered by (C)/ek₀-def per the pnp cert (unit f
 multi-node divisorMin=8 (detail-at-scale, blow-up Jacobians landed); (iii) the entry's unit=1 (exact hentry) is SEPARATE
 from the Jacobian's unit (in hjac, nontrivial) — no conflict. CHANGES: assembly de-risked (no orphan); at (C) ensure
 hunit_mult (G1) + the 3-node jac; the assembly = pure wiring once A/B/C land.
+
+## 2026-07-26 — CALIBRATION (caught by decorrelated red-team): verify a cert's DIRECTION for a lower-bound claim
+MISS (controller + elder): banked 'all-288 double-certified ≥4' + praised the LP cert as 'stronger than a sweep' WITHOUT
+checking the cert's DIRECTION. The toric-LP is an UPPER bound on the true rlct (rlct of ⟨all monomials⟩ ⊇ ⟨gᵢ⟩); for the
+over-vanishing leaves toric-LP≥4 did NOT certify true rlct≥4 (the direction a lower-bound claim needs). Caught by the pnp's
+Codex red-team of its OWN cert. FIX: the regular-sequence LB (genuine lower bound). For the clean-144 the toric-LP IS exact
+(I=⟨vm⟩) so it stood.
+LESSON: for a LOWER-bound claim (rlct ≥ c), verify the cert is a LOWER bound. Toric/LP/relaxation certs are generically
+UPPER bounds on the true rlct — an upper bound ≥ c does NOT give true ≥ c. Check the DIRECTION, not just the number.
+Vindicates decorrelated review (red-team the OWN cert, don't just accept 'double-certified').

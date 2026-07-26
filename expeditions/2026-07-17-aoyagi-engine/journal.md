@@ -26834,3 +26834,25 @@ Per-chart verify: 8×8 Jacobian minor invertible at 0 (jac-0 coords disjoint fro
 Data: pnp F11 + over_vanishing_genuine_lb.out. W3: the Ψ CoV = a NATIVE jac-1 unipotent (another native atom) — elder
 confirming W3-clean. NET: value SOUND ≥4 all 288 (now correctly justified); (ii) = a bounded native build (regular-seq +
 Ψ), no #172, no monument. The decorrelated red-team caught the toric-direction + single-M holes.
+
+## 2026-07-26 — elder ACCEPTS the (ii) soundness corrections (owns both misses) + CONFIRMS the corrected (ii) (regular-sequence + Ψ = genuine LB); record corrected
+Elder accepted both corrections (owning its part): (1) the toric-LP was an UPPER bound — its 'all-288 SURVIVED = caveat
+discharged POSITIVE' was PREMATURE for the over-vanishing 144 (only the clean-144 exact cert stood); it credited the
+'double-cert' + praised the LP 'stronger than a sweep' WITHOUT checking the cert's DIRECTION (lower vs upper). (2) its
+single-M (ii) insufficient (jac-0 residuals → threshold 1/2). Both owned.
+CORRECTED (ii) CONFIRMED (elder-scrutinized, GENUINE + SOUND, a real LOWER bound): loss = vm²·∑vf² ≥ ∑(vm·z_j)² via
+subset_le_sum on 8 regular-seq factors (8 distinct jac-0 differentials, independent = a genuine regular sequence, disjoint
+from supp(vm)) + a jac-1 unipotent CoV Ψ → rlct ≥ min(threshold(vm²), r/2) = min(≥4, 8/2) = 4 (product in disjoint vars =
+MIN via Fubini). NO #172 (cleaner than single-M+#172). All-144 genuine-LB=4.
+Ψ W3 (elder): W3-clean IFF Ψ = a NATIVE explicit jac-1 unipotent CoV atom (grep-clean, NOT σ-conjugate/transport) — ANOTHER
+def-landing grep-gate. The over-vanishing charts are now g_c∘Ψ → the (ii) def-landing gates (controller runs): (i) Ψ native
+grep-clean; (ii) the g_c∘Ψ COVER holds (Ψ jac-1 homeomorphism → cover transports; hcover must survive the extra CoV).
+RECORD CORRECTED (elder-confirmed): all-288 ≥4 = clean-144 EXACT-toric (I=⟨vm⟩, stands) + over-vanishing-144 REGULAR-SEQUENCE
+LB (corrected from the toric-LP UPPER bound). Conclusion rlct≥4 all 288 HOLDS — no red-flip.
+CALIBRATION WIN (→ calibration-ledger; elder authoring a compass note on my word): a 'double-certified' (proof + LP) verdict
+had a subtle soundness error (upper-vs-lower DIRECTION), caught by the decorrelated Codex red-team of the pnp's OWN cert.
+Vindicates decorrelated review. LESSON: for a LOWER-bound claim, verify the cert is a LOWER bound; toric/LP relaxations are
+generically UPPER bounds.
+ACTIONS: elder acked + GIVEN THE WORD to author the compass calibration note (I commit). Rework seat: (ii) UNBLOCKED (build
+regular-seq + Ψ, or a separate (ii) formaliser; the Ψ-W3-gate + g_c∘Ψ-cover at the def landing). NEXT: (ii) build + B's
+clean-144 + hjac/divisorMin → the all-288 wire case-split assembly → (3,3,4).
