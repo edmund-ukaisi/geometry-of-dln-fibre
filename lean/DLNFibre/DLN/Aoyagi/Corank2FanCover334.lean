@@ -20,7 +20,7 @@ inflation is `f = r ↦ r + 2r²` (the general `blockShear_covers_scaled` below 
 box-containment at Fin-21" the fan cover consumes.
 -/
 
-open MeasureTheory Set Metric
+open MeasureTheory Set Metric Topology
 open DLNFibre.Core.Aoyagi
 open DLNFibre.DLN.Aoyagi.Corank2GWrapDecomp
 open DLNFibre.DLN.Aoyagi.Corank2ChartJac
@@ -137,17 +137,44 @@ theorem gWrapFanSteps_boxContain :
     show t ≤ t + 2 * t ^ 2
     nlinarith [sq_nonneg t]
 
-/-- **`Covers` for the shared `gWrapFan 1`** (the fan-fold cover condition at target radius `1`), from
-the per-step box-containments via `covers_fanOfSteps`. -/
-theorem gWrapFan_covers : Covers (fun r ↦ r + 2 * r ^ 2) (gWrapFan 1) 1 :=
-  covers_fanOfSteps gWrapFanSteps 1 gWrapFanSteps_boxContain
+/-- **`Covers` for the shared `gWrapFan R` at GENERAL target radius `R`** (the L2 scale-join) — the
+fan-fold cover condition `Covers (r ↦ r + 2r²) (gWrapFan R) R` for EVERY `R`, from the per-step
+box-containments via `covers_fanOfSteps`. Generalizes the former `R = 1` form with no re-derivation:
+`gWrapFan R` is already scale-parametric (`Corank2FanDef334`) and `gWrapFanSteps_boxContain` already
+holds at every radius `t`, so `covers_fanOfSteps` just threads `R` (the atoms carry the scale). -/
+theorem gWrapFan_covers (R : ℝ) : Covers (fun r ↦ r + 2 * r ^ 2) (gWrapFan R) R :=
+  covers_fanOfSteps gWrapFanSteps R gWrapFanSteps_boxContain
 
-/-- **THE (3,3,4) BALL-COVER (`-- map: #112-5d-cover`).** `∃ ρ > 0, ball 0 ρ ⊆ (gWrapFan 1).leafImages`
-— a punctured neighbourhood of `0` is covered by the fan's leaf-chart images (the pivot-paths of
-`gWrap`'s three blow-ups). Feeds `resolution334_of_ballCover` once the leaf composites are enumerated as
-the `charts` family (crux B / #143). Via `covers_subset` on `gWrapFan_covers`. -/
-theorem exists_ball_subset_gWrapFan_leafImages :
-    ∃ ρ : ℝ, 0 < ρ ∧ ball (0 : Fin 21 → ℝ) ρ ⊆ (gWrapFan 1).leafImages :=
-  exists_ball_subset_leafImages (gWrapFan 1) gWrapFan_covers
+/-- **THE (3,3,4) BALL-COVER at GENERAL target radius `R`** — `ball 0 R ⊆ (gWrapFan R).leafImages`
+for EVERY `R`. The covered radius is EXACTLY the target radius `R` (via `covers_subset` on
+`gWrapFan_covers`, no `f`-inflation on the covered side — the inflation `f = r ↦ r + 2r²` sizes only
+the leaf boxes), so a SMALL `R` gives a cover of a small ball around `0`: the #188 born-α value side
+is valid only at the residual-unit radius, and this meets it there. (For `R ≤ 0` the ball is empty
+and the inclusion is vacuous; positivity enters in the `𝓝 0` corollary below.) -/
+theorem ball_subset_gWrapFan_leafImages (R : ℝ) :
+    ball (0 : Fin 21 → ℝ) R ⊆ (gWrapFan R).leafImages :=
+  Metric.ball_subset_closedBall.trans (covers_subset (gWrapFan R) (gWrapFan_covers R))
+
+/-- **THE (3,3,4) COVER IS A NEIGHBOURHOOD OF `0` (`-- map: #112-5d-cover`).** For every `0 < R`,
+`(gWrapFan R).leafImages ∈ 𝓝 0` — the fan's leaf-chart images (the pivot-paths of `gWrap`'s three
+blow-ups) form a neighbourhood of `0`. The exact shape the born-α wire (#188) consumes: instantiate
+at `R` = the residual-unit radius (crux B / #143) and the cover is a genuine `U ∈ 𝓝 0`. -/
+theorem gWrapFan_leafImages_mem_nhds {R : ℝ} (hR : 0 < R) :
+    (gWrapFan R).leafImages ∈ 𝓝 (0 : Fin 21 → ℝ) :=
+  Filter.mem_of_superset (Metric.ball_mem_nhds 0 hR) (ball_subset_gWrapFan_leafImages R)
+
+/-- **THE (3,3,4) BALL-COVER, `∃ ρ` shape, at GENERAL target radius `R`.** The generalization of the
+former `R = 1` `exists_ball_subset_gWrapFan_leafImages`: for `0 < R`, `∃ ρ > 0, ball 0 ρ ⊆
+(gWrapFan R).leafImages` (witness `ρ = R`). Feeds `resolution334_of_ballCover` once the leaf
+composites are enumerated as the `charts` family (crux B / #143). -/
+theorem exists_ball_subset_gWrapFan_leafImages {R : ℝ} (hR : 0 < R) :
+    ∃ ρ : ℝ, 0 < ρ ∧ ball (0 : Fin 21 → ℝ) ρ ⊆ (gWrapFan R).leafImages :=
+  ⟨R, hR, ball_subset_gWrapFan_leafImages R⟩
+
+-- Forced axiom gate (L2 scale-join): the general-`R` cover theorems rest only on
+-- `[propext, Classical.choice, Quot.sound]` — a future edit that makes any depend on `sorryAx`
+-- FAILS this red (not masked by a stale-olean `exit 0`; lean/CLAUDE.md caveat).
+#assert_banked_clean_batch [gWrapFan_covers, ball_subset_gWrapFan_leafImages,
+  gWrapFan_leafImages_mem_nhds, exists_ball_subset_gWrapFan_leafImages]
 
 end DLNFibre.DLN.Aoyagi.Corank2FanCover334
