@@ -25887,3 +25887,16 @@ LIGHT CONFIRM (re-engaged the composition pnp): the acyclicity's write-strictly-
 Likely YES via flatCoordOf-injective; confirm → the uniform argument is airtight.
 NET: §3 = PENDING-LANE-A (one gate short of SATISFIED — lane a's leaf-type-coverage/S2-inside-#172 check, running).
 Re-convene the elder: lane a verdict + the acyclicity confirm + first born-α fill.
+
+## 2026-07-26 (cont.) — ACYCLICITY CONFIRM = YES via flatCoordOf (lane b composition uniform argument AIRTIGHT, row 0 included)
+The composition pnp confirmed the elder's light acyclicity check: YES, via flatCoordOf (the coarse min(i,j) alone is
+NOT sufficient — the elder's within-row-0 catch was precise). Verified computationally L=2,3,4 dims 2-4 (all pass).
+The within-row-0 strictness (pivot row + cleared first-row slots BOTH at min(i,j)=0) is delivered by flatCoordOf's
+FINER (layer,row,col) indices: cross-layer row-0 reads (s−1,0,k) vs writes (s,0,j) separated by the LAYER index;
+within-layer row-0 writes (s,0,j) vs col-0 reads (s,m,0) separated by the ROW index; interior clearing reads row-0
+as pivot but writes only interior (i,j≥1) = ROW index. Only forward dependencies (first-row→interior same-layer,
+first-row→next-layer), no back-edge ⟹ acyclic ⟹ unit-triangular. AIRTIGHT — banked (acyclicity_check.py). Confirms
+the acyclicity for the PROPOSED α shape (interior schurCells + cross-layer flatElemShear fold); the α is still to be
+BUILT (construction labor), but its composition-acyclicity — the elder's specific worry — is now verified, row 0
+included. ⟹ LANE B IS FULLY CLEARED (composition CLEAN + the acyclicity confirm airtight). §3 remains
+PENDING-LANE-A (the leaf-type-coverage co-gate = the ONE open §3 gate; lane a running).
