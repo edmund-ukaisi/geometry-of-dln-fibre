@@ -26725,3 +26725,22 @@ AGGREGATOR: Corank2NativePerm334 + Corank2NativeFan334 need imports in DLNFibre.
 NEXT: seat lands ek₀/k0 (leaf-dependent: clean-144 pivot-cross, over-vanishing-144 higher native monomial) → SIGNAL → fire
 (B) hentry. Then hjac + divisorMin≥8 → assembled (3,3,4).
 NET: the STOP-SHIP fix is LANDED + W3-clean + clean-three (controller-verified) — the recovery is real Lean, not just a plan.
+
+## 2026-07-26 — SIGNAL(2): ek₀ LANDED (clean-three) → B FIRING (clean-144); over-vanishing CRUX (feeder-(a) DEAD)
+The rework seat (a071ddb87a8c32348) landed ek₀/k0 (Corank2NativeValue334.lean, clean-three): pivot1/2/3, ek₀ c = pivot-cross
+[1@p1,1@p2], bindingAxes_ek₀={p1,p2}, hbind/hunit_mult/pivots_distinct. B can FIRE on the clean-144 hentry.
+CONTROLLER: spawned seat B (clean-144 exact hentry: coreGen(k0)(gFin c w) = pivot-cross monomial, from the pnp cert + the
+landed ek₀ + fan). Needed in BOTH restrict + split → fired now.
+THE CRUX (over-vanishing, the seat's probe REFUTES the elder's feeder (a)): the over-vanishing 144 have 0 SINGLE-ENTRY
+SURVIVORS — every coreGen entry = vm × (a factor VANISHING at 0), so coreGen(k0) is NOT a pure monomial. So feeder (a)
+'exact over-vanishing hentry' is DEAD (no exact pure-monomial entry-equality). Their ≥4.5 is TORIC/loss-level, not an
+entry-equality. (over-vanishing vm ARE squarefree — e.g. p1=20,p2=5: vm=u1·u5·u20 ⊋ pivot-cross {5,20} — ek₀=vm satisfies
+hunit_mult but the EXACT hentry is FALSE.)
+GATING QUESTION (rework seat verifying): do the CLEAN-144 COVER a nbhd of 0? YES → restrict-to-clean-144 (dodges (ii)
+entirely, only exact-hentry); NO (elder's earlier 'likely fails') → the (i)+(ii) split, (ii) = a NEW per-chart bound
+(loss = vm²·∑vf² ≥ (vm × nested-survivor)² if a vf is a pure monomial = higher-order/nested single_le_sum → higher ek₀;
+NOT entry-hentry [dead], NOT sandwich_on_domain_of_survivor [vanishing-factor isn't a unit]).
+ROUTED: elder (confirm restrict-if-cover + the (ii) mechanism if split); rework seat (verify the clean-144 cover-count +
+proceed hjac + divisorMin≥8 [needed by both] + HOLD (ii) for the elder). B builds the clean-144 hentry regardless.
+NET: ek₀ landed + B firing (clean-144); the over-vanishing needs restrict-or-(ii) (feeder-(a) dead, decorrelated catch);
+value SOUND (all 288 ≥4 double-certified) — this is a per-chart-MECHANISM question for the over-vanishing, not a value gate.
