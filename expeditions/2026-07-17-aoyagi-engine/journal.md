@@ -27170,3 +27170,27 @@ PRESERVED FUTURE-CAVEAT (MOOT under the current value-from-bounds build): if a r
 per-chart-MONOMIAL covering atlas, the shear-slot escape cone returns → do NOT prune-to-valid-and-cover; keep the full
 cover (value-from-bounds) OR fan (pivot, adapted-shear) pairs. pnp-fan won't propagate the retired concern; holding.
 STATE unchanged: (3,3,4) V-lower architecture scaffolded (3 holes H1/H2/H3); Tonelli + per-type building; (ii) resting for step-6.
+
+## 2026-07-26 — per-type seat: coinciding-leaf finding + the CUBIC-COVER caveat (new cover sub-requirement)
+The per-type seat (a3f030) derived the full per-type structure via sympy (faithful gFlat model, verified 1e-15) +
+addressed the pnp-fan coinciding-caution:
+- SEAT SCOPE = the 8-entry reg-seq over-vanishing leaves = p2 ∈ σC2(p1) (p1=20: p2∈{1,5,6,7}), 144 total. reg-seq keys
+  only on p2: pattern A (p2∈{1,5}) reg={0,1,3,4,6,7,9,10} drop c=2; pattern B (p2∈{6,7}) reg={0,2,3,5,6,8,9,11} drop c=1.
+- COINCIDING confirmed (pnp-fan correct): vmExp={p2,p3,20} degree-3 generically, collapsing to {p2,20} degree-2 EXACTLY on
+  coinciding p2=p3 leaves. (20,1,1) IS coinciding. BUT the entry-identity structure (reg-seq/zc/Ψ-placement/keep) is
+  IDENTICAL within a p2-pattern regardless of p3; vmExp enters only as the opaque ∏u^vmExp ⟹ the proof is vm-AGNOSTIC.
+  So (20,1,1) is a faithful STRUCTURAL template for pattern-A-p2=1 (+ exercises the harder cubic) — build it, then confirm
+  non-coinciding (20,1,5) follows. Sound.
+- DISAMBIGUATION (seat caught, cross-check worked): pnp-fan's u0^7·u1^3·u20^8 (degree 18) = the JAC/divisor order
+  (cover-side, retired-gwrap-labeled), NOT the value vm. The seat's vmExp (degree 2-3) = the monomial factored from the
+  reg-seq coreGen entries, from the CURRENT Lean gFlat. Different quantities; the seat derived its own from ground truth.
+- ★ CUBIC-COVER CAVEAT (load-bearing, NEW cover sub-requirement): the COINCIDING-leaf Ψ is CUBIC-unipotent (φ_12 =
+  −(u0·u10 + u1·u16·u5)), so image_comp_blockShear_superset's hquad (‖φx‖≤C·r²) FAILS there — coinciding leaves need a
+  CUBIC-inflation cover-transport (r+C·r³). Non-coinciding pattern-A = quadratic (existing atom). On the COVER side (the
+  reg-seq STRAIGHTENING Ψ, NOT the born blow-up shear — no charter-contradiction). Detail-at-scale expected (same
+  box-containment, cubic bound) but a NEW brick.
+ROUTING: asked the per-type seat to build the cubic-cover variant in ITS OWN module (sibling to (ii)'s quadratic atom,
+avoids a file conflict) + FLAG if the cubic-unipotent cover-transport is harder than quadratic. (ii) step-6 consumes
+cubic-for-coinciding / quadratic-for-non-coinciding.
+HOLES MAP UPDATE: H2 (over-vanishing bridge) now = per-type entry-identities (8/type) + Ψ_c + folded-jac + the CUBIC-COVER
+for coinciding leaves. STATE otherwise unchanged (Tonelli H1 building, (ii) H3 resting).
