@@ -1368,3 +1368,22 @@ banked). The wire = composition once (i)(a) lands; the cover (flatCube) supplies
 re-plan. Prep for gating/briefing the wire fast. NOTE for the wire build: the Chart-structure fields (Aoyagi's
 per-chart hypotheses) must be supplied for EACH flatCube chart — the "over ALL charts" watch-item is that the
 covering family (not one chart) inhabits the equality.
+
+### A tracked-open skeleton can TYPECHECK yet be FALSE — the early API-check caught it (2026-07-26, wire #187)
+The builder statement-locked the V-lower wire (`rlctAt_ge_iInf_threshold_of_sandwich_cover` @e195fb436) — it
+TYPECHECKED + banked tracked-open. The fresh formaliser's MANDATED early API-check (before filling) found it
+FALSE: missing `BddAbove`. Counterexample (D=1, g=id, x₀=5, F 0 = ·0 so loss = w₀²): all hypotheses hold, but
+near x₀=5 the loss ≈ 25 > 0, so localAdmissible = [0,∞) (NOT BddAbove), sSup = junk = 0, rlct = 0 — conclusion
+"½ ≤ 0" FALSE. ROOT: the sandwich is a LOWER bound only; it can't force x₀ to be a genuine pole. "rlct finite /
+BddAbove" = the V-UPPER content (#110), which this wire bypasses — so the honest V-lower MUST take BddAbove as a
+hypothesis (load-bearing, discharged downstream by V-upper). FIX: +hbdd (load-bearing — counterexample-proven,
+NOT a weakest-hypotheses violation), −hunit1 (unused with the monomialThreshold conclusion; moves to the
+downstream conversion).
+**LESSON (reinforces "fix wrong statements first", lean/CLAUDE.md):** a typechecking tracked-open skeleton is
+NOT a correct statement — Lean checks types, not truth. The P6 statement-lock discipline MUST pair with an
+early SEMANTIC/counterexample check, especially for a durable Core API. The fresh-context formaliser + the
+"quick-review the record BEFORE filling" instruction caught a FALSE target before the ~85-line fill was built
+on it — the strongest vindication yet of statement-lock-then-early-check + fresh-context review.
+**Math note:** the V-lower ≥-half genuinely DEPENDS on V-upper's finiteness (BddAbove) — the two halves are NOT
+fully independent; the ≥ direction needs the pole to be finite (one-directional: V-upper doesn't depend on
+V-lower, no circularity).

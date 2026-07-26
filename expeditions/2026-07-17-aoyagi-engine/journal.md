@@ -25221,3 +25221,15 @@ for the sandwich-fed IntegrableOn) = the last substantive new sub-lemma of the V
 cite-free" CLAIM gates on the FILL + the elder 4-obligation + #172-distinct + F1-clean + exists_coreResolution
 dead-in-cone → elder + reviewer + controller verify → merge. Then: hpull concrete discharge (#172 for real
 charts) + V-upper (#110) + Object D → 2rlct=cCodim → the cite-free payoff.
+
+## 2026-07-26 (cont.) — WIRE early API-check CAUGHT a FALSE locked statement (missing BddAbove); fix +hbdd/-hunit1 confirmed; formaliser filling the corrected assembly [#187]
+The fresh formaliser's early API-check on the locked wire (@e195fb436) found it TYPECHECKING-but-FALSE (missing
+BddAbove; counterexample: loss=w₀² at x₀=5, localAdmissible=[0,∞), sSup junk=0, so "½≤0" FALSE). The sandwich is
+a LOWER bound only — it can't force x₀ to be a genuine pole; BddAbove = the V-UPPER content (#110). FIX confirmed
+(both decisive): (a) +hbdd (LOAD-BEARING, counterexample-proven; = V-upper content, discharged downstream;
+one-directional, no circularity); (b) −hunit1 (unused with the monomialThreshold conclusion — weakest-fields/h0
+lesson; moves to the downstream monomialThreshold→½minAdm conversion where the k=1/headline-load-bearing
+obligation lives, preserved-relocated). The V-lower ≥-half genuinely DEPENDS on V-upper's finiteness. Formaliser
+proceeding to the corrected final assembly (was already building the hbdd-independent helper lemmas + the Ico ⊆
+localAdmissible core, identical either way). Elder informed (reviews the final at landing); calibration banked
+(a typechecking tracked-open skeleton can be FALSE — statement-lock MUST pair with an early semantic check).
