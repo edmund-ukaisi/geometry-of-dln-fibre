@@ -25075,3 +25075,23 @@ Elder decorrelated read (source @8cbebd8c3): (i)(a) is MERGE-OK on the math. THR
 
 #186 merge now gates on the reviewer's Lean-fidelity + my force-elab verify (elder math = merge-OK). Both
 V-lower halves proven ((i)(b) merged, (i)(a) delivered + elder-clean); the wire + hpull discharge remain.
+
+## 2026-07-26 (cont.) — (i)(a) MERGED @f10e40e16; BOTH V-lower halves now in the trunk; reviewer clean + hunit1 wire watch-item
+**(i)(a) leafPullback_sandwich MERGED @f10e40e16** (SurvivorSandwich.lean cherry-picked from aoyagi-r3brick
+@8cbebd8c3; full aggregator green 9045 jobs, no clash; in-file assert clean-three on force-elab = my verify).
+Reviewer Lean-fidelity CLEAN (kernel + Codex xhigh): #184 F1 gate PASSES over all 4 roots (sorryAx=0, no F1
+routing, structurally F1-impossible — imports only SurvivorFanCover + ChartValueLower); statement=content +
+in-file witness (retroactively covers (i)(b)'s non-vacuity — that fast-follow DISCHARGED); M=1 honest (valid
+>=-half); G1 honored; the exponent->=2 SOUNDNESS-HINGE CLOSED (hunit1 forces every binding multiplicity = 1, so
+min over bindingAxes = the true 2*wrlctAt — no over-estimate). Both V-lower halves (i)(b)+(i)(a) now MERGED.
+
+**NEW WIRE WATCH-ITEM (reviewer, relayed to builder + elder):** hunit1 (squarefree binding = k=1: ALL binding
+divisor multiplicities = 1) is LOAD-BEARING — the wire must PROVE it for the REAL (3,3,4) charts (the priced
+k=1 result — normal-crossings + kept-survivor => squarefree dominant), but if a real binding axis has
+multiplicity >= 2, chartMin needs the (h+1)/(2*e_d) form (a generalization, NOT a wall) — watch at the wire.
+Plus: (i)(a)+(i)(b) = the >=-HALF of ONE chart (payoff needs + V-upper #110 + the min-over-charts wire); hpull
+open = the real geometric pullback = the wire's genuine remaining content (keep F1-clean).
+
+REMAINING V-lower: the WIRE (rlctAt_sumSqFam over ALL flatCube leaves + #172 + hunit1 => rlct >= half minAdm via
+Object D) + the hpull discharge (real (3,3,4) pullback algebra, F1-clean). Builder building the wire (abstract,
+hpull per-leaf open). #186 CLOSED.
