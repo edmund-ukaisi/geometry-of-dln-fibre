@@ -26485,3 +26485,29 @@ monomial × unit, hentry is FALSE + this brick strands → route (B) through san
 feeder fallback). Carried to #188 (B) + the (B) brief. Gate PASSED; the landed brick is clean (conditional on hentry).
 
 ## 2026-07-26 — CALIBRATION tick (idle): assembly-completeness HIT (no orphan hyp; all reduction hyps -> A/B/C; hunit_mult=G1 covered by C; entry-unit=1 vs jac-unit separate). (A)+(C) seat building (925KB transcript, alive). Detail in strategy/calibration-ledger.md.
+
+## 2026-07-26 — (A) LANDED (σ_p fan + hcover, W3 gate PASSED) + route recalibration (full-cover) + (C) coupling decision (ek₀-shared, ≥8)
+(A) LANDED (fresh seat a7405cab46737ede5, branch aoyagi-r2native-fan @c82688e40, off r2assembly):
+- Corank2NativeShear334.lean: nativeSel = the 9 born-native node-1 shears (blockShear(qdisp t1P t2P), native
+  signed-quadratic per A0-dominant, machine-gen from extract_native_shears.py); generic qdisp engine (keep/read/
+  norm-bound 2r²/covers C=2/|jacDet|=1/injective proven once). W3 GREP-CLEAN GATE PASSED (controller re-ran on ground
+  truth): def + proof clean of Transport334/resolution334_of_fanCover/conjResolution/transportChart; the only
+  conjugate/orbit hits = the DOCSTRING disclaimer ('NOT the σ⁻¹∘shearH∘σ conjugate, description only') = elder's
+  'comments only' allowance.
+- Corank2NativeFan334.lean: nativeFan (shape b — native σ_p node 1 center {0..7,20}, fixed bbA0/bbA1 nodes 2/3, 288
+  pivot-path leaves) + the ONE flat family gFin/domFin (W1-respected) + numCharts=288.
+- native_hcover : volume(ball 0 1 \ ⋃ c, gFin c ''domFin c)=0 + differentiable_gFin + isCompact_domFin + numCharts_pos
+  + ball_one_mem_nhds. Clean-three, 0 sorry, 7 roots banked.
+ROUTE RECALIBRATION (accepted; elder decorrelated-read flagged): FULL input-radial cover (fan Covers(r↦r+2r²) 1 +
+flatten + Fin-reindex ⟹ ball 0 1 ⊆ ⋃ ⟹ U\⋃=∅ ⟹ hcover trivial) instead of SurvivorFanCover flat. STRICTLY SIMPLER (no
+per-chart hchart [would've needed B's monomialisation], no {X=0} hnull). Sound (proven clean-three; blow-ups surjective;
+value-global at R=1 dissolves the radius tension). Does NOT affect (B).
+(C) COUPLING DECISION (controller, proceed-on-silence + elder-flagged): (C)'s divisorMin reads ek₀ (= B's hentry output).
+Resolved: (i) ek₀/k0 = a SHARED def — the (C)/fan seat DEFINES it from the pnp geometry (F5-F9 survivor exponents),
+(B) proves hentry against it (ek₀ shared like σ_p); land ek₀ EARLY + signal → fire (B). (ii) divisorMin ≥ 8 (uniform
+per-leaf binding-min ≥ 8, option b), NOT exact =8 — reviewer-blessed (≥8 gives ≥4) + more principled (V-lower shouldn't
+import the ≤8 upper half); WEAKEN the reduction's hdivisorMin =8 → ≥8 (clean weakening, 4≤rlctAt preserved). Sidesteps
+the per-path exact-min. Per-path jac accumulation (node-2/3 pivot in outer center → product-coord exponent) handled in
+the per-leaf jacDet normal form.
+NEXT: seat delivers jac/hjac + uniform ≥8 + ek₀ shared; lands ek₀ early → fire (B) hentry (exact-check + feeder fallback);
+then assembled (3,3,4). Elder re-convene at (B) + the assembled (3,3,4).
