@@ -27102,3 +27102,21 @@ scaffolding now (its call).
 STATE: clean-144 COMPLETE+locked; interface CLEAN; over-vanishing = backbone CLEAN-THREE + step-6 bridge (tracked-open) +
 [per-type seat (1)(2)(3)] + [Tonelli seat: the Core crux] in build. NEXT: per-type facts + Tonelli close → discharge
 chart_integrableAtFilter_of_monoSumSq_dom → (ii) step-6 mechanism-heterogeneous assembly → unconditional (3,3,4).
+
+## 2026-07-26 — (ii) re-scopes per-type to 8 reg-seq entry identities + scaffolds step-6 (b-LIGHT)
+(ii) @838d5c261 landed monoSumSqGerm_le_of_regSeq_entries (clean-three): re-scopes the per-type work to just the 8
+REG-SEQ ENTRY IDENTITIES coreGen k (gFlat idx (Ψ u)) = vm·u_{zc k} (bundles pullback+Ψ per entry; NO full 12-entry hpull,
+NO separate subset_le_sum). RELAYED to the per-type seat (a3f030) to consume it (lighter grind; still builds Ψ_c +
+folded-jac; reg-seq set keys on p2).
+(ii) chose (b)-LIGHT: scaffolding the STEP-6 integration CONTRACT now (P6 skeleton, warm context) — new module
+Corank2OverVanishAssembly334.lean (keeps the backbone clean-three): the mechanism-heterogeneous headline
+`4 ≤ rlctAt (sumSqFam (coreGen dvec eWrap)) 0` abstracting per-chart per-point integrability-below-4 as ONE hyp (hint),
+so clean-144 (hentry→chain engine, ≥4) AND over-vanishing-144 (chart_integrableAtFilter_of_monoSumSq_dom, =4) BOTH
+discharge it over their charts of the FULL 288 cover. Body sorry (map: step6-assembly); spine = a refactor of
+mem_localAdmissible_of_sandwich_lt (area + finite-union + cover-to-nbhd + sSup/hbdd). This IS the mechanism-heterogeneous
+assembly (option (i), the generalized reduction) the reviewer's step-6 sharpening + the wire-calibration pointed to.
+Flagged for aggregator (+Corank2OverVanishAssembly334).
+STATE: clean-144 COMPLETE+locked; interface CLEAN; over-vanishing = backbone CLEAN-THREE + step-6 bridge (tracked-open) +
+step-6 skeleton (tracked-open, (ii) building) + per-type grind (re-scoped to 8 entries, a3f030) + Tonelli (Core crux,
+ab996 — active, drift-pinged). NEXT: per-type 8-entry identities + Tonelli close → discharge the bridge + step6-assembly
+→ 4 ≤ rlctAt → unconditional (3,3,4).
