@@ -27320,3 +27320,27 @@ clean-three per leaf. Cover-rule: coinciding p2=p3 → cubic (image_comp_psiCano
 STATE: H1 VERIFIED+LOCKED; H2 = (20,1,1) template GREEN+clean-three (review-gating ada0b47e) + pattern-A/B seats (15
 leaves) + a3f030 σ_p1-transport probe, in build; H3 (ii) resting. NEXT: 16 leaves + transport-green → merge Tonelli +
 per-type (all) → wake (ii) H3 → 4 ≤ rlctAt → (3,3,4). (RISK: σ_p1-transport probe reds = a small monument → re-plan 16→144.)
+
+## 2026-07-26 ★★ σ_p1-TRANSPORT PROBE GREEN — NO MONUMENT; the whole H2 (over-vanishing value) is MONUMENT-FREE
+a3f030's σ_p1-transport probe returned GREEN (the last unknown): canon_domination ∀-144 follows from the 16 canonical
+(p1=20) via a clean COORDINATE PERMUTATION — NOT a monument. Verified numerically (sympy exact) vs the pnp base machinery:
+(A) LOSS-SYMMETRY L∘σ=L EXACT (all 9 make_sigma; σ=rowswap(i)∘colswap(j), a genuine row/col symmetry: mult(w∘σ)=
+    mult(w)·P_col ⇒ Frobenius-invariant).
+(B) CHART CONJUGATION gFlat(p1,P2,P3) = conj(gFlat(20,σ⁻¹P2,σ⁻¹P3),σ) EXACT (8 non-canonical dominants; via
+    blockBlowupMap_conj + nativeChart1 conj); loss_native = loss_canon(w∘σ) EXACT.
+(C) GERM REINDEXING monoSumSqGerm(a,Z)(w∘σ) = monoSumSqGerm(a∘σ⁻¹,σZ)(w) EXACT ⇒ vmExp_native = vmExp_20∘σ⁻¹,
+    Z_native = σ(Z_20).
+(D) Ψ_native = conj(Ψ_20,σ) = blockShear(R_{σ⁻¹}∘φ20∘R_σ).
+⇒ canon_domination_native(w) = LHS_20(w∘σ) ≤ RHS_20(w∘σ) = RHS_native(w). QED clean.
+LEAN COST: detail-at-scale ~300-500 LoC on the EXISTING blockBlowupMap_conj. Pieces: (1) the loss-symmetry lemma (coreGen
+σ-equivariant up to a 12-entry col-perm — the ONE substantive new lemma, via mult_eWrap + the σ action on A0/A1); (2)
+nativeChart1 p1 = conj(nativeChart1 20,σ) — 9 concrete per-p1 identities (mechanical; emitted t1P/cperm WAS the conjugate);
+(3) chart-conj assembly + germ/vmExp/Z reindexing + the main transport theorem. canon_foldedJac needs NO transport (hjac
+generic over all idx).
+⟹ THE LAST UNKNOWN IS CLEARED. The whole H2 is MONUMENT-FREE: H1 (Tonelli) done+verified; 16 concrete leaves mechanical
+(pattern-A/B building); the σ_p1-transport green + detail-at-scale (a3f030 building, parametrized, loss-symmetry crux
+first). RISK (σ_p1-transport-monument) = CLEARED. The ENTIRE (3,3,4) V-lower is de-risked end-to-end — no monument
+anywhere; all remaining is detail-at-scale labor in flight.
+STATE: H1 VERIFIED+LOCKED; H2 = template GREEN (review-gating) + 16 leaves (pattern-A/B) + transport (green, a3f030
+building); H3 (ii) resting. NEXT: leaves + transport land → compose ∀-144 canon_domination → merge Tonelli + per-type →
+wake (ii) H3 → 4 ≤ rlctAt → unconditional (3,3,4).
