@@ -24852,3 +24852,30 @@ Q2 (#183) remains PRIMARY, now TWO-part: centers read + Jacobian-accumulation ch
 "the node is fully value-faithful." Banked a §3 charter companion warning (value-side Jacobian-cardinality)
 next to the born-not-transported/K-orbit tripwire — it is the value-side drift class (forget it → the RLCT
 grounds on the wrong Jacobian). #178 (merge-on-reviewer) + #183 (two-part fold gate) updated.
+
+## 2026-07-26 (cont.) — Q2 read (builder): value-side + clearing DISCHARGED; cover-side CENTER identity is the true remaining gate. name=content done @c1ddd9928 (merge-ready on reviewer).
+
+**name=content DONE @ FINAL SHA c1ddd9928** (supersedes 21bc03007): title + docstring tightened to read
+"born-fan over the KEPT center {0,1,2,3,20} covers, cleared 4..7 SPECTATORS; NOT a claim about a fan over all
+of {0..7,20}". 1-root clean-three, force-rebuild. Reviewer re-pointed; MERGE gates on reviewer-only (elder
+decoupled merge from Q2). On reviewer-clean → controller re-verify (force-elab + #print axioms at c1ddd9928 +
+re-fetch) + merge + wire aggregator.
+
+**Q2 (#183) buildTree-centers read — THREE sub-parts:**
+- **(A) VALUE-side Jacobian-accumulation: DISCHARGED (banked).** atlasRealizesExponents_334 (Corank2Realize334)
+  proves buildTree ![3,3,4] terminalExponents = gWrap's chart jac exponents+1 ({E:7→8, c11:8→9}). buildTree ≡
+  gWrap on the monomialization VALUES. → the elder's value-side worry is CLOSED for (3,3,4).
+- **(B) CLEARING: shared object.** shearH = clearing334, used by BOTH gWrap (Corank2GWrapDecomp) AND reroute R1
+  (StepConstructor.clearing334). No clearing drift.
+- **(C) COVER-side node CENTERS: OPEN — the ACTUAL remaining gate.** The RLCT engine
+  (GeoFoldRegroup/flatCube/dCenterOfNode/cNodeOf via conOracle) has ZERO reference to gWrap/shearH/sigmaPiv —
+  SEPARATE objects; only the VALUE side is bridged (atlasRealizes). node_cover_334 is grounded on gWrap's
+  geometry ({0,1,2,3,20} ⊂ gWrap {0..7,20} + shearH), NOT verified vs buildTree's per-node dCenterOfNode/cNodeOf.
+  So the elder's "buildTree ≡ gWrap?" on the COVER side is genuinely UNVERIFIED.
+
+**Builder assessment (sound):** value-match + shared clearing are STRONG evidence the node structure matches
+(same blow-ups → same exponents), but the cover-side coord identity is the actual gate. IN PROGRESS: the
+builder tracing conOracle(![3,3,4])'s node sequence + each dCenterOfNode (gWrap sizes 9/8/4) + cNodeOf coords vs
+gWrap's {0..7,20}/{0..7}/{1,5,6,7} (noncomputable → a trace/lemma, not #eval). MATCH ⟹ node_cover_334 IS
+buildTree's actual node cover (fully faithful cover+value+centers), brick+fold transfer; DIFFER ⟹ re-ground the
+fold's node clause on buildTree's centers (the merged brick stays a valid standalone cover, renamed).
