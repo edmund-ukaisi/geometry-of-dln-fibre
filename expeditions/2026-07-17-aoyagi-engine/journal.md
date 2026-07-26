@@ -25584,3 +25584,19 @@ CONTROLLER SELF-AUDIT: I amplified the formaliser's wall (banked "STOP-FALLBACK 
 equality-vs-inequality conflation myself — the decorrelated elder seat caught it. Validates "get the decorrelated
 comprehension read BEFORE the destination surface"; I did HOLD the surface (didn't over-reach to the operator).
 Lesson: even a thorough formaliser wall-diagnosis can conflate a stronger dead route with the weaker live need.
+
+## 2026-07-26 (cont.) — ELDER sharpening: the decisive verdict is 4-WAY (3a detail-at-scale vs 3b RED-FLIP is the load-bearing split); relayed to the seat
+The elder sharpened the pen-and-paper's report contract — the verdict is NOT binary (survives/cancels); a binary
+framing would hide the load-bearing distinction. Four outcomes:
+  (1) ledger-exponent entry SURVIVES shear-free → R-α works directly, wall dissolves. Continue (detail-at-scale).
+  (2) that entry cancels but SOME OTHER entry carries the SAME ledger exponent + survives → R-α STILL works (needs
+      ANY entry realizing the exponent). ⟹ check ALL entries at the ledger exponent (widens the survives-basin).
+  (3a) NO entry realizes the exponent shear-free BUT the shear EXPOSES it → from-below needs the shear;
+      (3,3,4)-sheared re-derivation = DETAIL-AT-SCALE, ledger FAITHFUL, buildable, NOT a defeat.
+  (3b) even WITH the shear no entry realizes the exponent — a strictly LOWER exponent DOMINATES → the ledger
+      OVER-CLAIMS the codim; geometry gives rlct < ½·cCodim = the headline RED-FLIP (k≥2 binding-axis failure,
+      headline-load-bearing) — the genuine (B)-wall + a FIDELITY failure of the LEDGER itself.
+KEY: 3a and 3b both look like "cancels" but are OPPOSITE — 3a = buildable-with-shear (a build cost); 3b = the
+½·cCodim headline is FALSE as stated (the deepest kill-condition). The seat MUST separate them. This is the sharpest
+edge of "the ledger is not the geometry": a build cost (3a) vs a wrong claim (3b). Only 3b is a real emergency;
+1/2/3a are all "continue" or "honest landing." Relayed the 4-way contract to the seat (a9a355c394db96cb1).
