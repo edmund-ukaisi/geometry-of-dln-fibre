@@ -24830,3 +24830,25 @@ axioms) + name=content — does NOT wait on Q2 (it banks as reusable node-cover 
 identity needs Q2 confirming). FOLD gates on Q2 + node-cover + leaf-monomialisation shown over buildTree's
 ACTUAL nodes. Elder re-convene at: (i) the buildTree-centers read; (ii) leaf-monomialisation over buildTree
 leaves; (iii) the R3 fold landing; (iv) any (B)-fallback wall; (v) the operator destination call.
+
+## 2026-07-26 (cont.) — ELDER ruling on the sharpened trilemma: cover-Q1 CLOSED (kept-subset accepted); the Jacobian-CARDINALITY value-side surfaced → the leaf-accumulation gate (charter §3 companion warning)
+
+**Cover-side Q1 CLOSED — kept-subset {0,1,2,3,20} born-fan ACCEPTED.** W3-FORCED (born-pivots must be kept;
+shearKeepH clears {4..11}, so 4..7 CANNOT be born-pivots; literal-{0..7,20}-born UNPROVABLE structurally,
+literal-raw-blowup violates W3), SUFFICIENT (covers closedBall, 4..7 spectators — verified), FAITHFUL (the
+reroute's own construction). NO over-claim; name=content RESOLVED (keep the precise "kept + spectators"
+naming). First-brick MERGE now gates on the REVIEWER ONLY.
+
+**VALUE-SIDE surfaced by the trilemma (the sharp, load-bearing part):** the block-blowup Jacobian
+`jacDet_blockBlowupMap` is `|x_p|^(card−1)`. Kept {0,1,2,3,20} (card 5) → `|x_20|^4`; the CORRECT total is
+`|x_20|^8` (card 9 = gWrap's `|u0|^7·|u1|^3·|u20|^8`). shearH is UNIPOTENT (det≡1, contributes 0). So the
+kept-subset born-fan ALONE gives the WRONG Jacobian exponent (4, not 8) — the missing exponent from the
+cleared 4..7 must be recovered by INNER buildTree nodes (gWrap's bbA0/bbA1 blow up {0..7}/{1,5,6,7}). The
+correct total Jacobian is recovered ONLY by ACCUMULATION across buildTree's kept-subset node CASCADE.
+
+**NET (elder):** (a) Q1 cover-side CLOSED — merge-OK on reviewer; (b) Q1 value-side OPEN = the leaf-
+monomialisation-over-buildTree gate (Jacobian must accumulate to the correct total across the cascade); (c)
+Q2 (#183) remains PRIMARY, now TWO-part: centers read + Jacobian-accumulation check. "Kept-subset covers" ≠
+"the node is fully value-faithful." Banked a §3 charter companion warning (value-side Jacobian-cardinality)
+next to the born-not-transported/K-orbit tripwire — it is the value-side drift class (forget it → the RLCT
+grounds on the wrong Jacobian). #178 (merge-on-reviewer) + #183 (two-part fold gate) updated.

@@ -122,6 +122,14 @@ category before reporting progress; the elder gates every route and every progre
 > `StepConstructor.bornSiblings` (per-pivot, transport-free); NEVER wire the cover through the K-orbit
 > skeleton. Wiring the cover as a K-orbit re-enters O1 = DEAD ROUTE. Born-not-transported is the invariant;
 > the K-orbit skeleton is a tombstone, not a tool.
+> **VALUE-SIDE COMPANION (2026-07-26, R3-first-brick): the kept-subset born-fan COVERS, but its single-node
+> Jacobian is card-DEFICIENT — the value must ACCUMULATE.** Guardrail-0 forces the node's born-fan onto the
+> KEPT pivots (cleared coords can't be born-pivots); the block-blowup Jacobian is `|x_p|^(card−1)`, so a kept
+> sub-center (card 5 at the (3,3,4) outer node) gives `|x_20|^4`, NOT the correct `|x_20|^8` (full card 9);
+> `shearH` is unipotent (det≡1). So the correct total Jacobian (`|u0|^7·|u1|^3·|u20|^8` + its general-d form)
+> is recovered ONLY by ACCUMULATION across `buildTree`'s kept-subset node CASCADE (inner nodes blow up the
+> coords outer nodes clear). "Kept-subset covers" ≠ "the node is value-faithful" — the value-Jacobian is the
+> LEAF gate, verified over `buildTree`'s ACTUAL nodes, never a single node.
 - **The recurring category error (KEPT + VINDICATED — the PROOF the ideal route is forced):** no
   det-1 / a.e.-injective chart diagonalises the loss on an open set (each `(∏C)ᵢⱼ` is a nonzero poly,
   ≢0 on a dense open; exact diagonalisation forces ≡0, a non-open det-0 projection). The value LOWER
