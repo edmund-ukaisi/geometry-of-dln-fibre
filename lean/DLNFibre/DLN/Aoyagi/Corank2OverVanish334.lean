@@ -75,7 +75,7 @@ junk-guarded domination `wLocalAdmissibleExponents_subset_of_eventually_le` (usi
 sum-of-squares threshold `|Z|/2`, the regular-sequence block `Z` is disjoint from `supp(vm)` and
 `jac`-free there, and the pulled-back loss `∑ (Fᵢ ∘ g')²` dominates the product germ `vm²·∑_Z z²`
 near `p` (`hdom`), then the weighted pulled-back loss is integrable near `p`. Consumes the LOCKED
-Core engine `monoSumSq_integrableAtFilter_of_lt` (its Tonelli hole propagates; tracked-open). -/
+Core engine `monoSumSq_integrableAtFilter_of_lt` (sorry-free — the Tonelli crux is closed). -/
 theorem chart_integrableAtFilter_of_monoSumSq_dom {D Mn : ℕ}
     {F : Fin Mn → (Fin D → ℝ) → ℝ} {g' : (Fin D → ℝ) → (Fin D → ℝ)}
     {a jac : Fin D → ℕ} {Z : Finset (Fin D)} {p : Fin D → ℝ} {cc : ℝ}
