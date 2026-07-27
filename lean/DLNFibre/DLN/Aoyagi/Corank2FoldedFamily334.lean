@@ -435,4 +435,101 @@ theorem bundleOf_domination (q r : Fin 21) (u : Fin 21 → ℝ) :
       ≤ sumSqFam (fun i ↦ coreGen dvec eWrap i ∘ (gFlat (bundleOf q r).idxC ∘ (bundleOf q r).psi)) u :=
   (bundleOf q r).hdom u
 
+/-! ## §4 — the folded-chart value bridge (shared by ainj + hint) -/
+
+/-- `conjChart` at the identity permutation is the identity map. -/
+theorem conjChart_refl (F : (Fin 21 → ℝ) → (Fin 21 → ℝ)) :
+    OverVanishTransport334.conjChart (Equiv.refl (Fin 21)) F = F := by
+  funext w t
+  simp only [OverVanishTransport334.conjChart, Equiv.refl_apply, Equiv.refl_symm]
+
+/-- **The `σ_{p1}`-conjugate presentation of a leaf composite** — the 9-way transport over the
+dominant pivots `p1 ∈ S1`. For `p1 = n ∈ {0..7}`, `σ_{p1} = sigP{n}` and `gComposite_conj_P{n}` +
+the involutivity `sigP{n}(sigP{n} ·) = ·` give the identity; `p1 = 20` is the identity permutation. -/
+theorem gComposite_conj_sigOf {p1 : Fin 21} (hp1 : p1 ∈ S1) (a b : Fin 21) :
+    OverVanishTransport334.gComposite p1 a b
+      = OverVanishTransport334.conjChart (sigOf p1)
+          (OverVanishTransport334.gComposite 20 (sigOf p1 a) (sigOf p1 b)) := by
+  fin_cases hp1
+  · rw [show sigOf 0 = OverVanishTransport334.sigP0 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P0
+        (OverVanishTransport334.sigP0 a) (OverVanishTransport334.sigP0 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP0.symm_apply_apply _).symm
+  · rw [show sigOf 1 = OverVanishTransport334.sigP1 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P1
+        (OverVanishTransport334.sigP1 a) (OverVanishTransport334.sigP1 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP1.symm_apply_apply _).symm
+  · rw [show sigOf 2 = OverVanishTransport334.sigP2 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P2
+        (OverVanishTransport334.sigP2 a) (OverVanishTransport334.sigP2 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP2.symm_apply_apply _).symm
+  · rw [show sigOf 3 = OverVanishTransport334.sigP3 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P3
+        (OverVanishTransport334.sigP3 a) (OverVanishTransport334.sigP3 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP3.symm_apply_apply _).symm
+  · rw [show sigOf 4 = OverVanishTransport334.sigP4 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P4
+        (OverVanishTransport334.sigP4 a) (OverVanishTransport334.sigP4 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP4.symm_apply_apply _).symm
+  · rw [show sigOf 5 = OverVanishTransport334.sigP5 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P5
+        (OverVanishTransport334.sigP5 a) (OverVanishTransport334.sigP5 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP5.symm_apply_apply _).symm
+  · rw [show sigOf 6 = OverVanishTransport334.sigP6 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P6
+        (OverVanishTransport334.sigP6 a) (OverVanishTransport334.sigP6 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP6.symm_apply_apply _).symm
+  · rw [show sigOf 7 = OverVanishTransport334.sigP7 from rfl,
+      ← OverVanishTransport334.gComposite_conj_P7
+        (OverVanishTransport334.sigP7 a) (OverVanishTransport334.sigP7 b)]
+    congr 1 <;> exact (OverVanishTransport334.sigP7.symm_apply_apply _).symm
+  · rw [show sigOf 20 = Equiv.refl (Fin 21) from rfl]
+    simp only [Equiv.refl_apply]
+    rw [conjChart_refl]
+
+/-- **The per-type canonical composite reads off the bundle's index** — for `q, r ∈ {1,5,6,7}` the
+`bundleOf q r` leaf index is `(20, q, r)`, so `gFlat` of it is `gComposite 20 q r`. -/
+theorem bundleOf_gFlat_idxC {q r : Fin 21} (hq : q ∈ ({1, 5, 6, 7} : Finset (Fin 21)))
+    (hr : r ∈ ({1, 5, 6, 7} : Finset (Fin 21))) :
+    gFlat (bundleOf q r).idxC = OverVanishTransport334.gComposite 20 q r := by
+  fin_cases hq <;> fin_cases hr <;> rfl
+
+/-- **The over-vanishing folded chart is a `σ_{p1}`-conjugate** — `gFold c = conjChart σ_{p1} (gFlat
+idxC ∘ ψ)` for the base type's `(idxC, ψ)`. Combines `gComposite_conj_sigOf` (9-way) with the
+classifier `bundleOf` read-off (`bundleOf_gFlat_idxC` + `canonQ_mem_of_notClean`/`canonR_mem`). -/
+theorem gFold_over_eq (c : Fin numCharts) (hc : ¬ IsClean c) :
+    gFold c = OverVanishTransport334.conjChart (sigOf (p1Of c))
+      (gFlat (bundleAt c).idxC ∘ (bundleAt c).psi) := by
+  have hcore : gFlat (idxEquiv c)
+      = OverVanishTransport334.conjChart (sigOf (p1Of c)) (gFlat (bundleAt c).idxC) := by
+    rw [show gFlat (idxEquiv c)
+          = OverVanishTransport334.gComposite (p1Of c) (p2Of c) (p3Of c) from rfl,
+      show (bundleAt c) = bundleOf (canonQ c) (canonR c) from rfl,
+      bundleOf_gFlat_idxC (canonQ_mem_of_notClean c hc) (canonR_mem c),
+      show canonQ c = sigOf (p1Of c) (p2Of c) from rfl,
+      show canonR c = sigOf (p1Of c) (p3Of c) from rfl]
+    exact gComposite_conj_sigOf (idxEquiv c).1.2 (p2Of c) (p3Of c)
+  rw [show gFold c = gFlat (idxEquiv c) ∘ psiOf c from rfl,
+    show psiOf c = OverVanishTransport334.conjChart (sigOf (p1Of c)) (bundleAt c).psi from by
+      simp only [psiOf, if_neg hc],
+    hcore, ← OverVanishTransport334.conjChart_comp]
+
+/-- **The folded-chart Jacobian collapse** `|jacDet (gFold c) u| = jacWeight (jacExpFold c) u` —
+clean via `hjac_gFin`; over-vanishing via `gFold_over_eq` + `jacDet_conjChart_abs` +
+`bundleOf_foldedJac` + `jacWeight_reindex`. The `hW` seam both leaves consume. -/
+theorem folded_jac_collapse (c : Fin numCharts) (u : Fin 21 → ℝ) :
+    |jacDet (gFold c) u| = jacWeight (jacExpFold c) u := by
+  by_cases hc : IsClean c
+  · rw [show gFold c = gFin c from by simp only [gFold, psiOf, if_pos hc, Function.comp_id],
+      show jacExpFold c = jacFin c from by simp only [jacExpFold, if_pos hc],
+      hjac_gFin]
+    simp only [NativeJac334.unitFin, abs_one, mul_one]
+  · rw [gFold_over_eq c hc, show (bundleAt c) = bundleOf (canonQ c) (canonR c) from rfl,
+      jacDet_conjChart_abs (sigOf (p1Of c))
+        ((differentiable_gFlat (bundleOf (canonQ c) (canonR c)).idxC).comp
+          (bundleOf_psi_differentiable (canonQ c) (canonR c))),
+      bundleOf_foldedJac, jacWeight_reindex, show jacExpFold c
+        = fun d ↦ (bundleOf (canonQ c) (canonR c)).jac ((sigOf (p1Of c)).symm d) from by
+          simp only [jacExpFold, if_neg hc, bundleAt]]
+
 end DLNFibre.DLN.Aoyagi.OverVanishHeadline334
