@@ -173,6 +173,7 @@ import DLNFibre.Core.Aoyagi.OrderChain
 import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishHeadline334
 import DLNFibre.DLN.Aoyagi.Corank2DLNRlct334
+import DLNFibre.DLN.Aoyagi.Corank2Equality334
 import Meta.Cordon
 
 /-!
@@ -1386,6 +1387,17 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- ACTUAL DLN loss RLCT via `coreReduction` + the now-proven `MeasurePreserving eWrap` (no hypothesis).
 -- `4 ≤ rlctGlobal (lossDLN ![3,3,4] 0)`, UNCONDITIONAL — must be clean-three.
   DLNFibre.DLN.Aoyagi.dln_rlct334_ge_four,
+-- ★ (3,3,4) `rlct = ½·codim` EQUALITY, CITE-FREE (this expedition, the paper's headline at one coupled
+-- instance): the UNCONDITIONAL cite-free upper `dln_rlct334_le_half_codim` (the single-chart CoV upper
+-- with `MeasurePreserving eWrap` discharged by the proven `measurePreserving_eWrap`, no cite, no MP
+-- hypothesis) and the EQUALITY `dln_rlct334_eq_half_codim` = `le_antisymm` of that upper with the
+-- V-lower `dln_rlct334_ge_four` (`rlctGlobal (lossDLN ![3,3,4] 0) = ½·codimRealFibre = 4`). The
+-- core-loss `rlctAt_coreGen334_eq_four` (= 4) and the value `dln_rlct334_eq_four` (= 4) are the
+-- companion forms. Both built geometry — NO cited Watanabe bound. All must be clean-three.
+  DLNFibre.DLN.Aoyagi.dln_rlct334_le_half_codim,
+  DLNFibre.DLN.Aoyagi.dln_rlct334_eq_half_codim,
+  DLNFibre.DLN.Aoyagi.rlctAt_coreGen334_eq_four,
+  DLNFibre.DLN.Aoyagi.dln_rlct334_eq_four,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from
@@ -1408,6 +1420,13 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- ★ (3,3,4) DLN square-Frobenius V-LOWER (this expedition) — the individual footprint stays in the
 -- build log; gated clean-three in the batch above. `MeasurePreserving eWrap` discharged (route B).
 #print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_ge_four
+-- ★ (3,3,4) `rlct = ½·codim` EQUALITY + the UNCONDITIONAL cite-free upper (this expedition) — the
+-- individual footprints stay in the build log; gated clean-three in the batch above. Both cite-free:
+-- the upper's `MeasurePreserving eWrap` hypothesis is discharged, no Watanabe cite in either cone.
+#print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_le_half_codim
+#print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_eq_half_codim
+#print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_eq_four
+#print axioms DLNFibre.DLN.Aoyagi.rlctAt_coreGen334_eq_four
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
 -- Rung (C) DRIVER (tracked-open): re-proves `exists_coreResolution`'s CONCLUSION with its
 -- `sorryAx` cone = EXACTLY the 8 monument leaves (L1/L3/L4/terminal_bezout/L5/L6/L7/L8,
