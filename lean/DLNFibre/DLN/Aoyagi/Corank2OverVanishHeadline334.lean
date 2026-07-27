@@ -54,9 +54,11 @@ open DLNFibre.DLN.Aoyagi.CleanHentry334
 
 namespace DLNFibre.DLN.Aoyagi.OverVanishHeadline334
 
--- `IsClean c` (a `Finset` membership hidden behind a `def`) is classically decidable; the branch
--- selectors below are `noncomputable` anyway (`idxEquiv` is), so the classical instance is free.
-attribute [local instance] Classical.propDecidable
+-- `IsClean c` is a `Finset` membership hidden behind a `def`; expose its (computable) decidability so
+-- the branch selectors' `if IsClean c` synthesizes without a blanket classical instance (which would
+-- shadow the `decide`-able `Finset`/exponent instances the over-vanishing seat needs).
+noncomputable instance decIsClean (c : Fin numCharts) : Decidable (IsClean c) :=
+  inferInstanceAs (Decidable ((pivot1 c, pivot2 c) ∈ cleanPairs))
 
 /-! ## §1 — the per-type data bundle and the 16-way classifier -/
 
