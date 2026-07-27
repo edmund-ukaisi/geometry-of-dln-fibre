@@ -1,16 +1,29 @@
 # Heartbeat — 2026-07-17-aoyagi-engine
 
-Main quest (operator-reframed 2026-07-18): **Aoyagi's mechanism built FULLY as a free-standing library**
-(her objects + invariants incl. sharing, end-to-end, conceptual-altitude first — cases derived, never chased)
-→ the geometric codim `C` and, via the cited Aoyagi equality, the RLCT payoff `rlct(∑Fᵢ²) 0 = ½·C`. Every
-commission, council charge, and review bar carries THIS framing.
+Main quest: **build Aoyagi's resolution machinery as reusable mathematics at FULL GENERALITY** → the
+GENERAL-`d` theorem `rlctGlobal (lossDLN d 0) = ½·codimRealFibre d 0` (all `d`). The `(3,3,4)` instance
+LANDED 2026-07-27 (cite-free, monument-free, kernel-gated) — a MILESTONE, NOT the destination.
 
-**READ `charter.md` FIRST, every wake** — the fixed invariant core (goals = Objects A–E as reusable objects;
-the headline is a corollary/test; the progress bar; the standing math-warnings). Gate every progress-claim
-and every route against it. This heartbeat memo is operational state, NOT the goal frame — the charter is.
-Full history: `journal.md` (banked per rung) + `compass.md` (the fork-history, F1–F9).
+**READ `charter.md` FIRST, every wake** — the invariant core (general-`d` goal; the crux = the cite-free
+lower bound `cited_aoyagi_lower`; the honest hard part = the geometry↔ledger correspondence; the first-rung
+`(3,3,3,2,2)` go/no-go; the math-warnings). Then `general-d-surface.md` (the deep surface map — objects /
+crux / ladder / risks). `compass.md` = fork-history F1–F15 (F15 = the general-d surface; F13/F14
+superseded-in-part). The charter is the goal frame; this memo is operational state.
 
-## Memo (controller-edited — keep current; consolidated 2026-07-25, prior 480-line stacked history → journal/compass)
+## Memo (controller-edited)
+
+**PHASE STATE (2026-07-27): PHASE-CLOSE DONE — STANDING BY for the operator discussion before the general-`d`
+build.** The `(3,3,4)` `rlct=½·codim` milestone is landed + verified + documented (`synthesis.md` /
+`statement-cards.md`, on branch `expedition/aoyagi-r2ov-integration` @ `39e24057d`). Repo cleaned (worktrees
+108→53; safe remote deletes done; the rest held/kept). Durable memory refreshed (charter/compass/surface-map)
++ archived (`archive/phase-334/`; journal thinned). OPEN, operator-gated: (1) the PR / `dev`-integration (the
+deliverable branch is far ahead of `dev`, entangled with aoyagi-full-overlapping branches — strategy is the
+operator's call); (2) the general-`d` FIRST-RUNG go/no-go probe — the `(3,3,3,2,2)` geometry↔ledger
+correspondence test from the REAL geometry (`stepMapRaw`/`foldG`), which decides build-vs-monument. Do NOT
+start the general-`d` build before the operator discussion.
+
+--- (3,3,4)-PHASE MEMO BELOW: SUPERSEDED history — the durable state is charter + general-d-surface; the
+route apparatus (reroute-plan/R0–R6/W3) is archived. Kept for pointer resolution only. ---
 
 **ROUTE (operator GO, 2026-07-25): BUILD the cite-free lower via the ONE-OBJECT RE-ROUTE.**
 Plan = `reroute-plan.md` (in-repo, controller-grounded). One `conRel_wf` recursion carries geometry + ledger
