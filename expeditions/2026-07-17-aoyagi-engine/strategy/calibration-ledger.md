@@ -1531,3 +1531,30 @@ mem_localAdmissible_of_sandwich_lt core by abstracting the per-chart integrabili
 t_c=4 via the chain engine, over-vanishing via the (ii) SoS engine, iInf ≥ 4). This IS (ii)'s ladder step (6)
 'wire-variant assembly → 4 ≤ rlctAt over the mixed 288.' Confirms the assembly is a real BUILD (not a case-split of the
 existing wire), already in-plan. NOT a monument (RLCT.SumSq + MonomialBox + the existing wire's cover/area spine).
+
+## 2026-07-27 — CALIBRATION: the (3,3,4) discharge layer (decorrelated from assembly-close's map)
+Q: after the spine close, what does the unconditional V-lower still need — is the clean-144 per-chart
+integrability brick built, and is the over-vanishing ∀-144 discharge built?
+EXPECTATION (written before reading): clean per-chart integrability brick EXISTS ~70% (R3 #185/#186
+sandwich work); over-vanishing ∀-144 assembly UNBUILT ~85% (plan-step (A) never landed).
+READ (r2ov-integration trunk, read-only grep):
+- over-vanishing ∀-144: UNBUILT — HIT. The 16 leaves are imported ONLY by each other + Transport334;
+  bridge chart_integrableAtFilter_of_monoSumSq_dom appears ONLY in Assembly334 docstrings, composed nowhere.
+- clean side: PARTIAL. Infra EXISTS (Corank2CleanEntry334/CleanEntryBase334/CleanHentry334/SurvivorSandwich/
+  SurvivorFanCover) but NO standalone per-chart IntegrableAtFilter — rlctAt_coreGen334_ge_four_of_survivor_
+  entries generates integrability INSIDE its proof from hentry→sandwich→spine (mem_localAdmissible_of_sandwich
+  _lt). So the pieces exist, the exposed brick does not.
+CLARIFIED (the real endgame shape):
+- 3 conditional headlines, none unconditional: _of_family (hpull), _of_survivor_entries (hentry ∀chart =
+  ALL-CLEAN, CANNOT cover the 144 over-vanishing charts w/ no survivor entry), _of_perchart_integrable
+  (the agnostic spine, _hint = per-chart integrable — the CORRECT heterogeneous vehicle).
+- concrete 288-chart cover = flatCube/pivotChart fold (buildTree-native, built per memo L70); clean-144 +
+  over-vanishing-144 are its leaves.
+DISCHARGE BUILD (what remains): instantiate the agnostic spine at the flatCube cover + discharge _hint
+per-leaf: clean via hentry→sandwich→integrable (extract from CleanHentry/SurvivorSandwich), over-vanishing
+via 16-leaf canon_domination → Transport334 σ_p1 ∀-144 → bridge. Combine → apply spine → uncond headline.
+KEY UNKNOWN for the seat's map: does flatCube already expose (g/dom/excep/U/hcover) in the spine's _hint
+shape + is hcover PROVEN concretely? (the cover-completeness volume-null fact). That gates the assembly.
+WHAT-IT-CHANGES: both discharge sides need assembly (not just over-vanishing); the clean side is an
+extraction from existing sandwich infra, not a fresh proof; the cover indexing (flatCube leaves ↔ spine
+charts ↔ 16-leaf σ_p1 orbit) is the integration crux to price from the map.
