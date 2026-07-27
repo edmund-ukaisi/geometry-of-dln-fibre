@@ -189,6 +189,55 @@ theorem measurableSet_excepFold (c : Fin numCharts) : MeasurableSet (excepFold c
 theorem volume_excepFold (c : Fin numCharts) : volume (excepFold c) = 0 :=
   volume_jacWeight_zeroSet (jacExpFold c)
 
+/-! ## §2.5 — folded-chart differentiability -/
+
+/-- **Coordinate precomposition is differentiable.** `w ↦ (fun k ↦ w (ρ k))` is linear, hence
+smooth. -/
+theorem differentiable_reindex (ρ : Fin 21 → Fin 21) :
+    Differentiable ℝ (fun w : Fin 21 → ℝ ↦ fun k ↦ w (ρ k)) :=
+  differentiable_pi.2 (fun k ↦ differentiable_pi.1 differentiable_id (ρ k))
+
+/-- **`conjChart` preserves differentiability.** `conjChart σ H = post_{σ⁻¹} ∘ H ∘ pre_σ` with the two
+coordinate reindexings linear. -/
+theorem differentiable_conjChart (σ : Equiv.Perm (Fin 21))
+    {H : (Fin 21 → ℝ) → (Fin 21 → ℝ)} (hH : Differentiable ℝ H) :
+    Differentiable ℝ (OverVanishTransport334.conjChart σ H) :=
+  (differentiable_reindex σ.symm).comp (hH.comp (differentiable_reindex σ))
+
+/-- Every base-type straightening `psi` is differentiable (each per-type `differentiable_psiCanon`). -/
+theorem bundleOf_psi_differentiable (q r : Fin 21) : Differentiable ℝ (bundleOf q r).psi := by
+  simp only [bundleOf, mkBundle]
+  split_ifs <;>
+    first
+      | exact OverVanishCanon334.differentiable_psiCanon
+      | exact OverVanishA_20_1_5.differentiable_psiCanon
+      | exact OverVanishA_20_1_6.differentiable_psiCanon
+      | exact OverVanishA_20_1_7.differentiable_psiCanon
+      | exact OverVanishA_20_5_1.differentiable_psiCanon
+      | exact OverVanishA_20_5_5.differentiable_psiCanon
+      | exact OverVanishA_20_5_6.differentiable_psiCanon
+      | exact OverVanishA_20_5_7.differentiable_psiCanon
+      | exact OverVanishB_20_6_1.differentiable_psiCanon
+      | exact OverVanishB_20_6_5.differentiable_psiCanon
+      | exact OverVanishB_20_6_6.differentiable_psiCanon
+      | exact OverVanishB_20_6_7.differentiable_psiCanon
+      | exact OverVanishB_20_7_1.differentiable_psiCanon
+      | exact OverVanishB_20_7_5.differentiable_psiCanon
+      | exact OverVanishB_20_7_6.differentiable_psiCanon
+      | exact OverVanishB_20_7_7.differentiable_psiCanon
+
+/-- **The folding shear `psiOf c` is differentiable** (identity on clean; `conjChart` of a
+differentiable per-type straightening on over-vanishing). -/
+theorem differentiable_psiOf (c : Fin numCharts) : Differentiable ℝ (psiOf c) := by
+  unfold psiOf
+  split_ifs with h
+  · exact differentiable_id
+  · exact differentiable_conjChart _ (bundleOf_psi_differentiable (canonQ c) (canonR c))
+
+/-- **The folded chart `gFold c` is differentiable.** -/
+theorem differentiable_gFold (c : Fin numCharts) : Differentiable ℝ (gFold c) :=
+  (differentiable_gFin c).comp (differentiable_psiOf c)
+
 /-! ## §3 — the headline -/
 
 /-- **The UNCONDITIONAL (3,3,4) V-lower headline** (Approach B, folded chart). Hypothesis-free,
@@ -201,9 +250,7 @@ theorem rlctAt_coreGen334_ge_four :
     gFold domFold nbhdFold excepFold
     ?hgdiff isCompact_domFold isOpen_nbhdFold domFold_sub
     measurableSet_excepFold volume_excepFold ?hg_inj ?hcover ?hint
-  case hgdiff =>
-    -- map: ov-headline-diff — folded chart differentiability (gFin ∘ psiOf, both smooth).
-    sorry
+  case hgdiff => exact differentiable_gFold
   case hg_inj =>
     -- map: ov-headline-ainj — folded chart a.e.-injectivity off its critical set.
     sorry
