@@ -19,6 +19,12 @@ The paper's headline "`rlct = ½·codim` (DLNs are mildly singular)" at the coup
 one coupled instance WITHOUT the cited Watanabe bound — the geometric codimension is `8`
 (`codimRealFibre_334_zero_toNat`), and both `rlct ≤ 4` and `rlct ≥ 4` are proved from the built
 geometry (a single certified chart on one side, the over-vanishing V-lower on the other).
+
+**Significance.** `dln_rlct334_eq_half_codim` is the cite-free `(3,3,4)` instance of the
+`aoyagi_learning_coefficient` payoff (`rlct = ½·codim`), obtained WITHOUT the general
+`exists_coreResolution` monument: the upper half rides one certified chart (not the full resolution
+atlas) and the lower half the over-vanishing headline, so at this coupled instance the headline is
+established on built geometry alone — neither the Watanabe cite nor the resolution-existence monument.
 -/
 
 open MeasureTheory

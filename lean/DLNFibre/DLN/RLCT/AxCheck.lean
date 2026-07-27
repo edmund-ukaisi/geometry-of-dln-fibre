@@ -1388,12 +1388,20 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- `4 ≤ rlctGlobal (lossDLN ![3,3,4] 0)`, UNCONDITIONAL — must be clean-three.
   DLNFibre.DLN.Aoyagi.dln_rlct334_ge_four,
 -- ★ (3,3,4) `rlct = ½·codim` EQUALITY, CITE-FREE (this expedition, the paper's headline at one coupled
--- instance): the UNCONDITIONAL cite-free upper `dln_rlct334_le_half_codim` (the single-chart CoV upper
--- with `MeasurePreserving eWrap` discharged by the proven `measurePreserving_eWrap`, no cite, no MP
--- hypothesis) and the EQUALITY `dln_rlct334_eq_half_codim` = `le_antisymm` of that upper with the
--- V-lower `dln_rlct334_ge_four` (`rlctGlobal (lossDLN ![3,3,4] 0) = ½·codimRealFibre = 4`). The
--- core-loss `rlctAt_coreGen334_eq_four` (= 4) and the value `dln_rlct334_eq_four` (= 4) are the
--- companion forms. Both built geometry — NO cited Watanabe bound. All must be clean-three.
+-- instance = the cite-free `(3,3,4)` `aoyagi_learning_coefficient` payoff INSTANCE, bypassing the
+-- general `exists_coreResolution` monument). Kernel-gating the V-UPPER here is the point: the
+-- cite-free single-chart upper REPLACES `cited_watanabe_upper_ax`, so it must be axiom-checked, not
+-- cite-free-by-docstring. Roots:
+--  • `rlctAt_coreGen334_le_four` — the CORE V-upper `rlctAt (∑(coreGen)²) 0 ≤ 4` (single-chart CoV,
+--    `Corank2UpperBound334`, no atlas/cover/θ) — the cite-free replacement for Watanabe at the core;
+--  • `dln_rlct334_le_half_codim` — the DLN V-upper `rlctGlobal (lossDLN ![3,3,4] 0) ≤ ½·codimRealFibre`,
+--    UNCONDITIONAL (the conditional `Corank2CiteFree334` upper with `MeasurePreserving eWrap` discharged
+--    by the proven `measurePreserving_eWrap`; no cite, no MP hypothesis);
+--  • `dln_rlct334_eq_half_codim` — the EQUALITY = `le_antisymm` of that upper with the V-lower
+--    `dln_rlct334_ge_four` (`rlctGlobal (lossDLN ![3,3,4] 0) = ½·codimRealFibre = 4`);
+--  • `rlctAt_coreGen334_eq_four` (core-loss `= 4`) + `dln_rlct334_eq_four` (`= 4`) — companion forms.
+-- All built geometry — NO cited Watanabe bound. All must be clean-three.
+  DLNFibre.DLN.Aoyagi.rlctAt_coreGen334_le_four,
   DLNFibre.DLN.Aoyagi.dln_rlct334_le_half_codim,
   DLNFibre.DLN.Aoyagi.dln_rlct334_eq_half_codim,
   DLNFibre.DLN.Aoyagi.rlctAt_coreGen334_eq_four,
@@ -1420,9 +1428,11 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- ★ (3,3,4) DLN square-Frobenius V-LOWER (this expedition) — the individual footprint stays in the
 -- build log; gated clean-three in the batch above. `MeasurePreserving eWrap` discharged (route B).
 #print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_ge_four
--- ★ (3,3,4) `rlct = ½·codim` EQUALITY + the UNCONDITIONAL cite-free upper (this expedition) — the
--- individual footprints stay in the build log; gated clean-three in the batch above. Both cite-free:
--- the upper's `MeasurePreserving eWrap` hypothesis is discharged, no Watanabe cite in either cone.
+-- ★ (3,3,4) `rlct = ½·codim` EQUALITY + the cite-free V-UPPER (core + DLN) (this expedition) — the
+-- individual footprints stay in the build log; gated clean-three in the batch above. All cite-free:
+-- the CORE upper is a single-chart CoV (the cite-free replacement for `cited_watanabe_upper_ax`), the
+-- DLN upper's `MeasurePreserving eWrap` hypothesis is discharged, no Watanabe cite in any cone.
+#print axioms DLNFibre.DLN.Aoyagi.rlctAt_coreGen334_le_four
 #print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_le_half_codim
 #print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_eq_half_codim
 #print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_eq_four

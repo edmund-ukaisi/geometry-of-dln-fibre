@@ -12,8 +12,10 @@ sole un-banked input `MeasurePreserving eWrap` now DISCHARGED (`Corank2EwrapMeas
 Result: `(4 : ℝ) ≤ rlctGlobal (lossDLN ![3,3,4] 0)`, UNCONDITIONAL — no `MeasurePreserving eWrap`
 hypothesis, cite-free, monument-free. This is the honest "the `(3,3,4)` DLN square-Frobenius RLCT is
 `≥ 4`" (the geometric V-lower; the matching `≤ 4` upper is `Corank2CiteFree334`, likewise now
-dischargeable via `measurePreserving_eWrap`). Aoyagi's `rlct = ½·codim = 4` equality itself rests on
-the Cited Watanabe bound — this file claims only the geometric lower half `rlct ≥ 4`.
+dischargeable via `measurePreserving_eWrap`). Because that upper is cite-free (a single-chart
+change-of-variables, NOT the Watanabe bound), the `(3,3,4)` `rlct = ½·codim = 4` equality is FULLY
+cite-free — assembled in `Corank2Equality334` (`dln_rlct334_eq_half_codim`). This file contributes
+the geometric lower half `rlct ≥ 4`.
 -/
 
 open MeasureTheory
