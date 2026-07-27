@@ -1,4 +1,6 @@
 import DLNFibre.DLN.Aoyagi.Corank2FoldedFamily334
+import DLNFibre.DLN.Aoyagi.Corank2FoldedInj334
+import DLNFibre.DLN.Aoyagi.Corank2FoldedHint334
 
 /-!
 # `DLN.Aoyagi.Corank2OverVanishHeadline334` — the UNCONDITIONAL (3,3,4) V-lower headline
@@ -17,8 +19,9 @@ to the folded chart family `gFold` (`Corank2FoldedFamily334`). The DONE spine ob
 These are proved in sibling files against the `Corank2FoldedFamily334` foundation and wired here.
 
 ## Status
-SKELETON — statement locked; spine composition verified. Two tracked frontier holes
-(`-- map: ov-headline-ainj`, `-- map: ov-headline-hint`); NOT yet axiom-clean.
+COMPLETE — sorry-free and axiom-clean `[propext, Classical.choice, Quot.sound]` (force-verified via a
+deleted-olean re-elaboration). The two obligations are discharged by `FoldedInj334.folded_hg_inj`
+(ainj) and `FoldedHint334.folded_hint` (over-vanishing hint), wired below.
 -/
 
 open MeasureTheory Set Filter Topology Metric RLCT
@@ -39,12 +42,8 @@ theorem rlctAt_coreGen334_ge_four :
     ?hgdiff isCompact_domFold isOpen_nbhdFold domFold_sub
     measurableSet_excepFold volume_excepFold ?hg_inj ?hcover ?hint
   case hgdiff => exact differentiable_gFold
-  case hg_inj =>
-    -- map: ov-headline-ainj — folded chart a.e.-injectivity off its critical set.
-    sorry
+  case hg_inj => exact folded_hg_inj
   case hcover => exact folded_hcover
-  case hint =>
-    -- map: ov-headline-hint — per-chart integrability: clean (b) / over-vanishing (c).
-    sorry
+  case hint => exact folded_hint
 
 end DLNFibre.DLN.Aoyagi.OverVanishHeadline334
