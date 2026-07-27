@@ -171,6 +171,7 @@ import DLNFibre.Core.Aoyagi.ResolutionInhabited
 import DLNFibre.DLN.Aoyagi.OrderBinding
 import DLNFibre.Core.Aoyagi.OrderChain
 import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
+import DLNFibre.DLN.Aoyagi.Corank2OverVanishHeadline334
 import Meta.Cordon
 
 /-!
@@ -1378,6 +1379,8 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- the analytic ρ = pole-order identification is DEFERRED (monument seam) and never smuggled here.
   DLNFibre.DLN.Aoyagi.bindingSet_orderIso_boxPart,
   DLNFibre.DLN.Aoyagi.bindingSet_chainHeight_eq_thetaCount,
+-- ★ (3,3,4) V-LOWER (this expedition): cite-free + monument-free; must be clean-three.
+  DLNFibre.DLN.Aoyagi.OverVanishHeadline334.rlctAt_coreGen334_ge_four,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from
@@ -1394,6 +1397,9 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- summit goes clean-three the day `exists_coreResolution` lands.
 #print axioms DLNFibre.DLN.Aoyagi.aoyagi_learning_coefficient_via_engine
 #print axioms DLNFibre.Core.Aoyagi.Resolution.two_mul_rlctAt_eq_divisorMin
+-- ★ (3,3,4) V-LOWER (this expedition) — the individual footprint stays in the build log; gated
+-- clean-three in the batch above.
+#print axioms DLNFibre.DLN.Aoyagi.OverVanishHeadline334.rlctAt_coreGen334_ge_four
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
 -- Rung (C) DRIVER (tracked-open): re-proves `exists_coreResolution`'s CONCLUSION with its
 -- `sorryAx` cone = EXACTLY the 8 monument leaves (L1/L3/L4/terminal_bezout/L5/L6/L7/L8,

@@ -1772,3 +1772,5 @@ import DLNFibre.DLN.Aoyagi.SurvivorSandwich
 --   BYPASS (F10/(A)). Imports only Core ProductResolution; clean-three (elder+reviewer+controller verified,
 --   #184 F1-gate); +hbdd (= V-upper content, one-directional) / −hunit1 (moves to the downstream conversion).
 import DLNFibre.Core.Aoyagi.SandwichCover
+-- (3,3,4) DLN square-Frobenius V-lower (cite-free, monument-free): 4 ≤ rlctAt (sumSqFam (coreGen dvec eWrap)) 0.
+import DLNFibre.DLN.Aoyagi.Corank2OverVanishHeadline334
