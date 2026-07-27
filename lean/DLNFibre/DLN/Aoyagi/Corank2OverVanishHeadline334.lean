@@ -1,6 +1,7 @@
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishAssembly334
 import DLNFibre.DLN.Aoyagi.Corank2CleanIntegrable334
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishTransport334
+import DLNFibre.DLN.Aoyagi.Corank2ChartJac
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishA_20_1_5
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishA_20_1_6
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishA_20_1_7
@@ -63,7 +64,10 @@ noncomputable instance decIsClean (c : Fin numCharts) : Decidable (IsClean c) :=
 /-! ## §1 — the per-type data bundle and the 16-way classifier -/
 
 /-- The per-type over-vanishing data: the straightening `psi`, its canonical leaf index `idxC`, the
-dominant-monomial exponent `a`, the regular-sequence block `Z`, and the Jacobian exponent `jac`. -/
+dominant-monomial exponent `a`, the regular-sequence block `Z`, the Jacobian exponent `jac`, and the
+two per-type value FACTS — the folded-Jacobian collapse and the product-germ domination. Carrying the
+proofs makes the downstream 16-way dispatch an O(1) projection (a bare `first`-search over the 16
+`canon_foldedJac`/`canon_domination` times out on the heavy `gFlat`-composite defeqs). -/
 structure OVData where
   /-- the per-type canonical straightening shear `Ψ` (a `blockShear`). -/
   psi : (Fin 21 → ℝ) → (Fin 21 → ℝ)
@@ -75,52 +79,76 @@ structure OVData where
   Z : Finset (Fin 21)
   /-- the canonical Jacobian exponent `jacExp idxC`. -/
   jac : Fin 21 → ℕ
+  /-- the folded-Jacobian collapse `|jacDet (gFlat idxC ∘ ψ)| = jacWeight jac` (`canon_foldedJac`). -/
+  hfoldedJac : ∀ u, |jacDet (gFlat idxC ∘ psi) u| = jacWeight jac u
+  /-- the product-germ domination `vm²·∑_Z z² ≤ loss` (`canon_domination`). -/
+  hdom : ∀ u, monoSumSqGerm a Z u
+    ≤ sumSqFam (fun i ↦ coreGen dvec eWrap i ∘ (gFlat idxC ∘ psi)) u
 
-/-- Package one per-type namespace's data into an `OVData`. -/
+/-- Package one per-type namespace's data + value facts into an `OVData`. -/
 private noncomputable def mkBundle (psi : (Fin 21 → ℝ) → (Fin 21 → ℝ)) (idxC : Idx)
-    (a : Fin 21 → ℕ) (Z : Finset (Fin 21)) : OVData :=
-  ⟨psi, idxC, a, Z, jacExp idxC⟩
+    (a : Fin 21 → ℕ) (Z : Finset (Fin 21))
+    (hfoldedJac : ∀ u, |jacDet (gFlat idxC ∘ psi) u| = jacWeight (jacExp idxC) u)
+    (hdom : ∀ u, monoSumSqGerm a Z u
+      ≤ sumSqFam (fun i ↦ coreGen dvec eWrap i ∘ (gFlat idxC ∘ psi)) u) : OVData :=
+  ⟨psi, idxC, a, Z, jacExp idxC, hfoldedJac, hdom⟩
 
 /-- **The 16-way base-type classifier.** Keyed on the CANONICAL pivots `(q, r) = (σ_{p1} p2,
-σ_{p1} p3) ∈ {1,5,6,7}²`, returns the per-type over-vanishing data. The default (off-grid, i.e.
-clean charts) is the canonical `(20,1,1)` bundle (never consumed on the value path). -/
+σ_{p1} p3) ∈ {1,5,6,7}²`, returns the per-type over-vanishing data + value facts. The default
+(off-grid, i.e. clean charts) is the canonical `(20,1,1)` bundle (never consumed on the value path). -/
 noncomputable def bundleOf (q r : Fin 21) : OVData :=
   if q = 1 then
     if r = 1 then mkBundle OverVanishCanon334.psiCanon OverVanishCanon334.idxCanon
         OverVanishCanon334.vmExpCanon OverVanishCanon334.Zcanon
+        OverVanishCanon334.canon_foldedJac OverVanishCanon334.canon_domination
     else if r = 5 then mkBundle OverVanishA_20_1_5.psiCanon OverVanishA_20_1_5.idxCanon
         OverVanishA_20_1_5.vmExpCanon OverVanishA_20_1_5.Zcanon
+        OverVanishA_20_1_5.canon_foldedJac OverVanishA_20_1_5.canon_domination
     else if r = 6 then mkBundle OverVanishA_20_1_6.psiCanon OverVanishA_20_1_6.idxCanon
         OverVanishA_20_1_6.vmExpCanon OverVanishA_20_1_6.Zcanon
+        OverVanishA_20_1_6.canon_foldedJac OverVanishA_20_1_6.canon_domination
     else mkBundle OverVanishA_20_1_7.psiCanon OverVanishA_20_1_7.idxCanon
         OverVanishA_20_1_7.vmExpCanon OverVanishA_20_1_7.Zcanon
+        OverVanishA_20_1_7.canon_foldedJac OverVanishA_20_1_7.canon_domination
   else if q = 5 then
     if r = 1 then mkBundle OverVanishA_20_5_1.psiCanon OverVanishA_20_5_1.idxCanon
         OverVanishA_20_5_1.vmExpCanon OverVanishA_20_5_1.Zcanon
+        OverVanishA_20_5_1.canon_foldedJac OverVanishA_20_5_1.canon_domination
     else if r = 5 then mkBundle OverVanishA_20_5_5.psiCanon OverVanishA_20_5_5.idxCanon
         OverVanishA_20_5_5.vmExpCanon OverVanishA_20_5_5.Zcanon
+        OverVanishA_20_5_5.canon_foldedJac OverVanishA_20_5_5.canon_domination
     else if r = 6 then mkBundle OverVanishA_20_5_6.psiCanon OverVanishA_20_5_6.idxCanon
         OverVanishA_20_5_6.vmExpCanon OverVanishA_20_5_6.Zcanon
+        OverVanishA_20_5_6.canon_foldedJac OverVanishA_20_5_6.canon_domination
     else mkBundle OverVanishA_20_5_7.psiCanon OverVanishA_20_5_7.idxCanon
         OverVanishA_20_5_7.vmExpCanon OverVanishA_20_5_7.Zcanon
+        OverVanishA_20_5_7.canon_foldedJac OverVanishA_20_5_7.canon_domination
   else if q = 6 then
     if r = 1 then mkBundle OverVanishB_20_6_1.psiCanon OverVanishB_20_6_1.idxCanon
         OverVanishB_20_6_1.vmExpCanon OverVanishB_20_6_1.Zcanon
+        OverVanishB_20_6_1.canon_foldedJac OverVanishB_20_6_1.canon_domination
     else if r = 5 then mkBundle OverVanishB_20_6_5.psiCanon OverVanishB_20_6_5.idxCanon
         OverVanishB_20_6_5.vmExpCanon OverVanishB_20_6_5.Zcanon
+        OverVanishB_20_6_5.canon_foldedJac OverVanishB_20_6_5.canon_domination
     else if r = 6 then mkBundle OverVanishB_20_6_6.psiCanon OverVanishB_20_6_6.idxCanon
         OverVanishB_20_6_6.vmExpCanon OverVanishB_20_6_6.Zcanon
+        OverVanishB_20_6_6.canon_foldedJac OverVanishB_20_6_6.canon_domination
     else mkBundle OverVanishB_20_6_7.psiCanon OverVanishB_20_6_7.idxCanon
         OverVanishB_20_6_7.vmExpCanon OverVanishB_20_6_7.Zcanon
+        OverVanishB_20_6_7.canon_foldedJac OverVanishB_20_6_7.canon_domination
   else
     if r = 1 then mkBundle OverVanishB_20_7_1.psiCanon OverVanishB_20_7_1.idxCanon
         OverVanishB_20_7_1.vmExpCanon OverVanishB_20_7_1.Zcanon
+        OverVanishB_20_7_1.canon_foldedJac OverVanishB_20_7_1.canon_domination
     else if r = 5 then mkBundle OverVanishB_20_7_5.psiCanon OverVanishB_20_7_5.idxCanon
         OverVanishB_20_7_5.vmExpCanon OverVanishB_20_7_5.Zcanon
+        OverVanishB_20_7_5.canon_foldedJac OverVanishB_20_7_5.canon_domination
     else if r = 6 then mkBundle OverVanishB_20_7_6.psiCanon OverVanishB_20_7_6.idxCanon
         OverVanishB_20_7_6.vmExpCanon OverVanishB_20_7_6.Zcanon
+        OverVanishB_20_7_6.canon_foldedJac OverVanishB_20_7_6.canon_domination
     else mkBundle OverVanishB_20_7_7.psiCanon OverVanishB_20_7_7.idxCanon
         OverVanishB_20_7_7.vmExpCanon OverVanishB_20_7_7.Zcanon
+        OverVanishB_20_7_7.canon_foldedJac OverVanishB_20_7_7.canon_domination
 
 /-! ## §2 — the pivot projections, the loss-symmetry selector, and the folded family -/
 
@@ -351,6 +379,45 @@ theorem folded_hcover :
     volume (ball (0 : Fin 21 → ℝ) 1 \ ⋃ c, gFold c '' domFold c) = 0 := by
   refine measure_mono_null (Set.diff_subset_diff_right ?_) native_hcover
   exact Set.iUnion_mono (fun c => gFin_image_subset_gFold c)
+
+/-! ## §2.7 — the coordinate-conjugation transport of the Jacobian (shared by ainj + hint) -/
+
+/-- **The Jacobian weight reindexes under a coordinate permutation.** `jacWeight h (u∘σ) = jacWeight
+(h∘σ⁻¹) u` (the monomial exponent reindexes by `σ⁻¹`). -/
+theorem jacWeight_reindex (σ : Equiv.Perm (Fin 21)) (h : Fin 21 → ℕ) (u : Fin 21 → ℝ) :
+    jacWeight h (fun k ↦ u (σ k)) = jacWeight (fun d ↦ h (σ.symm d)) u := by
+  simp only [jacWeight]
+  rw [← Equiv.prod_comp σ (fun e ↦ |u e| ^ h (σ.symm e))]
+  exact Finset.prod_congr rfl (fun d _ ↦ by rw [Equiv.symm_apply_apply])
+
+/-- **The |jacDet| of a `conjChart`-conjugate transports.** `|jacDet (conjChart σ H) u| = |jacDet H
+(u∘σ)|`: writing `conjChart σ H = R_{σ⁻¹} ∘ H ∘ R_σ` with `R_ρ w = w∘ρ` the coordinate reindexings
+(each `|jacDet| = 1`, `abs_jacDet_permCoord`), the chain rule collapses the two reindex factors. -/
+theorem jacDet_conjChart_abs (σ : Equiv.Perm (Fin 21)) {H : (Fin 21 → ℝ) → (Fin 21 → ℝ)}
+    (hH : Differentiable ℝ H) (u : Fin 21 → ℝ) :
+    |jacDet (OverVanishTransport334.conjChart σ H) u| = |jacDet H (fun k ↦ u (σ k))| := by
+  have hRσ : Differentiable ℝ (fun w : Fin 21 → ℝ ↦ fun k ↦ w (σ k)) := differentiable_reindex σ
+  have hRσs : Differentiable ℝ (fun v : Fin 21 → ℝ ↦ fun t ↦ v (σ.symm t)) :=
+    differentiable_reindex σ.symm
+  rw [show OverVanishTransport334.conjChart σ H
+        = (fun v : Fin 21 → ℝ ↦ fun t ↦ v (σ.symm t)) ∘ (H ∘ (fun w : Fin 21 → ℝ ↦ fun k ↦ w (σ k)))
+        from rfl,
+    jacDet_comp u hRσs.differentiableAt (hH.comp hRσ).differentiableAt,
+    jacDet_comp u hH.differentiableAt hRσ.differentiableAt, abs_mul, abs_mul,
+    Corank2ChartJac.abs_jacDet_permCoord σ.symm, Corank2ChartJac.abs_jacDet_permCoord σ,
+    one_mul, mul_one]
+
+/-- **Each base type's folded Jacobian collapses to its monomial weight** (`bundleOf`'s carried
+`hfoldedJac`, projected — no 16-way search). -/
+theorem bundleOf_foldedJac (q r : Fin 21) (u : Fin 21 → ℝ) :
+    |jacDet (gFlat (bundleOf q r).idxC ∘ (bundleOf q r).psi) u| = jacWeight (bundleOf q r).jac u :=
+  (bundleOf q r).hfoldedJac u
+
+/-- **Each base type's folded loss dominates its product germ** (`bundleOf`'s carried `hdom`). -/
+theorem bundleOf_domination (q r : Fin 21) (u : Fin 21 → ℝ) :
+    monoSumSqGerm (bundleOf q r).a (bundleOf q r).Z u
+      ≤ sumSqFam (fun i ↦ coreGen dvec eWrap i ∘ (gFlat (bundleOf q r).idxC ∘ (bundleOf q r).psi)) u :=
+  (bundleOf q r).hdom u
 
 /-! ## §3 — the headline -/
 
