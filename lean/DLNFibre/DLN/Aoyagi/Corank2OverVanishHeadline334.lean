@@ -238,6 +238,118 @@ theorem differentiable_psiOf (c : Fin numCharts) : Differentiable ℝ (psiOf c) 
 theorem differentiable_gFold (c : Fin numCharts) : Differentiable ℝ (gFold c) :=
   (differentiable_gFin c).comp (differentiable_psiOf c)
 
+/-! ## §2.6 — the folded cover -/
+
+/-- `1 ≤ leafR` (the leaf box radius is `fInfl`-inflated from `1`, `fInfl x = x + 2x² ≥ x`). -/
+theorem leafR_ge_one : (1 : ℝ) ≤ leafR := by
+  have hge : ∀ x : ℝ, 0 ≤ x → x ≤ fInfl x := fun x hx => by
+    simp only [fInfl]; nlinarith [sq_nonneg x]
+  calc (1 : ℝ) ≤ max (fInfl (max (fInfl (max 1 1)) 1)) 1 := le_max_right _ _
+    _ ≤ fInfl (max (fInfl (max (fInfl (max 1 1)) 1)) 1) :=
+        hge _ (le_trans zero_le_one (le_max_right _ _))
+    _ = leafR := rfl
+
+theorem leafR_nonneg : (0 : ℝ) ≤ leafR := le_trans zero_le_one leafR_ge_one
+
+/-- A coordinate reindexing by a permutation maps a `0`-ball onto itself (it preserves the sup
+norm). -/
+theorem reindex_image_closedBall (ρ : Equiv.Perm (Fin 21)) {R : ℝ} (hR : 0 ≤ R) :
+    (fun w : Fin 21 → ℝ ↦ fun k ↦ w (ρ k)) '' closedBall 0 R = closedBall 0 R := by
+  ext v
+  simp only [Set.mem_image, mem_closedBall_zero_iff]
+  constructor
+  · rintro ⟨w, hw, rfl⟩
+    rw [pi_norm_le_iff_of_nonneg hR] at hw ⊢
+    exact fun i ↦ hw (ρ i)
+  · intro hv
+    refine ⟨fun k ↦ v (ρ.symm k), ?_, by funext k; simp [Equiv.apply_symm_apply]⟩
+    rw [pi_norm_le_iff_of_nonneg hR] at hv ⊢
+    exact fun i ↦ hv (ρ.symm i)
+
+/-- **`conjChart` preserves the covering property.** If `H` covers (`closedBall 0 r ⊆ H '' closedBall
+0 R`), so does its `σ`-conjugate: `conjChart σ H = post_{σ⁻¹} ∘ H ∘ pre_σ` and both reindexings fix
+`0`-balls. -/
+theorem conjChart_covers (σ : Equiv.Perm (Fin 21)) {H : (Fin 21 → ℝ) → (Fin 21 → ℝ)} {r R : ℝ}
+    (hr : 0 ≤ r) (hR : 0 ≤ R) (hcov : closedBall 0 r ⊆ H '' closedBall 0 R) :
+    closedBall (0 : Fin 21 → ℝ) r ⊆ OverVanishTransport334.conjChart σ H '' closedBall 0 R := by
+  have heq : OverVanishTransport334.conjChart σ H '' closedBall 0 R
+      = (fun v : Fin 21 → ℝ ↦ fun t ↦ v (σ.symm t)) '' (H '' closedBall 0 R) := by
+    rw [show OverVanishTransport334.conjChart σ H
+        = (fun v : Fin 21 → ℝ ↦ fun t ↦ v (σ.symm t)) ∘ (H ∘ (fun w : Fin 21 → ℝ ↦ fun k ↦ w (σ k)))
+        from rfl, Set.image_comp, Set.image_comp, reindex_image_closedBall σ hR]
+  rw [heq, ← reindex_image_closedBall σ.symm hr]
+  exact Set.image_mono hcov
+
+/-- A quadratically-bounded `blockShear` covers with the cubic inflation `r + 2r³` (the 4
+non-coinciding leaves whose straightening is quadratic; `2r² ≤ 2r³` for `r = leafR ≥ 1`). -/
+theorem psiCanon_covers_quad {φ : (Fin 21 → ℝ) → (Fin 21 → ℝ)} (keep : Fin 21 → Prop)
+    (hkeep : ∀ u i, keep i → φ u i = 0)
+    (hread : ∀ u v : Fin 21 → ℝ, (∀ i, keep i → u i = v i) → φ u = φ v)
+    (hb : ∀ x : Fin 21 → ℝ, ‖x‖ ≤ leafR → ‖φ x‖ ≤ 2 * leafR ^ 2) :
+    closedBall (0 : Fin 21 → ℝ) leafR ⊆ blockShear φ '' closedBall 0 (leafR + 2 * leafR ^ 3) :=
+  OverVanishCanon334.blockShear_covers_cubic keep hkeep hread
+    (fun x hx => (hb x hx).trans (by nlinarith [leafR_ge_one]))
+
+/-- **Every base-type straightening covers** `closedBall 0 leafR` into its inflated ball (cubic
+straightening → the bare `psiCanon_cubic_cover`; quadratic straightening → `psiCanon_covers_quad`). -/
+theorem bundleOf_psi_covers (q r : Fin 21) :
+    closedBall (0 : Fin 21 → ℝ) leafR ⊆ (bundleOf q r).psi '' closedBall 0 (leafR + 2 * leafR ^ 3) := by
+  simp only [bundleOf, mkBundle]
+  split_ifs <;>
+    first
+      | exact OverVanishCanon334.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishA_20_1_6.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishA_20_1_7.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishA_20_5_5.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishA_20_5_6.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishA_20_5_7.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishB_20_6_1.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishB_20_6_5.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishB_20_6_6.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishB_20_7_1.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishB_20_7_5.psiCanon_cubic_cover leafR_ge_one
+      | exact OverVanishB_20_7_7.psiCanon_cubic_cover leafR_ge_one
+      | exact psiCanon_covers_quad OverVanishA_20_1_5.keepCanon OverVanishA_20_1_5.phiCanon_keep
+          OverVanishA_20_1_5.phiCanon_read (fun x hx => OverVanishA_20_1_5.phiCanon_norm_bound hx)
+      | exact psiCanon_covers_quad OverVanishA_20_5_1.keepCanon OverVanishA_20_5_1.phiCanon_keep
+          OverVanishA_20_5_1.phiCanon_read (fun x hx => OverVanishA_20_5_1.phiCanon_norm_bound hx)
+      | exact psiCanon_covers_quad OverVanishB_20_6_7.keepCanon OverVanishB_20_6_7.phiCanon_keep
+          OverVanishB_20_6_7.phiCanon_read
+          (fun x hx => OverVanishB_20_6_7.phiCanon_norm_bound leafR_nonneg hx)
+      | exact psiCanon_covers_quad OverVanishB_20_7_6.keepCanon OverVanishB_20_7_6.phiCanon_keep
+          OverVanishB_20_7_6.phiCanon_read
+          (fun x hx => OverVanishB_20_7_6.phiCanon_norm_bound leafR_nonneg hx)
+
+/-- **The folding shear covers** `closedBall 0 leafR` into `domFold`'s ball, for every chart (identity
+on clean; the σ-conjugate of a covering straightening on over-vanishing). -/
+theorem psiOf_covers (c : Fin numCharts) :
+    closedBall (0 : Fin 21 → ℝ) leafR ⊆ psiOf c '' closedBall 0 (leafR + 2 * leafR ^ 3) := by
+  unfold psiOf
+  split_ifs with h
+  · rw [Set.image_id]
+    exact closedBall_subset_closedBall (by have := pow_nonneg leafR_nonneg 3; linarith)
+  · have hR : (0 : ℝ) ≤ leafR + 2 * leafR ^ 3 := by
+      have := pow_nonneg leafR_nonneg 3; have := leafR_nonneg; linarith
+    exact conjChart_covers _ leafR_nonneg hR (bundleOf_psi_covers (canonQ c) (canonR c))
+
+/-- **Each leaf's unfolded image sits inside its folded image** — `gFin c '' domFin c ⊆ gFold c ''
+domFold c` (fold `psiOf c` into the chart; it covers, so the image only grows). -/
+theorem gFin_image_subset_gFold (c : Fin numCharts) :
+    gFin c '' domFin c ⊆ gFold c '' domFold c := by
+  have h1 : gFin c '' domFin c ⊆ gFin c '' (psiOf c '' closedBall 0 (leafR + 2 * leafR ^ 3)) :=
+    Set.image_mono (psiOf_covers c)
+  rw [show domFin c = closedBall (0 : Fin 21 → ℝ) leafR from rfl] at *
+  refine h1.trans ?_
+  rw [← Set.image_comp]
+  exact subset_of_eq rfl
+
+/-- **The folded cover** — `native_hcover` transported through the fold: the folded images cover at
+least what the unfolded ones do, so the uncovered set only shrinks (a fortiori stays null). -/
+theorem folded_hcover :
+    volume (ball (0 : Fin 21 → ℝ) 1 \ ⋃ c, gFold c '' domFold c) = 0 := by
+  refine measure_mono_null (Set.diff_subset_diff_right ?_) native_hcover
+  exact Set.iUnion_mono (fun c => gFin_image_subset_gFold c)
+
 /-! ## §3 — the headline -/
 
 /-- **The UNCONDITIONAL (3,3,4) V-lower headline** (Approach B, folded chart). Hypothesis-free,
@@ -254,9 +366,7 @@ theorem rlctAt_coreGen334_ge_four :
   case hg_inj =>
     -- map: ov-headline-ainj — folded chart a.e.-injectivity off its critical set.
     sorry
-  case hcover =>
-    -- map: ov-headline-cover — native_hcover transported through the folded Ψ.
-    sorry
+  case hcover => exact folded_hcover
   case hint =>
     -- map: ov-headline-hint — per-chart integrability: clean (b) / over-vanishing (c).
     sorry
