@@ -177,6 +177,26 @@ noncomputable def canonQ (c : Fin numCharts) : Fin 21 := sigOf (p1Of c) (p2Of c)
 /-- The canonical node-3 pivot of leaf `c` (`= σ_{p1} p3`). -/
 noncomputable def canonR (c : Fin numCharts) : Fin 21 := sigOf (p1Of c) (p3Of c)
 
+set_option maxRecDepth 8000 in
+/-- **Classifier correctness — node-3.** `canonR c = σ_{p1} p3 ∈ {1,5,6,7}` for EVERY chart (`p3 ∈
+σC2(p1)` and `σ_{p1}` maps `σC2(p1)` onto the canonical `σC2(20) = {1,5,6,7}`). -/
+theorem canonR_mem (c : Fin numCharts) : canonR c ∈ ({1, 5, 6, 7} : Finset (Fin 21)) := by
+  have key : ∀ p1 ∈ S1, ∀ p3 ∈ sigmaC2Fs p1, sigOf p1 p3 ∈ ({1, 5, 6, 7} : Finset (Fin 21)) := by
+    decide
+  exact key (p1Of c) (idxEquiv c).1.2 (p3Of c) (idxEquiv c).2.2.2
+
+set_option maxRecDepth 8000 in
+/-- **Classifier correctness — node-2 (the over-vanishing kill-condition).** For an over-vanishing
+chart (`¬IsClean c`), `canonQ c = σ_{p1} p2 ∈ {1,5,6,7}` — so `bundleOf (canonQ c) (canonR c)` hits a
+genuine keyed branch (`{1,5,6,7}²`), NOT the default. Equivalently, `cleanPairs` is EXACTLY the pairs
+`(p1,p2)` with `σ_{p1} p2 ∈ {0,2,3,4}`; verified by `decide` over `S1 × σC1(p1)`. Without this the
+folded straightening `psiOf c` would use the wrong base type and the construction would be unsound. -/
+theorem canonQ_mem_of_notClean (c : Fin numCharts) (hc : ¬ IsClean c) :
+    canonQ c ∈ ({1, 5, 6, 7} : Finset (Fin 21)) := by
+  have key : ∀ p1 ∈ S1, ∀ p2 ∈ sigmaC1Fs p1,
+      (p1, p2) ∉ cleanPairs → sigOf p1 p2 ∈ ({1, 5, 6, 7} : Finset (Fin 21)) := by decide
+  exact key (p1Of c) (idxEquiv c).1.2 (p2Of c) (idxEquiv c).2.1.2 hc
+
 /-- The per-chart over-vanishing bundle (its base type). -/
 noncomputable def bundleAt (c : Fin numCharts) : OVData := bundleOf (canonQ c) (canonR c)
 
