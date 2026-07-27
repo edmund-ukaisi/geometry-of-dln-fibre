@@ -1774,3 +1774,5 @@ import DLNFibre.DLN.Aoyagi.SurvivorSandwich
 import DLNFibre.Core.Aoyagi.SandwichCover
 -- (3,3,4) DLN square-Frobenius V-lower (cite-free, monument-free): 4 ≤ rlctAt (sumSqFam (coreGen dvec eWrap)) 0.
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishHeadline334
+-- (3,3,4) DLN square-Frobenius V-lower for the ACTUAL DLN loss (MeasurePreserving eWrap discharged): 4 ≤ rlctGlobal (lossDLN ![3,3,4] 0).
+import DLNFibre.DLN.Aoyagi.Corank2DLNRlct334

@@ -172,6 +172,7 @@ import DLNFibre.DLN.Aoyagi.OrderBinding
 import DLNFibre.Core.Aoyagi.OrderChain
 import DLNFibre.DLN.Aoyagi.OrderRealizeAssembly
 import DLNFibre.DLN.Aoyagi.Corank2OverVanishHeadline334
+import DLNFibre.DLN.Aoyagi.Corank2DLNRlct334
 import Meta.Cordon
 
 /-!
@@ -1381,6 +1382,10 @@ interesting footprints are re-emitted as `#print axioms` after the list:
   DLNFibre.DLN.Aoyagi.bindingSet_chainHeight_eq_thetaCount,
 -- ★ (3,3,4) V-LOWER (this expedition): cite-free + monument-free; must be clean-three.
   DLNFibre.DLN.Aoyagi.OverVanishHeadline334.rlctAt_coreGen334_ge_four,
+-- ★ (3,3,4) DLN square-Frobenius V-LOWER (this expedition): the core-loss headline transported to the
+-- ACTUAL DLN loss RLCT via `coreReduction` + the now-proven `MeasurePreserving eWrap` (no hypothesis).
+-- `4 ≤ rlctGlobal (lossDLN ![3,3,4] 0)`, UNCONDITIONAL — must be clean-three.
+  DLNFibre.DLN.Aoyagi.dln_rlct334_ge_four,
 ]
 
 -- Live-frontier DIRTY roots — informational `#print axioms`, NOT gated (carry `sorryAx` from
@@ -1400,6 +1405,9 @@ interesting footprints are re-emitted as `#print axioms` after the list:
 -- ★ (3,3,4) V-LOWER (this expedition) — the individual footprint stays in the build log; gated
 -- clean-three in the batch above.
 #print axioms DLNFibre.DLN.Aoyagi.OverVanishHeadline334.rlctAt_coreGen334_ge_four
+-- ★ (3,3,4) DLN square-Frobenius V-LOWER (this expedition) — the individual footprint stays in the
+-- build log; gated clean-three in the batch above. `MeasurePreserving eWrap` discharged (route B).
+#print axioms DLNFibre.DLN.Aoyagi.dln_rlct334_ge_four
 #print axioms DLNFibre.DLN.Aoyagi.exists_coreResolution
 -- Rung (C) DRIVER (tracked-open): re-proves `exists_coreResolution`'s CONCLUSION with its
 -- `sorryAx` cone = EXACTLY the 8 monument leaves (L1/L3/L4/terminal_bezout/L5/L6/L7/L8,
