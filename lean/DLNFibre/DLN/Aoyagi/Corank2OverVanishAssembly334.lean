@@ -2,7 +2,7 @@ import DLNFibre.DLN.Aoyagi.Corank2Headline334
 import DLNFibre.DLN.Aoyagi.Corank2OverVanish334
 
 /-!
-# `DLN.Aoyagi.Corank2OverVanishAssembly334` — the STEP-6 mechanism-heterogeneous assembly (skeleton)
+# `DLN.Aoyagi.Corank2OverVanishAssembly334` — the STEP-6 mechanism-heterogeneous assembly (PROVED)
 
 The convergence point for the full-288 (3,3,4) V-lower headline. The whole-conjugate family covers a
 neighbourhood of `0` (`NativeFan334.native_hcover`, transported through the folded `Ψ` on the
@@ -20,12 +20,12 @@ hypothesis `hint` and the two seats discharge it over their charts of the shared
 lifts to `4 ≤ rlctAt`.
 
 ## Status
-STEP-6 SKELETON (P6): the headline `rlctAt_coreGen334_ge_four_of_perchart_integrable` is
-statement-locked; its body is the tracked hole `-- map: step6-assembly` — a refactor of
-`Core.Aoyagi.mem_localAdmissible_of_sandwich_lt`'s spine (area formula push-down +
+PROVED (clean-three): the headline `rlctAt_coreGen334_ge_four_of_perchart_integrable` is fully proved
+— a refactor of `Core.Aoyagi.mem_localAdmissible_of_sandwich_lt`'s spine (area formula push-down +
 `integrableOn_finite_iUnion` + the `hcover` transfer onto a neighbourhood + `csSup_le_csSup` with
-`hbdd`) with the per-chart integrability taken as `hint` rather than derived from a sandwich. To be
-filled by the STEP-6 assembler once the per-type facts + Tonelli + clean-144 converge.
+`hbdd`), with the per-chart integrability taken as `hint` rather than derived from a sandwich. The two
+leaf mechanisms discharge `hint` at the use site `OverVanishHeadline334.rlctAt_coreGen334_ge_four`
+(clean-144 via the survivor `hentry`, over-vanishing-144 via the SoS engine); axiom footprint clean-three.
 -/
 
 open MeasureTheory Set Filter Topology Metric RLCT
@@ -117,7 +117,7 @@ private theorem mem_localAdmissible_of_perchart_integrable
     rw [hUcdef]; exact hunion.mono_set Set.inter_subset_right
   exact ⟨U, hU, hUcint.congr_set_ae hUeq⟩
 
-/-- **STEP 6 (skeleton) — the mechanism-heterogeneous (3,3,4) V-lower headline.** Given a finite
+/-- **STEP 6 — the mechanism-heterogeneous (3,3,4) V-lower headline (PROVED).** Given a finite
 chart family `g` over compact domains `dom` whose images a.e.-cover `ball 0 1` (`hcover`; the
 full-288 whole-conjugate cover, `Ψ`-transported on the over-vanishing leaves), each carrying the
 area-formula data (differentiable, `dom c ⊆ nbhd c` open, a.e.-injective off a null `excep c`), and
